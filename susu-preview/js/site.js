@@ -267,7 +267,7 @@
   const back = $('[data-back]', form), next = $('[data-next]', form);
   let step = 1;
   const names = { brows: 'Brows', lips: 'Lip blush', pmu: 'Permanent makeup', tattoo: 'Tattoo', piercing: 'Piercing' };
-  const service = () => (form.querySelector('input[name=service]:checked') || {}).value;
+  const services = () => $$('input[name=service]:checked', form).map((i) => i.value);
 
   // dates
   const dates = $('.dates', form);
@@ -282,8 +282,10 @@
   }
 
   const syncOnly = () => {
-    const s = service();
-    $$('[data-only]', form).forEach((el) => el.classList.toggle('is-shown', !!s && el.dataset.only.split(' ').includes(s)));
+    const s = services();
+    $$('[data-only]', form).forEach((el) => el.classList.toggle('is-shown', el.dataset.only.split(' ').some((k) => s.includes(k))));
+    const n = s.length, cnt = $('.tiles__count', form);
+    if (cnt) cnt.textContent = n ? `${n} selected` : 'Pick one or more';
   };
   form.addEventListener('change', (e) => {
     if (e.target.name === 'service') syncOnly();
@@ -301,7 +303,7 @@
   };
   const validate = () => {
     let ok = true;
-    if (step === 1 && !service()) { setErr('service', 'Pick a service to continue.'); ok = false; }
+    if (step === 1 && !services().length) { setErr('service', 'Pick at least one service to continue.'); ok = false; }
     if (step === 2) {
       const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
       if (!d || !t) { setErr('when', !d && !t ? 'Pick a day and a time of day.' : !d ? 'Pick a day.' : 'Pick a time of day.'); ok = false; }
@@ -321,7 +323,8 @@
   const summary = () => {
     const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
     const ig = form.elements['ig'].value.trim();
-    const rows = [['Service', names[service()]], ['When', `${d ? d.dataset.label : ''} · ${t ? t.value : ''}`], ['Phone', form.elements['phone'].value.trim()], ['Instagram', ig ? (ig[0] === '@' ? ig : '@' + ig) : '—']];
+    const sv = services().map((k) => names[k]);
+    const rows = [[sv.length > 1 ? 'Services' : 'Service', sv.join(', ')], ['When', `${d ? d.dataset.label : ''} · ${t ? t.value : ''}`], ['Phone', form.elements['phone'].value.trim()], ['Instagram', ig ? (ig[0] === '@' ? ig : '@' + ig) : '—']];
     $('.summary', form).innerHTML = rows.map(([a, b]) => `<div><dt>${a}</dt><dd></dd></div>`).join('');
     $$('.summary dd', form).forEach((dd, i) => { dd.textContent = rows[i][1]; });
     const nmv = form.elements['name'].value.trim(); $('.who', form).textContent = nmv ? ', ' + nmv.split(' ')[0] + '.' : '.';
@@ -351,7 +354,9 @@
     const r = form.querySelector(`input[name=service][value="${s}"]`);
     if (!r) return;
     r.checked = true; syncOnly(); clearErr('service');
-    if (step === 1) setTimeout(() => go(2, 1), 900);
+    if (step !== 1 && step !== 5) go(1, -1);
+    const tile = r.closest('.tile');
+    tile && tile.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
   }
 
   /* ---------- frame loop ---------- */
