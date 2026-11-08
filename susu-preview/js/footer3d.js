@@ -56,7 +56,11 @@
   }
 
   async function boot() {
-    const THREE = await import(THREE_URL);
+    // The page's portrait engine bundles its own copy of three; hide its marker during
+    // import so three doesn't log the (harmless) "multiple instances" warning.
+    const mark = window.__THREE__; delete window.__THREE__;
+    let THREE;
+    try { THREE = await import(THREE_URL); } finally { if (mark) window.__THREE__ = mark; }
     if (reduce.matches) return;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
@@ -64,7 +68,7 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.18;
     const canvas = renderer.domElement;
     canvas.setAttribute('aria-hidden', 'true');
 
@@ -78,7 +82,7 @@
     const rim = new THREE.DirectionalLight(0xe4bd91, 1.1); rim.position.set(-4, -1.5, -3); scene.add(rim);
     scene.add(new THREE.AmbientLight(0x3a2d35, .5));
 
-    const gold = new THREE.MeshPhysicalMaterial({ color: 0xe6c096, metalness: 1, roughness: .2, clearcoat: .5, clearcoatRoughness: .18, envMapIntensity: 1.25 });
+    const gold = new THREE.MeshPhysicalMaterial({ color: 0xeac89f, metalness: 1, roughness: .19, clearcoat: .5, clearcoatRoughness: .18, envMapIntensity: 1.25 });
     const goldDeep = new THREE.MeshPhysicalMaterial({ color: 0xcfa97c, metalness: 1, roughness: .26, clearcoat: .4, clearcoatRoughness: .2, envMapIntensity: 1.1 });
     const pearl = new THREE.MeshPhysicalMaterial({ color: 0xf6efe4, metalness: 0, roughness: .26, clearcoat: 1, clearcoatRoughness: .08, sheen: .7, sheenColor: new THREE.Color(0xf3d9b4), envMapIntensity: 1 });
 
