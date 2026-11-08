@@ -32,5 +32,13 @@ This is a static preview of the upgraded page. It is plain HTML/CSS/JS around th
 - **Prices:** only the prices she has posted are shown: Ombré brow $350, Airbrush henna $65, Lip blush $350. Everything else, including microblading, says "Get an estimate".
 - **Booking background:** `media/susu-book.webp` is a painted re-render of her studio portrait (`media/susu-studio.webp`). It replaced the mirror-reveal image, which was removed.
 
+## Booking: multiple services (Nov 2026)
+- Step 1 now uses checkboxes, so a client can pick several services in one request. `service` is a **list** (e.g. `["brows","tattoo"]`). When reconnecting to `submit_susu_booking_request`, send all selected services (an array, or a comma-joined string if the RPC only takes text) and update the RPC/owner view if it assumes one.
+- The reference-photo field shows if any selected service is tattoo or brows; the health checkbox shows if any is brows, lips or PMU.
+- "Book brows" style links tick that service and leave the client on step 1 so they can add more (no auto-advance).
+
+## 3D service icons
+- `media/icons/{brows,lips,pmu,tattoo,piercing}.webp`: 3D-rendered champagne-gold icons (kie.ai nano-banana-pro, cut out to transparent). Used in the booking tiles and as badges on the price cards.
+
 ## Still needed from Susu
 Session times, licence, real reviews, and a microblading price if she wants one listed. The studio photo and the painted portraits are brand imagery, not client results.
