@@ -7,6 +7,7 @@ This is a static preview of the upgraded page. It is plain HTML/CSS/JS around th
 - `css/site.css`: design tokens (`--plum #211b23`, `--champagne #e4bd91`, `--ivory #f4eadd`, `--paper #efe4d4`), grain, all section styles.
 - `js/site.js`: Lenis smooth scroll, story controller, reveals, compare sliders, booking-form UI.
 - `assets/index-IExGlf7c.js`: the **live bundle, patched** only so its React root and Supabase client don't run here. In the real source, use the original `muse-story` element. Don't copy this file.
+- `assets/react-PY5S7aRQ.js` and `assets/database-CB7MGzWB.js`: preview-only stand-ins for the two live chunks the bundle imports, so the portrait engine runs here. The React one is React/ReactDOM 19.3.1 (same version as the bundle). The database one is an empty placeholder. Don't copy either into the real source.
 - `brand/navel.webp`: a 1100px copy for the preview. Use the live full-size `/brand/navel.webp` (1792×2700).
 
 ## Story / portrait wiring
