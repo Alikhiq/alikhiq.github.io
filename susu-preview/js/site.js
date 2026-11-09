@@ -1,4 +1,4 @@
-/* Susu Ink & Glow — preview build interactions (Round City) */
+/* Susu Ink & Glow — site interactions (Round City) */
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -267,6 +267,24 @@
   const back = $('[data-back]', form), next = $('[data-next]', form);
   let step = 1;
   const names = { brows: 'Brows', lips: 'Lip blush', pmu: 'Permanent makeup', tattoo: 'Tattoo', piercing: 'Piercing' };
+  // Live booking: Susu's existing Supabase project (same public RPCs the old site used).
+  const LIVE_HOSTS = ['susuinkandglow.com', 'www.susuinkandglow.com'];
+  const LIVE = LIVE_HOSTS.includes(location.hostname);
+  const SB_URL = 'https://lhjixpxoljebxuxpruaj.supabase.co';
+  const SB_KEY = 'sb_publishable_NeQ4q8XSlWF-I1D0I_U-DA_HbHXZYQB';
+  const SERVICE_IDS = { brows: 'microblading', lips: 'lip-blush', pmu: 'permanent-makeup', tattoo: 'tattoo', piercing: 'piercing' };
+  const rpc = (fn, body) => fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST', headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  }).then(async (r) => { if (!r.ok) { let m = ''; try { m = (await r.json()).message; } catch (e) {} throw new Error(m || `Request failed (${r.status})`); } return r.status === 204 ? null : r.json(); });
+  const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (ch) => { const r = Math.random() * 16 | 0; return (ch === 'x' ? r : (r & 3 | 8)).toString(16); }));
+  const localISO = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  if (LIVE) {
+    let vid; try { vid = sessionStorage.getItem('susu_visitor_id'); if (!vid) { vid = uuid(); sessionStorage.setItem('susu_visitor_id', vid); } } catch (e) { vid = uuid(); }
+    const qr = location.pathname.replace(/\/$/, '') === '/q' || new URLSearchParams(location.search).get('source') === 'qr';
+    const path = String(location.pathname || '/').slice(0, 180);
+    rpc('record_susu_visit', { p_visitor_id: vid, p_source: qr ? 'qr' : 'web', p_path: path.startsWith('/') ? path : '/' }).catch(() => {});
+  }
+  let idemKey = uuid();
   const services = () => $$('input[name=service]:checked', form).map((i) => i.value);
 
   // dates
@@ -277,20 +295,21 @@
   for (let k = 1; k <= 14; k++) {
     const d = new Date(); d.setDate(d.getDate() + k);
     const lab = document.createElement('label'); lab.className = 'date';
-    lab.innerHTML = `<input type="radio" name="date" value="${d.toISOString().slice(0, 10)}" data-label="${fmtL.format(d)}"><small>${fmtD.format(d)}</small><b>${d.getDate()}</b><em>${fmtM.format(d)}</em>`;
+    lab.innerHTML = `<input type="radio" name="date" value="${localISO(d)}" data-label="${fmtL.format(d)}"><small>${fmtD.format(d)}</small><b>${d.getDate()}</b><em>${fmtM.format(d)}</em>`;
     dates.appendChild(lab);
   }
 
   const syncOnly = () => {
     const s = services();
     $$('[data-only]', form).forEach((el) => el.classList.toggle('is-shown', el.dataset.only.split(' ').some((k) => s.includes(k))));
+    const pl = form.querySelector('input[name=place]:checked');
+    $$('[data-place]', form).forEach((el) => el.classList.toggle('is-shown', !!pl && pl.value === el.dataset.place));
     const n = s.length, cnt = $('.tiles__count', form);
     if (cnt) cnt.textContent = n ? `${n} selected` : 'Pick one or more';
   };
   form.addEventListener('change', (e) => {
-    if (e.target.name === 'service') syncOnly();
+    if (e.target.name === 'service' || e.target.name === 'place') syncOnly();
     clearErr(e.target.name === 'date' || e.target.name === 'time' ? 'when' : e.target.name === 'health' ? 'adult' : e.target.name);
-    if (e.target.type === 'file' && e.target.files[0]) $('.drop__txt', form).textContent = e.target.files[0].name;
   });
   form.addEventListener('input', (e) => clearErr(e.target.name));
   const setErr = (k, msg) => {
@@ -312,6 +331,15 @@
       const nm = form.elements['name'].value.trim(), ph = form.elements['phone'].value.replace(/\D/g, '');
       if (nm.length < 2) { setErr('name', 'Add your name.'); ok = false; }
       if (ph.length < 10 || ph.length > 15) { setErr('phone', 'Enter a 10-digit phone number.'); ok = false; }
+      const em = form.elements['email'].value.trim();
+      if (em && !/^\S+@\S+\.\S+$/.test(em)) { setErr('email', 'Check the email address.'); ok = false; }
+      const pl = form.querySelector('input[name=place]:checked');
+      if (!pl) { setErr('place', 'Choose where we should meet.'); ok = false; }
+      else if (pl.value === 'client') {
+        if (!form.elements['street'].value.trim()) { setErr('street', 'Add the street address.'); ok = false; }
+        if (!form.elements['city'].value.trim()) { setErr('city', 'Add the city.'); ok = false; }
+        if (!form.elements['postalCode'].value.trim()) { setErr('postalCode', 'Add the ZIP.'); ok = false; }
+      }
       const h = form.querySelector('[name=health]');
       const hShown = h.closest('[data-only]').classList.contains('is-shown');
       if (!form.elements['adult'].checked) { setErr('adult', "Please confirm you're 18 or older."); ok = false; }
@@ -324,7 +352,9 @@
     const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
     const ig = form.elements['ig'].value.trim();
     const sv = services().map((k) => names[k]);
-    const rows = [[sv.length > 1 ? 'Services' : 'Service', sv.join(', ')], ['When', `${d ? d.dataset.label : ''} · ${t ? t.value : ''}`], ['Phone', form.elements['phone'].value.trim()], ['Instagram', ig ? (ig[0] === '@' ? ig : '@' + ig) : '—']];
+    const pl = form.querySelector('input[name=place]:checked');
+    const where = pl && pl.value === 'client' ? ['street', 'city'].map((k) => form.elements[k].value.trim()).filter(Boolean).join(', ') : 'My place · I\'ll text the location';
+    const rows = [[sv.length > 1 ? 'Services' : 'Service', sv.join(', ')], ['When', `${d ? d.dataset.label : ''} · ${t ? t.value : ''}`], ['Where', where], ['Phone', form.elements['phone'].value.trim()]];
     $('.summary', form).innerHTML = rows.map(([a, b]) => `<div><dt>${a}</dt><dd></dd></div>`).join('');
     $$('.summary dd', form).forEach((dd, i) => { dd.textContent = rows[i][1]; });
     const nmv = form.elements['name'].value.trim(); $('.who', form).textContent = nmv ? ', ' + nmv.split(' ')[0] + '.' : '.';
@@ -346,10 +376,51 @@
     form.classList.toggle('is-done', n === 5);
     if (n === 4) summary();
   };
-  next.addEventListener('click', () => { if (validate()) go(step + 1, 1); });
+  const payload = () => {
+    const sv = services(), v = (k) => String(form.elements[k].value || '').trim();
+    const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
+    const pl = form.querySelector('input[name=place]:checked').value;
+    const ig = v('ig');
+    const extra = [];
+    if (sv.length > 1) extra.push('Services requested: ' + sv.map((k) => names[k]).join(', '));
+    if (ig) extra.push('Instagram: ' + (ig[0] === '@' ? ig : '@' + ig));
+    if (v('notes')) extra.push(v('notes'));
+    return {
+      p_idempotency_key: idemKey,
+      p_service_id: SERVICE_IDS[sv[0]],
+      p_preferred_date: d.value,
+      p_preferred_time: t.value,
+      p_place: pl,
+      p_client_name: v('name'),
+      p_phone: v('phone'),
+      p_email: v('email') || null,
+      p_address: pl === 'client' ? { street: v('street'), city: v('city'), region: v('region'), postalCode: v('postalCode') } : null,
+      p_notes: extra.join('\n\n').slice(0, 2000) || null,
+      p_marketing_consent: !!form.elements['optin'].checked,
+    };
+  };
+  const send = async () => {
+    clearErr('send');
+    if (!LIVE) {
+      $('.bdone__title', form).textContent = 'Request ready';
+      $('.bdone__text', form).textContent = 'This is the preview copy of the site, so nothing was sent. On susuinkandglow.com this request comes straight to me.';
+      go(5, 1); return;
+    }
+    form.classList.add('is-sending'); next.textContent = 'Sending…';
+    try {
+      await rpc('submit_susu_booking_request', payload());
+      $('.bdone__title', form).textContent = 'Request sent';
+      $('.bdone__text', form).textContent = "I'll text you to confirm the time, the location and the price. Your appointment isn't booked until I confirm it with you.";
+      go(5, 1);
+    } catch (err) {
+      setErr('send', "That didn't go through. Please try again, or text me at (202) 290-6115.");
+      next.textContent = 'Send request';
+    } finally { form.classList.remove('is-sending'); }
+  };
+  next.addEventListener('click', () => { if (!validate()) return; if (step === 4) send(); else go(step + 1, 1); });
   back.addEventListener('click', () => go(step - 1, -1));
   form.addEventListener('submit', (e) => e.preventDefault());
-  $('[data-restart]', form).addEventListener('click', () => { form.reset(); $('.drop__txt', form).innerHTML = 'Add a reference photo <em>(optional)</em>'; syncOnly(); go(1, -1); });
+  $('[data-restart]', form).addEventListener('click', () => { form.reset(); idemKey = uuid(); syncOnly(); go(1, -1); });
   function presetService(s) {
     const r = form.querySelector(`input[name=service][value="${s}"]`);
     if (!r) return;

@@ -42,3 +42,8 @@ This is a static preview of the upgraded page. It is plain HTML/CSS/JS around th
 
 ## Still needed from Susu
 Session times, licence, real reviews, and a microblading price if she wants one listed. The studio photo and the painted portraits are brand imagery, not client results.
+
+## Going live on susuinkandglow.com (Nov 2026)
+- This folder is now the production site, deployed on Vercel (project `susuinkandglow`, root `susu-preview/`). `vercel.json` rewrites `/owner` and `/owner/*` to `owner.html` (the original Studio access app, unchanged) and `/q` (QR landing) to the main page.
+- The original live bundle and its chunks (`assets/index-IExGlf7c.js`, `react-*`, `database-*`, `OwnerApp-*`, `index-CWcsJ37Z.css`, fonts, `brand/muse.webp`, `brand/susu-portrait-original.jpg`, `brand/approved-card-mobile.webp`, `brand/susu-logo.svg`) are kept so Studio access keeps working. The new page loads the patched copy `assets/story-IExGlf7c.js` for the portrait engine only.
+- Booking now submits to the existing `submit_susu_booking_request` RPC, but **only on susuinkandglow.com / www** (anywhere else it shows a preview notice and sends nothing). Several services are sent under the first one, with the full list in the notes. Location: "At my place" = `studio`, "At your place" = `client` + address. Visits go to `record_susu_visit` (`qr` for `/q` or `?source=qr`).
