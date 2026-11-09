@@ -417,16 +417,17 @@ body.show-mbar .mbar{transform:none}
   .nav__logo img{height:30px}
   .nav__end .btn{display:none}
   .story__scrim{background:linear-gradient(0deg,rgba(25,18,27,.97) 0%,rgba(25,18,27,.85) 34%,rgba(25,18,27,0) 62%)}
-  .chapter{top:auto;bottom:calc(92px + env(safe-area-inset-bottom));transform:none}
+  /* clear the fixed Book bar (68px) plus Safari's floating toolbar on iPhone */
+  .chapter{top:auto;bottom:var(--chapter-bottom,calc(150px + env(safe-area-inset-bottom)));transform:none}
   .chapter--hero{bottom:calc(30px + env(safe-area-inset-bottom))}
   .display{font-size:44px}
   .chapter__title{font-size:46px;margin-bottom:12px}
   .chapter__text{font-size:16px;margin-bottom:14px}
   .pills{margin-bottom:16px}
   .pills li{font-size:12.5px;padding:7px 12px}
-  .chapter .cta-row .link{display:none}
+  .chapter .cta-row{display:none}  /* the fixed Book bar replaces per-service buttons on phones */
   .chapter--hero .lede{margin-bottom:20px;font-size:16px}
-  .chapter--hero{bottom:calc(92px + env(safe-area-inset-bottom))}
+  .chapter--hero{bottom:var(--chapter-bottom,calc(150px + env(safe-area-inset-bottom)))}
   .chapter--hero .cta-row,.chapter--hero .trust{display:none}
   .chapter--hero .lede{margin-bottom:0;font-size:15.5px;line-height:1.6;color:var(--ivory);opacity:.86}
   .chapter--hero .eyebrow{margin-bottom:10px}
@@ -456,4 +457,18 @@ body.show-mbar .mbar{transform:none}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .grain{animation:none}
   [data-reveal],[data-split] .w>span{opacity:1;transform:none;filter:none}
+}
+
+/* short phones (iPhone SE / mini, or Safari toolbars expanded): compact story text so it fits under the nav */
+@media (max-width:760px) and (max-height:760px){
+  .chapter,.chapter--hero{bottom:var(--chapter-bottom,calc(128px + env(safe-area-inset-bottom)))}
+  .chapter__num{margin-bottom:10px}
+  .chapter__title{font-size:36px;margin-bottom:8px}
+  .chapter__text{font-size:14.5px;line-height:1.5;margin-bottom:10px}
+  .pills{gap:6px;margin-bottom:0}
+  .pills li{font-size:12px;padding:6px 10px}
+  .display{font-size:36px}
+  .chapter--hero .eyebrow{font-size:10px;margin-bottom:8px}
+  .chapter--hero .display{margin-bottom:12px}
+  .chapter--hero .lede{font-size:14.5px;line-height:1.5}
 }
