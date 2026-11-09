@@ -1,0 +1,101 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu ad 1: Reveal</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+#muse{position:absolute!important;inset:0;width:1080px!important;height:1920px!important;z-index:2}
+#scrim{z-index:3;background:linear-gradient(0deg,rgba(25,18,27,.98) 0%,rgba(25,18,27,.93) 28%,rgba(25,18,27,.6) 41%,rgba(25,18,27,0) 57%)}
+#logo,#logo2{position:absolute;left:0;width:1080px;height:1080px;mix-blend-mode:screen;z-index:6}
+#logo{top:380px}
+#logo2{top:280px}
+#dustFar{z-index:4} #dustNear{z-index:8}
+#tag{top:1210px;z-index:7;font-size:25px}
+#head{top:1100px;z-index:7}
+#eyebrow{font-size:24px;margin-bottom:34px}
+#h1{margin:0;font-size:104px;line-height:1.07;color:var(--ivory)}
+#end{z-index:7;top:1080px}
+#end .label{font-size:24px}
+#url{font-size:70px;margin-top:22px;color:var(--ivory)}
+#rule{width:300px;margin:56px auto 50px}
+#where{font-size:62px;color:var(--ivory)}
+#halo{z-index:1;background:radial-gradient(42% 26% at 50% 48%,rgba(233,191,149,.16),rgba(233,191,149,0) 70%)}
+</style></head><body>
+<div class="stage" id="stage">
+  <div class="layer" id="halo"></div>
+  <muse-story id="muse" blink="3.6" irisa="#F0C27E" irisb="#8C5A2E" irisamt="1" glint="1" foil="1" tilt="4" dust="true"></muse-story>
+  <div class="layer" id="scrim"></div>
+  <canvas class="dust" id="dustFar"></canvas>
+  <img id="logo" alt="">
+  <img id="logo2" alt="">
+  <div class="abs center label" id="tag">Brows · Lips · Ink · Piercing</div>
+  <div class="abs center" id="head">
+    <div class="label" id="eyebrow">Susu Ink &amp; Glow · Columbus</div>
+    <h1 class="serif" id="h1">Natural brows,<br>soft lips<br><em>&amp; fine-line ink.</em></h1>
+  </div>
+  <div class="abs center" id="end">
+    <div class="label" id="bookat">Book at</div>
+    <div class="serif" id="url">susuinkandglow.com</div>
+    <div class="rule" id="rule"></div>
+    <div class="serif" id="where">All around <em>Columbus</em></div>
+  </div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script src="lib/museCtl.js"></script>
+<script type="module" src="assets/story-IExGlf7c.js"></script>
+<script>
+const muse = $('#muse'), ctl = MuseCtl(muse);
+const far = new Dust($('#dustFar'), { n: 150, seed: 3, size: [1, 2.6], bokeh: 0.02, speed: 14, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 46, seed: 9, size: [1.6, 3.6], bokeh: 0.22, speed: 30, depth: 1 });
+const W1 = splitWords($('#h1')), WE = splitWords($('#eyebrow')), WT = splitWords($('#tag'));
+const WU = splitWords($('#url')), WW = splitWords($('#where')), WB = splitWords($('#bookat'));
+window.__ready = Promise.all([ctl.ready, document.fonts.ready, preload([logoFrame(0)])]).then(() => true);
+
+const MUSE0 = 5.1; // portrait-local clock starts (reveal draws top-down for 2.2 s, blinks at +2.6, +6.2)
+window.seek = async (t) => {
+  // black open
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0.15, 1.6))).toFixed(3);
+  $('#halo').style.opacity = (0.4 + 0.6 * E.inOutSine(seg(t, 1.0, 4))) * (1 - seg(t, 5.2, 7)) + env(t, 13.0, 14.5, 99, 100);
+  // 3D logo: assembles (logo-local = t - 0.45), then dissolves forward into the portrait
+  const tl = t - 0.45, L = $('#logo');
+  if (t < 6.8) {
+    seqFrame(L, logoFrame(tl));
+    const d = E.inCubic(seg(t, 5.0, 6.5));
+    setEl(L, { op: 1 - d, s: 1 + 0.16 * E.inOut(seg(t, 4.6, 6.6)), y: -d * 40, blur: d * 18 });
+    L.style.display = '';
+  } else L.style.display = 'none';
+  animWords(WT, t, 3.55, 0.07, 0.9, [4.75, 0.6, 0.03], { dy: 16, blur: 6 });
+  // portrait
+  const mOn = t > 4.9 && t < 14.2;
+  muse.style.visibility = mOn ? 'visible' : 'hidden';
+  const mOp = E.outCubic(seg(t, 5.0, 5.8)) * (1 - E.inOutSine(seg(t, 12.7, 13.9)));
+  muse.style.opacity = mOp.toFixed(3);
+  const push = E.inOutSine(seg(t, 5.1, 13.9));
+  const mh = lerp(0.84, 1.02, push), ty = lerp(0.335, 0.325, push);
+  ctl.set(0, t - MUSE0, (v) => { v[0] = Object.assign({}, v[0], { fu: 0.62, fv: 0.29, tx: 0.5, ty, mh }); return v; }, t * 1000);
+  $('#scrim').style.opacity = (E.inOutSine(seg(t, 7.2, 8.6)) * (1 - seg(t, 12.6, 13.6))).toFixed(3);
+  // headline
+  animWords(WE, t, 8.0, 0.08, 1.0, [12.3, 0.6, 0.02], { dy: 14, blur: 6 });
+  animWords(W1, t, 8.35, 0.1, 1.2, [12.35, 0.7, 0.035]);
+  // end card: the crystal logo returns, sweep + glints land on it
+  const L2 = $('#logo2');
+  if (t > 12.8) {
+    L2.style.display = '';
+    seqFrame(L2, logoFrame(t - 13.2 + 9.3));
+    const a = E.outCubic(seg(t, 12.9, 14.3));
+    setEl(L2, { op: a, s: 0.8 * (0.96 + 0.04 * a) * (1 + 0.012 * seg(t, 14, 18)), blur: (1 - a) * 12 });
+  } else L2.style.display = 'none';
+  animWords(WB, t, 14.25, 0.05, 1.0, null, { dy: 14, blur: 6 });
+  animWords(WU, t, 14.4, 0.1, 1.2);
+  const r = E.outQuart(seg(t, 15.0, 16.3));
+  $('#rule').style.transform = `scaleX(${r.toFixed(3)})`; $('#rule').style.opacity = r.toFixed(3);
+  animWords(WW, t, 15.2, 0.12, 1.2);
+  // dust layers (parallax: near layer drifts more)
+  const dA = E.inOutSine(seg(t, 0.3, 2.5));
+  far.draw(t + 4, dA * 0.9, { dy: -t * 6 });
+  near.draw(t + 2, dA * (0.55 + 0.25 * env(t, 4.8, 5.6, 6.0, 7.2)), { dy: -t * 22 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>

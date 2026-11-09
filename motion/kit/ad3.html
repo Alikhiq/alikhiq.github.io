@@ -1,0 +1,165 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu ad 3: Meet Susu</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+.seg{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+.full{position:absolute;left:50%;top:0;height:1920px;width:auto}
+#dustFar{z-index:30} #dustNear{z-index:40}
+/* portrait open */
+#book{transform-origin:55% 37%}
+#rimlight{mix-blend-mode:screen}
+#sweep{mix-blend-mode:screen;background:linear-gradient(115deg,rgba(255,226,186,0) 42%,rgba(255,226,186,.16) 50%,rgba(255,226,186,0) 58%);background-size:300% 100%}
+.botscrim{background:linear-gradient(0deg,rgba(25,18,27,.95) 0%,rgba(25,18,27,.8) 25%,rgba(25,18,27,0) 48%)}
+#hiL{top:1210px;font-size:26px}
+#hi{top:1262px;font-size:124px;line-height:1}
+#susu{top:1380px;font-size:200px;line-height:1.05}
+/* tools */
+#toolsBg{display:none}
+.toolcard{position:absolute;left:190px;top:290px;width:700px;height:986px;border-radius:24px;overflow:hidden;
+  box-shadow:0 50px 100px -30px rgba(0,0,0,.85),0 0 0 1px rgba(233,191,149,.42)}
+.toolcard img{position:absolute;left:0;top:-255px;width:700px;height:1244px}
+#tl1{top:1340px;font-size:78px}
+#tl2{top:1440px;font-size:100px}
+/* muse */
+#muse{position:absolute!important;inset:0;width:1080px!important;height:1920px!important}
+#mscrim{background:linear-gradient(0deg,rgba(25,18,27,.97) 0%,rgba(25,18,27,.88) 22%,rgba(25,18,27,0) 40%)}
+.chap{position:absolute;left:0;right:0;top:1330px;text-align:center}
+.chap .label{font-size:26px;margin-bottom:22px}
+.chap .serif{font-size:104px;line-height:1.05}
+/* columbus */
+#painted{transform-origin:62% 32%;filter:brightness(.62) saturate(.92)}
+#cL{top:1170px;font-size:26px}
+#c1{top:1225px;font-size:100px;line-height:1.08}
+#c3{top:1500px;font-family:var(--sans);font-size:31px;letter-spacing:.03em;color:rgba(247,238,226,.8)}
+/* end */
+#logoE{position:absolute;left:0;top:230px;width:1080px;height:1080px;mix-blend-mode:screen}
+#endTxt{top:1080px}
+#pill{display:inline-block;padding:32px 56px;border-radius:60px;background:var(--gold-grad);color:#1d161f;font-family:var(--sans);font-weight:600;font-size:35px;letter-spacing:.02em;position:relative;overflow:hidden;box-shadow:0 20px 50px -18px rgba(228,189,145,.6),inset 0 1px 0 rgba(255,255,255,.45)}
+#pill::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(var(--sx,-130%))}
+#txt{margin-top:44px;font-family:var(--sans);font-size:33px;letter-spacing:.03em;color:rgba(247,238,226,.88)}
+#dep{margin-top:20px;font-family:var(--sans);font-size:29px;letter-spacing:.03em;color:rgba(247,238,226,.68)}
+</style></head><body>
+<div class="stage" id="stage">
+  <div class="seg" id="sOpen">
+    <img class="full" id="book" src="/media/susu-book.webp">
+    <div class="layer" id="rimlight"></div>
+    <div class="layer" id="sweep"></div>
+    <div class="layer botscrim"></div>
+    <div class="abs center label" id="hiL">Artist · Columbus, Ohio</div>
+    <div class="abs center serif shadowtxt" id="hi">Hi, I'm</div>
+    <div class="abs center serif" id="susu"><em>Susu.</em></div>
+  </div>
+  <div class="seg" id="sTools"><div class="layer" style="background:radial-gradient(60% 40% at 50% 38%,rgba(233,191,149,.13),rgba(233,191,149,0) 70%)"></div>
+    <img class="full" id="toolsBg">
+    <div class="toolcard"><img id="toolImg"></div>
+    <div class="abs center serif" id="tl1">Blade, machine, clamp.</div>
+    <div class="abs center serif" id="tl2">All done by <em>me.</em></div>
+  </div>
+  <div class="seg" id="sMuse">
+    <muse-story id="muse" blink="3.6" irisa="#F0C27E" irisb="#8C5A2E" irisamt="1" glint="1" foil="1" tilt="4" dust="true"></muse-story>
+    <div class="layer" id="mscrim"></div>
+    <div class="chap" id="ch1" style="top:1250px"><div class="label">01 · Brows</div><div class="serif">Ombré<br><em>&amp; microblading</em></div></div>
+    <div class="chap" id="ch2"><div class="label">02 · Lips</div><div class="serif">Lip <em>blush</em></div></div>
+    <div class="chap" id="ch3"><div class="label">03 · Eyes</div><div class="serif">Permanent <em>makeup</em></div></div>
+  </div>
+  <div class="seg" id="sCol">
+    <img class="full" id="painted" src="/media/susu-painted.webp">
+    <div class="layer botscrim" style="opacity:.95"></div>
+    <div class="abs center label" id="cL">Between studios</div>
+    <div class="abs center serif" id="c1">I come to you,<br><em>all around Columbus.</em></div>
+    <div class="abs center" id="c3">Location sent by text when I confirm</div>
+  </div>
+  <div class="seg" id="sEnd">
+    <img id="logoE" alt="">
+    <div class="abs center" id="endTxt">
+      <div id="pill">Book at susuinkandglow.com</div>
+      <div id="txt">Text (202) 290-6115 · @susuinkandglow</div>
+      <div id="dep">$40 refundable deposit · I confirm by text</div>
+    </div>
+  </div>
+  <canvas class="dust" id="dustFar"></canvas>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script src="lib/museCtl.js"></script>
+<script type="module" src="assets/story-IExGlf7c.js"></script>
+<script>
+const muse = $('#muse'), ctl = MuseCtl(muse);
+const far = new Dust($('#dustFar'), { n: 130, seed: 13, size: [1, 2.6], bokeh: 0.03, speed: 12, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 40, seed: 31, size: [1.6, 3.4], bokeh: 0.25, speed: 28, depth: 1 });
+const W = {}; ['hiL', 'hi', 'susu', 'tl1', 'tl2', 'cL', 'c1', 'c3', 'txt', 'dep'].forEach((id) => W[id] = splitWords($('#' + id)));
+[1, 2, 3].forEach((i) => { W['ch' + i] = [splitWords($('#ch' + i + ' .label')), splitWords($('#ch' + i + ' .serif'))]; });
+const T = { open: [0, 4.45], tools: [4.0, 8.55], muse: [8.1, 12.85], col: [12.4, 15.45], end: [15.0, 18.0] };
+window.__ready = Promise.all([ctl.ready, document.fonts.ready, preload(['/media/susu-book.webp', '/media/susu-painted.webp'])]).then(() => {
+  $$('.full').forEach((im) => { if (im.naturalWidth) im.style.marginLeft = (-im.naturalWidth * 1920 / im.naturalHeight / 2) + 'px'; });
+  $('#toolsBg').style.width = '1080px'; $('#toolsBg').style.left = '0'; $('#toolsBg').style.marginLeft = '0';
+  return true;
+});
+const show = (id, t, [a, b]) => { const on = t >= a && t < b; $('#' + id).style.visibility = on ? 'visible' : 'hidden'; return on; };
+const xf = (t, [a, b], fi = 0.5, fo = 0.45) => E.inOutSine(seg(t, a, a + fi)) * (1 - E.inOutSine(seg(t, b - fo, b)));
+const MUSE0 = 5.7; // portrait clock: blinks land at 8.3 s and 11.9 s
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0.05, 1.1))).toFixed(3);
+  // 1. painted portrait, slow push + parallax dust + travelling rim light
+  if (show('sOpen', t, T.open)) {
+    const S = $('#sOpen'); S.style.opacity = xf(t, T.open, 0.01, 0.5).toFixed(3);
+    const k = E.inOutSine(seg(t, 0, 4.45));
+    setEl($('#book'), { s: lerp(1.04, 1.13, k), x: lerp(10, -14, k), y: lerp(8, -10, k) });
+    const lx = lerp(28, 70, k), ly = lerp(30, 42, k);
+    $('#rimlight').style.background = `radial-gradient(34% 22% at ${lx}% ${ly}%,rgba(255,214,160,${(0.10 + 0.06 * Math.sin(t * 1.3)).toFixed(3)}),rgba(255,214,160,0) 70%)`;
+    const sp = seg(t, 1.0, 2.8); $('#sweep').style.backgroundPosition = `${lerp(100, 0, E.inOutSine(sp)).toFixed(1)}% 0`; $('#sweep').style.opacity = Math.sin(sp * Math.PI).toFixed(3);
+    animWords(W.hiL, t, 0.9, 0.06, 0.9, [3.85, 0.45, 0.01], { dy: 14, blur: 6 });
+    animWords(W.hi, t, 1.15, 0.16, 1.1, [3.85, 0.5, 0.03]);
+    animWords(W.susu, t, 1.65, 0.1, 1.4, [3.9, 0.5, 0.03], { dy: 50, blur: 14 });
+  }
+  // 2. tools reel
+  if (show('sTools', t, T.tools)) {
+    const u = t - T.tools[0], a = xf(t, T.tools, 0.55, 0.5);
+    const f = `/frames/tools/${pad(Math.min(213, Math.round(u * 30) + 10), 4)}.jpg`;
+    seqFrame($('#toolImg'), f); seqFrame($('#toolsBg'), f);
+    $('#toolsBg').style.opacity = a.toFixed(3);
+    const c = E.outCubic(seg(u, 0, 0.9));
+    setEl($('.toolcard'), { op: a, s: (0.93 + 0.07 * c) * (1 + u * 0.008), y: (1 - c) * 50, blur: (1 - c) * 8 + (1 - a) * 6 });
+    animWords(W.tl1, t, T.tools[0] + 0.6, 0.18, 1.0, [8.0, 0.45, 0.02]);
+    animWords(W.tl2, t, T.tools[0] + 1.75, 0.14, 1.1, [8.05, 0.45, 0.03]);
+  }
+  // 3. blinking portrait chapters: brows -> lips -> eye
+  if (show('sMuse', t, T.muse)) {
+    const a = xf(t, T.muse, 0.6, 0.5); muse.style.opacity = a.toFixed(3);
+    let p = 1 + E.inOut(seg(t, 9.55, 10.45)) + E.inOut(seg(t, 11.0, 11.9));
+    ctl.set(p, t - MUSE0, null, t * 1000);
+    $('#mscrim').style.opacity = a.toFixed(3);
+    const C = [[8.35, 9.75], [10.0, 11.2], [11.5, 12.75]];
+    C.forEach(([s, e], i) => { const [wl, wt] = W['ch' + (i + 1)];
+      animWords(wl, t, s, 0.05, 0.8, [e - 0.4, 0.35, 0.01], { dy: 14, blur: 6 });
+      animWords(wt, t, s + 0.12, 0.09, 0.9, [e - 0.42, 0.38, 0.02]); });
+  } else muse.style.opacity = 0;
+  // 4. all around Columbus
+  if (show('sCol', t, T.col)) {
+    const a = xf(t, T.col, 0.6, 0.55); $('#sCol').style.opacity = a.toFixed(3);
+    const k = E.inOutSine(seg(t, T.col[0], T.col[1]));
+    setEl($('#painted'), { s: lerp(1.03, 1.1, k), x: lerp(-12, 12, k) });
+    animWords(W.cL, t, 12.75, 0.06, 0.9, [14.95, 0.45, 0.01], { dy: 14, blur: 6 });
+    animWords(W.c1, t, 12.9, 0.11, 1.1, [14.95, 0.5, 0.025]);
+    animWords(W.c3, t, 13.8, 0.04, 0.9, [14.95, 0.45, 0.01], { dy: 14, blur: 6 });
+  }
+  // 5. CTA
+  if (show('sEnd', t, T.end)) {
+    const u = t - T.end[0];
+    seqFrame($('#logoE'), logoFrame(u + 4.4));
+    const a = E.outCubic(seg(u, 0.2, 1.3));
+    setEl($('#logoE'), { op: a, s: 0.7 * (0.96 + 0.04 * a), blur: (1 - a) * 10 });
+    const pp = E.outQuart(seg(u, 0.7, 1.6));
+    setEl($('#pill'), { op: pp, y: (1 - pp) * 26, blur: (1 - pp) * 6 });
+    $('#pill').style.setProperty('--sx', lerp(-130, 130, E.inOutSine(seg(u, 1.6, 2.5))).toFixed(1) + '%');
+    animWords(W.txt, t, T.end[0] + 1.05, 0.05, 0.9, null, { dy: 14, blur: 6 });
+    animWords(W.dep, t, T.end[0] + 1.35, 0.04, 0.9, null, { dy: 14, blur: 6 });
+  }
+  far.draw(t + 3, 0.75 + 0.15 * Math.sin(t * 0.4), { dy: -t * 6 });
+  near.draw(t + 1, 0.5, { dy: -t * 24 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>

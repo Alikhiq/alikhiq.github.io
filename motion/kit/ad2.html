@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu ad 2: The menu</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+.seg{position:absolute;inset:0;visibility:hidden}
+#dustFar{z-index:1} #dustNear{z-index:40}
+/* intro */
+#intro .label{top:760px;font-size:26px}
+#introT{top:810px;font-size:168px;line-height:1.05}
+#introS{top:1060px;font-family:var(--sans);font-size:34px;letter-spacing:.14em;color:rgba(247,238,226,.82)}
+/* icon segments */
+.spot{position:absolute;left:0;right:0;top:400px;height:960px;background:radial-gradient(38% 34% at 50% 50%,rgba(233,191,149,.20),rgba(233,191,149,.05) 55%,rgba(233,191,149,0) 75%)}
+.ring{position:absolute;left:50%;top:880px;width:660px;height:660px;margin:-330px 0 0 -330px;border-radius:50%;
+  border:1px solid rgba(233,191,149,.28);box-shadow:0 0 60px rgba(233,191,149,.06) inset}
+.ring2{width:760px;height:760px;margin:-380px 0 0 -380px;border-color:rgba(233,191,149,.12)}
+.idx{top:360px;font-size:26px}
+.persp{position:absolute;left:50%;top:880px;width:0;height:0;perspective:1300px;perspective-origin:50% 50%}
+.icon3d{position:absolute;left:-310px;top:-310px;width:620px;height:620px;transform-style:preserve-3d}
+.icon3d img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(8,4,10,.6)) drop-shadow(0 0 30px rgba(233,191,149,.18))}
+.icon3d .sw{position:absolute;inset:0;-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;mix-blend-mode:screen;
+  background:linear-gradient(105deg,rgba(255,240,215,0) 40%,rgba(255,246,230,.95) 50%,rgba(255,240,215,0) 60%);background-size:300% 100%}
+.shadow{position:absolute;left:50%;top:1180px;width:420px;height:46px;margin-left:-210px;border-radius:50%;background:radial-gradient(closest-side,rgba(5,2,6,.55),rgba(5,2,6,0))}
+.star{position:absolute;width:220px;height:220px;margin:-110px 0 0 -110px;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,252,245,1) 0 2.5%,rgba(255,232,196,.6) 6%,rgba(240,190,130,.12) 22%,rgba(240,190,130,0) 40%)}
+.star i{position:absolute;left:50%;top:50%;width:100%;height:3px;margin:-1.5px 0 0 -50%;background:linear-gradient(90deg,rgba(255,225,180,0),rgba(255,248,236,.95),rgba(255,225,180,0));filter:blur(.6px)}
+.star i+i{transform:rotate(90deg) scaleX(.8)}
+.title{top:1250px;font-size:94px;line-height:1.08}
+.price{top:0;font-family:var(--sans);font-size:40px;letter-spacing:.01em;color:rgba(247,238,226,.92);line-height:1.55}
+.price b{font-family:var(--serif);font-weight:400;font-size:54px;margin-left:16px;vertical-align:-3px}
+.est{display:inline-flex;align-items:center;gap:22px;font-family:var(--sans);font-weight:500;font-size:30px;letter-spacing:.3em;text-transform:uppercase;color:var(--champagne)}
+.est::before,.est::after{content:"";width:70px;height:1px;background:linear-gradient(90deg,rgba(233,191,149,0),rgba(233,191,149,.8))}
+.est::after{transform:scaleX(-1)}
+/* before/after */
+.ba .label{top:470px;font-size:26px}
+.card{position:absolute;left:40px;width:1000px;height:600px;top:560px;border-radius:22px;overflow:hidden;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.75),0 0 0 1px rgba(233,191,149,.35)}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .after{clip-path:inset(0 100% 0 0)}
+.wline{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:linear-gradient(#ffe8cf,#e9bf95,#c48d62);box-shadow:0 0 18px rgba(255,220,170,.85)}
+.wline i{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--gold-grad);box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 24px rgba(255,220,170,.5)}
+.tagb,.taga{position:absolute;top:22px;padding:9px 18px;border-radius:30px;background:rgba(25,18,27,.62);font-family:var(--sans);font-size:20px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory)}
+.tagb{right:22px}.taga{left:22px}
+.ba .title{top:1240px}
+/* reel */
+.reelcard{position:absolute;left:240px;top:360px;width:600px;height:1067px;border-radius:24px;overflow:hidden;box-shadow:0 50px 100px -30px rgba(0,0,0,.8),0 0 0 1px rgba(233,191,149,.4)}
+.reelcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.reel .label{top:292px;font-size:26px}
+.reel .title{top:1462px;font-size:90px}
+/* end */
+#logoE{position:absolute;left:0;top:230px;width:1080px;height:1080px;mix-blend-mode:screen}
+#endTxt{top:1080px}
+#dep{font-size:72px;line-height:1.1}
+#conf{margin-top:24px;font-family:var(--sans);font-size:33px;letter-spacing:.03em;color:rgba(247,238,226,.85)}
+#pill{display:inline-block;margin-top:64px;padding:30px 54px;border-radius:60px;background:var(--gold-grad);color:#1d161f;font-family:var(--sans);font-weight:600;font-size:33px;letter-spacing:.02em;position:relative;overflow:hidden;box-shadow:0 20px 50px -18px rgba(228,189,145,.6),inset 0 1px 0 rgba(255,255,255,.45)}
+#pill::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(var(--sx,-130%))}
+#txt{margin-top:36px;font-family:var(--sans);font-size:31px;letter-spacing:.04em;color:rgba(247,238,226,.78)}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div class="seg" id="intro">
+    <div class="abs center label">Susu Ink &amp; Glow · Columbus</div>
+    <div class="abs center serif" id="introT">The <em>menu.</em></div>
+    <div class="abs center" id="introS">Five services · One artist</div>
+  </div>
+  <div id="segs"></div>
+  <div class="seg ba" id="baBrows">
+    <div class="abs center label">Real client · Brows</div>
+    <div class="card" style="height:470px;top:640px"><img class="before" src="/media/brows-before.webp"><img class="after" src="/media/brows-after.webp"><span class="tagb">Before</span><span class="taga">After</span><div class="wline"><i></i></div></div>
+    <div class="abs center serif title">Shaped to <em>your face.</em></div>
+  </div>
+  <div class="seg ba" id="baLips">
+    <div class="abs center label">Real client · Lips</div>
+    <div class="card" style="height:560px;top:600px"><img class="before" src="/media/lips-before.webp"><img class="after" src="/media/lips-after.webp"><span class="tagb">Before</span><span class="taga">After</span><div class="wline"><i></i></div></div>
+    <div class="abs center serif title">Soft color <em>&amp; definition.</em></div>
+  </div>
+  <div class="seg reel" id="reel">
+    <div class="abs center label">Real client · Brows</div>
+    <div class="reelcard"><img id="reelImg"></div>
+    <div class="abs center serif title">Hair-like <em>strokes.</em></div>
+  </div>
+  <div class="seg" id="end">
+    <img id="logoE" alt="">
+    <div class="abs center" id="endTxt">
+      <div class="serif" id="dep"><em>$40</em> refundable deposit</div>
+      <div id="conf">No payment online · I confirm by text</div>
+      <div id="pill">Book at susuinkandglow.com</div>
+      <div id="txt">or text (202) 290-6115 · @susuinkandglow</div>
+    </div>
+  </div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const ICONS = [
+  { id: 'brows', title: 'Microblading<br><em>&amp; microshading</em>', price: '<div>Ombré brow<b class="gold">$350</b></div><div>Airbrush henna brows<b class="gold">$65</b></div>', star: [0.91, 0.41] },
+  { id: 'lips', title: 'Lip <em>blush</em>', price: '<div>Lip blush<b class="gold">$350</b></div>', star: [0.27, 0.31] },
+  { id: 'pmu', title: 'Permanent <em>makeup</em>', price: '<span class="est">Get an estimate</span>', star: [0.92, 0.3] },
+  { id: 'tattoo', title: 'Fine-line <em>tattoo</em>', price: '<span class="est">Get an estimate</span>', star: [0.63, 0.23] },
+  { id: 'piercing', title: 'Ear &amp; body <em>piercing</em>', price: '<span class="est">Get an estimate</span>', star: [0.31, 0.16] },
+];
+const T = { intro: [0, 1.95], icons: [[1.65, 3.85], [5.45, 7.65], [9.25, 11.45], [11.15, 13.35], [13.05, 15.25]], baBrows: [3.55, 5.75], baLips: [7.35, 9.55], reel: [14.95, 17.05], end: [16.8, 20.0] };
+const segs = $('#segs');
+ICONS.forEach((c, i) => {
+  const d = document.createElement('div'); d.className = 'seg icon'; d.id = 'ic-' + c.id;
+  d.innerHTML = `<div class="spot"></div><div class="ring ring2"></div><div class="ring"></div><div class="shadow"></div>
+    <div class="abs center label idx">${String(i + 1).padStart(2, '0')} <span style="opacity:.5">/ 05</span></div>
+    <div class="persp"><div class="icon3d"><img src="lib/icons/${c.id}.png"><div class="sw" style="-webkit-mask-image:url(lib/icons/${c.id}.png)"></div>
+      <div class="star" style="left:${c.star[0] * 100}%;top:${c.star[1] * 100}%"><i></i><i></i></div></div></div>
+    <div class="abs center serif title">${c.title}</div>
+    <div class="abs center price"><div class="pin">${c.price}</div></div>`;
+  segs.appendChild(d);
+});
+const far = new Dust($('#dustFar'), { n: 150, seed: 5, size: [1, 2.6], bokeh: 0.03, speed: 12, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 40, seed: 21, size: [1.6, 3.4], bokeh: 0.25, speed: 26, depth: 1 });
+const words = {};
+$$('.seg').forEach((s) => { words[s.id] = $$('.serif,.label,#introS,#conf,#txt', s).map((e) => splitWords(e)); });
+window.__ready = Promise.all([document.fonts.ready, preload(ICONS.map((c) => `lib/icons/${c.id}.png`).concat(['/media/brows-before.webp', '/media/brows-after.webp', '/media/lips-before.webp', '/media/lips-after.webp']))]).then(() => {
+  // place price block under each (1-2 line) title
+  $$('.seg.icon').forEach((s) => { const ti = $('.title', s); $('.price', s).style.top = (ti.offsetTop + ti.offsetHeight + 34) + 'px'; });
+  return true;
+});
+const show = (el, t, [a, b]) => { const on = t >= a && t < b; el.style.visibility = on ? 'visible' : 'hidden'; return on; };
+// shared segment fade: in over first 0.45 s, out over last 0.4 s, with a soft camera drift
+function segEnvelope(t, [a, b]) { return { i: E.outCubic(seg(t, a, a + 0.5)), o: E.inOutSine(seg(t, b - 0.42, b)) }; }
+
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.6))).toFixed(3);
+  // intro
+  const I = $('#intro');
+  if (show(I, t, T.intro)) {
+    const [wl, wt, ws] = words.intro;
+    animWords(wl, t, 0.25, 0.05, 0.9, [1.45, 0.45, 0.02], { dy: 14, blur: 6 });
+    animWords(wt, t, 0.35, 0.16, 1.1, [1.45, 0.45, 0.04], { dy: 40 });
+    animWords(ws, t, 0.8, 0.07, 0.9, [1.45, 0.45, 0.02], { dy: 14, blur: 6 });
+    setEl($('#introT'), { s: 1 + 0.03 * seg(t, 0, 2) });
+  }
+  // icons
+  ICONS.forEach((c, i) => {
+    const S = $('#ic-' + c.id), R = T.icons[i];
+    if (!show(S, t, R)) return;
+    const u = t - R[0], D = R[1] - R[0];
+    const p = E.outExpo(seg(u, 0, 1.25)), q = E.inCubic(seg(u, D - 0.5, D));
+    const ry = lerp(-62, -10, p) + u * 7 + q * 50;
+    const rx = lerp(16, 5, p) - q * 4 + Math.sin(u * 1.3) * 1.5;
+    const z = lerp(-650, 0, p) - q * 380, x = lerp(300, 0, p) - q * 300;
+    const y = Math.sin(u * 1.7) * 9 - (1 - p) * 30;
+    const ic = $('.icon3d', S);
+    ic.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg) rotateX(${rx.toFixed(2)}deg)`;
+    const lit = 0.88 + 0.22 * Math.cos((ry + 10) * Math.PI / 180 * 2);
+    ic.style.opacity = (Math.min(1, p * 2.2) * (1 - q)).toFixed(3);
+    $('img', ic).style.filter = `brightness(${lit.toFixed(3)}) drop-shadow(0 30px 40px rgba(8,4,10,.6)) drop-shadow(0 0 ${(26 + 30 * p).toFixed(0)}px rgba(233,191,149,${(0.12 + 0.1 * p).toFixed(2)}))` + (q > 0.01 ? ` blur(${(q * 8).toFixed(1)}px)` : '');
+    const sp = seg(u, 0.55, 1.45), sw = $('.sw', ic);
+    sw.style.backgroundPosition = `${lerp(100, -10, E.inOutSine(sp)).toFixed(1)}% 0`;
+    sw.style.opacity = (Math.sin(sp * Math.PI) * 0.85).toFixed(3);
+    const g = env(u, 1.15, 1.4, 1.45, 2.0), st = $('.star', ic);
+    st.style.opacity = g.toFixed(3); st.style.transform = `scale(${(0.3 + 0.8 * g).toFixed(3)}) rotate(${(u * 25).toFixed(1)}deg)`;
+    const e = segEnvelope(t, R);
+    $('.spot', S).style.opacity = (e.i * (1 - e.o)).toFixed(3);
+    $('.shadow', S).style.opacity = (p * (1 - q) * 0.9).toFixed(3);
+    $$('.ring', S).forEach((r, k) => setEl(r, { op: E.outCubic(seg(u, 0.1 + k * 0.1, 1.0)) * (1 - e.o) * (k ? 1 : 0.9), s: lerp(0.86, 1, E.outCubic(seg(u, 0, 1.6))) + u * 0.015 * (k ? -1 : 1), x: -x * 0.12 * (k + 1) * 0.5 }));
+    const [wIdx, wTitle] = words['ic-' + c.id];
+    animWords(wIdx, t, R[0] + 0.25, 0.05, 0.8, [R[1] - 0.45, 0.4, 0.01], { dy: 14, blur: 6 });
+    animWords(wTitle, t, R[0] + 0.4, 0.09, 1.0, [R[1] - 0.48, 0.42, 0.02]);
+    const pr = $('.pin', S), pp = E.outQuart(seg(u, 0.75, 1.55));
+    setEl(pr, { op: pp * (1 - e.o), y: (1 - pp) * 24 - e.o * 14, blur: (1 - pp) * 6 + e.o * 6 });
+  });
+  // before / after wipes
+  [['baBrows', T.baBrows], ['baLips', T.baLips]].forEach(([id, R]) => {
+    const S = $('#' + id);
+    if (!show(S, t, R)) return;
+    const u = t - R[0], e = segEnvelope(t, R);
+    const card = $('.card', S);
+    setEl(card, { op: e.i * (1 - e.o), y: (1 - e.i) * 50 - e.o * 30, s: 0.95 + 0.05 * e.i, blur: (1 - e.i) * 8 + e.o * 8 });
+    const k = 1.02 + u * 0.025;
+    $$('img', card).forEach((im) => im.style.transform = `scale(${k.toFixed(4)})`);
+    const w = E.inOut(seg(u, 0.55, 1.55)) * 100;
+    $('.after', card).style.clipPath = `inset(0 ${(100 - w).toFixed(2)}% 0 0)`;
+    const wl = $('.wline', card); wl.style.left = w.toFixed(2) + '%'; wl.style.opacity = (env(u, 0.4, 0.6, 1.55, 1.85)).toFixed(3);
+    $('.taga', card).style.opacity = seg(w, 12, 30).toFixed(3); $('.tagb', card).style.opacity = (1 - seg(w, 70, 88)).toFixed(3);
+    const [wl1, wt] = words[id];
+    animWords(wl1, t, R[0] + 0.2, 0.05, 0.8, [R[1] - 0.45, 0.4, 0.01], { dy: 14, blur: 6 });
+    animWords(wt, t, R[0] + 0.7, 0.1, 1.0, [R[1] - 0.48, 0.42, 0.02]);
+  });
+  // reel snippet
+  const RS = $('#reel');
+  if (show(RS, t, T.reel)) {
+    const u = t - T.reel[0], e = segEnvelope(t, T.reel);
+    seqFrame($('#reelImg'), `/frames/brows/${pad(Math.min(119, Math.round(u * 30) + 20), 4)}.jpg`);
+    setEl($('.reelcard', RS), { op: e.i * (1 - e.o), y: (1 - e.i) * 60 - e.o * 30, s: (0.94 + 0.06 * e.i) * (1 + u * 0.01), blur: (1 - e.i) * 8 + e.o * 8 });
+    const [wl1, wt] = words.reel;
+    animWords(wl1, t, T.reel[0] + 0.2, 0.05, 0.8, [T.reel[1] - 0.45, 0.4, 0.01], { dy: 14, blur: 6 });
+    animWords(wt, t, T.reel[0] + 0.55, 0.12, 1.0, [T.reel[1] - 0.48, 0.42, 0.02]);
+  }
+  // end card
+  const ES = $('#end');
+  if (show(ES, t, T.end)) {
+    const u = t - T.end[0];
+    seqFrame($('#logoE'), logoFrame(u + 0.7));
+    const a = E.outCubic(seg(u, 0, 1.1));
+    setEl($('#logoE'), { op: a, s: 0.7 * (0.96 + 0.04 * a), blur: (1 - a) * 10 });
+    const [wd, wc, wt] = words.end;
+    animWords(wd, t, T.end[0] + 0.55, 0.09, 1.0);
+    animWords(wc, t, T.end[0] + 0.9, 0.04, 0.9, null, { dy: 14, blur: 6 });
+    const pp = E.outQuart(seg(u, 1.3, 2.2));
+    setEl($('#pill'), { op: pp, y: (1 - pp) * 26, blur: (1 - pp) * 6 });
+    $('#pill').style.setProperty('--sx', lerp(-130, 130, E.inOutSine(seg(u, 2.1, 3.0))).toFixed(1) + '%');
+    animWords(wt, t, T.end[0] + 1.7, 0.05, 0.9, null, { dy: 14, blur: 6 });
+  }
+  far.draw(t + 3, E.inOutSine(seg(t, 0, 1.2)) * 0.9, { dy: -t * 5 });
+  near.draw(t + 1, E.inOutSine(seg(t, 0.2, 1.5)) * 0.6, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
