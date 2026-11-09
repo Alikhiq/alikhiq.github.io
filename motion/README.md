@@ -28,7 +28,7 @@ Four "we made this website" videos for Round City. Final MP4s and contact sheets
 
 | Video | Composition | Site captures | Length |
 |---|---|---|---|
-| 1. **Beauty**: the site as a film, cut to a beat grid | `kit/beauty.html` | `kit/plans/beauty-body.js` (phone viewport 432x768 @2.5 = full-bleed 1080x1920) | 26.5 s at 120 BPM |
+| 1. **Beauty**: the site as a film, cut to a beat grid | `kit/beauty.html` | `kit/plans/beauty-body.js` (phone viewport 432x768 @2.5 = full-bleed 1080x1920) | 26.1 s at 122 BPM ("Jealousy" by RUBII) |
 | 2. **Devices**: laptop + phone in sync (vertical and `?o=l` landscape) | `kit/devices.html` | `kit/plans/devices-desk.js` (1440x900 @1.5), `kit/plans/devices-mob.js` (390x844 @2); shared timeline in `kit/plans/_sync.js` | 26 s |
 | 3. **Making of**: built with Claude Code | `kit/making.html` | `motion/story/` screenshots, real PR titles, real `site.js` source | 29 s |
 | 4. **Anatomy**: the hero exploded into its layers, then the type + colour system | `kit/anatomy.html` | `kit/plans/layers.js` (each layer captured on black, then black → alpha) | 24 s |
@@ -51,7 +51,7 @@ node lib/sitecap.js plans/layers.js work/layers --list 4,4.001,4.002,4.003,4.004
 python3 lib/layers_alpha.py work/layers   # black → alpha for layers 1-4
 node lib/cap.js anatomy.html work/anatomy 30 0 24 && lib/final.sh work/anatomy round-city-anatomy
 # Beauty (re-timed to any tempo, or to the owner's audio file)
-./beauty.sh 120 0.5        # BPM, first-beat offset in seconds
+./beauty.sh 122 0.5        # BPM, first-beat offset in seconds ("Jealousy" by RUBII = 122 BPM)
 ./beauty.sh song.mp3       # detects BPM + first beat with librosa, re-times, also writes a with-audio preview
 ```
 
