@@ -1,0 +1,9 @@
+/* Round City end card */
+.rc{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center;--k:1}
+.rc__mark{margin-bottom:calc(46px*var(--k));filter:drop-shadow(0 0 22px rgba(233,191,149,.25))}
+.rc__mark svg{display:block;overflow:visible}
+.rc__by{font-family:var(--sans);font-weight:500;font-size:calc(24px*var(--k));letter-spacing:.34em;text-transform:uppercase;color:rgba(247,238,226,.72)}
+.rc__name{margin-top:calc(22px*var(--k));font-family:var(--sans);font-weight:500;font-size:calc(80px*var(--k));letter-spacing:.2em;text-transform:uppercase;line-height:1;padding-left:.2em}
+.rc__name .w{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-bottom:.08em}
+.rc__rule{width:calc(260px*var(--k));height:1px;margin:calc(46px*var(--k)) 0 calc(40px*var(--k));background:linear-gradient(90deg,rgba(228,189,145,0),rgba(233,191,149,.9),rgba(228,189,145,0))}
+.rc__url{font-family:var(--serif);font-size:calc(54px*var(--k));color:var(--ivory);letter-spacing:.01em}

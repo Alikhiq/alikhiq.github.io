@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js"}}</script>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body>
+<script type="module">
+import * as THREE from 'three';
+import { SVGLoader } from '/three/examples/jsm/loaders/SVGLoader.js';
+import { RoomEnvironment } from '/three/examples/jsm/environments/RoomEnvironment.js';
+const W = innerWidth, H = innerHeight;
+const svgText = await (await fetch('brand/susu-logo-gold.svg')).text();
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor(0x000000, 1);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.035).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 100); const CAM_Z = 10; camera.position.set(0, 0, CAM_Z);
+const key = new THREE.DirectionalLight(0xffe2bd, 1.6); key.position.set(-3, 4, 6); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffc89a, 1.2); rim.position.set(4, -2, 3); scene.add(rim);
+const U = { uSweep: { value: -10 }, uSweepAmt: { value: 0 }, uSweepCol: { value: new THREE.Color(1.0, 0.84, 0.6) }, uTime: { value: 0 } };
+const addSweep = (mat, strength, glass = 0) => {
+  mat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, U); sh.uniforms.uSweepK = { value: strength };
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vSwW;\nvarying vec3 vSwL;')
+      .replace('#include <project_vertex>', '#include <project_vertex>\nvSwW = (modelMatrix * vec4(transformed, 1.0)).xyz;\nvSwL = transformed;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vSwW;\nvarying vec3 vSwL;\nuniform float uSweep;\nuniform float uSweepAmt;\nuniform float uSweepK;\nuniform vec3 uSweepCol;\nuniform float uTime;')
+      .replace('#include <opaque_fragment>',
+        (glass ? ('vec3 gV = normalize(vViewPosition);\nfloat gPh = dot(vSwW.xy, vec2(0.9, 2.1)) * 7.0 + gV.x * 9.0 + gV.y * 5.0;\n' +
+          'float gSt = pow(0.5 + 0.5 * sin(gPh), 8.0) + 0.5 * pow(0.5 + 0.5 * sin(gPh * 2.3 + 1.7), 14.0);\n' +
+          'float gTop = smoothstep(-0.16, 0.16, vSwL.y);\noutgoingLight *= mix(0.58, 1.05, gTop);\noutgoingLight += vec3(1.0, 0.88, 0.72) * gSt * 0.16;\n') : '') +
+        'float swd = (vSwW.x + vSwW.y * 0.42 - uSweep);\nfloat swb = exp(-swd * swd * 70.0) + 0.18 * exp(-swd * swd * 5.0);\noutgoingLight += uSweepCol * swb * uSweepAmt * uSweepK * 0.95;\n#include <opaque_fragment>');
+  };
+  mat.customProgramCacheKey = () => 'sweep' + strength + '-' + glass;
+};
+const crystal = new THREE.MeshPhysicalMaterial({ color: 0xe2bf96, metalness: 0.5, roughness: 0.1, specularIntensity: 1, specularColor: new THREE.Color(0xffe9cc),
+  clearcoat: 1, clearcoatRoughness: 0.04, iridescence: 0.35, iridescenceIOR: 1.35, iridescenceThicknessRange: [200, 460],
+  sheen: 0.5, sheenRoughness: 0.4, sheenColor: new THREE.Color(0xffd6a8), envMapIntensity: 1.15, transparent: true });
+const gold = new THREE.MeshPhysicalMaterial({ color: 0xe2b57c, metalness: 1, roughness: 0.2, clearcoat: 0.5, clearcoatRoughness: 0.12, envMapIntensity: 1.25, transparent: true });
+const goldSmall = new THREE.MeshPhysicalMaterial({ color: 0xe6bd88, metalness: 1, roughness: 0.26, envMapIntensity: 1.2, transparent: true });
+const svg = new SVGLoader().parse(svgText);
+const VB_W = 2953, VB_H = 1380, k = 1 / VB_W;
+const logo = new THREE.Group(), inner = new THREE.Group(); logo.add(inner); scene.add(logo);
+const parts = svg.paths.map((p) => { const shapes = SVGLoader.createShapes(p); const tmp = new THREE.ShapeGeometry(shapes); tmp.computeBoundingBox(); const bb = tmp.boundingBox; tmp.dispose(); return { shapes, bb, big: bb.min.y < 1000 }; });
+const letters = [], glyphs = [];
+parts.forEach((p, i) => {
+  const big = p.big, brushy = i === 0;
+  const g = new THREE.ExtrudeGeometry(p.shapes, big ? { depth: 46, bevelEnabled: true, bevelThickness: brushy ? 12 : 18, bevelSize: brushy ? 5 : 12, bevelSegments: 4, curveSegments: 5 }
+    : { depth: 16, bevelEnabled: true, bevelThickness: 4, bevelSize: 2.2, bevelSegments: 1, curveSegments: 3 });
+  const cx = (p.bb.min.x + p.bb.max.x) / 2, cy = (p.bb.min.y + p.bb.max.y) / 2;
+  g.translate(-cx, -cy, big ? -23 : -8); g.scale(k, -k, -k);
+  const mats = big ? [crystal.clone(), gold.clone()] : [goldSmall.clone(), goldSmall.clone()];
+  mats.forEach((m, j) => addSweep(m, big ? (j ? 1.6 : 0.8) : 1.2, big && !j ? 1 : 0));
+  const mesh = new THREE.Mesh(g, mats);
+  mesh.position.set((cx - VB_W / 2) * k, -(cy - VB_H / 2) * k, 0);
+  mesh.userData.home = mesh.position.clone(); mesh.userData.cx = cx;
+  inner.add(mesh); (big ? letters : glyphs).push(mesh);
+});
+letters.sort((a, b) => a.userData.cx - b.userData.cx); glyphs.sort((a, b) => a.userData.cx - b.userData.cx);
+const setOpacity = (mesh, o) => mesh.material.forEach((m) => { m.opacity = o; });
+const radialTex = () => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d');
+  const g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(255,230,196,1)'); g.addColorStop(0.25, 'rgba(240,196,140,.45)'); g.addColorStop(0.6, 'rgba(200,140,90,.10)'); g.addColorStop(1, 'rgba(200,140,90,0)');
+  x.fillStyle = g; x.fillRect(0, 0, 128, 128); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+const starTex = () => { const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+  const core = x.createRadialGradient(128, 128, 0, 128, 128, 128); core.addColorStop(0, 'rgba(255,250,240,1)'); core.addColorStop(0.08, 'rgba(255,236,206,.85)'); core.addColorStop(0.3, 'rgba(240,190,130,.12)'); core.addColorStop(1, 'rgba(240,190,130,0)');
+  x.fillStyle = core; x.fillRect(0, 0, 256, 256); x.globalCompositeOperation = 'lighter';
+  const ray = (ang, len, w) => { x.save(); x.translate(128, 128); x.rotate(ang); const g = x.createLinearGradient(-len, 0, len, 0);
+    g.addColorStop(0, 'rgba(255,225,180,0)'); g.addColorStop(0.5, 'rgba(255,245,230,.95)'); g.addColorStop(1, 'rgba(255,225,180,0)'); x.fillStyle = g; x.beginPath(); x.ellipse(0, 0, len, w, 0, 0, Math.PI * 2); x.fill(); x.restore(); };
+  ray(0, 126, 2.6); ray(Math.PI / 2, 110, 2.4); ray(Math.PI / 4, 46, 1.4); ray(-Math.PI / 4, 46, 1.4);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: radialTex(), color: 0xe9b98a, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
+halo.scale.set(1.5, 0.95, 1); halo.position.set(0, 0.02, -0.25); halo.renderOrder = -1; inner.add(halo);
+const sTex = starTex();
+const mkStar = () => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: sTex, transparent: true, opacity: 0, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending })); s.renderOrder = 10; inner.add(s); return s; };
+const births = letters.map(() => mkStar()); const glintA = mkStar(), glintB = mkStar();
+const swooshTip = new THREE.Vector3((1085 - VB_W / 2) * k, -(150 - VB_H / 2) * k, 0.03);
+const uTip = new THREE.Vector3((2930 - VB_W / 2) * k, -(262 - VB_H / 2) * k, 0.03);
+const N = 260; const pos = new Float32Array(N * 3), seed = new Float32Array(N * 2);
+for (let i = 0; i < N; i++) { pos[i * 3] = (Math.random() - 0.5) * 2.1; pos[i * 3 + 1] = (Math.random() - 0.5) * 1.5; pos[i * 3 + 2] = (Math.random() - 0.5) * 0.9 + 0.05; seed[i * 2] = Math.random(); seed[i * 2 + 1] = Math.random(); }
+const dustGeo = new THREE.BufferGeometry(); dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); dustGeo.setAttribute('seed', new THREE.BufferAttribute(seed, 2));
+const dustMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uT: { value: 0 }, uA: { value: 0 }, uPx: { value: 1 } },
+  vertexShader: `attribute vec2 seed; uniform float uT; uniform float uPx; varying float vTw;
+    void main(){ vec3 p = position; p.y += mod(uT * (0.018 + seed.x * 0.03) + seed.y, 1.0) * 0.5 - 0.25; p.x += sin(uT * 0.4 + seed.y * 12.0) * 0.025;
+      vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv;
+      vTw = 0.35 + 0.65 * pow(0.5 + 0.5 * sin(uT * (1.2 + seed.x * 2.6) + seed.y * 40.0), 3.0);
+      gl_PointSize = uPx * (1.2 + seed.x * 2.8) * (10.0 / -mv.z); }`,
+  fragmentShader: `uniform float uA; varying float vTw; void main(){ vec2 d = gl_PointCoord - 0.5; float r = length(d); float a = smoothstep(0.5, 0.0, r); a *= a;
+      gl_FragColor = vec4(vec3(1.0, 0.86, 0.66) * a * vTw * uA, a * vTw * uA * 0.6); }` });
+inner.add(new THREE.Points(dustGeo, dustMat));
+const ppu = H / (2 * CAM_Z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+const baseScale = (W * 0.8) / ppu;
+dustMat.uniforms.uPx.value = 1.6 * baseScale;
+const ease = { outCubic: (t) => 1 - Math.pow(1 - t, 3), outExpo: (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+  inOut: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  outBack: (t) => { const c = 1.25; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); } };
+const seg = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
+const bump = (t, a, m, b) => (t < a || t > b ? 0 : t < m ? ease.outCubic(seg(t, a, m)) : 1 - ease.inOut(seg(t, m, b)));
+// cinematic timeline (slower than the site intro)
+const S = { letters: 0.25, stagger: 0.24, dur: 1.9, tagline: 1.75, sweeps: [[2.55, 3.85], [6.4, 7.6], [10.2, 11.4]], glints: [3.45, 7.3, 11.1], dustIn: 1.4 };
+window.renderLogo = (t) => {
+  letters.forEach((m, i) => {
+    const a = S.letters + i * S.stagger; const p = seg(t, a, a + S.dur);
+    const e = ease.outExpo(p), eb = ease.outBack(Math.min(1, p * 1.05));
+    m.rotation.y = (1 - eb) * -1.45; m.rotation.x = (1 - e) * 0.18;
+    m.position.z = m.userData.home.z - (1 - e) * 0.55; m.position.y = m.userData.home.y - (1 - e) * 0.05;
+    setOpacity(m, Math.min(1, p * 4.5)); m.visible = p > 0;
+    const st = births[i]; const bt = seg(t, a + 0.02, a + 0.9);
+    st.material.opacity = bt > 0 && bt < 1 ? Math.sin(bt * Math.PI) * 0.7 : 0;
+    const sc = 0.15 * Math.sin(bt * Math.PI) + 0.03; st.scale.set(sc, sc, 1);
+    st.position.set(m.userData.home.x, m.userData.home.y + 0.06, 0.12); st.material.rotation = bt * 0.9;
+  });
+  glyphs.forEach((m, i) => { const a = S.tagline + i * 0.06; const p = ease.outCubic(seg(t, a, a + 1.3));
+    m.position.x = m.userData.home.x * (1 + (1 - p) * 0.22); m.position.y = m.userData.home.y - (1 - p) * 0.012; setOpacity(m, p); m.visible = p > 0; });
+  let swAmt = 0, swX = -10;
+  for (const [a, b] of S.sweeps) { const sp = seg(t, a, b); if (sp > 0 && sp < 1) { const e = sp * sp * (3 - 2 * sp); swX = -0.75 + e * 1.6; swAmt = Math.sin(sp * Math.PI); } }
+  U.uSweep.value = swX * logo.scale.x; U.uSweepAmt.value = swAmt * 0.9;
+  let ga = 0, gb = 0; for (const g of S.glints) { ga = Math.max(ga, bump(t, g, g + 0.25, g + 0.95)); gb = Math.max(gb, bump(t, g + 0.34, g + 0.56, g + 1.15)); }
+  glintA.material.opacity = ga; glintA.position.copy(swooshTip); glintA.scale.setScalar(0.03 + ga * 0.2); glintA.material.rotation = t * 0.6;
+  glintB.material.opacity = gb * 0.8; glintB.position.copy(uTip); glintB.scale.setScalar(0.02 + gb * 0.13); glintB.material.rotation = -t * 0.5;
+  const intro = ease.outCubic(seg(t, 0, S.dustIn));
+  halo.material.opacity = (0.32 + 0.38 * swAmt) * intro;
+  dustMat.uniforms.uT.value = t + 3.0; dustMat.uniforms.uA.value = intro; U.uTime.value = t;
+  const settle = ease.outCubic(seg(t, 0, 3.2));
+  const ry = Math.sin(t * 0.5) * 0.1 * settle - (1 - settle) * 0.14;
+  const rx = Math.sin(t * 0.4 + 1) * 0.045 * settle;
+  const s = baseScale * (0.93 + 0.07 * settle) * (1 + t * 0.004);
+  logo.position.set(0, 0, 0); logo.scale.setScalar(s); logo.rotation.set(rx, ry, 0);
+  renderer.render(scene, camera);
+};
+letters.concat(glyphs).forEach((m) => { m.visible = true; }); renderer.compile(scene, camera);
+window.renderLogo(0); window.__ready = true;
+</script></body></html>
