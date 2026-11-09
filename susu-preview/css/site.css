@@ -120,6 +120,20 @@ body.is-ready .loader{opacity:0;visibility:hidden}
 .chapter{position:absolute;z-index:4;left:var(--pad);top:50%;width:min(560px,calc(100% - 2*var(--pad)));transform:translateY(-50%);opacity:0;pointer-events:none;will-change:opacity,transform}
 .chapter.is-on{pointer-events:auto}
 .chapter--hero .display{margin-bottom:24px}
+/* hero headline: crystal & gold lettering (champagne glass fill, bronze extrusion, slow light sweep) */
+.display--crystal{font-weight:500;letter-spacing:-.015em;line-height:.98}
+.display--crystal .cr{
+  background:linear-gradient(100deg,rgba(255,255,255,0) 38%,rgba(255,250,240,.95) 47%,rgba(255,255,255,0) 56%) 0 0/260% 100% no-repeat,
+             linear-gradient(176deg,#fff8ec 0%,#f7e2c2 26%,#ecc999 46%,#c99a66 52%,#e9c697 60%,#fbe7c8 82%,#fff4e2 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 1px 0 #b58858) drop-shadow(0 1.5px 0 #946a40) drop-shadow(0 1.5px 0 #6f4b2a) drop-shadow(0 10px 18px rgba(10,6,12,.55)) drop-shadow(0 0 26px rgba(240,194,126,.22));
+  animation:crSweep 7s cubic-bezier(.45,0,.25,1) 1.2s infinite;padding:0 .04em .06em 0}
+.display--crystal em.cr{font-style:italic;font-weight:400;
+  background:linear-gradient(100deg,rgba(255,255,255,0) 38%,rgba(255,250,240,.95) 47%,rgba(255,255,255,0) 56%) 0 0/260% 100% no-repeat,
+             linear-gradient(176deg,#fff1dc 0%,#f2d1a3 30%,#e4bd91 46%,#b8854f 53%,#dfb47f 62%,#f6d9b0 84%,#ffeccf 100%);
+  -webkit-background-clip:text;background-clip:text}
+@keyframes crSweep{0%{background-position:160% 0,0 0}55%,100%{background-position:-60% 0,0 0}}
+@media (prefers-reduced-motion:reduce){.display--crystal .cr{animation:none;background-position:200% 0,0 0}}
 .chapter--hero .lede{margin-bottom:32px}
 .trust{list-style:none;margin:34px 0 0;padding:22px 0 0;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:12px 26px;font-size:14px;color:var(--taupe-light)}
 .trust li{display:flex;align-items:center;gap:8px}
@@ -432,6 +446,11 @@ body.show-mbar .mbar{transform:none}
   .pills li{font-size:12.5px;padding:7px 12px}
   .chapter .cta-row .link{display:none}
   .chapter--hero .lede{margin-bottom:20px;font-size:16px}
+  .chapter--hero{bottom:calc(92px + env(safe-area-inset-bottom))}
+  .chapter--hero .cta-row,.chapter--hero .trust{display:none}
+  .chapter--hero .lede{margin-bottom:0;font-size:15.5px;line-height:1.6;color:var(--ivory);opacity:.86}
+  .chapter--hero .eyebrow{margin-bottom:10px}
+  .display--crystal{font-size:clamp(40px,11.4vw,48px)}
   .trust{margin-top:20px;padding-top:16px;gap:8px 16px;font-size:12.5px}
   .proof{display:none}
   .rail{display:none}

@@ -151,7 +151,7 @@
     sections.forEach((s) => { const r = s.getBoundingClientRect(); if (r.top < vh * 0.5 && r.bottom > vh * 0.5) cur = s.id; });
     navLinks.forEach((a) => a.classList.toggle('is-on', a.getAttribute('href') === '#' + cur));
     const br = bookSec.getBoundingClientRect();
-    body.classList.toggle('show-mbar', y > vh * 0.9 && !(br.top < vh && br.bottom > 0));
+    body.classList.toggle('show-mbar', (mobile() || y > vh * 0.9) && !(br.top < vh && br.bottom > 0));
   };
 
   /* ---------- marquee ---------- */
