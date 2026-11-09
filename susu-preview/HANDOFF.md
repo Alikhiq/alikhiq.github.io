@@ -38,6 +38,7 @@ This is a static preview of the upgraded page. It is plain HTML/CSS/JS around th
 - "Book brows" style links tick that service and leave the client on step 1 so they can add more (no auto-advance).
 
 ## 3D service icons
+- `media/models/{brows,lips,pmu,tattoo,piercing}.glb`: real 3D models made with **Tripo3D** image-to-model from the icon renders (textures cut to 512px WebP with glTF-Transform, ~300 KB each). `js/tiles3d.js` shows them live in the booking tiles: one shared three.js renderer copies each frame into a small canvas per tile, with a gold metal finish, a gentle sway, a pointer tilt and a coin-flip when a service is ticked. It lazy-loads near the form, pauses off-screen, and keeps the flat icons as the fallback (no WebGL, reduced motion, or a model fails to load). An import map in <head> points `three` at three@0.160.0 so the footer and tiles share one copy.
 - `media/icons/{brows,lips,pmu,tattoo,piercing}.webp`: 3D-rendered champagne-gold icons (kie.ai nano-banana-pro, cut out to transparent). Used in the booking tiles and as badges on the price cards.
 
 ## Still needed from Susu
