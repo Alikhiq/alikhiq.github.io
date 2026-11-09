@@ -19,8 +19,11 @@
 
   /* ---------- smooth scroll ---------- */
   let lenis = null;
+  // Smooth wheel scrolling on desktop only. Touch devices keep native momentum scrolling:
+  // running Lenis there fights the browser and makes the story stutter.
+  const coarse = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
   try {
-    if (!reduce && window.Lenis) lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.95, smoothWheel: true });
+    if (!reduce && !coarse && window.Lenis) lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.95, smoothWheel: true });
   } catch (e) { lenis = null; }
   const scrollY = () => (lenis ? lenis.scroll : window.scrollY);
   const scrollToY = (y, dur = 1.6) => {
@@ -69,15 +72,26 @@
   };
   const mobile = () => innerWidth <= 760;
   let STEP = 0, storyTop = 0, storyH = 0;
+  const stage = $('.story__stage');
+  // Use the sticky stage's height (100svh) rather than innerHeight: on phones innerHeight
+  // changes every time the address bar collapses, which would re-size the story mid-scroll.
+  const stableVH = () => (stage && stage.clientHeight) || innerHeight;
   const layout = () => {
-    const vh = innerHeight;
+    const vh = stableVH();
     STEP = vh * (mobile() ? 0.85 : 0.95);
     storyH = Math.round(STEP * 6 + vh + STEP * 0.5);
     story.style.height = storyH + 'px';
     storyTop = story.getBoundingClientRect().top + scrollY();
   };
   layout();
-  addEventListener('resize', () => { layout(); lastP = -1; });
+  let lastW = innerWidth, lastVH = stableVH();
+  addEventListener('resize', () => {
+    // Re-layout only when the width or the stable height really changed (rotation, desktop resize),
+    // not for the phone address bar showing/hiding.
+    if (innerWidth === lastW && (coarse || Math.abs(stableVH() - lastVH) < 2)) return;
+    lastW = innerWidth; lastVH = stableVH();
+    layout(); lastP = -1;
+  });
   const chapterY = (i) => storyTop + i * STEP + 2;
 
   let lastP = -1, lastActive = -1;
