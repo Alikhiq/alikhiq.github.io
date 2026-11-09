@@ -44,7 +44,7 @@ ln -sfn ../../story work/story                   # Making of reads /story/...
 node lib/sitecap.js plans/devices-desk.js work/devices/desk --from 0 --to 23
 node lib/sitecap.js plans/devices-mob.js  work/devices/mob  --from 0 --to 23
 node lib/cap.js "devices.html?o=v" work/devices/v 30 0 24 && lib/final.sh work/devices/v round-city-devices
-node lib/cap.js "devices.html?o=l" work/devices/l 30 0 24 1920 1080 && lib/final.sh work/devices/l round-city-devices-landscape 1920 1080
+node lib/cap.js "devices.html?o=l" work/devices/l 30 0 24 - 1920 1080 && lib/final.sh work/devices/l round-city-devices-landscape 1920 1080
 # Making of / Anatomy
 node lib/cap.js making.html work/making 30 0 29 && lib/final.sh work/making round-city-making-of
 node lib/sitecap.js plans/layers.js work/layers --list 4,4.001,4.002,4.003,4.004,4.005
