@@ -29,9 +29,9 @@ Four "we made this website" videos for Round City. Final MP4s and contact sheets
 | Video | Composition | Site captures | Length |
 |---|---|---|---|
 | 1. **Beauty**: the site as a film, cut to a beat grid | `kit/beauty.html` | `kit/plans/beauty-body.js` (phone viewport 432x768 @2.5 = full-bleed 1080x1920) | 26.5 s at 120 BPM |
-| 2. **Devices**: laptop + phone in sync (vertical and `?o=l` landscape) | `kit/devices.html` | `kit/plans/devices-desk.js` (1440x900 @1.5), `kit/plans/devices-mob.js` (390x844 @2); shared timeline in `kit/plans/_sync.js` | 24 s |
+| 2. **Devices**: laptop + phone in sync (vertical and `?o=l` landscape) | `kit/devices.html` | `kit/plans/devices-desk.js` (1440x900 @1.5), `kit/plans/devices-mob.js` (390x844 @2); shared timeline in `kit/plans/_sync.js` | 26 s |
 | 3. **Making of**: built with Claude Code | `kit/making.html` | `motion/story/` screenshots, real PR titles, real `site.js` source | 29 s |
-| 4. **Anatomy**: the hero exploded into its layers, then the type + colour system | `kit/anatomy.html` | `kit/plans/layers.js` (each layer captured on black, then black → alpha) | 22 s |
+| 4. **Anatomy**: the hero exploded into its layers, then the type + colour system | `kit/anatomy.html` | `kit/plans/layers.js` (each layer captured on black, then black → alpha) | 24 s |
 
 Shared pieces: `kit/lib/rc.js` + `rc.css` (Round City end card: "Designed & built by Round City", susuinkandglow.com), `kit/lib/sitecap.js` (captures the real site on the virtual clock: no Lenis, CSS animations and videos seeked to virtual time, 3D intro stripped), `kit/lib/final.sh` (H.264 yuv420p faststart + 6-frame contact sheet into `motion/out/`).
 
@@ -43,13 +43,13 @@ ln -sfn ../../story work/story                   # Making of reads /story/...
 # Devices
 node lib/sitecap.js plans/devices-desk.js work/devices/desk --from 0 --to 23
 node lib/sitecap.js plans/devices-mob.js  work/devices/mob  --from 0 --to 23
-node lib/cap.js "devices.html?o=v" work/devices/v 30 0 24 && lib/final.sh work/devices/v round-city-devices
-node lib/cap.js "devices.html?o=l" work/devices/l 30 0 24 - 1920 1080 && lib/final.sh work/devices/l round-city-devices-landscape 1920 1080
+node lib/cap.js "devices.html?o=v" work/devices/v 30 0 26 && lib/final.sh work/devices/v round-city-devices
+node lib/cap.js "devices.html?o=l" work/devices/l 30 0 26 - 1920 1080 && lib/final.sh work/devices/l round-city-devices-landscape 1920 1080
 # Making of / Anatomy
 node lib/cap.js making.html work/making 30 0 29 && lib/final.sh work/making round-city-making-of
 node lib/sitecap.js plans/layers.js work/layers --list 4,4.001,4.002,4.003,4.004,4.005
 python3 lib/layers_alpha.py work/layers   # black → alpha for layers 1-4
-node lib/cap.js anatomy.html work/anatomy 30 0 22 && lib/final.sh work/anatomy round-city-anatomy
+node lib/cap.js anatomy.html work/anatomy 30 0 24 && lib/final.sh work/anatomy round-city-anatomy
 # Beauty (re-timed to any tempo, or to the owner's audio file)
 ./beauty.sh 120 0.5        # BPM, first-beat offset in seconds
 ./beauty.sh song.mp3       # detects BPM + first beat with librosa, re-times, also writes a with-audio preview

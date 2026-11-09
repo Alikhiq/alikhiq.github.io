@@ -141,7 +141,8 @@ for (const id of ['c1', 'c2', 'c3', 'c4']) {
   caps[id] = { lab: splitWords($('.label', el)), line: splitWords($('.line', el)) };
 }
 // c2 sits on top of the phone close-up in the vertical cut: give it a soft scrim
-if (O === 'v') { $('#c2').style.top = '1500px'; $('#c2').style.textShadow = '0 4px 40px rgba(10,6,12,.95),0 0 12px rgba(10,6,12,.8)'; }
+// the phone fills the vertical frame in this shot, so its own chapter text carries it: no caption there
+if (O === 'v') $('#c2').style.display = 'none';
 const capWin = { c1: [0.9, 3.9], c2: [5.6, 8.7], c3: [10.8, 13.6], c4: [15.6, 19.0] };
 
 const endEl = $('#end');
