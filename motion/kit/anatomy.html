@@ -1,0 +1,154 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Round City: Anatomy</title>
+<link rel="stylesheet" href="lib/common.css">
+<link rel="stylesheet" href="lib/rc.css">
+<style>
+#view{position:absolute;inset:0;perspective:3200px;perspective-origin:50% 44%;z-index:5}
+#rig{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-style:preserve-3d;transform-origin:50% 50%}
+.ly{position:absolute;inset:0;transform-style:preserve-3d;border-radius:40px;overflow:hidden}
+.ly img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ly .edge{position:absolute;inset:0;border-radius:40px;box-shadow:inset 0 0 0 3px rgba(233,191,149,.0)}
+.ly .anc{position:absolute;width:2px;height:2px}
+#full{border-radius:40px;overflow:hidden}
+#shadow{position:absolute;left:140px;top:1620px;width:800px;height:90px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.6),rgba(0,0,0,0));z-index:2}
+.top{position:absolute;left:0;right:0;text-align:center;z-index:40}
+.top .label{font-size:24px;margin-bottom:20px}
+.top .line{font-family:var(--serif);font-size:70px;line-height:1.1;color:var(--ivory)}
+/* annotations */
+#notes{position:absolute;inset:0;z-index:30;pointer-events:none}
+#leads{position:absolute;inset:0;width:1080px;height:1920px;z-index:29}
+.note{position:absolute;width:300px;font-family:var(--sans);color:var(--ivory);text-shadow:0 2px 18px rgba(14,9,16,.95),0 0 6px rgba(14,9,16,.9)}
+.note .n{display:block;font-family:var(--sans);font-weight:500;font-size:19px;letter-spacing:.3em;text-transform:uppercase;color:var(--champagne);margin-bottom:8px}
+.note .x{font-family:var(--serif);font-size:32px;line-height:1.16}
+.note .s{display:block;font-size:21px;line-height:1.35;color:rgba(247,238,226,.66);margin-top:6px}
+.note.r{text-align:left} .note.l{text-align:right}
+/* palette + type system */
+#sys{position:absolute;left:0;right:0;top:1090px;z-index:35;display:flex;justify-content:center;gap:26px}
+.sw{width:180px;text-align:left;font-family:var(--sans)}
+.sw i{display:block;height:120px;border-radius:18px;box-shadow:0 0 0 1px rgba(233,191,149,.3),0 20px 40px -16px rgba(0,0,0,.8)}
+.sw b{display:block;margin-top:14px;font-weight:500;font-size:20px;color:var(--ivory)}
+.sw small{display:block;font-size:17px;color:rgba(247,238,226,.6);margin-top:2px;letter-spacing:.04em}
+#type{position:absolute;left:0;right:0;top:760px;z-index:35;display:flex;justify-content:center;gap:90px;align-items:flex-end}
+.spec{text-align:center}
+.spec .a{font-size:190px;line-height:1;color:var(--ivory)}
+.spec .a.pf{font-family:var(--serif)} .spec .a.pf em{font-style:italic}
+.spec .a.dm{font-family:var(--sans);font-weight:500}
+.spec .k{margin-top:16px;font-family:var(--sans);font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:var(--champagne)}
+#end{left:0;right:0;top:600px;z-index:50}
+#endbg{z-index:45;background:radial-gradient(120% 80% at 50% 38%,#2c2130 0%,var(--plum) 48%,var(--plum-deep) 100%)}
+#sweep{z-index:41;mix-blend-mode:screen;background:linear-gradient(110deg,rgba(255,226,190,0) 44%,rgba(255,232,204,.16) 50%,rgba(255,226,190,0) 56%);background-size:320% 100%}
+#dustFar{z-index:1} #dustNear{z-index:46}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div id="shadow"></div>
+  <div id="view"><div id="rig">
+    <div class="ly" id="l0"><img src="/layers/L0.jpg" alt=""><div class="edge"></div><i class="anc" style="left:2px;top:1500px"></i></div>
+    <div class="ly" id="l1"><img src="/layers/L1.png" alt=""><div class="edge"></div><i class="anc" style="left:300px;top:300px"></i></div>
+    <div class="ly" id="l2"><img src="/layers/L2.png" alt=""><div class="edge"></div><i class="anc" style="left:30px;top:860px"></i></div>
+    <div class="ly" id="l3"><img src="/layers/L3.png" alt=""><div class="edge"></div><i class="anc" style="left:150px;top:52px"></i></div>
+    <div class="ly" id="l4"><img src="/layers/L4.png" alt=""><div class="edge"></div><i class="anc" style="left:70px;top:1812px"></i></div>
+    <div class="ly" id="full"><img src="/layers/L5.jpg" alt=""></div>
+  </div></div>
+  <svg id="leads" viewBox="0 0 1080 1920"></svg>
+  <div id="notes">
+    <div class="note l" id="n3"><span class="n">05 · Nav</span><span class="x">The gold SUSU mark</span></div>
+    <div class="note l" id="n2"><span class="n">04 · Type</span><span class="x">Playfair Display <em>&amp; DM Sans</em></span></div>
+    <div class="note l" id="n1"><span class="n">02 · Portrait</span><span class="x">Line art in WebGL</span><span class="s">It blinks, live, as you scroll</span></div>
+    <div class="note l" id="n4"><span class="n">03 · Book bar</span><span class="x">One tap to book</span></div>
+    <div class="note l" id="n0"><span class="n">01 · Ground</span><span class="x">Plum, glow <em>&amp; grain</em></span></div>
+  </div>
+  <div class="top" id="t1" style="top:250px"><div class="label">Anatomy of a page</div><div class="line">susuinkandglow<em>.com</em></div></div>
+  <div class="top" id="t2" style="top:250px"><div class="label">The system</div><div class="line">Two typefaces, <em>three tones</em></div></div>
+  <div id="type">
+    <div class="spec"><div class="a pf">A<em>a</em></div><div class="k">Playfair Display</div></div>
+    <div class="spec"><div class="a dm">Aa</div><div class="k">DM Sans</div></div>
+  </div>
+  <div id="sys">
+    <div class="sw"><i style="background:#211b23"></i><b>Plum</b><small>#211B23</small></div>
+    <div class="sw"><i style="background:linear-gradient(120deg,#ffe8cf,#e9bf95 50%,#c48d62)"></i><b>Champagne</b><small>#FFE8CF → #C48D62</small></div>
+    <div class="sw"><i style="background:#f7eee2"></i><b>Ivory</b><small>#F7EEE2</small></div>
+  </div>
+  <div class="layer" id="sweep"></div>
+  <div class="layer" id="endbg"></div>
+  <div id="end"></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script src="lib/rc.js"></script>
+<script>
+window.DUR = 22;
+const LY = ['#l0', '#l1', '#l4', '#l2', '#l3'].map((s) => $(s)); // back to front
+const NOTES = { n0: ['#l0', 'l'], n4: ['#l4', 'l'], n1: ['#l1', 'l'], n2: ['#l2', 'l'], n3: ['#l3', 'l'] };
+const NOTE_T = { n0: 5.0, n1: 5.6, n4: 6.2, n2: 6.8, n3: 7.4 };
+const W = {}; ['t1', 't2'].forEach((id) => (W[id] = $$('.label,.line', $('#' + id)).map(splitWords)));
+const NW = {}; for (const id in NOTES) NW[id] = $$('.n,.x,.s', $('#' + id)).map(splitWords);
+const RC = RCEnd($('#end'), { scale: 1.05 }); $('#end').style.setProperty('--k', '1.05');
+const far = new Dust($('#dustFar'), { n: 120, seed: 31, size: [1, 2.4], bokeh: 0.04, speed: 10, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 24, seed: 8, size: [1.4, 3.2], bokeh: 0.3, speed: 20, depth: 1 });
+window.__ready = Promise.all([document.fonts.ready, preload($$('img').map((i) => i.src))]).then(() => true);
+const leads = $('#leads');
+
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 1.0))).toFixed(3);
+  // explode 0 → 1 (2.2–4.6 s), hold with a slow orbit, collapse 12.6–14.6 s
+  const ex = E.inOut(seg(t, 2.2, 4.6)) * (1 - E.inOut(seg(t, 12.4, 14.4)));
+  const orbit = Math.sin(seg(t, 4.6, 12.4) * Math.PI) ;
+  const rx = 56 * ex, rz = -34 * ex + 6 * orbit * ex, s = 0.58 - 0.22 * ex + 0.02 * seg(t, 0, 2.2);
+  const ty = 90 + 300 * ex;
+  $('#rig').style.transform = `translateX(${(150 * ex).toFixed(1)}px) translateY(${ty.toFixed(1)}px) rotateX(${rx.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${s.toFixed(4)})`;
+  const gap = 240 * ex;
+  LY.forEach((el, i) => {
+    el.style.transform = `translateZ(${(i * gap).toFixed(1)}px)`;
+    $('.edge', el).style.boxShadow = `inset 0 0 0 ${(3 * ex).toFixed(1)}px rgba(233,191,149,${(0.55 * ex).toFixed(2)})`;
+    if (i > 0) el.style.background = `rgba(40,28,44,${(0.12 * ex).toFixed(3)})`;
+  });
+  // the flat, fully composed page shows only when the stack is closed
+  $('#full').style.opacity = (1 - E.inOutSine(seg(ex, 0.0, 0.25))).toFixed(3);
+  $('#full').style.transform = 'translateZ(0.5px)';
+  $('#shadow').style.opacity = (1 - ex).toFixed(3);
+  // titles
+  W.t1.forEach((ws, j) => animWords(ws, t, 0.7 + j * 0.18, 0.06, 1.0, [3.4, 0.6, 0.02], { dy: 22, blur: 8 }));
+  W.t2.forEach((ws, j) => animWords(ws, t, 14.3 + j * 0.18, 0.06, 1.0, [17.0, 0.5, 0.02], { dy: 22, blur: 8 }));
+  // annotations: anchor points are read back from the 3D layout, so the leader lines track the layers
+  let svg = '';
+  const AN = {}; for (const id in NOTES) { const a = $('.anc', $(NOTES[id][0])).getBoundingClientRect(); AN[id] = [a.left + 1, a.top + 1]; }
+  const LYP = {}; let prev = -1e9;
+  Object.keys(AN).sort((p, q) => AN[p][1] - AN[q][1]).forEach((id) => { const y = Math.max(AN[id][1] - 40, prev + 130); LYP[id] = y; prev = y; });
+  for (const id in NOTES) {
+    const [ls, side] = NOTES[id];
+    const ax = AN[id][0], ay = AN[id][1];
+    const vis = E.outCubic(seg(t, NOTE_T[id], NOTE_T[id] + 0.8)) * (1 - E.inOutSine(seg(t, 11.8, 12.5)));
+    const el = $('#' + id), nx = side === 'r' ? 690 : 40, ny = LYP[id];
+    el.style.left = nx + 'px'; el.style.top = ny.toFixed(1) + 'px'; el.style.opacity = vis > 0 ? 1 : 0;
+    NW[id].forEach((ws, j) => animWords(ws, t, NOTE_T[id] + 0.25 + j * 0.12, 0.05, 0.8, [11.8, 0.5, 0.01], { dy: 12, blur: 6 }));
+    if (vis > 0.01) {
+      const ex2 = side === 'r' ? nx - 16 : nx + 316, ey = ny + 40;
+      const len = Math.hypot(ex2 - ax, ey - ay), dr = len * (1 - vis);
+      svg += `<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${ex2}" y2="${ey.toFixed(1)}" stroke="rgba(233,191,149,.75)" stroke-width="1.6" stroke-dasharray="${len.toFixed(1)}" stroke-dashoffset="${dr.toFixed(1)}"/>` +
+        `<circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="${(6 * vis).toFixed(2)}" fill="#ffe8cf"/><circle cx="${ax.toFixed(1)}" cy="${ay.toFixed(1)}" r="${(16 * vis).toFixed(2)}" fill="none" stroke="rgba(255,232,207,${(0.5 * vis).toFixed(2)})"/>`;
+    }
+  }
+  leads.innerHTML = svg;
+  // system: page lifts away, type + palette come in
+  const sys = E.outQuart(seg(t, 14.6, 15.6)) * (1 - E.inOutSine(seg(t, 17.2, 17.9)));
+  const pageUp = E.inOut(seg(t, 14.2, 15.4)) * (1 - 0);
+  $('#view').style.transform = `translateY(${(-pageUp * 2200).toFixed(1)}px)`;
+  $('#shadow').style.transform = `translateY(${(-pageUp * 2200).toFixed(1)}px)`;
+  setEl($('#type'), { op: sys, y: (1 - sys) * 50 });
+  $$('.sw').forEach((el, i) => { const k = E.outQuart(seg(t, 15.0 + i * 0.15, 15.9 + i * 0.15)) * (1 - E.inOutSine(seg(t, 17.2, 17.9))); setEl(el, { op: k, y: (1 - k) * 40 }); });
+  // sweeps
+  const sw = [2.2, 12.6, 14.6].map((a) => seg(t, a - 0.2, a + 1.6)).find((x) => x > 0 && x < 1);
+  $('#sweep').style.opacity = sw ? Math.sin(Math.PI * sw).toFixed(3) : 0;
+  $('#sweep').style.backgroundPosition = sw ? `${(135 - sw * 170).toFixed(1)}% 0` : '0 0';
+  const e = E.inOutSine(seg(t, 17.6, 18.2));
+  $('#endbg').style.opacity = e.toFixed(3); RC.draw(Math.max(0, t - 18.0), t > 18 ? 1 : 0);
+  const dA = E.inOutSine(seg(t, 0.2, 2));
+  far.draw(t + 3, dA * 0.7, { dy: -t * 5 });
+  near.draw(t, dA * 0.4, { dy: -t * 16 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>

@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Round City: Beauty</title>
+<link rel="stylesheet" href="lib/common.css">
+<link rel="stylesheet" href="lib/rc.css">
+<style>
+#site{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:50% 42%;z-index:2}
+#logo{position:absolute;left:0;top:420px;width:1080px;height:1080px;mix-blend-mode:screen;z-index:3}
+#flash{z-index:20;background:radial-gradient(70% 50% at 50% 42%,rgba(255,236,210,.9),rgba(255,214,170,.35) 55%,rgba(255,214,170,0) 100%);mix-blend-mode:screen}
+#sweep{z-index:21;mix-blend-mode:screen;background:linear-gradient(112deg,rgba(255,226,190,0) 44%,rgba(255,232,204,.22) 50%,rgba(255,226,190,0) 56%);background-size:320% 100%}
+#endbg{z-index:30;background:radial-gradient(120% 80% at 50% 38%,#2c2130 0%,var(--plum) 48%,var(--plum-deep) 100%)}
+#end{left:0;right:0;top:600px;z-index:31}
+#dustFar{z-index:4} #dustNear{z-index:32}
+</style></head><body>
+<div class="stage" id="stage">
+  <img id="site" alt="">
+  <img id="logo" alt="">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div class="layer" id="flash"></div>
+  <div class="layer" id="sweep"></div>
+  <div class="layer" id="endbg"></div>
+  <div id="end"></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="/beauty-beats.js"></script>
+<script src="lib/common.js"></script>
+<script src="lib/rc.js"></script>
+<script>
+const BT = window.BEATS, b = 60 / BT.bpm, B = (n) => BT.offset + n * b;
+window.DUR = B(52);
+// cuts land on these beats; sweeps cross the frame on the bar lines inside a shot
+const CUTS = [8, 16, 20, 24, 28, 32, 40, 44], SWEEPS = [4, 12, 36, 48];
+const siteUrl = (t) => `/beauty/site/${pad(Math.round(t * 30))}.jpg`;
+const RC = RCEnd($('#end'), { scale: 1.05 }); $('#end').style.setProperty('--k', '1.05');
+const far = new Dust($('#dustFar'), { n: 120, seed: 3, size: [1, 2.6], bokeh: 0.03, speed: 12, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 30, seed: 9, size: [1.6, 3.4], bokeh: 0.25, speed: 26, depth: 1 });
+window.__ready = Promise.all([document.fonts.ready, preload([logoFrame(0)])]).then(() => true);
+const lastCut = (t) => { let c = null; for (const n of CUTS) if (t >= B(n)) c = n; return c; };
+
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, B(0) + 0.4))).toFixed(3);
+  // 3D logo: its glint lands on beat 6; it leaves on the cut at beat 8
+  const tl = t - B(6) + 3.45, L = $('#logo');
+  if (t < B(8)) { L.style.display = ''; seqFrame(L, logoFrame(Math.max(0, tl))); setEl(L, { s: 0.92 + 0.08 * E.outCubic(seg(t, 0, B(8))) }); }
+  else L.style.display = 'none';
+  // the site, cut on the grid, with a small push on each cut and a slow drift inside the shot
+  const S = $('#site');
+  if (t >= B(8) && t < B(44)) {
+    S.style.display = ''; seqFrame(S, siteUrl(t));
+    const c = lastCut(t), since = t - B(c);
+    const punch = 0.035 * (1 - E.outCubic(clamp(since / (1.5 * b))));
+    setEl(S, { s: 1 + punch + 0.012 * clamp(since / (8 * b)) });
+  } else S.style.display = 'none';
+  // flash on cuts: a short warm bloom that decays within half a beat
+  let fl = 0;
+  for (const n of CUTS) { const d = t - B(n); if (d >= -0.03 && d < b) fl = Math.max(fl, d < 0 ? (d + 0.03) / 0.03 : Math.exp(-d / (0.16 * b / 0.5))); }
+  $('#flash').style.opacity = (fl * 0.32).toFixed(3);
+  // light sweeps on bar lines
+  let sw = 0;
+  for (const n of SWEEPS) { const p = seg(t, B(n) - 0.15 * b, B(n) + 1.6 * b); if (p > 0 && p < 1) sw = p; }
+  $('#sweep').style.opacity = sw ? Math.sin(Math.PI * sw).toFixed(3) : 0;
+  $('#sweep').style.backgroundPosition = sw ? `${(135 - sw * 170).toFixed(1)}% 0` : '0 0';
+  // end card from beat 44
+  const e = t >= B(44) ? 1 : 0;
+  $('#endbg').style.opacity = e; RC.draw(Math.max(0, t - B(44)), e);
+  const dA = E.inOutSine(seg(t, 0.2, 2));
+  far.draw(t + 4, dA * (t < B(8) ? 0.9 : t >= B(44) ? 0.7 : 0.25), { dy: -t * 6 });
+  near.draw(t + 2, dA * (t < B(8) || t >= B(44) ? 0.55 : 0.18), { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
