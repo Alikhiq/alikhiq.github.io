@@ -237,9 +237,9 @@
       const brushy = i === 0;
       const g = new THREE.ExtrudeGeometry(p.shapes, big ? {
         depth: 46, bevelEnabled: true, bevelThickness: brushy ? 10 : 16, bevelSize: brushy ? 3.2 : 7,
-        bevelSegments: mobile ? 3 : 4, curveSegments: mobile ? 5 : 8,
+        bevelSegments: mobile ? 2 : 3, curveSegments: mobile ? 2 : 3,
       } : {
-        depth: 16, bevelEnabled: true, bevelThickness: 4, bevelSize: 2.2, bevelSegments: 2, curveSegments: 6,
+        depth: 16, bevelEnabled: true, bevelThickness: 4, bevelSize: 2.2, bevelSegments: 1, curveSegments: 2,
       });
       // own pivot at the part's centre (SVG y points down → flip)
       const cx = (p.bb.min.x + p.bb.max.x) / 2, cy = (p.bb.min.y + p.bb.max.y) / 2;
