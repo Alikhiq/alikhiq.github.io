@@ -78,6 +78,10 @@
         const s = r.width / m.width;
         const dx = (r.left + r.width / 2) - (m.left + m.width / 2);
         const dy = (r.top + r.height / 2) - (m.top + m.height / 2);
+        // take over from the CSS entrance animation (animations beat inline styles)
+        mark.style.opacity = getComputedStyle(mark).opacity;
+        mark.style.animation = 'none';
+        void mark.offsetWidth;
         mark.style.transition = 'transform .8s cubic-bezier(.65,0,.35,1), opacity .3s ease .62s';
         mark.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
         mark.style.opacity = '0';
@@ -169,41 +173,51 @@
     // warm key + cool rim so the bevels catch colour, not just the white room
     const key = new THREE.DirectionalLight(0xffe2bd, 1.6); key.position.set(-3, 4, 6); scene.add(key);
     const rim = new THREE.DirectionalLight(0xffc89a, 1.2); rim.position.set(4, -2, 3); scene.add(rim);
-    const sweepLight = new THREE.PointLight(0xfff0d8, 0, 6, 1.6); sweepLight.position.set(-3, 0.6, 1.6); scene.add(sweepLight);
 
     /* ---- shared shader bits: the light sweep band ---- */
     const U = {
       uSweep: { value: -10 },
       uSweepAmt: { value: 0 },
-      uSweepCol: { value: new THREE.Color(1.0, 0.86, 0.66) },
+      uSweepCol: { value: new THREE.Color(1.0, 0.84, 0.6) },
+      uTime: { value: 0 },
     };
-    const addSweep = (mat, strength) => {
+    // glass > 0 adds the "crystal" read: a soft top-lit gradient and faint internal streaks
+    // that drift as the mark turns (cheap stand-in for refraction)
+    const addSweep = (mat, strength, glass = 0) => {
       mat.onBeforeCompile = (sh) => {
         Object.assign(sh.uniforms, U);
         sh.uniforms.uSweepK = { value: strength };
         sh.vertexShader = sh.vertexShader
-          .replace('#include <common>', '#include <common>\nvarying vec3 vSwW;')
-          .replace('#include <project_vertex>', '#include <project_vertex>\nvSwW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+          .replace('#include <common>', '#include <common>\nvarying vec3 vSwW;\nvarying vec3 vSwL;')
+          .replace('#include <project_vertex>', '#include <project_vertex>\nvSwW = (modelMatrix * vec4(transformed, 1.0)).xyz;\nvSwL = transformed;');
         sh.fragmentShader = sh.fragmentShader
-          .replace('#include <common>', '#include <common>\nvarying vec3 vSwW;\nuniform float uSweep;\nuniform float uSweepAmt;\nuniform float uSweepK;\nuniform vec3 uSweepCol;')
+          .replace('#include <common>', '#include <common>\nvarying vec3 vSwW;\nvarying vec3 vSwL;\nuniform float uSweep;\nuniform float uSweepAmt;\nuniform float uSweepK;\nuniform vec3 uSweepCol;\nuniform float uTime;')
           .replace('#include <opaque_fragment>',
+            (glass ? (
+              'vec3 gV = normalize(vViewPosition);\n' +
+              'float gPh = dot(vSwW.xy, vec2(0.9, 2.1)) * 7.0 + gV.x * 9.0 + gV.y * 5.0;\n' +
+              'float gSt = pow(0.5 + 0.5 * sin(gPh), 8.0) + 0.5 * pow(0.5 + 0.5 * sin(gPh * 2.3 + 1.7), 14.0);\n' +
+              'float gTop = smoothstep(-0.16, 0.16, vSwL.y);\n' +
+              'outgoingLight *= mix(0.58, 1.05, gTop);\n' +
+              'outgoingLight += vec3(1.0, 0.88, 0.72) * gSt * 0.16;\n') : '') +
             'float swd = (vSwW.x + vSwW.y * 0.42 - uSweep);\n' +
-            'float swb = exp(-swd * swd * 26.0) + 0.35 * exp(-swd * swd * 3.0);\n' +
-            'outgoingLight += uSweepCol * swb * uSweepAmt * uSweepK;\n' +
+            'float swb = exp(-swd * swd * 70.0) + 0.18 * exp(-swd * swd * 5.0);\n' +
+            'outgoingLight += uSweepCol * swb * uSweepAmt * uSweepK * 0.95;\n' +
             '#include <opaque_fragment>');
       };
-      mat.customProgramCacheKey = () => 'sweep' + strength;
+      mat.customProgramCacheKey = () => 'sweep' + strength + '-' + glass;
     };
 
     /* ---- materials ---- */
+    // champagne crystal: pale, pearly, glossy (opaque on purpose: real transmission over an
+    // empty backdrop reads as dark glass, and costs an extra pass on phones)
     const crystal = new THREE.MeshPhysicalMaterial({
-      color: 0xf6e3c8, metalness: 0, roughness: 0.07,
-      transmission: 1, thickness: 0.9, ior: 1.52,
-      attenuationColor: new THREE.Color(0xd9a56a), attenuationDistance: 0.55,
+      color: 0xe2bf96, metalness: 0.5, roughness: 0.1,
       specularIntensity: 1, specularColor: new THREE.Color(0xffe9cc),
       clearcoat: 1, clearcoatRoughness: 0.04,
-      iridescence: 0.22, iridescenceIOR: 1.3, iridescenceThicknessRange: [180, 420],
-      envMapIntensity: 1.35, transparent: true,
+      iridescence: 0.35, iridescenceIOR: 1.35, iridescenceThicknessRange: [200, 460],
+      sheen: 0.5, sheenRoughness: 0.4, sheenColor: new THREE.Color(0xffd6a8),
+      envMapIntensity: 1.15, transparent: true,
     });
     const gold = new THREE.MeshPhysicalMaterial({
       color: 0xe2b57c, metalness: 1, roughness: 0.2,
@@ -212,7 +226,6 @@
     const goldSmall = new THREE.MeshPhysicalMaterial({
       color: 0xe6bd88, metalness: 1, roughness: 0.26, envMapIntensity: 1.2, transparent: true,
     });
-    addSweep(crystal, 1.0); addSweep(gold, 1.6); addSweep(goldSmall, 1.2);
 
     /* ---- the logo: SVG paths → extruded meshes. 1 world unit = full logo width ---- */
     const svg = new SVGLoader().parse(svgText);
@@ -236,7 +249,7 @@
       const big = p.big;
       const brushy = i === 0;
       const g = new THREE.ExtrudeGeometry(p.shapes, big ? {
-        depth: 46, bevelEnabled: true, bevelThickness: brushy ? 10 : 16, bevelSize: brushy ? 3.2 : 7,
+        depth: 46, bevelEnabled: true, bevelThickness: brushy ? 12 : 18, bevelSize: brushy ? 5 : 12,
         bevelSegments: mobile ? 2 : 3, curveSegments: mobile ? 2 : 3,
       } : {
         depth: 16, bevelEnabled: true, bevelThickness: 4, bevelSize: 2.2, bevelSegments: 1, curveSegments: 2,
@@ -244,11 +257,10 @@
       // own pivot at the part's centre (SVG y points down → flip)
       const cx = (p.bb.min.x + p.bb.max.x) / 2, cy = (p.bb.min.y + p.bb.max.y) / 2;
       g.translate(-cx, -cy, big ? -23 : -8);
-      g.scale(k, -k, k);
-      g.computeVertexNormals();
+      g.scale(k, -k, -k); // flip y (SVG is y-down) as a 180° turn so the winding stays right
       geos.push(g);
       const mats = big ? [crystal.clone(), gold.clone()] : [goldSmall.clone(), goldSmall.clone()];
-      mats.forEach((m, j) => addSweep(m, big ? (j ? 1.6 : 1.0) : 1.2));
+      mats.forEach((m, j) => addSweep(m, big ? (j ? 1.6 : 0.8) : 1.2, big && !j ? 1 : 0));
       const mesh = new THREE.Mesh(g, mats);
       mesh.position.set((cx - VB_W / 2) * k, -(cy - VB_H / 2) * k, 0);
       mesh.userData.home = mesh.position.clone();
@@ -412,12 +424,12 @@
         m.rotation.x = (1 - e) * 0.18;
         m.position.z = m.userData.home.z - (1 - e) * 0.55;
         m.position.y = m.userData.home.y - (1 - e) * 0.05;
-        setOpacity(m, Math.min(1, p * 3.2));
+        setOpacity(m, Math.min(1, p * 4.5));
         m.visible = p > 0;
         const st = births[i];
         const bt = seg(t, a + 0.02, a + 0.75);
-        st.material.opacity = bt > 0 && bt < 1 ? Math.sin(bt * Math.PI) * 0.9 : 0;
-        const sc = 0.22 * Math.sin(bt * Math.PI) + 0.04;
+        st.material.opacity = bt > 0 && bt < 1 ? Math.sin(bt * Math.PI) * 0.7 : 0;
+        const sc = 0.15 * Math.sin(bt * Math.PI) + 0.03;
         st.scale.set(sc, sc, 1);
         st.position.set(m.userData.home.x, m.userData.home.y + 0.06, 0.12);
         st.material.rotation = bt * 0.9;
@@ -441,12 +453,10 @@
         if (it < 1.1) sweepP = it / 1.1; else sweepP = sweepP >= 1 ? 1 : sweepP;
         idleSweep = it < 1.1 ? 1 : 0;
       }
-      const swE = ease.inOut(sweepP);
+      const swE = sweepP * sweepP * (3 - 2 * sweepP);
       U.uSweep.value = sx(-0.75 + swE * 1.6);
       const swAmt = sweepP > 0 && sweepP < 1 ? Math.sin(sweepP * Math.PI) : 0;
       U.uSweepAmt.value = swAmt * (idleSweep ? 0.55 : 0.9);
-      sweepLight.intensity = swAmt * 6;
-      sweepLight.position.set(sx(-0.75 + swE * 1.6), logo.position.y + 0.25 * logo.scale.x, 1.6);
 
       // signature glints after the sweep
       const ga = bump(t, S.glint, S.glint + 0.22, S.glint + 0.85);
@@ -460,6 +470,7 @@
       const intro = ease.outCubic(seg(t, 0, S.dustIn));
       halo.material.opacity = (0.32 + 0.38 * swAmt) * intro;
       dustMat.uniforms.uT.value = t + 3.0;
+      U.uTime.value = t;
       dustMat.uniforms.uA.value = intro;
 
       // whole mark: a slow breath, a touch of pointer parallax
@@ -491,8 +502,8 @@
           halo.material.opacity *= 1 - e;
           dustMat.uniforms.uA.value *= 1 - ease.outCubic(p);
           // hand over to the flat logo in the nav during the last stretch
-          if (p > 0.8 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing');
-          alpha *= 1 - seg(p, 0.86, 1);
+          if (p > 0.88 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing');
+          alpha *= 1 - seg(p, 0.9, 1);
         } else {
           s *= 1 + e * 0.08;
           alpha *= 1 - e;

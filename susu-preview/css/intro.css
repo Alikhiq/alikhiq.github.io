@@ -1,10 +1,10 @@
 /* Susu Ink & Glow — intro / loader (driven by js/intro3d.js) */
 .loader{position:fixed;inset:0;z-index:150;display:grid;place-items:center;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .loader__bg{position:absolute;inset:0;background:
-  radial-gradient(60% 46% at 50% 48%,rgba(228,189,145,.13),rgba(228,189,145,0) 70%),
+  radial-gradient(ellipse 62vmax 34vmax at 50% 48%,rgba(228,189,145,.13),rgba(228,189,145,0) 70%),
   radial-gradient(120% 90% at 50% 50%,var(--plum) 0%,var(--plum-deep) 55%,#0f0a11 100%);
   transition:opacity 1s var(--ease)}
-.loader__bg::after{content:"";position:absolute;inset:0;background:radial-gradient(closest-side at 50% 50%,rgba(243,217,180,.10),transparent);opacity:0;animation:lGlow 1.6s var(--ease) .1s forwards}
+.loader__bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 40vmax 22vmax at 50% 48%,rgba(243,217,180,.10),transparent);opacity:0;animation:lGlow 1.6s var(--ease) .1s forwards}
 @keyframes lGlow{to{opacity:1}}
 .loader__gl{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;pointer-events:none}
 
