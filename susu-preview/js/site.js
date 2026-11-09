@@ -95,7 +95,25 @@
   const chapterY = (i) => storyTop + i * STEP + 2;
 
   let lastP = -1, lastActive = -1;
+  // Phones: keep the story text just above the fixed Book bar wherever the browser puts it
+  // (iOS Safari's floating toolbar moves fixed elements up but not the sticky stage's bottom).
+  const mbarEl = $('.mbar');
+  const fitChapters = () => {
+    if (!mobile() || !mbarEl || !stage) { story.style.removeProperty('--chapter-bottom'); return; }
+    const ms = getComputedStyle(mbarEl);
+    if (ms.display === 'none') return;
+    const fixedBottom = parseFloat(ms.bottom) || 0;            // e.g. 14px + safe area
+    const barTop = (window.visualViewport ? visualViewport.height + visualViewport.offsetTop : innerHeight) - fixedBottom - mbarEl.offsetHeight;
+    const stageBottom = stage.getBoundingClientRect().bottom;
+    const want = Math.max(90, Math.round(stageBottom - barTop + 28));
+    if (story.__cb !== want) { story.__cb = want; story.style.setProperty('--chapter-bottom', want + 'px'); }
+  };
+  fitChapters();
+  addEventListener('resize', fitChapters);
+  if (window.visualViewport) { visualViewport.addEventListener('resize', fitChapters); visualViewport.addEventListener('scroll', fitChapters); }
+  let fitTick = 0;
   const updateStory = () => {
+    if (++fitTick % 20 === 0) fitChapters();
     const pr = clamp((scrollY() - storyTop) / STEP, 0, 6.5);
     const p = Math.min(pr, 6);
     if (Math.abs(pr - lastP) < 0.0005) return;
