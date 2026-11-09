@@ -8,14 +8,14 @@
   const fine = matchMedia('(pointer: fine)').matches;
   const body = document.body;
 
-  /* ---------- loader ---------- */
-  const t0 = performance.now();
+  /* ---------- loader: js/intro3d.js signals when the page may show ---------- */
+  let shown = false;
   const ready = () => {
-    const wait = Math.max(0, 1100 - (performance.now() - t0));
-    setTimeout(() => { body.classList.remove('is-loading'); body.classList.add('is-ready'); revealAbove(); }, wait);
+    if (shown) return; shown = true;
+    body.classList.remove('is-loading'); body.classList.add('is-ready'); revealAbove();
   };
-  if (document.readyState === 'complete') ready(); else addEventListener('load', ready, { once: true });
-  setTimeout(() => body.classList.add('is-ready'), 3200);
+  if (window.__susuIntroReady) setTimeout(ready, 0); else addEventListener('susu:intro-ready', () => setTimeout(ready, 0), { once: true });
+  setTimeout(() => { ready(); const l = $('.loader'); if (l) l.remove(); }, 8000); // safety net if the intro never ran
 
   /* ---------- smooth scroll ---------- */
   let lenis = null;
@@ -151,7 +151,7 @@
     sections.forEach((s) => { const r = s.getBoundingClientRect(); if (r.top < vh * 0.5 && r.bottom > vh * 0.5) cur = s.id; });
     navLinks.forEach((a) => a.classList.toggle('is-on', a.getAttribute('href') === '#' + cur));
     const br = bookSec.getBoundingClientRect();
-    body.classList.toggle('show-mbar', y > vh * 0.9 && !(br.top < vh && br.bottom > 0));
+    body.classList.toggle('show-mbar', (mobile() || y > vh * 0.9) && !(br.top < vh && br.bottom > 0));
   };
 
   /* ---------- marquee ---------- */
