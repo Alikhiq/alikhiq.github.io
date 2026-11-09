@@ -1,0 +1,38 @@
+/* Susu Ink & Glow — intro / loader (driven by js/intro3d.js) */
+.loader{position:fixed;inset:0;z-index:150;display:grid;place-items:center;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.loader__bg{position:absolute;inset:0;background:
+  radial-gradient(60% 46% at 50% 48%,rgba(228,189,145,.13),rgba(228,189,145,0) 70%),
+  radial-gradient(120% 90% at 50% 50%,var(--plum) 0%,var(--plum-deep) 55%,#0f0a11 100%);
+  transition:opacity 1s var(--ease)}
+.loader__bg::after{content:"";position:absolute;inset:0;background:radial-gradient(closest-side at 50% 50%,rgba(243,217,180,.10),transparent);opacity:0;animation:lGlow 1.6s var(--ease) .1s forwards}
+@keyframes lGlow{to{opacity:1}}
+.loader__gl{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;pointer-events:none}
+
+/* waiting for three.js: a hairline that only shows up if it takes a moment */
+.loader__line{position:absolute;left:50%;top:calc(50% + 70px);width:120px;height:1px;margin-left:-60px;background:var(--hair);overflow:hidden;opacity:0;animation:lFade .6s ease .7s forwards}
+.loader__line::after{content:"";position:absolute;inset:0;background:var(--gold-grad);transform:translateX(-100%);animation:lRun 1.3s var(--ease-io) .7s infinite}
+@keyframes lFade{to{opacity:1}}
+@keyframes lRun{to{transform:translateX(100%)}}
+.loader--3d .loader__line,.loader--2d .loader__line{animation:none;opacity:0;transition:opacity .3s}
+
+/* 2D mark (no WebGL / reduced motion / slow network): gold logo with a passing shimmer */
+.loader__mark{position:relative;width:min(440px,74vw);aspect-ratio:2953/1380;opacity:0;visibility:hidden;
+  -webkit-mask:url(../brand/susu-logo-gold.svg) center/contain no-repeat;mask:url(../brand/susu-logo-gold.svg) center/contain no-repeat;
+  background:linear-gradient(105deg,#b8925a 0%,#e4bd91 30%,#fff3df 46%,#e4bd91 54%,#c9a271 100%) 0 0/300% 100%;
+  will-change:transform,opacity}
+.loader--2d .loader__mark{visibility:visible;animation:lMarkIn .7s var(--ease) forwards,lShimmer 1.6s var(--ease-io) .15s forwards}
+@keyframes lMarkIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@keyframes lShimmer{from{background-position:100% 0}to{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){
+  .loader--2d .loader__mark{animation:lMarkInR .5s ease forwards;background-position:50% 0}
+  @keyframes lMarkInR{to{opacity:1}}
+}
+
+/* hand-off: page fades up under the flying mark */
+body.is-ready .loader{pointer-events:none;cursor:auto}
+body.is-ready .loader__bg{opacity:0}
+.loader--out{opacity:0;transition:opacity .6s var(--ease)}
+
+/* the nav logo stays hidden until the mark has landed on it */
+.nav__logo img{transition:opacity .35s ease}
+body.is-loading .nav__logo img,body.intro-landing .nav__logo img{opacity:0}
