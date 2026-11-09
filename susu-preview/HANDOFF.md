@@ -38,8 +38,12 @@ This is a static preview of the upgraded page. It is plain HTML/CSS/JS around th
 - "Book brows" style links tick that service and leave the client on step 1 so they can add more (no auto-advance).
 
 ## 3D service icons
-- `media/models/{brows,lips,pmu,tattoo,piercing}.glb`: real 3D models made with **Tripo3D** image-to-model from the icon renders (textures cut to 512px WebP with glTF-Transform, ~300 KB each). `js/tiles3d.js` shows them live in the booking tiles: one shared three.js renderer copies each frame into a small canvas per tile, with a gold metal finish, a gentle sway, a pointer tilt and a coin-flip when a service is ticked. It lazy-loads near the form, pauses off-screen, and keeps the flat icons as the fallback (no WebGL, reduced motion, or a model fails to load). An import map in <head> points `three` at three@0.160.0 so the footer and tiles share one copy.
-- `media/icons/{brows,lips,pmu,tattoo,piercing}.webp`: 3D-rendered champagne-gold icons (kie.ai nano-banana-pro, cut out to transparent). Used in the booking tiles and as badges on the price cards.
+- `media/icons/{brows,lips,pmu,tattoo,piercing}.webp`: "crystal & gold" icon set (champagne glass with polished gold, chosen by the client from four concept sheets), generated as one sheet on kie.ai nano-banana-pro so the five match, then cut out to transparent. Used in the booking tiles and as badges on the price cards. (An earlier Tripo3D live-3D version was removed at the client's request.)
 
 ## Still needed from Susu
 Session times, licence, real reviews, and a microblading price if she wants one listed. The studio photo and the painted portraits are brand imagery, not client results.
+
+## Going live on susuinkandglow.com (Nov 2026)
+- This folder is now the production site, deployed on Vercel (project `susuinkandglow`, root `susu-preview/`). `vercel.json` rewrites `/owner` and `/owner/*` to `owner.html` (the original Studio access app, unchanged) and `/q` (QR landing) to the main page.
+- The original live bundle and its chunks (`assets/index-IExGlf7c.js`, `react-*`, `database-*`, `OwnerApp-*`, `index-CWcsJ37Z.css`, fonts, `brand/muse.webp`, `brand/susu-portrait-original.jpg`, `brand/approved-card-mobile.webp`, `brand/susu-logo.svg`) are kept so Studio access keeps working. The new page loads the patched copy `assets/story-IExGlf7c.js` for the portrait engine only.
+- Booking now submits to the existing `submit_susu_booking_request` RPC, but **only on susuinkandglow.com / www** (anywhere else it shows a preview notice and sends nothing). Several services are sent under the first one, with the full list in the notes. Location: "At my place" = `studio`, "At your place" = `client` + address. Visits go to `record_susu_visit` (`qr` for `/q` or `?source=qr`).
