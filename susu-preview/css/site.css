@@ -97,10 +97,10 @@ body.is-ready .loader{opacity:0;visibility:hidden}
 .bodyart{position:absolute;z-index:1;margin:0;top:0;bottom:0;left:34%;right:0;opacity:0;pointer-events:none;overflow:hidden;
   -webkit-mask-image:radial-gradient(68% 74% at 58% 52%,#000 52%,transparent 100%);mask-image:radial-gradient(68% 74% at 58% 52%,#000 52%,transparent 100%)}
 .bodyart__pan{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
-.bodyart__pan img{display:block;width:100%;height:100%;mix-blend-mode:lighten;filter:sepia(.15) saturate(1.1) brightness(1.04) contrast(1.06);
+.bodyart__pan img{display:block;width:100%;height:100%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%);mask-image:linear-gradient(to bottom,transparent 0,#000 14%);mix-blend-mode:lighten;filter:sepia(.15) saturate(1.1) brightness(1.04) contrast(1.06);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent),linear-gradient(0deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent,#000 16%,#000 84%,transparent),linear-gradient(0deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
-.bodyart__jewel{position:absolute;left:75.3%;top:55.4%;width:0;height:0}
+.bodyart__jewel{position:absolute;left:75.3%;top:46.27%;width:0;height:0}
 .bodyart__jewel i{position:absolute;left:-18px;top:-18px;width:36px;height:36px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,240,214,.95) 0 6%,rgba(240,194,126,.55) 14%,rgba(240,194,126,0) 62%);
   mix-blend-mode:screen;animation:twinkle 2.8s ease-in-out infinite}
@@ -108,7 +108,7 @@ body.is-ready .loader{opacity:0;visibility:hidden}
   background:linear-gradient(90deg,transparent,rgba(255,236,204,.9),transparent)}
 .bodyart__jewel i::after{transform:rotate(90deg)}
 @keyframes twinkle{0%,100%{opacity:.35;transform:scale(.7) rotate(0)}45%{opacity:1;transform:scale(1.05) rotate(20deg)}60%{opacity:.8;transform:scale(.9) rotate(28deg)}}
-.bodyart__tag{position:absolute;left:75.3%;top:55.4%;display:flex;align-items:center;gap:10px;transform-origin:0 50%;opacity:0;transition:opacity .5s var(--ease)}
+.bodyart__tag{position:absolute;left:75.3%;top:46.27%;display:flex;align-items:center;gap:10px;transform-origin:0 50%;opacity:0;transition:opacity .5s var(--ease)}
 .bodyart__tag b{display:block;width:0;height:1px;margin-left:16px;background:linear-gradient(90deg,var(--champagne),rgba(228,189,145,.3));transition:width .7s var(--ease)}
 .bodyart__tag em{font:italic 500 18px/1 var(--serif);letter-spacing:.02em;color:#f0cf9f;white-space:nowrap;text-shadow:0 1px 12px rgba(25,18,27,.9)}
 .bodyart.is-tag .bodyart__tag{opacity:1}

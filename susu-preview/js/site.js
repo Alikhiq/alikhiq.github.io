@@ -40,9 +40,9 @@
   const bodyart = $('.bodyart');
   const pan = $('.bodyart__pan');
   const tagEl = $('.bodyart__tag');
-  const ART_R = 1100 / 1657;            // navel art aspect (w/h)
-  const JEWEL = [0.753, 0.554];         // jewel position inside the art
-  const START = [0.58, 0.30];           // camera starts at the ribs
+  const ART_R = 1100 / 1375;            // navel art aspect (w/h), cropped above the waist
+  const JEWEL = [0.753, 0.4627];         // jewel position inside the art
+  const START = [0.6, 0.2];             // camera starts at the waist
   const lerp = (a, b, t) => a + (b - a) * t;
   const updateBody = (pr) => {
     // pr runs to 6.5 so the zoom keeps going while chapter 06 is held on screen
