@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu end card</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+.stage{background:radial-gradient(120% 80% at 50% 40%,#2c2130 0%,var(--plum) 48%,var(--plum-deep) 100%)}
+#logo{position:absolute;left:50%;top:560px;width:600px;margin-left:-300px}
+#logo img{width:100%;display:block;filter:drop-shadow(0 0 40px rgba(233,191,149,.28))}
+
+#rule{position:absolute;left:50%;top:900px;width:420px;margin-left:-210px}
+#book{position:absolute;left:50%;top:980px;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;
+  padding:30px 90px;border-radius:70px;background:var(--gold-grad);color:#2b1c20;font-family:var(--sans);font-weight:700;font-size:44px;letter-spacing:.02em;white-space:nowrap;box-shadow:0 20px 60px -18px rgba(233,191,149,.6)}
+#url{position:absolute;left:0;right:0;top:1150px;text-align:center;font-family:var(--serif);font-size:58px;color:var(--ivory)}
+#sub{position:absolute;left:0;right:0;top:1240px;text-align:center;font-family:var(--sans);font-size:28px;letter-spacing:.04em;color:rgba(247,238,226,.7)}
+#sweep{z-index:30;mix-blend-mode:screen;background:linear-gradient(110deg,rgba(255,226,190,0) 44%,rgba(255,232,204,.3) 50%,rgba(255,226,190,0) 56%);background-size:320% 100%}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar" style="z-index:1"></canvas>
+  <img id="logo" alt="">
+  <div class="rule" id="rule"></div>
+  <div id="book">Book now</div>
+  <div class="serif" id="url">susuinkandglow.com</div>
+  <div id="sub">Brows · Lips · Ink · Piercing · all around Columbus</div>
+  <canvas class="dust" id="dustNear" style="z-index:31"></canvas>
+  <div class="layer" id="sweep"></div>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+(async()=>{
+const svg = await (await fetch('/brand/susu-logo-gold.svg')).text();
+const img = $('#logo'); img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+})();
+const far = new Dust($('#dustFar'), { n: 120, seed: 3, size: [1, 2.6], bokeh: 0.04, speed: 12, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 30, seed: 9, size: [1.6, 3.4], bokeh: 0.26, speed: 24, depth: 1 });
+const WU = splitWords($('#url')), WS = splitWords($('#sub'));
+window.__ready = Promise.all([document.fonts.ready]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.9))).toFixed(3);
+  const a = E.outCubic(seg(t, 0.3, 1.6));
+  setEl($('#logo'), { op: a, y: (1 - a) * 30, s: 0.96 + 0.04 * a + 0.01 * seg(t, 1.6, 5) });
+  const r = E.outQuart(seg(t, 1.9, 3.1)); $('#rule').style.transform = `scaleX(${r.toFixed(3)})`; $('#rule').style.opacity = r.toFixed(3);
+  const b = E.outCubic(seg(t, 2.2, 3.2)); setEl($('#book'), { op: b, y: (1 - b) * 24 }); $('#book').style.transform = `translateX(-50%) translateY(${((1-b)*24).toFixed(1)}px) scale(${(0.96+0.04*b).toFixed(3)})`;
+  animWords(WU, t, 2.6, 0.08, 1.0, null, { dy: 14, blur: 6 });
+  animWords(WS, t, 3.1, 0.03, 0.8, null, { dy: 10, blur: 5 });
+  const sw = seg(t, 1.6, 3.4); $('#sweep').style.opacity = (sw>0&&sw<1?Math.sin(Math.PI*sw)*0.9:0).toFixed(3);
+  $('#sweep').style.backgroundPosition = `${(135 - sw * 170).toFixed(1)}% 0`;
+  const dA = E.inOutSine(seg(t, 0.2, 2));
+  far.draw(t + 4, dA * 0.8, { dy: -t * 6 }); near.draw(t + 2, dA * 0.5, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
