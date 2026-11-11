@@ -167,6 +167,7 @@ em{font-style:italic}
 .promises span{font-size:14.5px;color:var(--taupe-light)}
 .about__tools{display:flex;align-items:center;gap:16px;padding:10px;padding-right:20px;border:1px solid var(--hair);border-radius:16px;background:rgba(20,14,22,.35)}
 .about__tools video{width:74px;height:110px;object-fit:cover;border-radius:10px}
+.about__tools img{width:74px;height:110px;object-fit:cover;object-position:50% 30%;border-radius:10px;flex:none}
 .about__tools p{margin:0;font-size:14.5px;line-height:1.5;color:var(--taupe-light)}
 .about__tools b{color:var(--ivory)}
 
