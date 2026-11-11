@@ -55,3 +55,4 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 - **New FAQ entries** from her appointment-prep text: how to pay, how to prepare, rescheduling and lateness.
 - **Not changed:** location copy. She signs a lease at Image Studios Easton on Nov 12; update the location lines after that.
 - **Rejected by Ali, Nov 11:** the smiling arms-crossed photo and the at-work photo with a client. Neither is used on the site.
+- **More photos (Nov 11):** a four-photo strip `.about__more` under the about section (`media/susu-more-*.webp`), and the booking background is now the looking-away arms-crossed photo. These are the frames as shot, with the grey backdrop graded toward plum; no cutout.
