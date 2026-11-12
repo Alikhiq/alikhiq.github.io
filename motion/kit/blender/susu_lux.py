@@ -5,7 +5,8 @@ a = sys.argv[sys.argv.index('--') + 1:]; OUT = a[0]; F0 = int(a[1]); F1 = int(a[
 R = '/home/user/alikhiq.github.io/'
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene; sc.render.engine = 'CYCLES'; sc.cycles.samples = SMP; sc.cycles.use_denoising = True
-sc.cycles.use_adaptive_sampling = True; sc.cycles.max_bounces = 6; sc.cycles.device = 'CPU'
+sc.cycles.use_adaptive_sampling = True; sc.cycles.max_bounces = 5; sc.cycles.device = 'CPU'
+sc.render.use_persistent_data = True; sc.cycles.seed = 7; sc.cycles.use_animated_seed = False; sc.cycles.adaptive_threshold = 0.015
 sc.render.resolution_x = 1080; sc.render.resolution_y = 1920; sc.render.resolution_percentage = RES
 sc.render.fps = 30; sc.frame_start = 1; sc.frame_end = 150
 vt = [i.identifier for i in bpy.types.ColorManagedViewSettings.bl_rna.properties['view_transform'].enum_items]
