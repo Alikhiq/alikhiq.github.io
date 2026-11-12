@@ -1,13 +1,28 @@
 import bpy, sys, math, os
 from mathutils import Vector
 # python3 blite_hero.py -- OUT F0 F1 RES% SAMPLES STEP    (frames 1..150 @ 30 fps = 5 s)
-# Needs work/blite/n4/{8579,8584,8602}-mockup.webp (approved nov4 images from blite.app/media/new/nov4) and wm-mask.png / wm-height.png (the site wordmark, rasterised).
-a = sys.argv[sys.argv.index('--') + 1:]; OUT = a[0]; F0 = int(a[1]); F1 = int(a[2]); RES = int(a[3]); SMP = int(a[4]); STEP = int(a[5]) if len(a) > 5 else 1
-K_ = '/home/user/alikhiq.github.io/motion/kit/work/blite/'
+# Assets in blender/assets/blite: approved nov4 mockups 8579/8584/8602 (blite.app/media/new/nov4) and the site wordmark rasterised (mask, height, halo).
+a = sys.argv[sys.argv.index('--') + 1:]; OUT = os.path.abspath(a[0]); F0 = int(a[1]); F1 = int(a[2]); RES = int(a[3]); SMP = int(a[4]); STEP = int(a[5]) if len(a) > 5 else 1
+ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..')) + os.sep   # repo root
+K_ = ROOT + 'motion/kit/blender/assets/blite/'
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene; sc.render.engine = 'CYCLES'; sc.cycles.samples = SMP; sc.cycles.use_denoising = True
 sc.cycles.use_adaptive_sampling = True; sc.cycles.adaptive_threshold = 0.015; sc.cycles.max_bounces = 5; sc.cycles.device = 'CPU'
 sc.render.use_persistent_data = True; sc.cycles.seed = 7; sc.cycles.use_animated_seed = False; sc.cycles.denoiser = 'OPENIMAGEDENOISE'
+def use_gpu():
+    # GPU=1 (or any value) in the environment: render on the graphics card (OptiX/CUDA/HIP/Metal/oneAPI, first that works)
+    if not os.environ.get('GPU'): return
+    pr = bpy.context.preferences.addons['cycles'].preferences
+    for t in ('OPTIX', 'CUDA', 'HIP', 'METAL', 'ONEAPI'):
+        try:
+            pr.compute_device_type = t; pr.get_devices()
+            devs = [d for d in pr.devices if d.type == t]
+            if devs:
+                for d in pr.devices: d.use = d.type == t
+                bpy.context.scene.cycles.device = 'GPU'; print('GPU:', t, [d.name for d in devs]); return
+        except Exception: pass
+    print('GPU not found, using CPU')
+use_gpu()
 sc.render.resolution_x = 1080; sc.render.resolution_y = 1920; sc.render.resolution_percentage = RES
 sc.render.fps = 30; sc.frame_start = 1; sc.frame_end = 150
 vt = [i.identifier for i in bpy.types.ColorManagedViewSettings.bl_rna.properties['view_transform'].enum_items]
@@ -67,9 +82,9 @@ def panel(path, x, rotz, h=2.55):
     bv = f.modifiers.new('b', 'BEVEL'); bv.width = 0.014; bv.segments = 3
     return wd
 # three-way tailor's mirror: centre pane square to camera, wings angled in
-cw = panel(K_ + 'n4/8579-mockup.webp', 0, 0)
-panel(K_ + 'n4/8584-mockup.webp', -(cw / 2 + 0.98), 28)
-panel(K_ + 'n4/8602-mockup.webp', (cw / 2 + 0.98), -28)
+cw = panel(K_ + '8579-mockup.webp', 0, 0)
+panel(K_ + '8584-mockup.webp', -(cw / 2 + 0.98), 28)
+panel(K_ + '8602-mockup.webp', (cw / 2 + 0.98), -28)
 # BLITE wordmark: exact site silhouette, ivory satin metal, bevelled by a height map
 mimg = bpy.data.images.load(K_ + 'wm-mask.png'); himg = bpy.data.images.load(K_ + 'wm-height.png')
 for im in (mimg, himg): im.colorspace_settings.name = 'Non-Color'
