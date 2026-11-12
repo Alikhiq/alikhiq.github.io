@@ -47,9 +47,9 @@ let draw, DUR;
 if (V === 4) { // Crystal: three kie-animated icon macros with the real prices
   DUR = 10.8;
   const SEG = [
-    ['brows', '01 · Brows', 'Microblading <em>&amp; brows</em>', 'Ombré brow <b>$350</b> · Airbrush henna <b>$65</b>'],
-    ['lips', '02 · Lips', 'Lip <em>blush</em>', 'Shade matched to you · <b>$350</b>'],
-    ['piercing', '03 · Piercing', 'Ear <em>&amp; body piercing</em>', 'Placement planned with you · Get an estimate'],
+    ['brows', '01 · Brows', 'Microblading <em>&amp; brows</em>', 'Microblading / microshading <b>$375</b>'],
+    ['lips', '02 · Lips', 'Lip <em>blush</em>', 'Shade matched to you · <b>$300</b>'],
+    ['piercing', '03 · Piercing', 'Ear <em>&amp; body piercing</em>', 'Standard placements, each <b>$25</b>'],
   ].map(([dir, label, t, s], i) => { const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im); return { dir, im, a: 0.3 + i * 3.4, b: mkBlk(1180, label, t, s) }; });
   const top = document.createElement('div'); top.className = 'top label'; top.textContent = 'Susu Ink & Glow · Columbus'; root.appendChild(top); const WT = splitWords(top);
   draw = (t) => {

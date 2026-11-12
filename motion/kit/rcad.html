@@ -1,0 +1,62 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Round City client ad (kie clips + real offer from roundcity.co)</title>
+<link rel="stylesheet" href="lib/common.css"><link rel="stylesheet" href="lib/rc.css">
+<style>
+/* Round City palette: lapis + gold. Three kie (nano-banana-pro still -> Kling 2.6 motion) scenes, then the Round City mark and roundcity.co. */
+.stage{background:#070b18}
+.bg{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 45%;z-index:2}
+#scrim{z-index:3;background:linear-gradient(0deg,rgba(6,10,24,.97) 0%,rgba(6,10,24,.86) 24%,rgba(6,10,24,.3) 46%,rgba(6,10,24,0) 60%),linear-gradient(180deg,rgba(6,10,24,.6) 0%,rgba(6,10,24,0) 18%)}
+.top{position:absolute;left:0;right:0;top:230px;text-align:center;z-index:6;font-size:24px}
+.blk{position:absolute;left:70px;right:70px;z-index:6;text-align:center}
+.blk .label{font-size:24px;margin-bottom:26px}
+.blk .t{font-family:var(--serif);font-size:100px;line-height:1.06;color:var(--ivory)}
+.blk .s{font-family:var(--sans);font-size:36px;line-height:1.4;color:rgba(247,238,226,.88);margin-top:30px}
+.blk .s b{font-family:var(--serif);font-weight:400;font-size:46px;color:#f1cfa8}
+#endbg{z-index:10;background:radial-gradient(120% 80% at 50% 42%,#1a2a5c 0%,#0d1634 50%,#070b18 100%)}
+#end{left:0;right:0;top:430px;z-index:11}
+#cta{position:absolute;left:50%;top:1360px;transform:translateX(-50%);z-index:11;padding:28px 80px;border-radius:70px;background:var(--gold-grad);color:#1a1420;font-family:var(--sans);font-weight:700;font-size:42px;white-space:nowrap}
+#fine{position:absolute;left:0;right:0;top:1500px;z-index:11;text-align:center;font-family:var(--sans);font-size:28px;color:rgba(247,238,226,.72)}
+#dustFar{z-index:1} #dustNear{z-index:12}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div id="root"></div>
+  <div class="layer" id="scrim"></div>
+  <div class="layer" id="endbg"></div>
+  <div id="end"></div><div id="cta">Talk with Ali</div><div id="fine">Websites · Software · Automation</div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script><script src="lib/rc.js"></script>
+<script>
+const root = $('#root'), SL = 4.5, N = 150, END = 13.5;
+const far = new Dust($('#dustFar'), { n: 110, seed: 13, size: [1, 2.4], bokeh: 0.04, speed: 10, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 26, seed: 5, size: [1.4, 3.2], bokeh: 0.3, speed: 22, depth: 1 });
+const SEG = [
+  ['truck', 'Food carts + trucks', 'Great food.<br><em>Easy to find.</em>', 'Logo refresh + mobile website from <b>$1,499</b>'],
+  ['shop', 'Custom software + systems', 'Software that fits<br><em>the way you work.</em>', 'Built around your team and daily operations'],
+  ['phone', 'Websites', 'A website<br><em>worth visiting.</em>', 'Mobile-first, from <b>$3,500</b>'],
+].map(([dir, label, t, s], i) => { const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im);
+  const d = document.createElement('div'); d.className = 'blk'; d.style.top = '1150px'; d.innerHTML = `<div class="label">${label}</div><div class="t">${t}</div><div class="s">${s}</div>`; root.appendChild(d);
+  return { dir, im, a: i * SL, w: $$('.label,.t,.s', d).map(splitWords) }; });
+const topEl = document.createElement('div'); topEl.className = 'top label'; topEl.textContent = 'Round City · Software + Automation'; root.appendChild(topEl); const WT = splitWords(topEl);
+const rc = RCEnd($('#end'), { by: 'Software and automation, built with Ali', url: 'roundcity.co', scale: 1.25 });
+const WF = splitWords($('#fine'));
+window.__ready = Promise.all([document.fonts.ready]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.6))).toFixed(3);
+  SEG.forEach((s, i) => {
+    const o = (i === 0 ? 1 : E.inOutSine(seg(t, s.a - 0.25, s.a + 0.25))) * (1 - E.inOutSine(seg(t, s.a + SL - 0.25, s.a + SL + 0.25)));
+    s.im.style.opacity = o.toFixed(3);
+    if (o > 0) { seqFrame(s.im, `/v3/rc-${s.dir}/${pad(clamp(Math.round((t - s.a + 0.25) * 30) + 1, 1, N), 4)}.jpg`); s.im.style.transform = `scale(${(1.02 + 0.03 * seg(t, s.a, s.a + SL)).toFixed(4)})`; }
+    s.w.forEach((ws, j) => animWords(ws, t, s.a + 0.45 + j * 0.2, 0.07, 0.9, [s.a + SL - 0.6, 0.45, 0.02], { dy: 24, blur: 8 }));
+  });
+  animWords(WT, t, 0.4, 0.06, 0.9, [END - 0.7, 0.5, 0.02], { dy: 12, blur: 6 });
+  const e = E.inOutSine(seg(t, END - 0.3, END + 0.4)); $('#endbg').style.opacity = e.toFixed(3);
+  const te = t - END; rc.draw(Math.max(0, te), e);
+  const c = E.outCubic(seg(te, 2.6, 3.5)); $('#cta').style.opacity = c.toFixed(3); $('#cta').style.transform = `translateX(-50%) translateY(${((1 - c) * 24).toFixed(1)}px) scale(${(0.96 + 0.04 * c).toFixed(3)})`;
+  animWords(WF, te, 3.1, 0.04, 0.8, null, { dy: 10, blur: 5 });
+  far.draw(t + 4, 0.7, { dy: -t * 6 }); near.draw(t + 2, 0.45, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
