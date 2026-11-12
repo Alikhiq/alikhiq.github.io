@@ -1,0 +1,111 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu ads, second set (4 Crystal, 5 Portrait, 6 Results)</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+/* ?v=4 Crystal (kie-animated crystal icons) · ?v=5 Portrait (kie-animated painted portrait) · ?v=6 Results (real before/after) */
+.bg{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 45%}
+#scrim{z-index:3;background:linear-gradient(0deg,rgba(20,13,22,.96) 0%,rgba(20,13,22,.82) 22%,rgba(20,13,22,.25) 44%,rgba(20,13,22,0) 58%),linear-gradient(180deg,rgba(20,13,22,.55) 0%,rgba(20,13,22,0) 18%)}
+.top{position:absolute;left:0;right:0;top:250px;text-align:center;z-index:6;font-size:24px}
+.blk{position:absolute;left:70px;right:70px;z-index:6;text-align:center}
+.blk .label{font-size:24px;margin-bottom:26px}
+.blk .t{font-family:var(--serif);font-size:104px;line-height:1.06;color:var(--ivory)}
+.blk .s{font-family:var(--sans);font-size:36px;line-height:1.4;color:rgba(247,238,226,.86);margin-top:30px}
+.blk .s b{font-family:var(--serif);font-weight:400;font-size:44px;color:#f1cfa8}
+#sweep{z-index:8;mix-blend-mode:screen;background:linear-gradient(110deg,rgba(255,226,190,0) 44%,rgba(255,232,204,.2) 50%,rgba(255,226,190,0) 56%);background-size:320% 100%}
+/* results */
+.card{position:absolute;left:40px;width:1000px;border-radius:22px;overflow:hidden;z-index:5;box-shadow:0 40px 90px -30px rgba(0,0,0,.75),0 0 0 1px rgba(233,191,149,.35)}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wl{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:linear-gradient(#ffe8cf,#e9bf95,#c48d62);box-shadow:0 0 18px rgba(255,220,170,.85)}
+.wl i{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--gold-grad);box-shadow:0 6px 20px rgba(0,0,0,.45)}
+.tg{position:absolute;top:22px;padding:9px 18px;border-radius:30px;background:rgba(25,18,27,.62);font-family:var(--sans);font-size:20px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--ivory)}
+.cap{position:absolute;left:0;right:0;text-align:center;z-index:6;font-family:var(--serif);font-size:62px;color:var(--ivory)}
+.capS{position:absolute;left:0;right:0;text-align:center;z-index:6;font-family:var(--sans);font-size:30px;color:rgba(247,238,226,.75)}
+#dustFar{z-index:1} #dustNear{z-index:9}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div id="root"></div>
+  <div class="layer" id="scrim"></div>
+  <div class="layer" id="sweep"></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const V = +(new URLSearchParams(location.search).get('v') || 4);
+const root = $('#root');
+const fr = (dir, i, n) => `/v3/${dir}/${pad(clamp(Math.round(i), 1, n), 4)}.jpg`;
+const far = new Dust($('#dustFar'), { n: 110, seed: 13, size: [1, 2.4], bokeh: 0.04, speed: 10, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 26, seed: 5, size: [1.4, 3.2], bokeh: 0.3, speed: 22, depth: 1 });
+const mkBlk = (top, label, t, s) => { const d = document.createElement('div'); d.className = 'blk'; d.style.top = top + 'px';
+  d.innerHTML = (label ? `<div class="label">${label}</div>` : '') + `<div class="t">${t}</div>` + (s ? `<div class="s">${s}</div>` : ''); root.appendChild(d);
+  return { el: d, w: $$('.label,.t,.s', d).map(splitWords) }; };
+const blkAnim = (b, t, a, z) => b.w.forEach((ws, j) => animWords(ws, t, a + j * 0.22, 0.07, 1.0, [z - 0.55, 0.5, 0.02], { dy: 24, blur: 8 }));
+let draw, DUR;
+
+if (V === 4) { // Crystal: three kie-animated icon macros with the real prices
+  DUR = 10.8;
+  const SEG = [
+    ['brows', '01 · Brows', 'Microblading <em>&amp; brows</em>', 'Ombré brow <b>$350</b> · Airbrush henna <b>$65</b>'],
+    ['lips', '02 · Lips', 'Lip <em>blush</em>', 'Shade matched to you · <b>$350</b>'],
+    ['piercing', '03 · Piercing', 'Ear <em>&amp; body piercing</em>', 'Placement planned with you · Get an estimate'],
+  ].map(([dir, label, t, s], i) => { const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im); return { dir, im, a: 0.3 + i * 3.4, b: mkBlk(1180, label, t, s) }; });
+  const top = document.createElement('div'); top.className = 'top label'; top.textContent = 'Susu Ink & Glow · Columbus'; root.appendChild(top); const WT = splitWords(top);
+  draw = (t) => {
+    SEG.forEach((s, i) => {
+      const z = s.a + 3.4 + (i === 2 ? 0.3 : 0), o = env(t, s.a - 0.25, s.a + 0.25, z - 0.25, z + 0.25, E.inOutSine, E.inOutSine);
+      s.im.style.opacity = (i === 0 ? Math.max(o, t < s.a ? 1 : 0) : o).toFixed(3); s.im.style.zIndex = 2;
+      if (o > 0 || i === 0) { seqFrame(s.im, fr(s.dir, 6 + (t - s.a + 0.3) * 30, 150)); s.im.style.transform = `scale(${(1.02 + 0.03 * seg(t, s.a, z)).toFixed(4)})`; }
+      blkAnim(s.b, t, s.a + 0.35, z);
+    });
+    animWords(WT, t, 0.5, 0.06, 0.9, [10.0, 0.5, 0.02], { dy: 12, blur: 6 });
+    return [0.3, 3.7, 7.1];
+  };
+} else if (V === 5) { // Portrait: the painted portrait, gently alive (clip plays forward then back)
+  DUR = 10.8;
+  const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im);
+  const B = [mkBlk(1120, 'Artist · Columbus, Ohio', 'Hi, I’m <em>Susu.</em>', ''),
+    mkBlk(1090, 'Susu Ink &amp; Glow', 'Natural brows, soft lips <em>&amp; fine-line ink.</em>', ''),
+    mkBlk(1120, '', 'One artist, <em>start to finish.</em>', 'I text you to confirm the time, the place and the price.')];
+  const W = [[0.7, 3.5], [3.7, 7.1], [7.3, 10.5]];
+  draw = (t) => {
+    const f = t * 30, N = 150, k = f % (2 * N); seqFrame(im, fr('portrait', k < N ? k + 1 : 2 * N - k, N));
+    im.style.zIndex = 2; im.style.transform = `scale(${(1.0 + 0.04 * E.inOutSine(seg(t, 0, DUR))).toFixed(4)})`;
+    B.forEach((b, i) => blkAnim(b, t, W[i][0], W[i][1]));
+    return [3.6, 7.2];
+  };
+} else { // Results: real before/after wipes and a real reel
+  DUR = 11.6; $('#scrim').style.display = 'none';
+  const head = mkBlk(270, 'Real clients', 'Real <em>results</em>', ''); head.el.querySelector('.t').style.fontSize = '96px';
+  const mkCard = (a, b, top, h) => { const c = document.createElement('div'); c.className = 'card'; c.style.top = top + 'px'; c.style.height = h + 'px';
+    c.innerHTML = `<img src="/media/${a}"><img class="af" src="/media/${b}"><span class="tg" style="left:22px">Before</span><span class="tg tga" style="right:22px">After</span><div class="wl"><i></i></div>`; root.appendChild(c); return c; };
+  const C1 = mkCard('brows-before.webp', 'brows-after.webp', 780, 400), C2 = mkCard('lips-before.webp', 'lips-after.webp', 750, 461);
+  const R = document.createElement('div'); R.className = 'card'; Object.assign(R.style, { left: '280px', width: '520px', top: '580px', height: '924px' }); R.innerHTML = '<img>'; root.appendChild(R);
+  const caps = [['Brows', 'Shaped to your face', 1250], ['Lip blush', 'Shade matched to you', 1280], ['Hair-like strokes', 'From my own reels', 1540]].map(([c, s, y]) => {
+    const a = document.createElement('div'); a.className = 'cap'; a.style.top = y + 'px'; a.innerHTML = c; const b = document.createElement('div'); b.className = 'capS'; b.style.top = (y + 92) + 'px'; b.textContent = s; root.append(a, b); return [splitWords(a), splitWords(b)]; });
+  const wipe = (c, t, a) => { const p = E.inOut(seg(t, a + 0.9, a + 2.7)) * 100; $('.af', c).style.clipPath = `inset(0 ${(100 - p).toFixed(2)}% 0 0)`; $('.wl', c).style.left = p.toFixed(2) + '%';
+    $('.wl', c).style.opacity = (p > 0.5 && p < 99.5) ? 1 : 0; $('.tga', c).style.opacity = seg(p, 60, 90); };
+  const show = (el, t, a, z) => { const o = env(t, a, a + 0.6, z - 0.5, z, E.outCubic, E.inOutSine); setEl(el, { op: o, y: (1 - E.outCubic(seg(t, a, a + 0.7))) * 60, s: 0.97 + 0.03 * o }); };
+  const T = [[0.7, 4.4], [4.2, 8.0], [7.8, 11.4]];
+  draw = (t) => {
+    blkAnim(head, t, 0.4, 11.3);
+    show(C1, t, ...T[0]); wipe(C1, t, T[0][0]); show(C2, t, ...T[1]); wipe(C2, t, T[1][0]); show(R, t, ...T[2]);
+    seqFrame($('img', R), `/frames/brows/${pad(clamp(Math.round((t - T[2][0]) * 30) + 20, 1, 139), 4)}.jpg`);
+    caps.forEach(([a, b], i) => { animWords(a, t, T[i][0] + 0.5, 0.07, 0.9, [T[i][1] - 0.55, 0.45, 0.02], { dy: 18, blur: 6 }); animWords(b, t, T[i][0] + 0.75, 0.05, 0.8, [T[i][1] - 0.5, 0.4, 0.01], { dy: 12, blur: 5 }); });
+    return [4.2, 7.8];
+  };
+}
+window.DUR = DUR;
+window.__ready = Promise.all([document.fonts.ready, preload($$('img').map((i) => i.src).filter(Boolean))]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.8))).toFixed(3);
+  const hits = draw(t) || [];
+  const sw = hits.map((a) => seg(t, a - 0.3, a + 1.2)).find((x) => x > 0 && x < 1);
+  $('#sweep').style.opacity = sw ? Math.sin(Math.PI * sw).toFixed(3) : 0; $('#sweep').style.backgroundPosition = sw ? `${(135 - sw * 170).toFixed(1)}% 0` : '0 0';
+  const dA = E.inOutSine(seg(t, 0.2, 2)), k = V === 6 ? 1 : 0.5;
+  far.draw(t + 3, dA * 0.7 * k, { dy: -t * 5 }); near.draw(t, dA * 0.45 * k, { dy: -t * 16 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
