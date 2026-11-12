@@ -1,7 +1,7 @@
 import bpy, sys, math, os
 from mathutils import Vector
 # python3 blite_hero.py -- OUT F0 F1 RES% SAMPLES STEP    (frames 1..150 @ 30 fps = 5 s)
-# Needs work/blite/{F01,F12,F17}.webp (blite.app lookbook) and wm-mask.png / wm-height.png (the site wordmark, rasterised).
+# Needs work/blite/n4/{8579,8584,8602}-mockup.webp (approved nov4 images from blite.app/media/new/nov4) and wm-mask.png / wm-height.png (the site wordmark, rasterised).
 a = sys.argv[sys.argv.index('--') + 1:]; OUT = a[0]; F0 = int(a[1]); F1 = int(a[2]); RES = int(a[3]); SMP = int(a[4]); STEP = int(a[5]) if len(a) > 5 else 1
 K_ = '/home/user/alikhiq.github.io/motion/kit/work/blite/'
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -42,9 +42,9 @@ def panel(path, x, rotz, h=2.55):
     bv = f.modifiers.new('b', 'BEVEL'); bv.width = 0.014; bv.segments = 3
     return wd
 # three-way tailor's mirror: centre pane square to camera, wings angled in
-cw = panel(K_ + 'F01.webp', 0, 0)
-panel(K_ + 'F12.webp', -(cw / 2 + 0.98), 28)
-panel(K_ + 'F17.webp', (cw / 2 + 0.98), -28)
+cw = panel(K_ + 'n4/8579-mockup.webp', 0, 0)
+panel(K_ + 'n4/8584-mockup.webp', -(cw / 2 + 0.98), 28)
+panel(K_ + 'n4/8602-mockup.webp', (cw / 2 + 0.98), -28)
 # BLITE wordmark: exact site silhouette, ivory satin metal, bevelled by a height map
 mimg = bpy.data.images.load(K_ + 'wm-mask.png'); himg = bpy.data.images.load(K_ + 'wm-height.png')
 for im in (mimg, himg): im.colorspace_settings.name = 'Non-Color'
