@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Susu — high-end direction (editorial cuts, 14 s)</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+.ph{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;z-index:2;transform-origin:50% 38%;will-change:transform,opacity}
+.scrim{z-index:3;background:linear-gradient(0deg,rgba(14,9,16,.96) 0%,rgba(14,9,16,.78) 22%,rgba(14,9,16,0) 52%),linear-gradient(180deg,rgba(14,9,16,.6) 0%,rgba(14,9,16,0) 20%)}
+.bar{position:absolute;left:0;right:0;height:150px;background:#05030700;z-index:8}
+.hair{position:absolute;left:70px;right:70px;top:150px;z-index:7;display:flex;justify-content:space-between;font:500 22px var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--champagne)}
+.cap{position:absolute;left:70px;right:70px;z-index:7;bottom:210px}
+.cap .n{font:500 24px var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--champagne);margin-bottom:22px}
+.cap .t{font-family:var(--serif);font-size:128px;line-height:1.02;color:var(--ivory)}
+.cap .p{font:400 38px var(--sans);color:rgba(247,238,226,.85);margin-top:26px;letter-spacing:.02em}
+.cap .p b{font-family:var(--serif);font-weight:400;font-size:64px;margin-right:14px;color:#e9bf95}
+#endbg{z-index:10;background:radial-gradient(110% 70% at 50% 42%,#2c2130 0%,#211b23 50%,#19121b 100%);opacity:0}
+#endwrap{position:absolute;left:0;right:0;top:560px;text-align:center;z-index:11;opacity:0}
+#endwrap img{width:760px;display:block;margin:0 auto}
+#endwrap .l{font:500 26px var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--champagne);margin-top:60px}
+#endwrap .s{font:400 38px var(--sans);line-height:1.45;color:rgba(247,238,226,.86);margin-top:34px;padding:0 90px}
+#dustFar{z-index:1} #dustNear{z-index:12}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div id="root"></div>
+  <div class="layer scrim" id="scrim"></div>
+  <div class="layer" id="endbg"></div>
+  <div id="endwrap"><img src="/brand/susu-logo-gold.svg"><div class="l">Columbus · By appointment</div><div class="s">One artist, start to finish.<br>$100 deposit for permanent makeup.</div></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const far = new Dust($('#dustFar'), { n: 90, seed: 31, size: [1, 2.2], bokeh: 0.05, speed: 8, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 18, seed: 4, size: [1.4, 3.4], bokeh: 0.35, speed: 20, depth: 1 });
+const root = $('#root');
+const SC = [
+  ['susu-brows', '01 / 04', 'Microblading', '<b>$375</b>microshading · second session $250', 0.2, 52],
+  ['susu-more-pen-bw', '02 / 04', 'Permanent <em>makeup</em>', '<b>$300</b>lip blush · eyeliner $200', 3.4, 38],
+  ['susu-more-rings', '03 / 04', 'Piercing', '<b>$25</b>each · jewellery chosen with you', 6.6, 30],
+  ['susu-portrait', '04 / 04', 'Hi, I’m <em>Susu.</em>', 'Request a time. I’ll text to confirm.', 9.8, 45],
+].map(([f, n, t, p, a, py], i) => {
+  const im = document.createElement('img'); im.className = 'ph'; im.src = `/media/${f}.webp`; root.appendChild(im);
+  const c = document.createElement('div'); c.className = 'cap'; c.innerHTML = `<div class="n">${n}</div><div class="t">${t}</div><div class="p">${p}</div>`; root.appendChild(c);
+  const ws = [splitWords($('.t', c))];
+  return { im, c, ws, a, b: a + 3.4, py, dir: i % 2 ? 1 : -1 };
+});
+const hair = document.createElement('div'); hair.className = 'hair'; hair.innerHTML = '<span>Susu</span><span>Ink &amp; Glow</span>'; root.appendChild(hair);
+window.__ready = Promise.all([document.fonts.ready, ...SC.map((s) => s.im.decode().catch(() => 0))]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.5))).toFixed(3);
+  SC.forEach((s) => {
+    const o = env(t, s.a - 0.25, s.a + 0.45, s.b - 0.4, s.b + 0.25, E.inOutSine, E.inOutSine);
+    const k = seg(t, s.a - 0.25, s.b + 0.25);
+    s.im.style.opacity = o.toFixed(3);
+    s.im.style.transform = `scale(${(1.14 - 0.12 * E.smooth(k)).toFixed(4)}) translate(${(s.dir * (8 - 16 * k)).toFixed(2)}px,${(-s.py * k * 0.5).toFixed(2)}px)`;
+    s.c.style.opacity = env(t, s.a + 0.15, s.a + 0.7, s.b - 0.5, s.b - 0.1).toFixed(3);
+    $('.n', s.c).style.transform = `translateY(${(1 - E.outCubic(seg(t, s.a + 0.1, s.a + 0.7))) * 20}px)`;
+    $('.p', s.c).style.transform = `translateY(${(1 - E.outCubic(seg(t, s.a + 0.6, s.a + 1.2))) * 22}px)`;
+    $('.p', s.c).style.opacity = E.outCubic(seg(t, s.a + 0.6, s.a + 1.2));
+    animWords(s.ws[0], t, s.a + 0.2, 0.07, 0.9, [s.b - 0.5, 0.3, 0.02], { dy: 40, blur: 10 });
+  });
+  hair.style.opacity = (E.outCubic(seg(t, 0.8, 1.6)) * (1 - E.inOutSine(seg(t, 13.0, 13.5)))).toFixed(3);
+  $('#scrim').style.opacity = (1 - E.inOutSine(seg(t, 13.0, 13.5))).toFixed(3);
+  const e = E.inOutSine(seg(t, 13.0, 13.8)); $('#endbg').style.opacity = e.toFixed(3);
+  const w = $('#endwrap'); w.style.opacity = E.outCubic(seg(t, 13.5, 14.6)).toFixed(3); w.style.transform = `translateY(${(1 - E.outCubic(seg(t, 13.5, 14.8))) * 30}px) scale(${1 + 0.02 * seg(t, 13.5, 18)})`;
+  far.draw(t + 4, 0.7, { dy: -t * 6 }); near.draw(t + 2, 0.4, { dy: -t * 18 });
+  grainJitter($('#grain'), t);
+};
+</script></body></html>
