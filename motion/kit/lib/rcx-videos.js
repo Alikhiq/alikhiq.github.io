@@ -11,7 +11,7 @@ const RCX = {
       note: 'About <b>7–10 business days</b> after we get your materials.<br>Optional support <b>$49/month</b>.' }] },
   rc02: { title: 'Food truck tiers (3D)', scenes: [
     { type: 'hook', label: 'Food carts + trucks', lines: ['One cart', '<em>or a growing fleet?</em>'], dur: 2.6 },
-    { type: 'bg3dTiers', dir: 'rc3d-tiers', frames: 300, label: 'Choose one package', at: [1.6, 4.3, 7.0], rows: [
+    { type: 'bg3dTiers', dir: 'rc3d-tiers', frames: 297, label: 'Choose one package', at: [1.6, 4.3, 7.0], rows: [
       ['Brand + Website', '1 food cart or truck', '$1,499'], ['Website + Truck Management', 'Up to 3 trucks, one brand', '$4,499'], ['Website + Trucks + Kitchen', 'Up to 5 trucks, 1 kitchen', '$8,499']],
       note: 'Larger packages include the smaller one’s features. Bigger operation? Custom quote.' }] },
   rc03: { title: 'Launch website $3,500', scenes: [
@@ -24,7 +24,7 @@ const RCX = {
       ['Launch website', 'Up to 5 core pages', '$3,500'], ['Signature website', 'Up to 12 pages + one booking or lead integration', '$7,500'], ['Commerce website', '20 supplied products + a tested hosted checkout', '$12,500']],
       note: 'Fixed project fees in USD for the scope shown.', noteTop: 1560 }] },
   rc05: { title: 'Launch website: 5 pages (3D)', scenes: [
-    { type: 'bg3d', dir: 'rc3d-pages', frames: 240, label: 'Launch website · $3,500', title: 'Up to 5 core pages.<br><em>Phone and desktop.</em>', textAt: 4.2, top: 1260 },
+    { type: 'bg3d', dir: 'rc3d-pages', frames: 237, label: 'Launch website · $3,500', title: 'Up to 5 core pages.<br><em>Phone and desktop.</em>', textAt: 4.2, top: 1260 },
     { type: 'hook', lines: ['Fixed price.', '<em>Written scope.</em>'], dur: 2.6 }] },
   rc06: { title: 'Content sprint $1,750', scenes: [
     { type: 'hook', label: 'Content + hooks', lines: ['Make the first', '<em>seconds count.</em>'] },
@@ -58,7 +58,7 @@ const RCX = {
       ['Food truck brand + site', '', '$1,499'], ['Content sprint', '', '$1,750'], ['Launch website', '', '$3,500'], ['Business film', '', '$3,500'], ['Brand system', '', '$4,500'], ['Custom software', '', 'Quote']],
       note: 'Each price covers the listed scope. Support and outside-provider charges are separate.', noteTop: 1770 }] },
   rc12: { title: 'Round City mark (3D)', scenes: [
-    { type: 'bg3d', dir: 'rc3d-mark', frames: 210, label: 'Round City', title: 'Software + automation,<br><em>built around your business.</em>', textAt: 3.6, top: 1300, size: 76 },
+    { type: 'bg3d', dir: 'rc3d-mark', frames: 207, label: 'Round City', title: 'Software + automation,<br><em>built around your business.</em>', textAt: 3.6, top: 1300, size: 76 },
     { type: 'hook', lines: ['We learn the workflow.', '<em>Then we build it.</em>'], dur: 2.8 }] },
   rc13: { title: 'Wedding experience $2,500', scenes: [
     { type: 'hook', label: 'Weddings', lines: ['Bring the celebration', '<em>together.</em>'] },
