@@ -76,12 +76,12 @@ if (V === 4) { // Crystal: three kie-animated icon macros with the real prices
     B.forEach((b, i) => blkAnim(b, t, W[i][0], W[i][1]));
     return [3.6, 7.2];
   };
-} else if (V >= 7) { // New portrait designs (kie nano-banana-pro portraits from her studio photo; camera move only)
+} else if (V >= 7) { // Her real photoshoot photos (Nov 11 shoot); camera move only
   DUR = 10.8;
   const CFG = {
-    7: ['editorial', [['Columbus, Ohio', 'Brows, lips <em>&amp; fine-line ink.</em>', ''], ['By appointment', 'Shaped to <em>your face.</em>', 'Microblading · lip blush · permanent makeup'], ['', 'Booked by text, <em>with me.</em>', '$40 refundable deposit · no payment online']]],
-    8: ['goldleaf', [['Susu Ink &amp; Glow', 'Five services, <em>one artist.</em>', ''], ['', 'Brows · Lips · PMU <em>Tattoo · Piercing</em>', ''], ['', 'All around <em>Columbus.</em>', 'I send the exact location by text.']]],
-    9: ['artist', [['Artist · Columbus, Ohio', 'Hi, I’m <em>Susu.</em>', ''], ['How it works', 'Pick your service, <em>request a time.</em>', ''], ['', 'I text you <em>to confirm.</em>', 'Time, place and price, before anything is booked.']]],
+    7: ['classic', [['Columbus, Ohio', 'Brows, lips <em>&amp; fine-line ink.</em>', ''], ['By appointment', 'Shaped to <em>your face.</em>', 'Microblading · lip blush · permanent makeup'], ['', 'Booked by text, <em>with me.</em>', '$100 deposit for permanent makeup · nothing charged online']]],
+    8: ['side', [['Susu Ink &amp; Glow', 'Five services, <em>one artist.</em>', ''], ['', 'Brows · Lips · PMU <em>Tattoo · Piercing</em>', ''], ['', 'All around <em>Columbus.</em>', 'I send the exact location by text.']]],
+    9: ['pen', [['Artist · Columbus, Ohio', 'Hi, I’m <em>Susu.</em>', ''], ['How it works', 'Pick your service, <em>request a time.</em>', ''], ['', 'I text you <em>to confirm.</em>', 'Time, place and price, before anything is booked.']]],
   }[V];
   const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im);
   const B = CFG[1].map(([l, t, s2]) => mkBlk(1150, l, t, s2));
@@ -91,7 +91,7 @@ if (V === 4) { // Crystal: three kie-animated icon macros with the real prices
     Object.assign(ic.style, { position: 'absolute', zIndex: 6, width: '150px', height: '150px', left: (105 + i * 180) + 'px', top: '1440px' }); root.appendChild(ic); return ic; });
   if (V === 7) { const m = document.createElement('div'); m.className = 'top label'; m.textContent = 'Susu Ink & Glow'; m.style.fontSize = '28px'; root.appendChild(m); B.mast = splitWords(m); }
   draw = (t) => {
-    seqFrame(im, `/v3/p-${CFG[0]}.jpg`); const k = E.inOutSine(seg(t, 0, DUR));
+    seqFrame(im, `/v3/r-${CFG[0]}.jpg`); const k = E.inOutSine(seg(t, 0, DUR));
     im.style.zIndex = 2; im.style.transform = `translate3d(0,${(-22 * k).toFixed(2)}px,0) scale(${(1.02 + 0.08 * k).toFixed(4)})`;
     B.forEach((b, i) => blkAnim(b, t, W[i][0], W[i][1]));
     icons.forEach((ic, i) => { const o = E.outQuart(seg(t, 4.3 + i * 0.12, 5.0 + i * 0.12)) * (1 - E.inOutSine(seg(t, 6.5, 7.0))); setEl(ic, { op: o, y: (1 - o) * 30 + Math.sin(t * 1.5 + i) * 4 }); });
