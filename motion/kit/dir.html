@@ -1,0 +1,114 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Four directions: ?v=1 Bold type · 2 Photo stack · 3 Studio (kie scenes) · 4 Round City case study</title>
+<link rel="stylesheet" href="lib/common.css"><link rel="stylesheet" href="lib/rc.css">
+<style>
+.bg{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;transform-origin:50% 45%;z-index:2}
+#scrim{z-index:3;display:none;background:linear-gradient(0deg,rgba(20,13,22,.96) 0%,rgba(20,13,22,.84) 24%,rgba(20,13,22,.25) 46%,rgba(20,13,22,0) 60%),linear-gradient(180deg,rgba(20,13,22,.55) 0%,rgba(20,13,22,0) 18%)}
+.top{position:absolute;left:0;right:0;top:230px;text-align:center;z-index:6;font-size:24px}
+.blk{position:absolute;left:70px;right:70px;z-index:6;text-align:center}
+.blk .label{font-size:24px;margin-bottom:26px}
+.blk .t{font-family:var(--serif);font-size:98px;line-height:1.06;color:var(--ivory)}
+.blk .s{font-family:var(--sans);font-size:36px;line-height:1.4;color:rgba(247,238,226,.88);margin-top:30px}
+/* 1 bold type */
+.beat{position:absolute;left:0;right:0;top:0;bottom:0;z-index:5}
+.beat .n{position:absolute;left:0;right:0;top:560px;text-align:center;font-family:var(--sans);font-weight:500;font-size:30px;letter-spacing:.34em;text-transform:uppercase;color:var(--champagne)}
+.beat .svc{position:absolute;left:60px;right:60px;top:650px;text-align:center;font-family:var(--serif);font-style:italic;font-size:96px;line-height:1.05;color:var(--ivory)}
+.beat .p{position:absolute;left:0;right:0;top:860px;text-align:center;font-family:var(--serif);font-size:330px;line-height:1;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(233,191,149,.25))}
+.beat .f{position:absolute;left:0;right:0;top:1250px;text-align:center;font-family:var(--sans);font-size:34px;color:rgba(247,238,226,.75)}
+.beat .rule{position:absolute;left:50%;top:1215px;width:360px;margin-left:-180px}
+/* 2 photo stack / 4 case study cards */
+.ph{position:absolute;z-index:4;border-radius:26px;overflow:hidden;box-shadow:0 50px 110px -30px rgba(0,0,0,.8),0 0 0 2px rgba(233,191,149,.55)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.cap{position:absolute;left:0;right:0;text-align:center;z-index:7;font-family:var(--serif);font-size:92px;color:var(--ivory)}
+.capS{position:absolute;left:60px;right:60px;text-align:center;z-index:7;font-family:var(--sans);font-size:34px;line-height:1.4;color:rgba(247,238,226,.82)}
+.big{position:absolute;left:0;right:0;top:640px;text-align:center;z-index:7;font-family:var(--serif);font-size:420px;line-height:1;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+#rcbg{z-index:10;background:radial-gradient(120% 80% at 50% 42%,#2c2130 0%,#211b23 48%,#19121b 100%);opacity:0}
+#rcend{left:0;right:0;top:560px;z-index:11;opacity:0}
+#dustFar{z-index:1} #dustNear{z-index:12}
+</style></head><body>
+<div class="stage" id="stage">
+  <canvas class="dust" id="dustFar"></canvas>
+  <div id="root"></div>
+  <div class="layer" id="scrim"></div>
+  <div class="layer" id="rcbg"></div><div id="rcend"></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script><script src="lib/rc.js"></script>
+<script>
+const V = +(new URLSearchParams(location.search).get('v') || 1);
+const root = $('#root');
+const far = new Dust($('#dustFar'), { n: 110, seed: 21, size: [1, 2.4], bokeh: 0.04, speed: 10, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 26, seed: 8, size: [1.4, 3.2], bokeh: 0.3, speed: 22, depth: 1 });
+const mk = (cls, html, css) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; if (css) Object.assign(d.style, css); root.appendChild(d); return d; };
+const io = (t, a, b, fi = 0.35, fo = 0.3) => E.outCubic(seg(t, a, a + fi)) * (1 - E.inOutSine(seg(t, b - fo, b)));
+let draw;
+
+if (V === 1) { // Bold type: one price per beat, straight from the live menu
+  const B = [['01', 'Microblading', '$375', 'Microblading / microshading'], ['02', 'Lip blush', '$300', 'Shade chosen with you'], ['03', 'Eyeliner', '$200', 'Permanent makeup'],
+    ['04', 'Tattoo', '$150', 'Starting at'], ['05', 'Piercing', '$25', 'Standard placements, each']].map(([n, s, p, f], i) => {
+    const d = mk('beat', `<div class="n">${n} / 05</div><div class="svc">${s}</div><div class="p">${p}</div><div class="rule"></div><div class="f">${f}</div>`); return { d, a: 0.4 + i * 1.7 }; });
+  const fin = mk('blk', '<div class="label">Susu Ink &amp; Glow · Columbus</div><div class="t">One artist.<br><em>By appointment.</em></div><div class="s">$100 deposit for permanent makeup · I confirm by text</div>', { top: '720px' });
+  const WF = $$('.label,.t,.s', fin).map(splitWords);
+  draw = (t) => {
+    B.forEach(({ d, a }) => { const o = io(t, a, a + 1.7, 0.3, 0.25); d.style.opacity = o.toFixed(3);
+      const k = E.outQuart(seg(t, a, a + 0.55));
+      setEl($('.p', d), { op: 1, s: 1.35 - 0.35 * k, blur: (1 - k) * 14 }); setEl($('.svc', d), { op: k, y: (1 - k) * -30 });
+      $('.rule', d).style.transform = `scaleX(${E.outQuart(seg(t, a + 0.2, a + 0.9)).toFixed(3)})`; setEl($('.f', d), { op: E.outCubic(seg(t, a + 0.35, a + 0.9)), y: (1 - E.outCubic(seg(t, a + 0.35, a + 0.9))) * 18 }); });
+    WF.forEach((ws, j) => animWords(ws, t, 9.1 + j * 0.25, 0.07, 0.9, null, { dy: 24, blur: 8 }));
+  };
+} else if (V === 2) { // Photo stack: her real shoot photos land as cards, one word each
+  const P = [['susu-portrait', 'Brows.', -4], ['susu-more-brow', 'Lips.', 3], ['susu-more-pen-bw', 'Ink.', -2.5], ['susu-more-rings', 'Piercing.', 4], ['susu-more-frame', '', -1.5]].map(([f, w, r], i) => {
+    const d = mk('ph', `<img src="/media/${f}.webp">`, { left: '150px', top: '330px', width: '780px', height: '1040px' }); return { d, w, r, a: 0.5 + i * 1.75 }; });
+  const caps = P.map((p) => splitWords(mk('cap', p.w, { top: '1450px' })));
+  const fin = mk('blk', '<div class="t">Hi, I’m <em>Susu.</em></div><div class="s">I work all around Columbus. Request a time and I’ll text you to confirm.</div>', { top: '1420px' });
+  const WF = $$('.t,.s', fin).map(splitWords);
+  draw = (t) => {
+    P.forEach((p, i) => { const k = E.outQuart(seg(t, p.a, p.a + 0.7)); const later = seg(t, p.a + 1.75, p.a + 2.4);
+      setEl(p.d, { op: Math.min(1, k * 1.4), y: (1 - k) * 420 - i * 6, s: 1.08 - 0.08 * k - later * 0.02, rot: p.r * (0.4 + 0.6 * k) + (1 - k) * (i % 2 ? 9 : -9) });
+      p.d.style.zIndex = 4 + i; $('img', p.d).style.filter = `brightness(${(1 - later * 0.25).toFixed(3)})`;
+      if (i < 4) animWords(caps[i], t, p.a + 0.3, 0.05, 0.6, [p.a + 1.5, 0.3, 0.02], { dy: 30, blur: 8 }); });
+    WF.forEach((ws, j) => animWords(ws, t, 7.9 + j * 0.3, 0.06, 0.9, null, { dy: 22, blur: 8 }));
+  };
+} else if (V === 3) { // Studio: three kie scenes (no people), then her real photo
+  $('#scrim').style.display = 'block';
+  const S = [['room', 'By appointment', 'One artist, <em>start to finish.</em>', 'All around Columbus · location sent by text'], ['tools', 'Brows · Lips · PMU', 'Shade chosen <em>with you.</em>', 'Planned together before anything is booked'],
+    ['studs', 'Ear &amp; body piercing', 'Jewellery confirmed <em>with you.</em>', 'Standard placements, each $25']].map(([dir, l, tt, s], i) => { const im = document.createElement('img'); im.className = 'bg'; root.appendChild(im);
+    const d = mk('blk', `<div class="label">${l}</div><div class="t">${tt}</div><div class="s">${s}</div>`, { top: '1160px' }); return { dir, im, a: i * 3.6, w: $$('.label,.t,.s', d).map(splitWords) }; });
+  const ph = mk('ph', '<img src="/v3/r-pen.jpg">', { left: '190px', top: '300px', width: '700px', height: '1244px' }); ph.style.zIndex = 5;
+  const fin = splitWords(mk('cap', 'Hi, I’m <em>Susu.</em>', { top: '1600px' }));
+  draw = (t) => {
+    S.forEach((s, i) => { const o = (i === 0 ? 1 : E.inOutSine(seg(t, s.a - 0.25, s.a + 0.25))) * (1 - E.inOutSine(seg(t, s.a + 3.35, s.a + 3.85))); s.im.style.opacity = o.toFixed(3);
+      if (o > 0) { seqFrame(s.im, `/v3/st-${s.dir}/${pad(clamp(Math.round((t - s.a + 0.25) * 30) + 1, 1, 150), 4)}.jpg`); s.im.style.transform = `scale(${(1.02 + 0.03 * seg(t, s.a, s.a + 3.6)).toFixed(4)})`; }
+      s.w.forEach((ws, j) => animWords(ws, t, s.a + 0.45 + j * 0.2, 0.07, 0.9, [s.a + 3.0, 0.4, 0.02], { dy: 24, blur: 8 })); });
+    const k = E.outQuart(seg(t, 10.9, 11.8)); setEl(ph, { op: k, y: (1 - k) * 80, s: 0.94 + 0.06 * k + 0.02 * seg(t, 11.8, 14) });
+    animWords(fin, t, 11.5, 0.08, 0.9, null, { dy: 22, blur: 8 });
+    $('#scrim').style.opacity = (1 - E.inOutSine(seg(t, 10.6, 11.2))).toFixed(3);
+  };
+} else { // Round City case study: facts from BUILD-STORY.md, real build screenshots
+  const C = [['build-01-first-preview-hero', 'Case study · Susu Ink &amp; Glow', 'It started as <em>a static preview.</em>', 'We rewrote every line in her own voice.', 1000, 625],
+    ['build-icon-concept-A_crystal', 'Icons', 'Four concepts. <em>She picked crystal &amp; gold.</em>', 'Cut straight from the sheet she approved.', 1000, 424],
+    ['build-05-type-systems', 'Typography', 'Three type systems, <em>on the real pages.</em>', 'She chose Playfair Display + DM Sans.', 1000, 333],
+    ['build-11-iphone-fix-hero', 'Phone polish', 'Tested on <em>her own phone.</em>', 'Every change checked at phone and desktop sizes before going live.', 582, 1000]].map(([f, l, tt, s, w, h], i) => {
+    const tall = h > w, W = tall ? 520 : 980, H = Math.round(W * h / w);
+    const d = mk('ph', `<img src="/v3/cs/${f}.jpg">`, { left: ((1080 - W) / 2) + 'px', top: (tall ? 250 : 760 - H) + 'px', width: W + 'px', height: H + 'px' });
+    const b = mk('blk', `<div class="label">${l}</div><div class="t" style="font-size:84px">${tt}</div><div class="s">${s}</div>`, { top: (tall ? 1210 : 860) + 'px' }); return { d, a: 0.4 + i * 3.1, w: $$('.label,.t,.s', b).map(splitWords) }; });
+  const nine = mk('big', '9'); const nl = mk('blk', '<div class="t" style="font-size:84px">merged pull requests <em>on the site.</em></div>', { top: '1130px' }); const WN = $$('.t', nl).map(splitWords);
+  const rc = RCEnd($('#rcend'), { url: 'roundcity.co', scale: 1.2 });
+  draw = (t) => {
+    C.forEach((c) => { const o = io(t, c.a, c.a + 3.1, 0.5, 0.35); const k = E.outQuart(seg(t, c.a, c.a + 0.8));
+      setEl(c.d, { op: o, y: (1 - k) * 70, s: 0.95 + 0.05 * k + 0.02 * seg(t, c.a, c.a + 3.1) });
+      c.w.forEach((ws, j) => animWords(ws, t, c.a + 0.35 + j * 0.2, 0.06, 0.8, [c.a + 2.6, 0.35, 0.02], { dy: 22, blur: 8 })); });
+    const a = 12.8, o = io(t, a, a + 2.2, 0.4, 0.35), k = E.outQuart(seg(t, a, a + 0.7)); setEl(nine, { op: o, s: 1.3 - 0.3 * k, blur: (1 - k) * 12 });
+    WN.forEach((ws) => animWords(ws, t, a + 0.4, 0.06, 0.8, [a + 1.8, 0.3, 0.02], { dy: 22, blur: 8 }));
+    const e = E.inOutSine(seg(t, 14.9, 15.5)); $('#rcbg').style.opacity = e.toFixed(3); rc.draw(Math.max(0, t - 15.0), e);
+  };
+}
+window.__ready = Promise.all([document.fonts.ready]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.6))).toFixed(3);
+  draw(t);
+  far.draw(t + 4, 0.75, { dy: -t * 6 }); near.draw(t + 2, 0.45, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
