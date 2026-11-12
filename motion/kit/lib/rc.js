@@ -18,10 +18,10 @@ function RCEnd(host, o = {}) {
         <circle class="rc__bead" cx="100" cy="14" r="3.2" fill="#fff4e4"/>
       </svg>
     </div>
-    <div class="rc__by">Designed &amp; built by</div>
+    <div class="rc__by">${o.by || 'Designed &amp; built by'}</div>
     <div class="rc__name">Round City</div>
     <div class="rc__rule"></div>
-    <div class="rc__url">susuinkandglow.com</div>`;
+    <div class="rc__url">${o.url || 'susuinkandglow.com'}</div>`;
   const ring = host.querySelector('.rc__ring'), ring2 = host.querySelector('.rc__ring2'), hz = host.querySelector('.rc__hz');
   const city = host.querySelector('.rc__city'), bead = host.querySelector('.rc__bead');
   const L = 2 * Math.PI * 86, L2 = 2 * Math.PI * 70;
