@@ -77,7 +77,7 @@ cam.data.dof.use_dof = True; cam.data.dof.aperture_fstop = 1.6
 bpy.ops.object.empty_add(location=(0, 7.0, 6.3)); tg = bpy.context.object
 c = cam.constraints.new('TRACK_TO'); c.target = tg; c.track_axis = 'TRACK_NEGATIVE_Z'; c.up_axis = 'UP_Y'; cam.data.dof.focus_object = tg
 # macro start on the wordmark, long pull-back and rise to reveal the framed photographs
-K = [(1, (0.3, 2.6, 6.4), (0, 7.0, 6.3)), (60, (-0.1, 3.4, 6.3), (0, 7.0, 6.25)), (125, (0, -1.5, 4.4), (0, 7.5, 4.8)), (150, (0, -4.0, 4.0), (0, 8.0, 4.4))]
+K = [(1, (0.25, -0.2, 6.4), (0, 7.0, 6.3)), (60, (-0.1, 1.7, 6.3), (0, 7.0, 6.25)), (125, (0, -1.5, 4.4), (0, 7.5, 4.8)), (150, (0, -4.0, 4.0), (0, 8.0, 4.4))]
 for f, cl, tl in K:
     cam.location = cl; cam.keyframe_insert('location', frame=f); tg.location = tl; tg.keyframe_insert('location', frame=f)
 sc.render.image_settings.file_format = 'JPEG'; sc.render.image_settings.quality = 95
