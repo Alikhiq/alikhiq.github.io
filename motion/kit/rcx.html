@@ -36,10 +36,11 @@
 #fine{position:absolute;left:0;right:0;top:1470px;z-index:11;text-align:center;font-family:var(--sans);font-size:29px;color:rgba(247,238,226,.72)}
 #endbg{z-index:10;background:radial-gradient(120% 80% at 50% 42%,#1a2a5c 0%,#0d1634 50%,#070b18 100%);opacity:0}
 #dustFar{z-index:1} #dustNear{z-index:12}
+#root{position:absolute;inset:0;transform-origin:50% 45%;will-change:transform,filter}
 </style></head><body>
 <div class="stage" id="stage">
   <canvas class="dust" id="dustFar"></canvas>
-  <div id="root"></div>
+  <div id="root"></div><div class="layer" id="flash" style="z-index:9;background:radial-gradient(80% 60% at 50% 45%,#fff2dc 0%,rgba(255,236,210,0) 70%);opacity:0;mix-blend-mode:screen"></div>
   <div class="layer" id="endbg"></div><div id="rcend"></div><div id="cta"></div><div id="fine"></div>
   <canvas class="dust" id="dustNear"></canvas>
   <div class="vignette"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
@@ -60,7 +61,7 @@ const B = {
   hook(s, L) { // one to three lines of big type
     const ws = s.lines.map((ln, i) => W(mk(L, 'ttl', ln, { top: (s.top || 700) + i * (s.gap || 220) + 'px', fontSize: (s.size || 92) + 'px' })));
     const lab = s.label ? W(mk(L, 'lab', s.label, { top: ((s.top || 700) - 110) + 'px' })) : null;
-    return { dur: s.dur || 2.8, draw(t) { if (lab) animWords(lab, t, 0.1, 0.04, 0.7, null, IN); ws.forEach((w, i) => animWords(w, t, 0.25 + i * (s.step || 0.55), 0.07, 0.9, null, IN)); } };
+    return { pops: s.lines.map((_, i) => 0.3 + i * (s.step || 0.55)), dur: s.dur || 2.8, draw(t) { if (lab) animWords(lab, t, 0.1, 0.04, 0.7, null, IN); ws.forEach((w, i) => animWords(w, t, 0.25 + i * (s.step || 0.55), 0.07, 0.9, null, IN)); } };
   },
   price(s, L) { // package: label, name, big price, fee line, included items, note
     const lab = W(mk(L, 'lab', s.label, { top: '250px' }));
@@ -72,7 +73,7 @@ const B = {
     const its = s.items.map((x) => { const r = mk(box, 'it' + (x[0] === '-' ? ' x' : ''), `<i>${x[0] === '-' ? '–' : '✓'}</i><span>${x.replace(/^-/, '')}</span>`); return r; });
     const note = s.note ? W(mk(L, 'note', s.note, { top: (s.noteTop || 1560) + 'px' })) : null;
     const t0 = 1.5, st = s.stagger || 0.5;
-    return { dur: s.dur || (t0 + its.length * st + 2.6), draw(t) {
+    return { hits: [0.55], riser: 0.55, pops: its.map((_, i) => t0 + i * st + 0.08), dur: s.dur || (t0 + its.length * st + 2.6), draw(t) {
       animWords(lab, t, 0.05, 0.04, 0.6, null, IN); animWords(nm, t, 0.2, 0.06, 0.8, null, IN);
       const k = E.outQuart(seg(t, 0.45, 1.25)); setEl(big, { op: k, s: 1.25 - 0.25 * k, blur: (1 - k) * 14 });
       animWords(fee, t, 0.9, 0.03, 0.6, null, IN);
@@ -88,7 +89,7 @@ const B = {
     const rows = s.rows.map(([n, w, p]) => mk(box, 'tier', `<div><div class="tn">${n}</div>${w ? `<div class="tw">${w}</div>` : ''}</div><div class="tp${/\$/.test(p) ? '' : ' q'}">${p}</div>`));
     const note = s.note ? W(mk(L, 'note', s.note, { top: (s.noteTop || 1600) + 'px' })) : null;
     const st = s.stagger || 0.7;
-    return { dur: s.dur || (1.2 + rows.length * st + 2.6), draw(t) {
+    return { pops: rows.map((_, i) => 0.95 + i * st), dur: s.dur || (1.2 + rows.length * st + 2.6), draw(t) {
       if (lab) animWords(lab, t, 0.05, 0.04, 0.6, null, IN); if (tt) animWords(tt, t, 0.2, 0.06, 0.8, null, IN);
       rows.forEach((el, i) => { const a = E.outQuart(seg(t, 0.9 + i * st, 1.6 + i * st)); setEl(el, { op: a, y: (1 - a) * 60, s: 0.96 + 0.04 * a }); });
       if (note) animWords(note, t, 1.2 + rows.length * st, 0.025, 0.7, null, IN);
@@ -98,7 +99,7 @@ const B = {
     const lab = W(mk(L, 'lab', s.label, { top: '300px' })); const tt = W(mk(L, 'ttl', s.title, { top: '370px', fontSize: '80px' }));
     const box = mk(L, 'steps', null, { top: (s.top || 700) + 'px' });
     const rows = s.rows.map(([h, d], i) => mk(box, 'st', `<div class="n">0${i + 1}</div><div><div class="h">${h}</div>${d ? `<div class="d">${d}</div>` : ''}</div>`));
-    return { dur: s.dur || (1.2 + rows.length * 0.9 + 2.4), draw(t) {
+    return { pops: rows.map((_, i) => 1.05 + i * 0.9), dur: s.dur || (1.2 + rows.length * 0.9 + 2.4), draw(t) {
       animWords(lab, t, 0.05, 0.04, 0.6, null, IN); animWords(tt, t, 0.2, 0.06, 0.8, null, IN);
       rows.forEach((el, i) => { const a = E.outQuart(seg(t, 1.0 + i * 0.9, 1.7 + i * 0.9)); setEl(el, { op: a, x: (1 - a) * 50 }); });
     } };
@@ -109,7 +110,7 @@ const B = {
     const lab = W(mk(L, 'lab', s.label, { top: ((s.top || 220) + h + 70) + 'px' }));
     const tt = W(mk(L, 'ttl', s.title, { top: ((s.top || 220) + h + 120) + 'px', fontSize: '66px' }));
     const dur = s.dur || 3.2;
-    return { dur, draw(t) { const k = E.outQuart(seg(t, 0, 0.8)); setEl(c, { op: k, y: (1 - k) * 80, s: 0.95 + 0.05 * k + 0.02 * seg(t, 0, dur) });
+    return { pops: [0.35], dur, draw(t) { const k = E.outQuart(seg(t, 0, 0.8)); setEl(c, { op: k, y: (1 - k) * 80, s: 0.95 + 0.05 * k + 0.02 * seg(t, 0, dur) });
       $('img', c).style.transform = `scale(${(1 + 0.05 * seg(t, 0, dur)).toFixed(4)})`;
       animWords(lab, t, 0.3, 0.04, 0.6, null, IN); animWords(tt, t, 0.45, 0.06, 0.8, null, IN); } };
   },
@@ -119,7 +120,7 @@ const B = {
     const tt = W(mk(L, 'ttl', s.title, { top: (s.top || 1280) + 60 + 'px', fontSize: (s.size || 84) + 'px' }));
     const sub = s.sub ? W(mk(L, 'note', s.sub, { top: (s.subTop || (s.top || 1280) + 300) + 'px', fontSize: '34px' })) : null;
     const N = s.frames, dur = s.dur || N / 30;
-    return { dur, draw(t) { seqFrame(im, `/v3/${s.dir}/${pad(clamp(Math.floor(t * 30) + 1, 1, N), 4)}.jpg`);
+    return { hits: [(s.textAt || 0.6) + 0.2], riser: (s.textAt || 0.6) + 0.2, dur, draw(t) { seqFrame(im, `/v3/${s.dir}/${pad(clamp(Math.floor(t * 30) + 1, 1, N), 4)}.jpg`);
       if (lab) animWords(lab, t, s.textAt || 0.6, 0.04, 0.6, null, IN); animWords(tt, t, (s.textAt || 0.6) + 0.15, 0.06, 0.9, null, IN);
       if (sub) animWords(sub, t, (s.textAt || 0.6) + 0.8, 0.03, 0.7, null, IN); } };
   },
@@ -130,7 +131,7 @@ const B = {
     const rows = s.rows.map(([n, w, p]) => mk(box, 'tier', `<div><div class="tn" style="font-size:46px">${n}</div>${w ? `<div class="tw">${w}</div>` : ''}</div><div class="tp${/\$/.test(p) ? '' : ' q'}" style="font-size:64px">${p}</div>`));
     const note = s.note ? W(mk(L, 'note', s.note, { top: '1700px', fontSize: '28px' })) : null;
     const N = s.frames, dur = s.dur || N / 30;
-    return { dur, draw(t) { seqFrame(im, `/v3/${s.dir}/${pad(clamp(Math.floor(t * 30) + 1, 1, N), 4)}.jpg`);
+    return { pops: s.at.map((a) => a + 0.12), dur, draw(t) { seqFrame(im, `/v3/${s.dir}/${pad(clamp(Math.floor(t * 30) + 1, 1, N), 4)}.jpg`);
       animWords(tt, t, 0.3, 0.04, 0.6, null, IN);
       rows.forEach((el, i) => { const a = E.outQuart(seg(t, s.at[i], s.at[i] + 0.7)); setEl(el, { op: a, y: (1 - a) * 50 }); });
       if (note) animWords(note, t, dur - 2.0, 0.025, 0.7, null, IN); } };
@@ -142,6 +143,11 @@ const scenes = CFG.scenes.map((s) => { const L = mk(root, 'sc'); const b = B[s.t
 let T = 0; scenes.forEach((s) => { s.a = T; T += s.dur; });
 const END = T, ENDDUR = 4.4;
 window.__DUR = END + ENDDUR;
+// Motion Bro-style: zoom-blur whip on every cut, a shake on every price hit. Events feed the sound mix (lib/sfx2.py).
+const CUTS = scenes.slice(1).map((s) => s.a).concat([END]);
+const HITS = [].concat(...scenes.map((s) => (s.hits || []).map((h) => s.a + h)));
+window.__EVENTS = { cuts: CUTS, hits: HITS, risers: [].concat(...scenes.map((s) => s.riser != null ? [s.a + s.riser] : [])),
+  pops: [].concat(...scenes.map((s) => (s.pops || []).map((p) => s.a + p))), end: END, dur: END + ENDDUR };
 const rc = RCEnd($('#rcend'), { by: CFG.by || 'Software + automation · Built with Ali', url: CFG.url || 'roundcity.co', scale: 1.25 });
 $('#cta').textContent = CFG.cta || 'Talk with Ali'; $('#fine').textContent = CFG.fine || 'Columbus, Ohio · roundcity.co';
 const WF = W($('#fine'));
@@ -155,6 +161,12 @@ window.seek = async (t) => {
   const te = t - END; rc.draw(Math.max(0, te), e);
   const c = E.outCubic(seg(te, 2.5, 3.3)); $('#cta').style.opacity = c.toFixed(3); $('#cta').style.transform = `translateX(-50%) translateY(${((1 - c) * 24).toFixed(1)}px) scale(${(0.96 + 0.04 * c).toFixed(3)})`;
   animWords(WF, te, 3.0, 0.04, 0.8, null, { dy: 10, blur: 5 });
+  let amt = 0, dir = 1; CUTS.forEach((c) => { const d = t - c; if (Math.abs(d) < 0.32) { const a = 1 - Math.abs(d) / 0.32; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } });
+  amt = E.inOutSine(amt);
+  let sx = 0, sy = 0; HITS.forEach((h) => { const d = t - h; if (d >= 0 && d < 0.45) { const k = Math.pow(1 - d / 0.45, 2); sx += Math.sin(d * 95) * 14 * k; sy += Math.cos(d * 80) * 10 * k; } });
+  const R = $('#root'); R.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.09 * amt).toFixed(4)}) rotate(${(dir * 1.4 * amt).toFixed(3)}deg)`;
+  R.style.filter = amt > 0.01 ? `blur(${(amt * 9).toFixed(2)}px)` : 'none';
+  const fl = Math.max(0, ...CUTS.map((c) => 1 - Math.abs(t - c) / 0.18)); $('#flash').style.opacity = (Math.max(0, fl) * 0.32).toFixed(3);
   far.draw(t + 4, 0.75, { dy: -t * 6 }); near.draw(t + 2, 0.45, { dy: -t * 20 });
   grainJitter($('#grain'), t);
   await flushDecodes();
