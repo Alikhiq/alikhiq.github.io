@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><title>614lux: 48 videos in 6 days, shown as the work itself (hook, six full-screen cuts, pull back to all 48 playing)</title>
+<!doctype html><html><head><meta charset="utf-8"><title>The work itself: hook, fast full-screen cuts, pull back to all 48 videos playing, then an offer (wall.html?v=&lt;id&gt;, configs in lib/wall-videos.js)</title>
 <link rel="stylesheet" href="lib/common.css">
 <style>
 /* Footage is cut from the finished videos in /videos with ffmpeg (frames land in work/v6, not committed).
@@ -32,23 +32,46 @@ body{--bg:#0b0c0e;--ink:#f7eee2;--acc:#e9bf95}
 #ecta{margin-top:70px;padding:34px 90px;border-radius:80px;font-weight:800;font-size:52px;background:#e9bf95;color:#14182e}
 #eurl{margin-top:36px;font-weight:600;font-size:44px}
 #eby{position:absolute;left:0;right:0;top:1440px;font-weight:600;font-size:28px;letter-spacing:.18em;text-transform:uppercase;opacity:0}
+#dimC{position:absolute;inset:0;z-index:5;background:rgba(6,8,14,.62);opacity:0}
+#cards{position:absolute;left:60px;right:60px;top:300px;z-index:7;display:flex;flex-direction:column;gap:30px;align-items:stretch}
+.card{padding:46px 50px 50px;border-radius:44px;background:rgba(13,16,28,.94);box-shadow:inset 0 0 0 2px rgba(233,191,149,.45),0 40px 100px rgba(0,0,0,.7);font-family:Figtree;color:var(--ink);text-align:center;opacity:0}
+.card.pick{box-shadow:inset 0 0 0 5px var(--acc),0 0 90px -10px var(--acc),0 40px 100px rgba(0,0,0,.7)}
+.card .co{display:inline-block;padding:10px 26px;border-radius:40px;font-family:JBM;font-weight:700;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);box-shadow:inset 0 0 0 2px var(--acc)}
+.card.pick .co{background:var(--acc);color:#14182e}
+.card .pre{margin-top:26px;font-weight:600;font-size:40px;color:rgba(247,238,226,.8)}
+.card .cp{margin-top:6px;font-weight:800;letter-spacing:-.05em;line-height:1;font-size:230px;background:linear-gradient(120deg,#ffe8cf,#e9bf95 40%,#c48d62 75%,#e9c39d);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums}
+.card .cp i{font-style:normal;font-size:.3em;letter-spacing:-.02em;font-weight:700}
+.card .cp.t{font-size:120px;letter-spacing:-.04em;line-height:1.05;padding-bottom:.08em}
+.card .cn{margin-top:18px;font-weight:600;font-size:50px;letter-spacing:-.02em;line-height:1.15}
+.cards3 .card{padding:28px 40px 30px}.cards3 .card .cp{font-size:150px}
+.cards2 .card{padding:34px 40px 40px}.cards2 .card .cp{font-size:180px}.cards2 .card .cn{font-size:44px}.cards2 .card .pre{font-size:34px;margin-top:18px}
+#cfoot{align-self:center;padding:24px 44px;border-radius:60px;background:var(--acc);color:#14182e;font-family:Figtree;font-weight:800;font-size:40px;letter-spacing:-.01em;text-align:center;line-height:1.2;opacity:0}
 #flash{z-index:9;background:#fff;opacity:0;mix-blend-mode:overlay}
 </style></head><body>
 <div class="stage" id="stage">
   <div id="root">
     <div id="scA" style="position:absolute;inset:0"><img class="full" id="heroA"><div id="shadeA"></div>
-      <div class="tx"><div class="tag">@614lux · Nov 8 – 13</div><div class="hd" id="hook">I made<br><em>48 videos</em><br>in 6 days.</div></div></div>
+      <div class="tx"><div class="tag" id="tag"></div><div class="hd" id="hook"></div></div></div>
     <div id="scB" style="position:absolute;inset:0"><img class="full" id="cut"><div id="chip"></div></div>
-    <div id="scC" style="position:absolute;inset:0;overflow:hidden"><div id="wall"><img id="mos"><div id="mid"><b>48</b><span>videos · 6 days</span></div></div><img id="heroC"><div id="band">Every one <em>built in code.</em></div></div>
+    <div id="scC" style="position:absolute;inset:0;overflow:hidden"><div id="wall"><img id="mos"><div id="mid"></div></div><img id="heroC"><div id="band"></div><div id="dimC"></div><div id="cards"></div></div>
   </div>
   <div class="layer" id="flash"></div>
-  <div id="end"><div id="e1">Ali Al-Khafaji · Founder</div><div id="e2">Round City</div><div id="erule"></div><div id="e3">Software + automation, built around your business</div><div id="ecta">Talk with Ali</div><div id="eurl">roundcity.co · @614lux</div><div id="eby">Columbus, Ohio</div></div>
+  <div id="end"><div id="e1">Ali Al-Khafaji · Founder</div><div id="e2">Round City</div><div id="erule"></div><div id="e3"></div><div id="ecta"></div><div id="eurl">roundcity.co · @614lux</div><div id="eby">Columbus, Ohio</div></div>
   <div class="grain" id="grain"></div>
 </div>
-<script src="lib/common.js"></script>
+<script src="lib/common.js"></script><script src="lib/wall-videos.js"></script>
 <script>
-const CUTS = [['Susu Ink & Glow', 'ads'], ['Halal New York Gyro', 'collab'], ['Susu Ink & Glow', 'website'], ['Round City', '3D'], ['Blite', 'collab'], ['Susu Ink & Glow', '3D']];
-const A = 2.0, CD = 0.6, B = A, C = B + CUTS.length * CD, ZOOM = 1.7, LAND = C + ZOOM + 0.15, END = C + 4.9, ENDDUR = 3.8;
+const CFG = WALL[new URLSearchParams(location.search).get('v') || 'w'];
+const CUTS = CFG.cuts.map((i) => [i, ...CLIPS[i]]);
+$('#tag').textContent = CFG.tag; $('#hook').innerHTML = CFG.hook; if (CFG.hookSize) $('#hook').style.fontSize = CFG.hookSize + 'px';
+$('#mid').innerHTML = `<b style="font-size:${CFG.mid[2] || 104}px">${CFG.mid[0]}</b><span>${CFG.mid[1]}</span>`; $('#band').innerHTML = CFG.band || '';
+$('#e3').innerHTML = CFG.line || 'Software + automation, built around your business'; $('#ecta').textContent = CFG.cta || 'Talk with Ali';
+const cardsEl = $('#cards'); const CARDS = (CFG.cards || []).map((c) => { const d = document.createElement('div'); d.className = 'card' + (c.pick ? ' pick' : '');
+  d.innerHTML = `<div class="co">${c.over}</div>${c.pre ? `<div class="pre">${c.pre}</div>` : ''}<div class="cp${c.text ? ' t' : ''}">${c.price}${c.per ? `<i>${c.per}</i>` : ''}</div>${c.note ? `<div class="cn">${c.note}</div>` : ''}`; cardsEl.appendChild(d); return d; });
+if (CARDS.length > 1) cardsEl.classList.add(CARDS.length > 2 ? 'cards3' : 'cards2'); if (CFG.cardsTop) cardsEl.style.top = CFG.cardsTop + 'px';
+let FOOT = null; if (CFG.foot) { FOOT = document.createElement('div'); FOOT.id = 'cfoot'; FOOT.innerHTML = CFG.foot; cardsEl.appendChild(FOOT); }
+const A = 2.0, CD = 0.6, B = A, C = B + CUTS.length * CD, ZOOM = 1.7, LAND = C + ZOOM + 0.15, HOLD = CARDS.length ? 6.2 : 4.9, END = C + HOLD, ENDDUR = 3.8;
+const pp = (f, n) => { f = f % (2 * n - 2); return (f >= n ? 2 * n - 2 - f : f) + 1; };   // ping-pong through n frames
 const TW = 154, TH = 274, HX = 1 + 2 * TW, HY = 1 + 2 * TH, S0 = 1080 / TW;   // hero tile = column 2, row 2
 $('#mid').style.left = 1 + 3 * TW + 'px'; $('#mid').style.top = 1 + 3 * TH + 'px';
 const words = (el) => { splitWords(el); return $$('.w', el); }; const WH = words($('#hook')), WE = words($('#e2'));
@@ -56,7 +79,7 @@ function slam(ws, t, t0, step = 0.1, d = 0.34) { ws.forEach((w, i) => { const k 
   w.style.transform = `translateY(${((1 - k) * 46).toFixed(1)}px) scale(${(1 + 0.4 * (1 - k)).toFixed(3)})`; w.style.filter = k < 0.985 ? `blur(${((1 - k) * 12).toFixed(1)}px)` : 'none'; }); }
 const fadeUp = (el, t, a, d = 0.45, dy = 28, tx = '') => { const k = E.outQuart(seg(t, a, a + d)); el.style.opacity = k.toFixed(3); el.style.transform = `${tx} translateY(${((1 - k) * dy).toFixed(1)}px)`; };
 window.__DUR = END + ENDDUR;
-window.__EVENTS = { cuts: [C, END], hits: [LAND], risers: [LAND], pops: CUTS.map((_, i) => B + i * CD), end: END, dur: END + ENDDUR };
+window.__EVENTS = { cuts: [C, END], hits: [LAND], risers: [LAND], pops: CUTS.map((_, i) => B + i * CD).concat(CARDS.map((_, i) => LAND + 0.6 + i * 0.3)), end: END, dur: END + ENDDUR };
 window.__ready = document.fonts.ready.then(() => true);
 const show = (id, on) => { $(id).style.visibility = on ? 'visible' : 'hidden'; };
 window.seek = async (t) => {
@@ -64,16 +87,19 @@ window.seek = async (t) => {
   show('#scA', inA); show('#scB', inB); show('#scC', inC);
   if (inA) { seqFrame($('#heroA'), `/v6/mosaic/${pad(clamp(Math.floor(t * 30) + 1, 1, 150), 4)}.jpg`); $('#heroA').style.transform = `scale(${(2.3 + 0.25 * t / A).toFixed(4)}) rotate(-6deg)`; slam(WH, t, -1); }
   let punch = 0;
-  if (inB) { const i = Math.min(CUTS.length - 1, Math.floor((t - B) / CD)), lt = t - B - i * CD; seqFrame($('#cut'), `/v6/cut/${i}_${pad(clamp(Math.floor(lt * 30) + 1, 1, 21), 4)}.jpg`);
-    $('#chip').innerHTML = `<b>${String(i + 1).padStart(2, '0')}</b>${CUTS[i][0]} · ${CUTS[i][1]}`; punch = Math.pow(1 - clamp(lt / 0.3), 3); $('#cut').style.transform = `scale(${(1.02 + 0.05 * lt / CD).toFixed(4)})`; }
-  if (inC) { const lt = t - C, e = E.inOut(seg(lt, 0.15, 0.15 + ZOOM)); const s = lerp(S0, 1, e) * (1 + 0.035 * seg(lt, ZOOM, 4.9));
+  if (inB) { const i = Math.min(CUTS.length - 1, Math.floor((t - B) / CD)), lt = t - B - i * CD; seqFrame($('#cut'), `/v6/cut/${CUTS[i][0]}_${pad(clamp(Math.floor(lt * 30) + 1, 1, 21), 4)}.jpg`);
+    $('#chip').innerHTML = `<b>${String(i + 1).padStart(2, '0')}</b>${CUTS[i][1]} · ${CUTS[i][2]}`; punch = Math.pow(1 - clamp(lt / 0.3), 3); $('#cut').style.transform = `scale(${(1.02 + 0.05 * lt / CD).toFixed(4)})`; }
+  if (inC) { const lt = t - C, e = E.inOut(seg(lt, 0.15, 0.15 + ZOOM)); const s = lerp(S0, 1, e) * (1 + 0.035 * seg(lt, ZOOM, HOLD));
     const px = lerp(0, HX, (S0 - Math.min(s, S0)) / (S0 - 1)), py = lerp(0, HY, (S0 - Math.min(s, S0)) / (S0 - 1));
     const ox = px - HX * s, oy = py - HY * s;   // keep the hero tile gliding from full screen to its slot
-    seqFrame($('#mos'), `/v6/mosaic/${pad(clamp(Math.floor(lt * 30) + 1, 1, 150), 4)}.jpg`); $('#wall').style.transform = `translate(${ox.toFixed(2)}px,${oy.toFixed(2)}px) scale(${s.toFixed(5)})`;
+    seqFrame($('#mos'), `/v6/mosaic/${pad(pp(Math.floor(lt * 30), 150), 4)}.jpg`); $('#wall').style.transform = `translate(${ox.toFixed(2)}px,${oy.toFixed(2)}px) scale(${s.toFixed(5)})`;
     const hc = $('#heroC'), on = s > 1.5; hc.style.visibility = on ? 'visible' : 'hidden';
     if (on) { seqFrame(hc, `/v6/hero/c${pad(clamp(Math.floor(lt * 30) + 1, 1, 66), 4)}.jpg`); hc.style.width = '1080px'; hc.style.transform = `translate(${px.toFixed(2)}px,${py.toFixed(2)}px) scale(${(s / S0).toFixed(5)})`; hc.style.opacity = clamp((s - 1.5) / 0.6).toFixed(3); }
     const k = E.outExpo(seg(t, LAND - 0.12, LAND + 0.3)), p = seg(t, LAND, LAND + 0.4); $('#mid').style.opacity = k.toFixed(3); $('#mid').style.transform = `scale(${(0.4 + 0.6 * k + 0.25 * Math.sin(p * Math.PI) * (1 - p)).toFixed(3)})`;
-    fadeUp($('#band'), t, LAND + 0.55, 0.5, 30, 'translateX(-50%)'); }
+    if (CFG.band) fadeUp($('#band'), t, LAND + 0.55, 0.5, 30, 'translateX(-50%)');
+    if (CARDS.length) { $('#dimC').style.opacity = E.outCubic(seg(t, LAND + 0.4, LAND + 0.9)).toFixed(3);
+      CARDS.forEach((el, i) => { const a = E.outExpo(seg(t, LAND + 0.55 + i * 0.3, LAND + 1.15 + i * 0.3)); el.style.opacity = a.toFixed(3); el.style.transform = `translateY(${((1 - a) * 120).toFixed(1)}px) scale(${(0.88 + 0.12 * a).toFixed(3)})`; });
+      if (FOOT) { const a = E.outExpo(seg(t, LAND + 0.7 + CARDS.length * 0.3, LAND + 1.3 + CARDS.length * 0.3)); FOOT.style.opacity = a.toFixed(3); FOOT.style.transform = `translateY(${((1 - a) * 60).toFixed(1)}px)`; } } }
   $('#end').style.opacity = te >= 0 ? 1 : 0;
   if (te >= 0) { fadeUp($('#e1'), te, 0.1, 0.4, 20); slam(WE, te, 0.2, 0.1, 0.45); $('#erule').style.transform = `scaleX(${E.outExpo(seg(te, 0.5, 1.1)).toFixed(3)})`; fadeUp($('#e3'), te, 0.75, 0.45, 20);
     const c = E.outExpo(seg(te, 1.1, 1.7)); $('#ecta').style.opacity = c.toFixed(3); $('#ecta').style.transform = `translateY(${((1 - c) * 40).toFixed(1)}px) scale(${(0.85 + 0.15 * c).toFixed(3)})`; fadeUp($('#eurl'), te, 1.4, 0.45, 16); $('#eby').style.opacity = (seg(te, 1.8, 2.3) * 0.7).toFixed(3); }
