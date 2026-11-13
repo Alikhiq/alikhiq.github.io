@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Blite — cinematic sales ad (editorial part, 17 s, approved nov4 images only)</title>
+<style>
+@font-face{font-family:Figtree;src:url(/blite/figtree.woff2) format('woff2');font-weight:300 900}
+:root{--ink:#121315;--paper:#F6F3EE;--stone:#ECE6DD;--ox:#6E1423}
+*{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--ink);color:var(--paper);font-family:Figtree,sans-serif;-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(110% 70% at 50% 40%,#232120 0%,#151517 55%,#0c0c0e 100%)}
+#set{position:absolute;inset:0;z-index:1}
+/* framed mockup (torso shots, no faces) */
+.mk{position:absolute;left:110px;top:250px;width:860px;height:1067px;border-radius:6px;overflow:hidden;opacity:0;box-shadow:0 60px 120px -30px rgba(0,0,0,.85),0 0 0 1px rgba(246,243,238,.12);will-change:transform,opacity}
+.mk img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 40%}
+/* product card on paper */
+.pc{position:absolute;left:160px;top:330px;width:760px;height:900px;background:#fff;border-radius:6px;opacity:0;box-shadow:0 50px 110px -30px rgba(0,0,0,.85);display:grid;place-items:center;will-change:transform,opacity}
+.pc img{width:88%;height:88%;object-fit:contain;display:block}
+/* detail macro, full width band */
+.dt{position:absolute;left:0;right:0;top:300px;height:1080px;overflow:hidden;opacity:0}
+.dt img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 50%}
+.lab{position:absolute;left:0;right:0;top:1290px;text-align:center;z-index:8;font-size:30px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;opacity:0}
+.lab b{color:#c98b97;margin-right:18px;font-weight:600}
+.hl{position:absolute;left:90px;right:90px;top:1420px;z-index:8;font-weight:600;font-size:104px;line-height:1.02;letter-spacing:-.025em;opacity:0}
+.hl small{display:block;font-weight:500;font-size:34px;letter-spacing:.01em;line-height:1.4;color:rgba(246,243,238,.8);margin-top:26px}
+.top{position:absolute;left:90px;right:90px;top:120px;z-index:9;display:flex;justify-content:space-between;align-items:center;opacity:0}
+.top img{height:36px}.top span{font-size:22px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(246,243,238,.75)}
+.w{display:inline-block;will-change:transform,opacity,filter;white-space:pre}
+#end{position:absolute;inset:0;z-index:30;background:radial-gradient(90% 60% at 50% 40%,#22201f 0%,#141416 60%,#0d0d0f 100%);opacity:0}
+#end .wm{position:absolute;left:170px;right:170px;top:600px}#end .wm img{width:100%;display:block}
+#end .sub{position:absolute;left:0;right:0;top:820px;text-align:center;font-size:30px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(246,243,238,.78)}
+#end .cta{position:absolute;left:50%;top:960px;transform:translateX(-50%);background:var(--ox);color:var(--paper);font-weight:600;font-size:44px;padding:30px 70px;border-radius:999px;white-space:nowrap;box-shadow:0 20px 60px -10px rgba(110,20,35,.6)}
+#end .addr{position:absolute;left:0;right:0;top:1150px;text-align:center;font-size:32px;line-height:1.55;color:rgba(246,243,238,.82)}
+#end .url{position:absolute;left:0;right:0;top:1330px;text-align:center;font-size:40px;font-weight:600;letter-spacing:.04em}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.06;mix-blend-mode:overlay;z-index:40}
+.vig{position:absolute;inset:0;z-index:39;background:radial-gradient(130% 95% at 50% 45%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%)}
+.black{position:absolute;inset:0;background:#000;z-index:50}
+</style></head><body>
+<div class="stage"><div id="set"></div>
+<div class="top" id="top"><img src="/blite/blite-wordmark.svg"><span>Sterling Heights</span></div>
+<div id="txt"></div>
+<div id="end"><div class="wm"><img src="/blite/blite-wordmark.svg"></div><div class="sub">Visit us in Sterling Heights</div><div class="cta">Book a fitting</div>
+<div class="addr">37742 Van Dyke Ave, Sterling Heights, MI<br>(586) 983-9143</div><div class="url">blite.app</div></div>
+<div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div></div>
+<script src="lib/common.js"></script>
+<script>
+const S = $('#set'), T = $('#txt');
+const add = (cls, src, z) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = `<img src="/blite/n4/${src}.webp">`; d.style.zIndex = z; S.appendChild(d); return d; };
+const div = (cls, html) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; T.appendChild(d); return d; };
+// 1 opener mockup
+const M1 = add('mk', '8579-mockup', 2);
+// 2 product cards (approved nov4 "clean" shots), names from the item titles
+const PC = [['8579', 'Shearling jacket'], ['8584', 'Leather jacket'], ['8508', 'Suede jacket'], ['8516', 'Suede jacket'], ['8596', 'Fur-collar bomber'], ['8602', 'Safari jacket'], ['8612', 'Pinstripe zip jacket'], ['8524', 'Horsebit loafer']]
+  .map(([id, n], i) => ({ d: add('pc', `${id}-clean`, 3 + i), l: div('lab', `<b>${String(i + 1).padStart(2, '0')}</b>${n}`), a: 2.3 + i * 0.45 }));
+// 3 detail macros
+const DT = ['8579-detail', '8550-detail', '8612-detail'].map((f, i) => ({ d: add('dt', f, 12 + i), a: 6.0 + i * 0.9 }));
+// 4,5 mockups
+const M2 = add('mk', '8602-mockup', 16), M3 = add('mk', '8584-mockup', 17);
+const H = [
+  [0.3, 2.15, 'This season<br>at Blite.'],
+  [6.1, 8.6, 'Look closer.'],
+  [8.8, 11.2, 'Jackets. Knits.<br>Shoes.<small>Suits, shirts and more on the floor.</small>'],
+  [11.4, 13.7, 'Try it on<br>in store.<small>A stylist helps with the fit.</small>'],
+].map(([a, b, h]) => { const d = div('hl', h); const sm = $('small', d); if (sm) sm.remove(); const ws = splitWords(d); if (sm) d.appendChild(sm); return { d, a, b, ws, sm }; });
+window.__ready = Promise.all([document.fonts.load('600 40px Figtree'), ...$$('img').map((i) => i.decode().catch(() => 0))]).then(() => true);
+const mkAnim = (el, t, a, b) => { const o = env(t, a - 0.3, a + 0.3, b - 0.25, b + 0.15, E.inOutSine, E.inOutSine); el.style.opacity = o.toFixed(3);
+  const k = seg(t, a - 0.3, b + 0.15); el.style.transform = `translateY(${(1 - E.outCubic(seg(t, a - 0.3, a + 0.5))) * 60}px)`;
+  $('img', el).style.transform = `scale(${(1.1 - 0.08 * E.smooth(k)).toFixed(4)})`; };
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.4))).toFixed(3);
+  mkAnim(M1, t, 0.0, 2.2); mkAnim(M2, t, 8.7, 11.25); mkAnim(M3, t, 11.3, 13.85);
+  PC.forEach((p, i) => { const on = t >= p.a && t < p.a + 0.45 + (i === PC.length - 1 ? 0.25 : 0); const q = E.outQuart(seg(t, p.a, p.a + 0.3));
+    p.d.style.opacity = on ? 1 : 0; p.d.style.transform = `translateX(${((1 - q) * (i % 2 ? -90 : 90)).toFixed(1)}px) rotate(${((1 - q) * (i % 2 ? -2 : 2)).toFixed(2)}deg) scale(${(0.97 + 0.03 * q).toFixed(3)})`;
+    p.l.style.opacity = on ? 1 : 0; });
+  DT.forEach((d) => { const o = env(t, d.a - 0.2, d.a + 0.2, d.a + 0.9, d.a + 1.2, E.inOutSine, E.inOutSine); d.d.style.opacity = o.toFixed(3);
+    $('img', d.d).style.transform = `scale(${(1.18 - 0.1 * seg(t, d.a - 0.2, d.a + 1.2)).toFixed(4)})`; });
+  H.forEach((h) => { h.d.style.opacity = env(t, h.a, h.a + 0.25, h.b - 0.3, h.b).toFixed(3); animWords(h.ws, t, h.a, 0.07, 0.8, null, { dy: 46, blur: 10 });
+    if (h.sm) { const q = E.outCubic(seg(t, h.a + 0.5, h.a + 1.0)); h.sm.style.opacity = q; h.sm.style.transform = `translateY(${(1 - q) * 24}px)`; } });
+  $('#top').style.opacity = (E.outCubic(seg(t, 0.4, 1.2)) * (1 - seg(t, 13.6, 13.9))).toFixed(3);
+  const e = E.inOutSine(seg(t, 13.8, 14.4)), end = $('#end'); end.style.opacity = e.toFixed(3);
+  const wq = E.outQuart(seg(t, 14.0, 15.0)); $('.wm', end).style.transform = `translateY(${(1 - wq) * 40}px) scale(${(1.06 - 0.06 * wq).toFixed(3)})`; $('.wm', end).style.filter = `blur(${((1 - wq) * 10).toFixed(1)}px)`;
+  [['.sub', 14.5], ['.cta', 14.8], ['.addr', 15.1], ['.url', 15.3]].forEach(([s, a]) => { const q = E.outCubic(seg(t, a, a + 0.6)), el = $(s, end); el.style.opacity = q;
+    el.style.transform = (s === '.cta' ? 'translateX(-50%) ' : '') + `translateY(${(1 - q) * 26}px)`; });
+  grainJitter($('#grain'), t);
+};
+</script></body></html>
