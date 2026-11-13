@@ -1,0 +1,169 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Round City v2: footage + real sites + big type (rcy.html?v=&lt;id&gt;, configs in lib/rcy-videos.js)</title>
+<link rel="stylesheet" href="lib/common.css"><link rel="stylesheet" href="lib/rc.css">
+<style>
+/* v2 look: every scene has a picture in it (real footage or a real live site), type fills the frame,
+   and the first frame already carries the hook. Text stays inside y 230..1500 (clear of Instagram's UI). */
+.stage{background:radial-gradient(120% 80% at 50% 40%,#1a2a5c 0%,#0d1634 48%,#070b18 100%)}
+.sc{position:absolute;inset:0;z-index:5;opacity:0;overflow:hidden}
+.bgv{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover;z-index:0;transform-origin:50% 40%}
+.bgv.dim{filter:blur(16px) brightness(.34) saturate(1.15)}
+.shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(5,8,20,.72) 0%,rgba(5,8,20,.5) 30%,rgba(5,8,20,.5) 62%,rgba(5,8,20,.9) 100%)}
+.glow{position:absolute;inset:0;z-index:0;background:radial-gradient(60% 40% at 50% 62%,rgba(233,191,149,.2) 0%,rgba(233,191,149,0) 70%)}
+.chip{position:absolute;left:70px;z-index:4;padding:14px 28px;border-radius:40px;background:rgba(233,191,149,.16);box-shadow:inset 0 0 0 2px rgba(233,191,149,.6);font-family:var(--sans);font-weight:600;font-size:28px;letter-spacing:.16em;text-transform:uppercase;color:#ffe8cf;white-space:nowrap}
+.chip.c{left:50%;transform:translateX(-50%)}
+.h{position:absolute;left:70px;right:60px;z-index:4;font-family:var(--serif);font-size:150px;line-height:1.02;letter-spacing:-.015em;color:var(--ivory);text-shadow:0 6px 40px rgba(0,0,0,.55)}
+.h.c{text-align:center;left:50px;right:50px}
+.h em{font-style:italic}
+.big{position:absolute;left:0;right:0;text-align:center;z-index:4;font-family:var(--serif);font-size:300px;line-height:1;font-variant-numeric:tabular-nums lining-nums;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 10px 50px rgba(0,0,0,.6))}
+.fee{position:absolute;left:0;right:0;text-align:center;z-index:4;font-family:var(--sans);font-weight:500;font-size:34px;letter-spacing:.06em;color:rgba(247,238,226,.85)}
+.items{position:absolute;left:80px;right:70px;z-index:4;display:grid;gap:22px}
+.it{display:flex;gap:26px;align-items:center;padding:26px 32px;border-radius:26px;background:rgba(10,16,40,.66);box-shadow:inset 0 0 0 2px rgba(233,191,149,.28);font-family:var(--sans);font-weight:500;font-size:44px;line-height:1.2;color:var(--ivory)}
+.it i{flex:none;width:54px;height:54px;border-radius:50%;background:var(--gold-grad);display:grid;place-items:center;font-style:normal;color:#14182e;font-size:32px;font-weight:800}
+.note{position:absolute;left:80px;right:80px;text-align:center;z-index:4;font-family:var(--sans);font-size:32px;line-height:1.4;color:rgba(247,238,226,.82)}
+.note b{color:#ffe8cf;font-weight:600}
+.tiers{position:absolute;left:60px;right:60px;z-index:4;display:grid;gap:24px}
+.tier{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:40px 44px;border-radius:32px;background:rgba(10,16,40,.74);box-shadow:inset 0 0 0 2px rgba(233,191,149,.4),0 30px 80px -30px rgba(0,0,0,.8)}
+.tier .tn{font-family:var(--serif);font-size:58px;line-height:1.06;color:var(--ivory)}
+.tier .tw{font-family:var(--sans);font-size:31px;color:rgba(247,238,226,.75);margin-top:10px}
+.tier .tp{flex:none;font-family:var(--serif);font-size:88px;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.tier .tp.q{font-size:50px}
+.pwrap{position:absolute;left:0;right:0;z-index:3;perspective:2400px}
+.phone{position:relative;margin:0 auto;border-radius:92px;background:#0a0a10;padding:16px;box-shadow:0 0 0 3px rgba(233,191,149,.55),0 80px 140px -30px rgba(0,0,0,.9),0 0 120px rgba(233,191,149,.14);transform-style:preserve-3d}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:78px;overflow:hidden;background:#fff}
+.phone .scr img{position:absolute;left:0;top:0;width:100%;display:block;will-change:transform}
+.phone .isl{position:absolute;left:50%;top:38px;width:170px;height:46px;margin-left:-85px;border-radius:30px;background:#000;z-index:2}
+.wall{position:absolute;left:-60px;top:-200px;width:1200px;height:2400px;z-index:0;display:flex;gap:24px;transform:rotate(-7deg) scale(1.12);transform-origin:50% 50%}
+.col{flex:1;display:flex;flex-direction:column;gap:24px;will-change:transform}
+.col div{height:820px;border-radius:30px;overflow:hidden;box-shadow:0 0 0 2px rgba(233,191,149,.35)}
+.col img{width:100%;display:block}
+.wshade{position:absolute;inset:0;z-index:1;background:radial-gradient(70% 45% at 50% 44%,rgba(5,8,20,.88) 0%,rgba(5,8,20,.62) 60%,rgba(5,8,20,.4) 100%)}
+#rcend{left:0;right:0;top:430px;z-index:11}
+#cta{position:absolute;left:50%;top:1250px;transform:translateX(-50%);z-index:11;padding:32px 90px;border-radius:70px;background:var(--gold-grad);color:#14182e;font-family:var(--sans);font-weight:700;font-size:48px;white-space:nowrap;opacity:0}
+#fine{position:absolute;left:0;right:0;top:1400px;z-index:11;text-align:center;font-family:var(--sans);font-size:32px;color:rgba(247,238,226,.78)}
+#endbg{z-index:10;background:radial-gradient(120% 80% at 50% 42%,#1a2a5c 0%,#0d1634 50%,#070b18 100%);opacity:0}
+#dustNear{z-index:12}
+#root{position:absolute;inset:0;transform-origin:50% 45%;will-change:transform,filter}
+</style></head><body>
+<div class="stage" id="stage">
+  <div id="root"></div><div class="layer" id="flash" style="z-index:9;background:radial-gradient(80% 60% at 50% 45%,#fff2dc 0%,rgba(255,236,210,0) 70%);opacity:0;mix-blend-mode:screen"></div>
+  <div class="layer" id="endbg"></div><div id="rcend"></div><div id="cta"></div><div id="fine"></div>
+  <canvas class="dust" id="dustNear"></canvas>
+  <div class="vignette"></div><div class="grain" id="grain"></div>
+</div>
+<script src="lib/common.js"></script><script src="lib/rc.js"></script><script src="lib/rcy-videos.js"></script>
+<script>
+const ID = new URLSearchParams(location.search).get('v') || 'y01';
+const CFG = RCY[ID];
+const root = $('#root');
+const near = new Dust($('#dustNear'), { n: 22, seed: 12, size: [1.4, 3.2], bokeh: 0.3, speed: 22, depth: 1 });
+const mk = (p, cls, html, css) => { const d = document.createElement('div'); d.className = cls; if (html != null) d.innerHTML = html; if (css) Object.assign(d.style, css); p.appendChild(d); return d; };
+const words = (el) => { splitWords(el); return $$('.w', el); };
+// word slam: each word lands big and sharp, one after another
+function slam(ws, t, t0, step = 0.12, d = 0.36) { ws.forEach((w, i) => { const k = E.outExpo(seg(t, t0 + i * step, t0 + i * step + d));
+  w.style.opacity = k.toFixed(3); w.style.transform = `translateY(${((1 - k) * 46).toFixed(1)}px) scale(${(1 + 0.4 * (1 - k)).toFixed(3)})`; w.style.filter = k < 0.985 ? `blur(${((1 - k) * 12).toFixed(1)}px)` : 'none'; }); }
+const fadeUp = (el, t, a, d = 0.5, dy = 30, tx = '') => { const k = E.outQuart(seg(t, a, a + d)); el.style.opacity = k.toFixed(3); el.style.transform = `${tx} translateY(${((1 - k) * dy).toFixed(1)}px)`; };
+// footage: ping-pong through a frame sequence on the global clock, so it keeps moving across scenes
+const footage = (L, s, dim) => { if (!s.dir) { mk(L, 'glow'); return () => {}; } const im = document.createElement('img'); im.className = 'bgv' + (dim ? ' dim' : ''); L.appendChild(im); if (!dim) mk(L, 'shade');
+  const N = s.frames || 151; return (gt, z = 0) => { let f = Math.floor(gt * 30 * (s.rate || 0.8)) % (2 * N - 2); if (f >= N) f = 2 * N - 2 - f; seqFrame(im, `/v3/${s.dir}/${pad(f + 1, 4)}.jpg`); im.style.transform = `scale(${(1.04 + (dim ? 0.06 : 0) + z).toFixed(4)})`; }; };
+const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
+
+const B = {
+  open(s, L) { // footage + a giant hook. `first` puts line one on screen in frame 0 (the cover frame)
+    const bg = footage(L, s, s.dim); const top = s.top || 560;
+    const chip = s.label ? mk(L, 'chip' + (s.center ? ' c' : ''), s.label, { top: top - 120 + 'px' }) : null;
+    const h = mk(L, 'h' + (s.center ? ' c' : ''), s.lines.join('<br>'), { top: top + 'px', fontSize: (s.size || 150) + 'px' }); const ws = words(h);
+    const t0 = s.first ? -1 : 0.12, dur = s.dur || 2.4;
+    return { pops: s.first ? [] : [0.14], dur, draw(t, gt) { bg(gt, 0.05 * seg(t, 0, dur)); slam(ws, t, t0, s.step || 0.13); if (chip) fadeUp(chip, t, t0, 0.4, 20, s.center ? 'translateX(-50%)' : ''); } };
+  },
+  price(s, L) { // name, a price that counts up and lands with a hit, then what is included
+    const bg = footage(L, s, true);
+    const chip = mk(L, 'chip c', s.label, { top: '250px' });
+    const nm = mk(L, 'h c', s.name, { top: '340px', fontSize: '84px' }); const wn = words(nm);
+    const n = +s.price.replace(/\D/g, ''); const big = mk(L, 'big', s.price, { top: '450px', fontSize: (s.price.length > 6 ? 260 : 300) + 'px' });
+    const fee = mk(L, 'fee', s.fee || 'fixed project fee · USD', { top: '780px' });
+    const box = mk(L, 'items', null, { top: '880px' });
+    const its = s.items.map((x) => mk(box, 'it', `<i>✓</i><span>${x}</span>`));
+    const note = s.note ? mk(L, 'note', s.note, { top: (s.noteTop || 1440) + 'px' }) : null;
+    const land = 1.15, t0 = 1.55, st = s.stagger || 0.42;
+    return { hits: [land], riser: land, pops: its.map((_, i) => t0 + i * st + 0.06), dur: s.dur || (t0 + its.length * st + 2.3), draw(t, gt) { bg(gt);
+      fadeUp(chip, t, 0.05, 0.4, 20, 'translateX(-50%)'); slam(wn, t, 0.12, 0.1);
+      const k = E.outExpo(seg(t, 0.3, land)), p = seg(t, land, land + 0.35); big.textContent = money(n * k);
+      setEl(big, { op: seg(t, 0.3, 0.5), s: 0.9 + 0.1 * k + 0.12 * Math.sin(p * Math.PI) * (1 - p) });
+      fadeUp(fee, t, land + 0.1, 0.4, 16);
+      its.forEach((el, i) => { const a = E.outExpo(seg(t, t0 + i * st, t0 + i * st + 0.5)); setEl(el, { op: a, x: (1 - a) * -80, s: 0.94 + 0.06 * a }); });
+      if (note) fadeUp(note, t, t0 + its.length * st + 0.15, 0.5, 16);
+    } };
+  },
+  tiers(s, L) { // stacked price cards over footage
+    const bg = footage(L, s, true); const top = s.top || 300;
+    const chip = s.label ? mk(L, 'chip c', s.label, { top: '250px' }) : null;
+    const tt = s.title ? mk(L, 'h c', s.title, { top: '340px', fontSize: (s.size || 92) + 'px' }) : null; const wt = tt ? words(tt) : [];
+    const box = mk(L, 'tiers', null, { top: top + 'px' });
+    const rows = s.rows.map(([n, w, p]) => mk(box, 'tier', `<div><div class="tn">${n}</div>${w ? `<div class="tw">${w}</div>` : ''}</div><div class="tp${/\$/.test(p) ? '' : ' q'}">${p}</div>`));
+    const note = s.note ? mk(L, 'note', s.note, { top: (s.noteTop || 1440) + 'px' }) : null;
+    const st = s.stagger || 0.6, a0 = s.title ? 0.9 : 0.3;
+    return { pops: rows.map((_, i) => a0 + i * st + 0.05), dur: s.dur || (a0 + rows.length * st + 2.2), draw(t, gt) { bg(gt);
+      if (chip) fadeUp(chip, t, 0.05, 0.4, 20, 'translateX(-50%)'); slam(wt, t, 0.12, 0.1);
+      rows.forEach((el, i) => { const a = E.outExpo(seg(t, a0 + i * st, a0 + i * st + 0.6)); setEl(el, { op: a, y: (1 - a) * 90, s: 0.9 + 0.1 * a }); });
+      if (note) fadeUp(note, t, a0 + rows.length * st + 0.1, 0.5, 16);
+    } };
+  },
+  phone(s, L) { // a real live site, scrolling inside a phone that turns slowly
+    mk(L, 'glow'); const pw = s.pw || 640, ph = s.ph || 1340, top = s.ptop || 520;
+    const chip = s.label ? mk(L, 'chip c', s.label, { top: '240px' }) : null;
+    const tt = mk(L, 'h c', s.title, { top: '318px', fontSize: (s.size || 96) + 'px' }); const wt = words(tt);
+    const wrap = mk(L, 'pwrap', null, { top: top + 'px' });
+    const p = mk(wrap, 'phone', `<div class="scr"><img src="${s.img}"></div><div class="isl"></div>`, { width: pw + 'px', height: ph + 'px' });
+    const img = $('img', p); _decodes.push(img.decode().catch(() => {}));
+    const dur = s.dur || 3.4, sc = s.scroll || 1800;
+    return { pops: [0.12], dur, draw(t) { const k = E.outExpo(seg(t, 0, 0.8)), m = seg(t, 0, dur);
+      p.style.opacity = seg(t, 0, 0.25).toFixed(3);
+      p.style.transform = `translateY(${((1 - k) * 420).toFixed(1)}px) rotateY(${(lerp(-18, 10, E.inOutSine(m)) * (s.flip ? -1 : 1)).toFixed(2)}deg) rotateX(${(8 - 5 * m).toFixed(2)}deg) scale(${(0.96 + 0.06 * m).toFixed(4)})`;
+      img.style.transform = `translateY(${(-sc * E.inOut(seg(t, 0.45, dur - 0.15)) - (s.y0 || 0)).toFixed(1)}px)`;
+      if (chip) fadeUp(chip, t, 0.05, 0.4, 20, 'translateX(-50%)'); slam(wt, t, 0.12, 0.1); } };
+  },
+  wall(s, L) { // a moving wall of real sites behind one giant number
+    const w = mk(L, 'wall'); const cols = [0, 1, 2].map((c) => { const col = mk(w, 'col'); for (let r = 0; r < 4; r++) { const im = s.imgs[(c * 3 + r * 2) % s.imgs.length]; mk(col, '', `<img src="${im}">`); } return col; });
+    $$('img', w).forEach((im) => _decodes.push(im.decode().catch(() => {})));
+    mk(L, 'wshade'); const n = +String(s.big).replace(/\D/g, '');
+    const big = mk(L, 'big', s.big, { top: (s.top || 520) + 'px', fontSize: '460px' });
+    const tt = mk(L, 'h c', s.title, { top: (s.top || 520) + 470 + 'px', fontSize: (s.size || 110) + 'px' }); const wt = words(tt);
+    const dur = s.dur || 3.2, land = 0.9;
+    return { hits: [land], riser: land, dur, draw(t, gt) { cols.forEach((c, i) => { c.style.transform = `translateY(${(i % 2 ? -640 + gt * 90 : -120 - gt * 90).toFixed(1)}px)`; });
+      const k = s.first ? 1 : E.outExpo(seg(t, 0.05, land)), p = seg(t, land, land + 0.35); big.textContent = Math.round(n * k) + (s.suffix || '');
+      setEl(big, { op: 1, s: 0.9 + 0.1 * k + 0.12 * Math.sin(p * Math.PI) * (1 - p) }); slam(wt, t, s.first ? -1 : land - 0.15, 0.1); } };
+  },
+};
+
+// ---- timeline ----
+const scenes = CFG.scenes.map((s) => { const L = mk(root, 'sc'); const b = B[s.type](s, L); return { L, ...b }; });
+let T = 0; scenes.forEach((s) => { s.a = T; T += s.dur; });
+const END = T, ENDDUR = 4.0;
+window.__DUR = END + ENDDUR;
+const CUTS = scenes.slice(1).map((s) => s.a).concat([END]);
+const HITS = [].concat(...scenes.map((s) => (s.hits || []).map((h) => s.a + h)));
+window.__EVENTS = { cuts: CUTS, hits: HITS, risers: [].concat(...scenes.map((s) => s.riser != null ? [s.a + s.riser] : [])),
+  pops: [].concat(...scenes.map((s) => (s.pops || []).map((p) => s.a + p))), end: END, dur: END + ENDDUR };
+const rc = RCEnd($('#rcend'), { by: CFG.by || 'Software + automation · Built with Ali', url: CFG.url || 'roundcity.co', scale: 1.3 });
+$('#cta').textContent = CFG.cta || 'Talk with Ali'; $('#fine').textContent = CFG.fine || 'Columbus, Ohio · roundcity.co';
+window.__ready = Promise.all([document.fonts.ready]).then(() => flushDecodes()).then(() => true);
+window.seek = async (t) => {
+  scenes.forEach((s, i) => { const lt = t - s.a; const vis = lt > -0.2 && lt < s.dur + 0.2;
+    const o = (i === 0 ? 1 : seg(lt, -0.12, 0.08)) * (1 - seg(lt, s.dur - 0.12, s.dur + 0.08));
+    s.L.style.opacity = o.toFixed(3); s.L.style.visibility = vis ? 'visible' : 'hidden'; if (vis) s.draw(Math.max(0, lt), t); });
+  const e = E.inOutSine(seg(t, END - 0.15, END + 0.3)); $('#endbg').style.opacity = e.toFixed(3);
+  const te = t - END; rc.draw(Math.max(0, te) * 1.25, e);
+  const c = E.outExpo(seg(te, 1.9, 2.6)); $('#cta').style.opacity = c.toFixed(3); $('#cta').style.transform = `translateX(-50%) translateY(${((1 - c) * 30).toFixed(1)}px) scale(${(0.9 + 0.1 * c).toFixed(3)})`;
+  fadeUp($('#fine'), te, 2.3, 0.5, 12);
+  // zoom-blur whip on every cut, shake on every price hit (events also drive lib/sfx2.py)
+  let amt = 0, dir = 1; CUTS.forEach((c) => { const d = t - c; if (Math.abs(d) < 0.26) { const a = 1 - Math.abs(d) / 0.26; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } });
+  amt = E.inOutSine(amt);
+  let sx = 0, sy = 0; HITS.forEach((h) => { const d = t - h; if (d >= 0 && d < 0.45) { const k = Math.pow(1 - d / 0.45, 2); sx += Math.sin(d * 95) * 16 * k; sy += Math.cos(d * 80) * 12 * k; } });
+  root.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.14 * amt).toFixed(4)}) rotate(${(dir * 1.6 * amt).toFixed(3)}deg)`;
+  root.style.filter = amt > 0.01 ? `blur(${(amt * 12).toFixed(2)}px)` : 'none';
+  const fl = Math.max(0, ...CUTS.map((c) => 1 - Math.abs(t - c) / 0.16), ...HITS.map((h) => (t >= h ? 1 - (t - h) / 0.22 : 0))); $('#flash').style.opacity = (Math.max(0, fl) * 0.3).toFixed(3);
+  near.draw(t + 2, 0.4, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
