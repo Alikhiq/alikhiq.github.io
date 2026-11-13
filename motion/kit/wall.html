@@ -1,0 +1,87 @@
+<!doctype html><html><head><meta charset="utf-8"><title>614lux: 48 videos in 6 days, shown as the work itself (hook, six full-screen cuts, pull back to all 48 playing)</title>
+<link rel="stylesheet" href="lib/common.css">
+<style>
+/* Footage is cut from the finished videos in /videos with ffmpeg (frames land in work/v6, not committed).
+   The wall is a 7 x 7 grid of 9:16 tiles, which is exactly 9:16 itself: 48 videos plus one centre tile for the count. */
+@font-face{font-family:Figtree;src:url('/__fonts/figtree.woff2') format('woff2');font-weight:300 900}
+@font-face{font-family:JBM;src:url('/__fonts/jbmono.woff2') format('woff2');font-weight:100 800}
+body{--bg:#0b0c0e;--ink:#f7eee2;--acc:#e9bf95}
+.stage{background:var(--bg)}
+#root{position:absolute;inset:0;transform-origin:50% 45%;will-change:transform,filter}
+.full{position:absolute;inset:0;width:1080px;height:1920px;object-fit:cover}
+#heroA{filter:blur(5px)}
+#shadeA{position:absolute;inset:0;background:rgba(6,8,14,.66)}
+.tx{position:absolute;left:64px;right:56px;top:560px;z-index:4}
+.hd{font-family:Figtree;font-weight:500;font-size:176px;line-height:.98;letter-spacing:-.05em;color:var(--ink);text-shadow:0 6px 44px rgba(0,0,0,.6)}
+.hd em{font-style:normal;color:var(--acc)}.hd em .w{background:none;-webkit-text-fill-color:currentColor;color:inherit;padding:0;margin:0}
+.tag{display:inline-block;margin-bottom:26px;padding:12px 24px;border-radius:40px;background:rgba(11,12,14,.6);box-shadow:inset 0 0 0 2px var(--acc);font-family:JBM;font-weight:600;font-size:26px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+#chip{position:absolute;left:56px;top:250px;z-index:5;padding:16px 30px;border-radius:44px;background:rgba(11,12,14,.72);box-shadow:inset 0 0 0 2px var(--acc);font-family:Figtree;font-weight:700;font-size:40px;color:var(--ink);white-space:nowrap}
+#chip b{font-family:JBM;font-weight:600;font-size:28px;color:var(--acc);margin-right:16px}
+#wall{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;will-change:transform}
+#mos{position:absolute;inset:0;width:1080px;height:1920px}
+#mid{position:absolute;left:155px;top:275px;width:154px;height:274px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(140deg,#ffe8cf,#e9bf95 45%,#c48d62);color:#14182e;font-family:Figtree;transform-origin:50% 50%}
+#mid b{font-size:104px;font-weight:800;letter-spacing:-.06em;line-height:.95}#mid span{font-size:22px;font-weight:700;letter-spacing:.02em;margin-top:6px}
+#heroC{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#band{position:absolute;left:50%;top:1330px;z-index:6;transform:translateX(-50%);padding:30px 60px;border-radius:70px;background:rgba(11,12,14,.86);box-shadow:inset 0 0 0 2px var(--acc),0 30px 80px rgba(0,0,0,.7);font-family:Figtree;font-weight:600;font-size:60px;letter-spacing:-.03em;color:var(--ink);white-space:nowrap;opacity:0}
+#band em{font-style:normal;color:var(--acc)}
+#end{position:absolute;inset:0;z-index:10;opacity:0;display:flex;flex-direction:column;align-items:center;text-align:center;font-family:Figtree;background:radial-gradient(120% 80% at 50% 42%,#1a2a5c 0%,#0d1634 50%,#070b18 100%);color:#f7eee2}
+#e1{margin-top:430px;font-weight:700;font-size:40px;letter-spacing:.3em;text-transform:uppercase}
+#e2{font-size:190px;font-weight:600;letter-spacing:-.04em;line-height:.95;margin-top:30px}
+#erule{width:300px;height:4px;margin-top:40px;background:#e9bf95}
+#e3{margin-top:44px;font-weight:500;font-size:40px}
+#ecta{margin-top:70px;padding:34px 90px;border-radius:80px;font-weight:800;font-size:52px;background:#e9bf95;color:#14182e}
+#eurl{margin-top:36px;font-weight:600;font-size:44px}
+#eby{position:absolute;left:0;right:0;top:1440px;font-weight:600;font-size:28px;letter-spacing:.18em;text-transform:uppercase;opacity:0}
+#flash{z-index:9;background:#fff;opacity:0;mix-blend-mode:overlay}
+</style></head><body>
+<div class="stage" id="stage">
+  <div id="root">
+    <div id="scA" style="position:absolute;inset:0"><img class="full" id="heroA"><div id="shadeA"></div>
+      <div class="tx"><div class="tag">@614lux · Nov 8 – 13</div><div class="hd" id="hook">I made<br><em>48 videos</em><br>in 6 days.</div></div></div>
+    <div id="scB" style="position:absolute;inset:0"><img class="full" id="cut"><div id="chip"></div></div>
+    <div id="scC" style="position:absolute;inset:0;overflow:hidden"><div id="wall"><img id="mos"><div id="mid"><b>48</b><span>videos · 6 days</span></div></div><img id="heroC"><div id="band">Every one <em>built in code.</em></div></div>
+  </div>
+  <div class="layer" id="flash"></div>
+  <div id="end"><div id="e1">Ali Al-Khafaji · Founder</div><div id="e2">Round City</div><div id="erule"></div><div id="e3">Software + automation, built around your business</div><div id="ecta">Talk with Ali</div><div id="eurl">roundcity.co · @614lux</div><div id="eby">Columbus, Ohio</div></div>
+  <div class="grain" id="grain"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const CUTS = [['Susu Ink & Glow', 'ads'], ['Halal New York Gyro', 'collab'], ['Susu Ink & Glow', 'website'], ['Round City', '3D'], ['Blite', 'collab'], ['Susu Ink & Glow', '3D']];
+const A = 2.0, CD = 0.6, B = A, C = B + CUTS.length * CD, ZOOM = 1.7, LAND = C + ZOOM + 0.15, END = C + 4.9, ENDDUR = 3.8;
+const TW = 154, TH = 274, HX = 1 + 2 * TW, HY = 1 + 2 * TH, S0 = 1080 / TW;   // hero tile = column 2, row 2
+$('#mid').style.left = 1 + 3 * TW + 'px'; $('#mid').style.top = 1 + 3 * TH + 'px';
+const words = (el) => { splitWords(el); return $$('.w', el); }; const WH = words($('#hook')), WE = words($('#e2'));
+function slam(ws, t, t0, step = 0.1, d = 0.34) { ws.forEach((w, i) => { const k = E.outExpo(seg(t, t0 + i * step, t0 + i * step + d)); w.style.opacity = k.toFixed(3);
+  w.style.transform = `translateY(${((1 - k) * 46).toFixed(1)}px) scale(${(1 + 0.4 * (1 - k)).toFixed(3)})`; w.style.filter = k < 0.985 ? `blur(${((1 - k) * 12).toFixed(1)}px)` : 'none'; }); }
+const fadeUp = (el, t, a, d = 0.45, dy = 28, tx = '') => { const k = E.outQuart(seg(t, a, a + d)); el.style.opacity = k.toFixed(3); el.style.transform = `${tx} translateY(${((1 - k) * dy).toFixed(1)}px)`; };
+window.__DUR = END + ENDDUR;
+window.__EVENTS = { cuts: [C, END], hits: [LAND], risers: [LAND], pops: CUTS.map((_, i) => B + i * CD), end: END, dur: END + ENDDUR };
+window.__ready = document.fonts.ready.then(() => true);
+const show = (id, on) => { $(id).style.visibility = on ? 'visible' : 'hidden'; };
+window.seek = async (t) => {
+  const inA = t < B, inB = t >= B && t < C, inC = t >= C && t < END, te = t - END;
+  show('#scA', inA); show('#scB', inB); show('#scC', inC);
+  if (inA) { seqFrame($('#heroA'), `/v6/mosaic/${pad(clamp(Math.floor(t * 30) + 1, 1, 150), 4)}.jpg`); $('#heroA').style.transform = `scale(${(2.3 + 0.25 * t / A).toFixed(4)}) rotate(-6deg)`; slam(WH, t, -1); }
+  let punch = 0;
+  if (inB) { const i = Math.min(CUTS.length - 1, Math.floor((t - B) / CD)), lt = t - B - i * CD; seqFrame($('#cut'), `/v6/cut/${i}_${pad(clamp(Math.floor(lt * 30) + 1, 1, 21), 4)}.jpg`);
+    $('#chip').innerHTML = `<b>${String(i + 1).padStart(2, '0')}</b>${CUTS[i][0]} · ${CUTS[i][1]}`; punch = Math.pow(1 - clamp(lt / 0.3), 3); $('#cut').style.transform = `scale(${(1.02 + 0.05 * lt / CD).toFixed(4)})`; }
+  if (inC) { const lt = t - C, e = E.inOut(seg(lt, 0.15, 0.15 + ZOOM)); const s = lerp(S0, 1, e) * (1 + 0.035 * seg(lt, ZOOM, 4.9));
+    const px = lerp(0, HX, (S0 - Math.min(s, S0)) / (S0 - 1)), py = lerp(0, HY, (S0 - Math.min(s, S0)) / (S0 - 1));
+    const ox = px - HX * s, oy = py - HY * s;   // keep the hero tile gliding from full screen to its slot
+    seqFrame($('#mos'), `/v6/mosaic/${pad(clamp(Math.floor(lt * 30) + 1, 1, 150), 4)}.jpg`); $('#wall').style.transform = `translate(${ox.toFixed(2)}px,${oy.toFixed(2)}px) scale(${s.toFixed(5)})`;
+    const hc = $('#heroC'), on = s > 1.5; hc.style.visibility = on ? 'visible' : 'hidden';
+    if (on) { seqFrame(hc, `/v6/hero/c${pad(clamp(Math.floor(lt * 30) + 1, 1, 66), 4)}.jpg`); hc.style.width = '1080px'; hc.style.transform = `translate(${px.toFixed(2)}px,${py.toFixed(2)}px) scale(${(s / S0).toFixed(5)})`; hc.style.opacity = clamp((s - 1.5) / 0.6).toFixed(3); }
+    const k = E.outExpo(seg(t, LAND - 0.12, LAND + 0.3)), p = seg(t, LAND, LAND + 0.4); $('#mid').style.opacity = k.toFixed(3); $('#mid').style.transform = `scale(${(0.4 + 0.6 * k + 0.25 * Math.sin(p * Math.PI) * (1 - p)).toFixed(3)})`;
+    fadeUp($('#band'), t, LAND + 0.55, 0.5, 30, 'translateX(-50%)'); }
+  $('#end').style.opacity = te >= 0 ? 1 : 0;
+  if (te >= 0) { fadeUp($('#e1'), te, 0.1, 0.4, 20); slam(WE, te, 0.2, 0.1, 0.45); $('#erule').style.transform = `scaleX(${E.outExpo(seg(te, 0.5, 1.1)).toFixed(3)})`; fadeUp($('#e3'), te, 0.75, 0.45, 20);
+    const c = E.outExpo(seg(te, 1.1, 1.7)); $('#ecta').style.opacity = c.toFixed(3); $('#ecta').style.transform = `translateY(${((1 - c) * 40).toFixed(1)}px) scale(${(0.85 + 0.15 * c).toFixed(3)})`; fadeUp($('#eurl'), te, 1.4, 0.45, 16); $('#eby').style.opacity = (seg(te, 1.8, 2.3) * 0.7).toFixed(3); }
+  let amt = 0, dir = 1; [END].forEach((c) => { const d = t - c; if (Math.abs(d) < 0.24) { const a = 1 - Math.abs(d) / 0.24; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } }); amt = E.inOutSine(amt);
+  let sx = 0, sy = 0; const dh = t - LAND; if (dh >= 0 && dh < 0.45) { const k = Math.pow(1 - dh / 0.45, 2); sx = Math.sin(dh * 95) * 14 * k; sy = Math.cos(dh * 80) * 10 * k; }
+  const RT = te >= 0 ? $('#end') : $('#root'); $('#root').style.transform = $('#end').style.transform = 'none'; $('#root').style.filter = $('#end').style.filter = 'none';
+  RT.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.14 * amt + 0.06 * punch).toFixed(4)}) rotate(${(dir * 1.6 * amt).toFixed(3)}deg)`; RT.style.filter = amt > 0.01 ? `blur(${(amt * 12).toFixed(2)}px)` : 'none';
+  const fl = Math.max(0, punch * 0.5, 1 - Math.abs(t - END) / 0.16, 1 - Math.abs(t - C) / 0.14, dh >= 0 ? 1 - dh / 0.22 : 0); $('#flash').style.opacity = (fl * 0.5).toFixed(3);
+  grainJitter($('#grain'), t); await flushDecodes();
+};
+</script></body></html>
