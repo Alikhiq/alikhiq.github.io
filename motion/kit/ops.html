@@ -9,6 +9,9 @@
 body{--bg:#0b0c0e;--line:rgba(255,255,255,.13);--dim:rgba(255,255,255,.45);--ink:#f3efe8;--ok:#b9d98a}
 body.blite{--acc:#ff8fb0;--acc2:#E4D3BC;--disp:Figtree,sans-serif}
 body.hny{--acc:#e3be55;--acc2:#ff8a70;--disp:Anton,sans-serif}
+body.lux{--acc:#e9bf95;--acc2:#e9bf95;--disp:Figtree,sans-serif}
+.lux .hd{font-weight:500;letter-spacing:-.045em}.lux .hd em{font-style:normal;font-weight:300;color:var(--acc2)}
+.lux #end{background:radial-gradient(120% 80% at 50% 42%,#1a2a5c 0%,#0d1634 50%,#070b18 100%);color:#f7eee2}.lux #e2{font-size:190px;letter-spacing:-.04em;margin-top:30px}.lux #erule{background:#e9bf95}.lux #ecta{background:#e9bf95;color:#14182e}
 .stage{background:var(--bg)}
 #root{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform,filter}
 #dash{position:absolute;inset:0;font-family:JBM,monospace;color:var(--ink);transform-origin:50% 55%}
@@ -104,13 +107,13 @@ mods.forEach((m, i) => { for (let j = 0; j < 4; j++) { const src = ins[(i + j * 
   const p = document.createElementNS(NS, 'path'); p.setAttribute('d', x1 > 600 ? `M340,${y0.toFixed(0)} C362,${y0.toFixed(0)} 352,${ys.toFixed(0)} 385,${ys.toFixed(0)} C412,${ys.toFixed(0)} 398,${(m.y - MH / 2 - 6).toFixed(0)} 424,${(m.y - MH / 2 - 6).toFixed(0)} L${x1 + 20},${(m.y - MH / 2 - 6).toFixed(0)} L${x1 + 20},${(m.y - MH / 2).toFixed(0)}` : d); svg.appendChild(p);
   const dots = j < 2 ? [0, 1].map(() => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 5); svg.appendChild(c); return c; }) : []; wires.push({ p, m, main: j < 2, dots, len: p.getTotalLength(), off: R(), src }); } });
 const logP = mk(dash, 'pn', `<div class="t">run log<span>tail -f</span></div><div class="log"></div>`, { left: '40px', top: '1416px', width: '560px', height: '284px' }); const logEl = $('.log', logP);
-const LOGS = [[0.5, 'load', 'brief + floor photos']].concat(...mods.map((m) => [[m.a, 'start', m.name.toLowerCase()], [m.a + RUN, 'done', `${m.name.toLowerCase()} <b>+${m.n}</b>`]]), [[LAND + 0.15, 'publish', `<b>${C.graph}</b> live`]]).sort((a, b) => a[0] - b[0]);
+const LOGS = [[0.5, 'load', C.load || 'brief + floor photos']].concat(...mods.map((m) => [[m.a, 'start', m.name.toLowerCase()], [m.a + RUN, 'done', `${m.name.toLowerCase()} <b>+${m.n}</b>`]]), [[LAND + 0.15, 'publish', `<b>${C.graph}</b> live`]]).sort((a, b) => a[0] - b[0]);
 const logRows = LOGS.map(([a, k, s]) => { const d = mk(logEl, '', `t+${a.toFixed(1).padStart(4, '0')}&nbsp;&nbsp;<b>${k.padEnd(8, ' ').replace(/ /g, '&nbsp;')}</b>${s}`); return { d, a }; });
 const outP = mk(dash, 'pn', `<div class="t">output<span>${C.totalUnit}</span></div><div id="tot">0</div><div id="totl">${C.totalLabel}</div>${sparkHTML(30)}`, { left: '612px', top: '1416px', width: '428px', height: '284px' });
 mk(dash, 'cmd', `<b>~/roundcity</b> $ ${C.cmd}<span id="cur">▌</span>`);
 $('#rhead').innerHTML = `<div class="tag">${C.reveal.tag}</div><div class="hd" style="font-size:${C.reveal.size || 104}px">${C.reveal.head}</div>`; const WR = words($('#rhead .hd'));
 const site = $('#site'); site.src = img('site'); loads.push(site.decode().catch(() => {}));
-const en = C.end; $('#e1').textContent = en.over; $('#e2').textContent = en.name; $('#e3').innerHTML = en.line; $('#ecta').textContent = en.cta; $('#eurl').textContent = en.url; $('#eby').textContent = 'Website by Round City · roundcity.co';
+const en = C.end; $('#e1').textContent = en.over; $('#e2').textContent = en.name; $('#e3').innerHTML = en.line; $('#ecta').textContent = en.cta; $('#eurl').textContent = en.url; $('#eby').textContent = en.by || 'Website by Round City · roundcity.co';
 const WE = words($('#e2'));
 const REV = LAND + (C.hold || 1.5), REVDUR = C.revDur || 3.0, END = REV + REVDUR, ENDDUR = 3.8; window.__DUR = END + ENDDUR;
 window.__EVENTS = { cuts: [REV, END], hits: [LAND], risers: [LAND], pops: mods.map((m) => m.a), end: END, dur: END + ENDDUR };

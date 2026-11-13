@@ -16,4 +16,19 @@ const OPS = {
     totalUnit: 'catalog', totalLabel: 'pieces <b>live</b> on blite.app',
     reveal: { tag: 'blite.app', head: 'Every piece,<br><em>on your phone.</em>', scroll: 2400 },
     end: { over: 'The Fitting Room', name: 'Blite', line: '37742 Van Dyke Ave · Sterling Heights, MI', cta: 'Book a fitting', url: 'blite.app · (586) 983-9143' } },
+  // Ali's own week: counts are from this repository (videos/ and git history on main, Nov 8 to Nov 13 2026)
+  o2: { brand: 'lux', seed: 23, tag: '@614lux · Round City', head: '48 videos.<br><em>6 days.</em>', graph: 'roundcity.co', cmd: 'ship --week nov-8 --all',
+    inputs: [
+      { name: 'the week', rows: [['from', 'Nov 8'], ['to', 'Nov 13'], ['days', '6']] },
+      { name: 'repo', rows: [['commits', '74'], ['merged PRs', '19'], ['branch', 'main']] },
+      { name: 'clients', rows: [['beauty', 'Susu'], ['fashion', 'Blite'], ['food', 'Halal NY']] },
+      { name: 'stack', rows: [['build', 'Claude Code'], ['3D', 'Blender'], ['render', 'code']] }],
+    modules: [
+      { name: 'Susu ads', n: 14, img: 'm1', unit: 'videos' }, { name: 'Showcase films', n: 7, img: 'm2', unit: 'videos' },
+      { name: 'Offer videos', n: 14, img: 'm3', unit: 'videos' }, { name: 'My story', n: 6, img: 'm4', unit: 'videos' },
+      { name: 'Blite', n: 4, img: 'm5', unit: 'videos' }, { name: 'Halal NY Gyro', n: 3, img: 'm6', unit: 'videos' }],
+    step: 1.0, run: 1.3, load: 'the week, nov 8 to 13',
+    totalUnit: 'this week', totalLabel: 'videos <b>shipped</b> in 6 days',
+    reveal: { tag: 'roundcity.co', head: 'Built in code.<br><em>Shipped daily.</em>', scroll: 2600 },
+    end: { over: 'Ali Al-Khafaji · Founder', name: 'Round City', line: 'Software + automation, built around your business', cta: 'Talk with Ali', url: 'roundcity.co · @614lux', by: 'Columbus, Ohio' } },
 };
