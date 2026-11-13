@@ -9,7 +9,7 @@ import numpy as np
 
 SR = 48000
 HERE = os.path.dirname(os.path.abspath(__file__))
-SND = os.path.join(HERE, '..', 'work', 'snd')
+SND = os.path.join(HERE, '..', 'snd')  
 
 def load(path):
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-f', 'f32le', '-ac', '2', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
