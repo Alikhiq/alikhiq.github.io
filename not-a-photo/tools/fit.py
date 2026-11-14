@@ -3,7 +3,7 @@
 Every step the blobs are drawn, the picture is compared with the photo, and each blob's position,
 size, angle, colour and weight are nudged downhill (Adam). At the end of each level, new blobs are
 dropped where the picture is still most wrong, and the state is saved - those saved levels are the
-stages the game morphs between.
+stages the walkthrough moves through.
 
 Usage: fit.py <work> <look> [key=value ...]      e.g.  fit.py work coffee 'levels=[40,200,1000]'
 Writes <work>/fit/<look>.npz (every level), a preview strip and stats JSON.

@@ -1,4 +1,4 @@
-"""Step 3 - quantise the fitted blobs into the game's binary format (13 bytes a blob) and check what that costs.
+"""Step 3 - quantise the fitted blobs into the walkthrough's binary format (13 bytes a blob) and check what that costs.
 
 Usage: export.py <work> <outdir> look [look ...]
 Per look:  <outdir>/<look>.bin  = for every level, struct-of-arrays:

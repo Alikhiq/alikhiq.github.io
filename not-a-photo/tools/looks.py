@@ -1,7 +1,7 @@
 """Which photo becomes which look, and how each one is cropped.
 
-Photos are read from <work>/photos/<look>.jpg (or $RVC_PHOTOS). They are inputs only: nothing here
-copies a photo into the game - the game ships the fitted blobs and nothing else.
+Photos are read from <work>/photos/<look>.jpg (or $NAP_PHOTOS). They are inputs only: nothing here
+copies a photo into the walkthrough - it ships the fitted blobs and nothing else.
 """
 import os
 import numpy as np
@@ -21,7 +21,7 @@ LOOKS = {
 }
 
 def photo(work, name):
-    d = os.environ.get('RVC_PHOTOS') or os.path.join(work, 'photos')
+    d = os.environ.get('NAP_PHOTOS') or os.path.join(work, 'photos')
     return ImageOps.exif_transpose(Image.open(os.path.join(d, name + '.jpg'))).convert('RGB')
 
 def load(work, name, width=None):

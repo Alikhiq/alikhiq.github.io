@@ -1,28 +1,29 @@
-"""Pack the game into one self-contained HTML file (styles, scripts and blob data inlined).
+"""Pack the walkthrough into one self-contained HTML file (styles, scripts and blob data inlined).
 
-Usage: build_single.py <game dir> <out.html> [--fragment]
-Handy for sending the game to someone as a single file; the site itself uses the separate files.
+Usage: build_single.py <folder> <out.html> [--fragment]
+Handy for sending it to someone as a single file; the site itself uses the separate files.
 --fragment leaves out the <html>/<head>/<body> wrapper, for hosts that add their own.
 """
 import sys, os, re, json, base64
 
-game, out = sys.argv[1], sys.argv[2]
+folder, out = sys.argv[1], sys.argv[2]
 fragment = '--fragment' in sys.argv
-html = open(os.path.join(game, 'index.html'), encoding='utf-8').read()
-css = open(os.path.join(game, 'style.css'), encoding='utf-8').read()
+html = open(os.path.join(folder, 'index.html'), encoding='utf-8').read()
+css = open(os.path.join(folder, 'style.css'), encoding='utf-8').read()
 html = html.replace('<link rel="stylesheet" href="style.css">', '<style>\n' + css + '</style>')
 
-man = json.load(open(os.path.join(game, 'data', 'manifest.json')))
+man = json.load(open(os.path.join(folder, 'data', 'manifest.json')))
 bins = {}
 for name, meta in man['looks'].items():
-    bins[name] = base64.b64encode(open(os.path.join(game, 'data', meta['file']), 'rb').read()).decode('ascii')
-data = '<script>window.RVC_DATA = ' + json.dumps({'manifest': man, 'bins': bins}, separators=(',', ':')) + ';</script>\n'
+    bins[name] = base64.b64encode(open(os.path.join(folder, 'data', meta['file']), 'rb').read()).decode('ascii')
+data = '<script>window.NAP_DATA = ' + json.dumps({'manifest': man, 'bins': bins}, separators=(',', ':')) + ';</script>\n'
 
 def inline(m):
-    src = open(os.path.join(game, m.group(1)), encoding='utf-8').read()
+    src = open(os.path.join(folder, m.group(1)), encoding='utf-8').read()
     assert '</script' not in src.lower(), m.group(1)
     return '<script>\n' + src + '</script>'
-html = html.replace('<script src="js/blobs.js"></script>', data + '<script src="js/blobs.js"></script>')
+first = html.index('<script src=')
+html = html[:first] + data + html[first:]
 html = re.sub(r'<script src="([^"]+)"></script>', inline, html)
 
 if fragment:
