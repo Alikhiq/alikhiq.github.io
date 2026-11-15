@@ -71,6 +71,35 @@ const RCX = {
     { type: 'shot', img: '/v3/work/susu-ink-and-glow-m.jpg', label: 'Susu Ink & Glow', title: 'Live website <em>and booking</em>', pan: 120 },
     { type: 'shot', img: '/v3/work/valentina-luxe-m.jpg', label: 'Valentina Luxe', title: 'Bilingual <em>website</em>', pan: 120 }] },
 
+  // rc21–rc25 (added Nov 15 2026): every line read from roundcity.co/packages/* and /services/ai-phone-systems that day.
+  rc21: { title: 'Signature website $7,500', scenes: [
+    { type: 'hook', label: 'Websites', lines: ['Your services.', 'Your proof.', '<em>One clear path to you.</em>'], size: 84, gap: 150, top: 640, dur: 3.2 },
+    { type: 'price', label: 'Websites', name: 'Signature website', price: '$7,500', fee: 'one-time project fee · USD', items: [
+      'Up to 12 designed pages', 'Service, portfolio and copy development', 'One booking or lead integration', 'Analytics and search foundations', 'Responsive build, launch and handover'],
+      note: 'Plan for <b>4–6 weeks</b> after kickoff.<br>Domain, hosting and subscriptions are separate.' }] },
+  rc22: { title: 'Commerce website $12,500', scenes: [
+    { type: 'hook', label: 'Online stores', lines: ['Sell from', '<em>your own store.</em>'] },
+    { type: 'price', label: 'Websites', name: 'Commerce website', price: '$12,500', small: true, fee: 'one-time project fee · USD', items: [
+      'Up to 12 content pages', 'Setup for up to 20 supplied products', 'One hosted checkout integration', 'Order confirmation and owner workflow', 'Purchase testing and handover'],
+      note: 'Plan for <b>6–8 weeks</b> after kickoff.<br>Provider fees, hosting and domains are separate.' }] },
+  rc23: { title: 'Truck management $4,499', scenes: [
+    { type: 'hook', label: 'Food carts + trucks', lines: ['Truck moved?', '<em>Sign in and update it.</em>'], size: 86 },
+    { type: 'price', label: 'For up to 3 trucks, one brand', name: 'Website + Truck Management', nameSize: 64, price: '$4,499', fee: 'one-time project fee · USD', items: [
+      'Everything in Brand + Website', 'A page for each of up to 3 trucks', 'A shared menu of up to 40 items', 'Private owner dashboard, staff editing access', 'Update locations, hours, open/closed and website prices'],
+      note: 'Updates appear on your website, not on delivery apps or your register. Optional support from <b>$149/month</b>.', noteTop: 1590 }] },
+  rc24: { title: 'AI front desk', scenes: [
+    { type: 'hook', label: 'AI phone + front-desk systems', lines: ['A front desk designed', '<em>around your business.</em>'], size: 84 },
+    { type: 'steps', label: 'How the call flows', title: 'Answer. Capture.<br><em>Hand it over.</em>', top: 760, rows: [
+      ['Take the call', 'Service questions, project intake and support.'], ['Capture the details', 'Consent and contact details, read back to the caller.'], ['Hand off to your team', 'We define when a person needs to take over.']] },
+    { type: 'tiers', label: 'What we scope with you', top: 380, rows: [
+      ['Call-flow design', 'Built on what your business actually answers', 'Quote'], ['Tool integrations', 'Telnyx setup and only the agreed actions', 'Quote'], ['Testing', 'Routing, audio, intake and human handoff', 'Quote']],
+      note: 'Hear ours: call <b>(614) 618-4644</b>. A written scope and custom quote come first.', noteTop: 1300 }] },
+  rc25: { title: 'Trucks + kitchen $8,499', scenes: [
+    { type: 'hook', label: 'Food trucks + kitchens', lines: ['Your trucks request supplies.', 'Your kitchen sees the work.', '<em>You control the prices.</em>'], size: 66, gap: 120, top: 700, dur: 3.6 },
+    { type: 'price', label: 'Up to 5 trucks, 1 kitchen', name: 'Website + Trucks + Kitchen', price: '$8,499', fee: 'one-time project fee · USD', items: [
+      'Everything in Website + Truck Management', 'A PIN for each truck', 'A shared screen for kitchen supply requests', 'Your own supply list and prices, up to 50 products', 'Order history and spreadsheet downloads'],
+      note: 'About <b>4–6 weeks</b> after we confirm the work.<br>Optional support from <b>$299/month</b>.', noteTop: 1590 }] },
+
   lux15: { ...LUX, title: 'From Baghdad to Columbus', scenes: [
     { type: 'hook', label: 'Baghdad · 2003', lines: ['I was seven.', '<em>The sky was red.</em>'], dur: 3.2 },
     { type: 'hook', lines: ['That same year', 'I took apart', '<em>my first computer.</em>'], gap: 130, top: 640, dur: 3.2 },
