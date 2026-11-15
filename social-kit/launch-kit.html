@@ -1,0 +1,469 @@
+<title>Round City Social Launch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one 860px reading column; Round City plum + champagne, dark-first with an ivory light theme */
+:root{
+  --bg:#19121b; --surface:#221a25; --line:rgba(233,191,149,.18); --fg:#f7eee2; --muted:rgba(247,238,226,.64);
+  --accent:#e4bd91; --accent-strong:#f0cfa6; --chip:#2e2431; --ok:#9fd6a8;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif; --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f6efe4; --surface:#fffaf2; --line:rgba(120,80,50,.18); --fg:#211b23; --muted:rgba(33,27,35,.64);
+  --accent:#9a6436; --accent-strong:#7c4c24; --chip:#efe3d2; --ok:#2f7a40; color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f6efe4; --surface:#fffaf2; --line:rgba(120,80,50,.18); --fg:#211b23; --muted:rgba(33,27,35,.64);
+  --accent:#9a6436; --accent-strong:#7c4c24; --chip:#efe3d2; --ok:#2f7a40; color-scheme:light}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(34px,6vw,52px)} h1 em,h2 em{font-style:italic;color:var(--accent)}
+h2{font-size:clamp(26px,4vw,34px)} h3{font-size:22px}
+p{margin:0;max-width:65ch}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:18px}
+.mark{width:64px;height:64px}
+a{color:var(--accent-strong)}
+code,.file{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--muted);word-break:break-all}
+
+/* split: who does what */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.done{color:var(--ok);font-weight:500}
+
+/* accounts table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-size:12px;font-weight:500;padding:3px 10px;border-radius:99px;background:var(--chip);white-space:nowrap}
+.pill.have{color:var(--ok)} .pill.new{color:var(--accent-strong)}
+
+/* images */
+.imgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figure img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+figure.wide{grid-column:1/-1}
+figcaption{font-size:14px;color:var(--muted)}
+figcaption b{color:var(--fg);font-weight:500}
+
+/* platform cards */
+.cards{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.rank{font-size:13px;color:var(--muted)}
+.fields{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px 16px;font-size:15px}
+.fields dt{color:var(--muted)} .fields dd{margin:0;min-width:0}
+.copyline{display:flex;gap:10px;align-items:flex-start}
+.copyline pre{flex:1;min-width:0;margin:0;white-space:pre-wrap;font-family:var(--sans);font-size:15px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.count{font-size:12px;color:var(--muted);margin-top:4px}
+button.copy{font:500 13px var(--sans);color:var(--fg);background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+button.copy:hover{border-color:var(--accent)} button.copy:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.copy.ok{color:var(--ok)}
+ol.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+label.check{display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer}
+label.check input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* calendar */
+.week{display:flex;flex-direction:column;gap:10px}
+.week h3{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+details.post{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details.post summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 16px}
+details.post summary::-webkit-details-marker{display:none}
+.date{font-variant-numeric:tabular-nums;font-weight:500}
+.date small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.ptitle{min-width:0}
+.ptitle b{font-family:var(--serif);font-weight:400;font-size:18px;display:block}
+.where{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.post-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:10px}
+.note{border-left:2px solid var(--accent);padding:4px 0 4px 14px;color:var(--muted);font-size:15px}
+
+@media (max-width:640px){
+  .split,.imgs{grid-template-columns:1fr}
+  .fields{grid-template-columns:1fr;gap:2px}
+  .fields dd{margin-bottom:10px}
+  .copyline{flex-direction:column;align-items:stretch}
+  .copyline pre{width:100%}
+  details.post summary{grid-template-columns:72px minmax(0,1fr)}
+  .where{grid-column:1/-1;justify-content:flex-start}
+}
+@media (prefers-reduced-motion:no-preference){button.copy{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+<header>
+  <svg class="mark" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe8cf"/><stop offset=".45" stop-color="#e9bf95"/><stop offset="1" stop-color="#c48d62"/></linearGradient></defs><circle cx="100" cy="100" r="86" fill="none" stroke="url(#g)" stroke-width="4"/><g fill="url(#g)"><rect x="70" y="104" width="7" height="22"/><rect x="80" y="94" width="8" height="32"/><rect x="91" y="84" width="9" height="42"/><rect x="103" y="98" width="8" height="28"/><rect x="114" y="90" width="7" height="36"/><rect x="124" y="108" width="6" height="18"/></g><circle cx="100" cy="14" r="6" fill="#fff4e4"/></svg>
+  <div class="eyebrow">Round City · Social launch kit</div>
+  <h1>Everything is ready.<br><em>You only have to sign up.</em></h1>
+  <p class="muted">Platforms require your own phone number and a CAPTCHA to create an account, so that one step is yours. Everything else is filled in below. Tap <b>Copy</b>, paste, done. Plan on about 15 minutes for all of it.</p>
+</header>
+
+<section>
+  <div class="split">
+    <div class="box"><span class="eyebrow">Already done</span>
+      <ul>
+        <li>Handles picked and checked against each platform's rules</li>
+        <li>Profile picture and 4 banners in your brand</li>
+        <li>Bios written to fit every character limit</li>
+        <li>20 videos scheduled across 7 weeks, with captions</li>
+      </ul></div>
+    <div class="box"><span class="eyebrow">Your part</span>
+      <ul>
+        <li>Create each account (cards below, in order)</li>
+        <li>Upload the picture, paste the bio</li>
+        <li>Connect each new account in Blotato (Settings → Accounts)</li>
+        <li>Tell me "connected". I schedule all 20 posts.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Where you stand</span>
+  <h2>Your accounts</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Platform</th><th>Account</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Instagram</td><td>@614lux (you, the founder)</td><td><span class="pill have">Have it · update bio</span></td></tr>
+      <tr><td>Pinterest</td><td>@614lux</td><td><span class="pill have">Have it</span></td></tr>
+      <tr><td>Facebook</td><td>Pages: Halal New York Gyro, EveryWrap</td><td><span class="pill have">Client pages</span></td></tr>
+      <tr><td>TikTok</td><td>@almqam.store, @suaxxxs</td><td><span class="pill have">Other projects</span></td></tr>
+      <tr><td>Google Business</td><td>Round City</td><td><span class="pill new">Create</span></td></tr>
+      <tr><td>Instagram + Threads</td><td>@roundcity.co</td><td><span class="pill new">Create</span></td></tr>
+      <tr><td>TikTok</td><td>@roundcity.co</td><td><span class="pill new">Create</span></td></tr>
+      <tr><td>Facebook Page</td><td>Round City</td><td><span class="pill new">Create</span></td></tr>
+      <tr><td>YouTube</td><td>@roundcity.co</td><td><span class="pill new">Create</span></td></tr>
+      <tr><td>LinkedIn Page</td><td>Round City</td><td><span class="pill new">Create</span></td></tr>
+    </tbody></table></div>
+</section>
+
+<section>
+  <span class="eyebrow">Brand images</span>
+  <h2>Profile picture + banners</h2>
+  <p class="muted">Long-press an image (phone) or right-click it (computer) to save it. The same files are in your repo folder under <code>social-kit/images/</code>.</p>
+  <div class="imgs">
+    <figure><img src="images/roundcity-profile-picture.png" alt="Round City mark: gold ring around a skyline on plum" loading="lazy"><figcaption><b>Profile picture</b> · 1080×1080 · use on every account</figcaption></figure>
+    <figure><img src="images/x-threads-header.png" alt="Round City header with tagline" loading="lazy"><figcaption><b>X / general header</b> · 1500×500</figcaption></figure>
+    <figure class="wide"><img src="images/facebook-cover.png" alt="Round City Facebook cover" loading="lazy"><figcaption><b>Facebook cover</b> · 1640×624</figcaption></figure>
+    <figure class="wide"><img src="images/youtube-banner.png" alt="Round City YouTube banner" loading="lazy"><figcaption><b>YouTube banner</b> · 2560×1440 · text sits inside the area every device shows</figcaption></figure>
+    <figure class="wide"><img src="images/linkedin-banner.png" alt="Round City LinkedIn banner" loading="lazy"><figcaption><b>LinkedIn banner</b> · 1128×191</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Sign up, in this order</span>
+  <h2>Account by account</h2>
+  <div class="note">If a handle is taken, use the backup listed. Use <b>ali@roundcity.co</b> as the sign-up email so the accounts belong to the business.</div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section>
+  <span class="eyebrow">Posting plan · Nov 17 – Dec 31, 2026</span>
+  <h2>20 videos, <em>three a week</em></h2>
+  <p class="muted">Files are in <code>videos/roundcity/</code>. Use the <b>-sfx</b> version of each (it has the sound design). Weekdays go out at 11:30 AM, Saturdays at 10:00 AM, Columbus time. Founder posts go on @614lux with @roundcity.co added as a collaborator. Once the accounts are connected I schedule all of these in Blotato.</p>
+  <div id="plan" style="display:flex;flex-direction:column;gap:28px"></div>
+</section>
+</div>
+
+<script>
+const RC=['IG @roundcity.co','TikTok','FB Page','YT Shorts'], LUX=['IG @614lux + collab','TikTok','YT Shorts'];
+const CARDS=[
+ {id:'gbp',name:'Google Business Profile',why:'Most important for local clients: it is how people find you on Google Search and Maps.',
+  url:'https://business.google.com/create',
+  fields:[['Business name','Round City'],['Primary category','Software company'],['Extra categories','Website designer · Marketing agency · Video production service'],['Location','Choose “I deliver goods and services to my customers”. Hide the address. Service area: Columbus, OH and Central Ohio.'],['Phone','(614) 618-4644'],['Website','https://roundcity.co']],
+  copy:[['Description (750 max)',`Round City builds custom software, workflow automation, websites and content for local businesses in Columbus, Ohio and beyond. We start by learning how your business actually runs, then scope the work in writing with a fixed price before anything is built.
+
+Services include custom software and connected business systems, mobile-first websites (from $3,500), food truck brand and website packages (from $1,499), content sprints made from your footage (from $1,750), brand and graphic systems ($4,500) and business films ($3,500). Our prices are published at roundcity.co so you know what you get before we ever talk.
+
+Founded by Ali Al-Khafaji.`]],
+  steps:['Google will ask to verify, usually by a short video of you and your work setup. Do it the same day.','Upload the profile picture as the logo and the Facebook cover as the cover photo.']},
+ {id:'ig',name:'Instagram (+ Threads)',why:'Your videos are vertical and ready for Reels. Threads comes free with it.',
+  url:'https://www.instagram.com/accounts/emailsignup/',
+  fields:[['Username','roundcity.co'],['Backup','roundcity.studio · roundcitycolumbus'],['Name field','Round City · Websites, Software + Content'],['Link','https://roundcity.co']],
+  copy:[['Bio (150 max)',`Software, websites + content built around your business.
+Columbus, Ohio · Fixed prices, published.
+Founder: @614lux`]],
+  steps:['In the app: Profile → tap your username → Add account → Create new account. That keeps it next to @614lux.','Settings → Account type and tools → Switch to professional → Business → category “Software Company”.','Link it to the Round City Facebook Page you make below (needed for scheduling).','Open the Threads app and sign in with @roundcity.co. Use the same bio.']},
+ {id:'tt',name:'TikTok',why:'Same videos, a different audience. Business owners scroll TikTok too.',
+  url:'https://www.tiktok.com/signup',
+  fields:[['Username','roundcity.co'],['Backup','roundcityco · roundcity.studio'],['Name','Round City'],['Website','https://roundcity.co']],
+  copy:[['Bio (80 max)','Websites, software + content for local business. Columbus, OH. Public prices.']],
+  steps:['Profile → menu → Settings → Account → Switch to Business Account → category “Software/Apps” or “Professional Services”.']},
+ {id:'fb',name:'Facebook Page',why:'Restaurant and shop owners check Facebook. You already manage pages, so this one sits next to them.',
+  url:'https://www.facebook.com/pages/create',
+  fields:[['Page name','Round City'],['Category','Software Company, Website Designer'],['Username','roundcity.co'],['Contact','ali@roundcity.co · (614) 618-4644'],['Website','https://roundcity.co']],
+  copy:[['Intro (101 max)','Software, websites and content built around your business. Columbus, Ohio. Fixed, published prices.']],
+  steps:['Create it from your Ali Imad profile, the same way as Halal New York Gyro.','Profile picture + Facebook cover image.']},
+ {id:'yt',name:'YouTube',why:'Shorts reach people searching. Longer case studies (like the Susu one) live here too.',
+  url:'https://www.youtube.com/create_channel',
+  fields:[['Channel name','Round City'],['Handle','@roundcity.co'],['Backup','@roundcityco'],['Links','roundcity.co']],
+  copy:[['Description',`Round City builds software, websites and content for local businesses in Columbus, Ohio and beyond.
+
+Here you'll find the work: case studies of real client websites, how they were made, and short videos on what each package includes and costs. Every price is published at roundcity.co.
+
+Founded by Ali Al-Khafaji (@614lux).
+Contact: ali@roundcity.co`]],
+  steps:['Choose “Use a custom name” so the channel is a business channel, separate from your personal Google profile.','Upload the YouTube banner and profile picture.','First long video: videos/round-city-case-study-susu.mp4']},
+ {id:'li',name:'LinkedIn Page',why:'Optional. Useful when you pitch larger businesses, and it adds trust when people look you up.',
+  url:'https://www.linkedin.com/company/setup/new/',
+  fields:[['Name','Round City'],['URL','linkedin.com/company/roundcity-co'],['Industry','Software Development'],['Size','2–10 employees'],['Type','Privately held'],['Website','https://roundcity.co']],
+  copy:[['Tagline (120 max)','Custom software, automation, websites and content for local businesses in Ohio, Michigan and beyond.'],
+        ['About',`Round City builds custom software, workflow automation and connected business systems directly with your team, along with the websites, content and branding that support them.
+
+We start with the operation: learn how the work actually gets done, write the scope and price, then build, test, deploy and hand over. Every package has a fixed, published price at roundcity.co.
+
+Founded by Ali Al-Khafaji in Columbus, Ohio.`]],
+  steps:['Requires a personal LinkedIn profile. If you don’t have one, make it first (it takes 3 minutes).','Upload the LinkedIn banner and profile picture.']},
+ {id:'lux',name:'Update @614lux',why:'Your personal account should point people to the business.',
+  url:'https://www.instagram.com/accounts/edit/',
+  fields:[['Name field','Ali Al-Khafaji · Round City'],['Link','https://roundcity.co']],
+  copy:[['Bio (150 max)',`Ali Al-Khafaji · Baghdad → Columbus
+I build software + websites for local businesses
+Founder @roundcity.co`]],
+  steps:['Keep your current photo. This one is you, not the logo.']},
+];
+
+const P=[ // date, day, account set, file stem, title, caption, note
+ ['Nov 17','Tue',RC,'rc-14-selected-work','Selected work',`Different businesses. Distinct work.
+
+Blite Fashion: live website and catalog
+MoTintKing: identity and website
+Susu Ink & Glow: live website and booking
+Valentina Luxe: bilingual website
+
+Round City builds software, websites and content for local businesses in Columbus and beyond. See the work at roundcity.co
+
+#ColumbusOhio #WebDesign #SmallBusiness #614`,'First post: show the work before anything else.'],
+ ['Nov 19','Thu',LUX,'614lux-15-baghdad-to-columbus','From Baghdad to Columbus',`I was seven. Baghdad, 2003. The sky was red.
+That same year I took apart my first computer.
+
+On Bab al-Sharqi, every shop needed to be seen. I made them seen. Now I do the same in Columbus: websites and systems that help local businesses get found.
+
+Sometimes the sky is red again. Now it’s just the sunset.
+
+@roundcity.co
+#Columbus #Founder #SmallBusiness`],
+ ['Nov 21','Sat',RC,'rc-01-food-truck-1499','Food truck · $1,499',`Great food. Easy to find.
+
+Food truck Brand + Website, $1,499 one time:
+• Refreshed logo, brand colors and fonts
+• Custom one-page site (up to 5 sections, 20 menu items)
+• Menu, hours, location and contact in one place
+• A request form, or a menu linked to your ordering
+• Website files, account access and a walkthrough
+
+About 7–10 business days after we get your materials. Optional support $49/month.
+
+roundcity.co
+#FoodTruck #ColumbusFoodTrucks #ColumbusEats #SmallBusiness`],
+ ['Nov 24','Tue',RC,'rc-11-know-what-you-pay','Know what you pay',`Know what you get. Know what you pay.
+
+Food truck brand + site: $1,499
+Content sprint: $1,750
+Launch website: $3,500
+Business film: $3,500
+Brand system: $4,500
+Custom software: quote
+
+Each price covers the listed scope. Support and outside-provider charges are separate. Full details at roundcity.co
+
+#SmallBusiness #WebDesign #Columbus`],
+ ['Nov 27','Fri',LUX,'614lux-18-built-from-my-phone','Built from my phone',`I built a client’s website from my phone.
+
+For Susu Ink & Glow I described what the site should do, sent screenshots of every problem, and approved each change after testing it at phone and desktop sizes. Claude Code built it. I directed it.
+
+9 merged pull requests later, it’s live at susuinkandglow.com
+
+@roundcity.co
+#AI #ClaudeCode #WebDesign #BuildInPublic`,'Moved off Thursday for Thanksgiving.'],
+ ['Nov 28','Sat',RC,'rc-03-launch-website-3500','Launch website · $3,500',`A website worth visiting.
+
+Launch website, $3,500:
+• Up to 5 core pages
+• Custom desktop and mobile design
+• Copy refinement and page structure
+• Contact form and search essentials
+• Launch checks and website handover
+
+Domain, hosting and paid tools are separate. Happy Small Business Saturday. roundcity.co
+
+#SmallBusinessSaturday #ShopSmall #WebDesign #Columbus`,'Small Business Saturday.'],
+ ['Dec 1','Tue',RC,'rc-06-content-sprint-1750','Content sprint · $1,750',`Make the first seconds count.
+
+Content sprint, $1,750:
+• One content angle and plan
+• Six hooks or short-form scripts
+• Four edited vertical videos
+• Six graphics for one focused campaign
+
+Made from footage you supply. Filming and ad management are quoted separately.
+
+roundcity.co
+#ContentCreation #SocialMediaMarketing #SmallBusiness`],
+ ['Dec 3','Thu',LUX,'614lux-16-forward-deployed-engineer','Forward Deployed Engineer',`My job title: Forward Deployed Engineer.
+
+I learn how your business actually runs, then build around it.
+1. Understand: talk with the people doing the work, map the friction.
+2. Scope, build + test: confirm scope and price, test against real scenarios.
+3. Deploy + handover: put it into daily use, document the handoff.
+
+@roundcity.co
+#Automation #SmallBusiness #Software`],
+ ['Dec 5','Sat',RC,'rc-02-food-truck-packages-3d','Food truck packages',`One cart, or a growing fleet?
+
+Brand + Website (1 truck): $1,499
+Website + Truck Management (up to 3 trucks, one brand): $4,499
+Website + Trucks + Kitchen (up to 5 trucks, 1 kitchen): $8,499
+
+Larger packages include the smaller one’s features. Bigger operation? Custom quote.
+
+roundcity.co
+#FoodTruck #FoodTruckLife #ColumbusFoodTrucks`],
+ ['Dec 8','Tue',RC,'rc-12-round-city-mark-3d','Software + automation',`We learn the workflow. Then we build it.
+
+Round City: software and automation built around your business. Ordering and kitchen workflows, AI phone intake, shop quote tools. Every project is scoped in writing before anything is built.
+
+roundcity.co
+#Automation #CustomSoftware #Columbus`],
+ ['Dec 10','Thu',LUX,'614lux-17-59-live-sites','59 live sites',`59 live websites. All built by me.
+
+Buckeye Tint. Sally’s Halal Grill. ProGraphix. Danny’s Barber. Glow Haven. And my own: roundcity.co
+
+@roundcity.co
+#WebDesign #Columbus #SmallBusiness`],
+ ['Dec 12','Sat',RC,'rc-13-wedding-2500','Wedding · $2,500',`Bring the celebration together.
+
+Wedding experience, $2,500:
+• One invitation design direction
+• One wedding website
+• Basic RSVP form and response list
+• A motion invitation
+
+roundcity.co
+#WeddingWebsite #WeddingInvitation #OhioWedding #Engaged`,'Engagement season: December is the busiest month for proposals.'],
+ ['Dec 15','Tue',RC,'rc-10-custom-software','Custom software',`Software that fits the way you work.
+
+Restaurant operations: ordering, kitchen workflows, dashboards
+AI phones: intake, call routing, human handoff
+Shop systems: tint and wrap quote tools, shop workflows
+
+Every project starts the same way: understand the workflow, write the scope and price, then build, test and hand over.
+
+roundcity.co
+#CustomSoftware #Automation #AI #SmallBusiness`],
+ ['Dec 17','Thu',LUX,'614lux-20-why-prices-are-public','Why prices are public',`Why are my prices public?
+
+So you know what you get before we ever talk.
+
+Food truck brand + site: $1,499
+Content sprint: $1,750
+Launch website: $3,500
+Brand system: $4,500
+Signature website: $7,500
+
+Fixed project fees. Written scope. No surprises. roundcity.co/packages
+
+@roundcity.co
+#SmallBusiness #Pricing`],
+ ['Dec 19','Sat',RC,'rc-07-campaign-sprint-2500','Campaign sprint · $2,500',`Give the offer something to say.
+
+Campaign sprint, $2,500:
+• One offer and audience brief
+• Three campaign angles
+• Six copy variations
+• Three static ad designs
+
+Ad setup and ongoing management have their own written scope.
+
+roundcity.co
+#Marketing #Advertising #SmallBusiness`],
+ ['Dec 22','Tue',RC,'rc-05-website-pages-3d','5 pages, phone + desktop',`Up to 5 core pages. Phone and desktop.
+
+The Launch website is $3,500. Fixed price, written scope.
+
+roundcity.co
+#WebDesign #WebsiteDesign #Columbus`],
+ ['Dec 23','Wed',LUX,'614lux-19-floppy-disks-to-ai','Floppy disks to AI',`2003: floppy disks, no CDs. 3D Studio, AutoCAD, Photoshop.
+Banners and storefront signs on Bab al-Sharqi.
+Then Shopify and WordPress. Then automation. Then AI.
+
+Every new tool, I was there early.
+
+@roundcity.co
+#Tech #AI #Founder`,'Moved up a day for Christmas Eve.'],
+ ['Dec 26','Sat',RC,'rc-08-brand-system-4500','Brand system · $4,500',`A logo works harder as part of a system.
+
+Brand & graphic system, $4,500:
+• Positioning and creative direction
+• One logo direction or refinement
+• Color and typography system
+• Five agreed brand applications
+• Brand guide and final files
+
+Just a logo? That gets its own written scope and custom quote.
+
+roundcity.co
+#Branding #LogoDesign #BrandIdentity`],
+ ['Dec 29','Tue',RC,'rc-09-business-film-3500','Business film · $3,500',`Show the craft on film.
+
+Business film, $3,500:
+• Creative treatment and shot plan
+• One local half-day shoot
+• One 45–60 second film
+• Two vertical social cutdowns
+
+roundcity.co
+#Videography #BrandFilm #ColumbusOhio`],
+ ['Dec 31','Thu',RC,'rc-04-website-packages','Three website packages',`Three packages. One clear starting point.
+
+Launch website: up to 5 core pages, $3,500
+Signature website: up to 12 pages + one booking or lead integration, $7,500
+Commerce website: 20 supplied products + a tested hosted checkout, $12,500
+
+Fixed project fees in USD for the scope shown. Start the new year with a site that works: roundcity.co
+
+#WebDesign #Ecommerce #SmallBusiness`,'New Year’s Eve: “start the year” angle.'],
+];
+
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let store={}; try{store=JSON.parse(localStorage.getItem('rc-kit')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('rc-kit',JSON.stringify(store))}catch(e){}};
+const copyBlock=(label,text,limit)=>`<div><div class="muted" style="font-size:14px;margin-bottom:6px">${esc(label)}</div><div class="copyline"><pre>${esc(text)}</pre><button class="copy" type="button">Copy</button></div>${limit?`<div class="count">${[...text].length} of ${limit} characters</div>`:''}</div>`;
+
+document.getElementById('cards').innerHTML=CARDS.map((c,i)=>`
+<article class="card">
+  <div class="card-head"><h3>${esc(c.name)}</h3><span class="rank">${c.id==='lux'?'Existing account':'Step '+(i+1)+' of 6'}</span></div>
+  <p class="muted">${esc(c.why)}</p>
+  <dl class="fields">${c.fields.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+  ${c.copy.map(([l,t])=>{const m=l.match(/\((\d+) max\)/);return copyBlock(l,t,m&&m[1])}).join('')}
+  <ol class="steps">${c.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <a href="${c.url}" target="_blank" rel="noopener">Open sign-up page ↗</a>
+    <label class="check"><input type="checkbox" id="chk-${c.id}" data-k="${c.id}"> Done</label>
+  </div>
+</article>`).join('');
+
+const weeks=[]; P.forEach((p,i)=>{const w=Math.floor(i/3);(weeks[w]=weeks[w]||[]).push(p)});
+document.getElementById('plan').innerHTML=weeks.map((w,wi)=>`
+<div class="week"><h3>Week ${wi+1}</h3>${w.map(([d,day,where,file,title,cap,note])=>`
+<details class="post">
+  <summary><span class="date">${d}<small>${day} · ${day==='Sat'?'10:00 AM':'11:30 AM'}</small></span>
+    <span class="ptitle"><b>${esc(title)}</b><span class="file">${file}-sfx.mp4</span></span>
+    <span class="where">${where.map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</span></summary>
+  <div class="post-body">${note?`<div class="note">${esc(note)}</div>`:''}${copyBlock('Caption',cap)}</div>
+</details>`).join('')}</div>`).join('');
+
+document.querySelectorAll('input[data-k]').forEach(el=>{el.checked=!!store[el.dataset.k];el.addEventListener('change',()=>{store[el.dataset.k]=el.checked;save()})});
+document.addEventListener('click',e=>{const b=e.target.closest('button.copy');if(!b)return;const pre=b.previousElementSibling,t=pre.textContent;
+  const ok=()=>{b.textContent='Copied';b.classList.add('ok');setTimeout(()=>{b.textContent='Copy';b.classList.remove('ok')},1600)};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected';setTimeout(()=>b.textContent='Copy',1600)};
+  try{navigator.clipboard.writeText(t).then(ok,sel)}catch(err){sel()}});
+</script>
