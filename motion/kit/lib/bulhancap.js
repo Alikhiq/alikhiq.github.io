@@ -2,7 +2,7 @@
 // Captures bulhan.html (1280x720) by calling window.seek(t) for each frame. Needs a static server at the repo root on :8822.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
-const URL = 'http://127.0.0.1:8822/motion/kit/bulhan.html';
+const URL = 'http://127.0.0.1:8822/motion/kit/' + (process.env.PAGE || 'bulhan.html');
 (async () => {
   const out = process.argv[2]; fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch();
