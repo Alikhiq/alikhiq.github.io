@@ -51,7 +51,7 @@ def fill(x):
 
 SERVICES, COPY = fill(SERVICES), fill(COPY)
 AREAS = SITE["area"] + SITE.get("nearby", [])
-FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap"
 CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 CHEV_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>'
@@ -124,11 +124,19 @@ def price_label(ref):
 
 NAV = [("car", "Cars", ""), ("biz", "Business", "commercial"), ("studio", "Design", "design-print")]
 
+MARK_A = "M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"
+MARK_B = "M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"
+
+def mark(cls="logo-mark", attrs=""):
+    """The EveryWrap mark: one strip of film that wraps round twice and reads as an E.
+    The first turn takes the text colour, the second the live glow colour, and a glint runs along it."""
+    return ('<svg class="' + cls + '"' + attrs + ' viewBox="0 0 64 64" fill="none" aria-hidden="true">'
+            '<path class="lm-a" pathLength="100" d="' + MARK_A + '"/><path class="lm-b" pathLength="100" d="' + MARK_B + '"/>'
+            '<path class="lm-g" pathLength="100" d="' + MARK_A + MARK_B[len("M45 32"):] + '"/></svg>')
+
 def logo(root, cls=""):
-    """The EveryWrap mark: a panel with a seam that keeps moving across it, and the name
-    set half in outline, half solid. Drawn in CSS, so it takes the live glow colour."""
     return ('<a class="logo' + ((" " + cls) if cls else "") + '" href="' + link(root, "") + '" aria-label="EveryWrap home">'
-            '<span class="logo-mark" aria-hidden="true"><i></i></span><span class="logo-word" aria-hidden="true"><b>EVERY</b><b>WRAP</b></span></a>')
+            + mark() + '<span class="logo-word" aria-hidden="true">Every<i>Wrap</i></span></a>')
 
 def top(root, mode, cat=None):
     cat = ("biz" if mode == "commercial" else "car") if cat is None else cat
@@ -620,11 +628,17 @@ def chrome(root, com=False):
 """
 
 INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
-  <div class="ibg" id="ibg"></div>
-  <div class="icard" id="icard"></div>
-  <div class="ilogo" aria-hidden="true"><span class="logo big"><span class="logo-mark"><i></i></span><span class="logo-word"><b>EVERY</b><b>WRAP</b></span></span></div>
+  <div class="i-sheet"><i class="i-pool"></i><i class="i-streak"></i><i class="i-grain"></i></div>
+  <div class="i-lock">
+    """ + mark("i-mark", ' id="imark"') + """
+    <p class="i-word"><b style="--n:0">E</b><b style="--n:1">v</b><b style="--n:2">e</b><b style="--n:3">r</b><b style="--n:4">y</b><i><b style="--n:5">W</b><b style="--n:6">r</b><b style="--n:7">a</b><b style="--n:8">p</b></i></p>
+    <i class="i-rule"></i>
+    <p class="i-tag"><span>Wraps</span><span>Protection film</span><span>Tint</span></p>
+    <p class="i-city">""" + SITE["city"] + ", " + SITE["region"] + """</p>
+  </div>
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
+<script>try{if(sessionStorage.getItem("ew4-intro")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!/[?&]dev=/.test(location.search))document.getElementById("intro").hidden=false}catch(e){}</script>
 """
 
 def write(path, text):
@@ -905,7 +919,7 @@ def extras():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
-    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><rect x="0" y="0" width="32" height="64" rx="0" fill="#f3ede2" clip-path="inset(0 round 14px 0 0 14px)"/><rect x="30" y="8" width="4" height="48" rx="2" fill="#ef5b2a"/></svg>\n')
+    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><g fill="none" stroke-width="9.5" transform="translate(32 32) scale(.8) translate(-32.5 -32)"><path stroke="#f3ede2" d="' + MARK_A + '"/><path stroke="#ef5b2a" d="' + MARK_B + '"/></g></svg>\n')
 
 if __name__ == "__main__":
     page_home()

@@ -18,12 +18,13 @@ The pages are generated. Edit the data or the templates, then run `python3 tools
 | `work/` | The reel and all 75 real jobs in a square grid, each opening to the owner's caption, year, place and film |
 
 Shared pieces on every page:
-- **Top bar**: a glass pill with the three things EveryWrap sells: Cars, Business, Design. No logo: the mark has not been designed yet.
+- **Top bar**: the logo, and a glass pill with the three things EveryWrap sells: Cars, Business, Design.
 - **Menu**: the same three groups, each listing its services.
 - **Catalogue** (`#services` on the home page): every service in those three groups with its starting price, straight under the hero. The list is `catalog` in `data/copy.json`.
 - **Dock**: Services, Work, Book now and Prices, fixed at the bottom once the hero has scrolled away.
 - **Booking**: three steps. What do you need (grouped, with starting prices), the details that fit that choice (a car and its size, a list of vehicles, or a job description), then contact. The last screen says what happens next.
-- **Logo**: drawn in CSS (`logo()` in the generator, `.logo` in the stylesheet). A panel with a seam that keeps moving across it in the live glow colour, and the name half in outline, half solid. A proposal, easy to swap for a final mark.
+- **Logo**: an inline SVG (`mark()` and `logo()` in the generator, `.logo` in the stylesheet). One strip of film that wraps round twice and reads as an E: the first turn in the text colour, the second in the live glow colour, with a glint running along it. The name is set in Newsreader, with Wrap in italic. The favicon uses the same paths.
+- **Launch intro** (home page, once per visit, skipped for reduced motion): the mark draws itself, the name rises, then the black sheet lifts off the page while the mark travels to the logo in the top bar. `INTRO` in the generator, `.intro` in the stylesheet, `playIntro()` in `js/site.js`.
 - **Trust badges and film brands**: `trust` and `trust_com` in `data/copy.json`, `suppliers` in `data/site.json`. Brands are named in text; no third-party logos are used.
 - **Voice assistant**: an ElevenLabs agent, linked from the hero, the menu and the closing section. Its id is `voice_agent` in `data/site.json`; remove it to hide the links. The agent's prices are written into its prompt and must be updated there when `pricing.json` changes.
 - **Live glow**: `--glow` and `--glow2` follow the finish on wraps and a fixed colour per service otherwise (`theme()` in `js/state.js`).

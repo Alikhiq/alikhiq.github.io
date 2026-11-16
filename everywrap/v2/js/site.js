@@ -71,21 +71,28 @@ function openUpload() { $$("#usw button").forEach((b) => b.setAttribute("aria-pr
 
 /* ---------- launch intro (home only) ---------- */
 let introT = [];
+function closeIntro() {
+  const el = $("#intro"), m = $("#imark");
+  el.hidden = true; el.classList.remove("play", "out"); m.style.transform = ""; document.documentElement.classList.remove("intro-on");
+}
 function endIntro(fast) {
   const el = $("#intro"); introT.forEach(clearTimeout); introT = [];
-  if (!el || el.hidden) return;
-  if (fast || reduce) { el.hidden = true; el.classList.remove("out", "boom"); }
-  else { el.classList.add("boom", "out"); setTimeout(() => { el.hidden = true; el.classList.remove("out", "boom"); }, 650); }
+  if (!el || el.hidden || el.classList.contains("out")) return;
   heroSweep();
+  if (fast || reduce) return closeIntro();
+  // The big mark travels to the logo in the top bar while the sheet lifts off the page.
+  const m = $("#imark"), to = $(".top .logo-mark"), a = m.getBoundingClientRect(), b = to ? to.getBoundingClientRect() : null;
+  if (b && b.width) m.style.transform = `translate(${b.left - a.left}px,${b.top - a.top}px) scale(${b.width / a.width})`;
+  el.classList.add("out");
+  introT.push(setTimeout(closeIntro, 1060));
 }
 function playIntro() {
-  const el = $("#intro"), card = $("#icard"), bg = $("#ibg"), reel = DATA.work.filter((j) => !j.tags.includes("commercial") && !j.tags.includes("shop") && j.h >= j.w).slice(0, 10);
-  if (!el || reel.length < 4) return;
-  el.hidden = false; el.classList.remove("out", "boom"); card.innerHTML = "";
-  const imgs = reel.map((j) => { const i = new Image(); i.src = ROOT + CONFIG.assets + j.src; i.alt = ""; card.appendChild(i); return i; });
-  const beat = 215, start = 320;
-  imgs.forEach((im, n) => introT.push(setTimeout(() => { if (!im.complete || !im.naturalWidth) return; im.style.zIndex = n + 1; im.classList.add("hit"); bg.style.backgroundImage = `url("${im.src}")`; }, start + n * beat)));
-  introT.push(setTimeout(() => endIntro(false), start + imgs.length * beat + 260));
+  const el = $("#intro");
+  if (!el) return;
+  introT.forEach(clearTimeout); introT = [];
+  el.classList.remove("play", "out"); $("#imark").style.transform = ""; el.hidden = false; document.documentElement.classList.add("intro-on");
+  void el.offsetWidth; el.classList.add("play");
+  introT.push(setTimeout(() => endIntro(false), 2750));
 }
 
 export function initSite() {
@@ -115,7 +122,7 @@ export function initSite() {
   if (intro) {
     $("#iskip").addEventListener("click", () => endIntro(true)); intro.addEventListener("click", (e) => { if (e.target.id !== "iskip") endIntro(false); });
     const rp = $("#replay"); if (rp) rp.addEventListener("click", () => { scrollTo(0, 0); playIntro(); });
-    let seen = false; try { seen = sessionStorage.getItem("ew3-intro") === "1"; sessionStorage.setItem("ew3-intro", "1"); } catch {}
+    let seen = false; try { seen = sessionStorage.getItem("ew4-intro") === "1"; sessionStorage.setItem("ew4-intro", "1"); } catch {}
     if (!seen && !reduce && !new URLSearchParams(location.search).get("dev")) playIntro();
   }
 }
