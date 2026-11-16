@@ -10,7 +10,7 @@ import concurrent.futures as cf, os, subprocess, sys, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BUCKET = "everywrap-site"
-PUBLIC = ["index.html", "styles.css", "favicon.svg", "site.webmanifest", "sitemap.xml", "robots.txt", "data/work.json",
+PUBLIC = ["index.html", "desk", "styles.css", "favicon.svg", "site.webmanifest", "sitemap.xml", "robots.txt", "data/work.json",
           "js", "assets", "vinyl-wrap", "paint-protection-film", "window-tint", "body-kits", "commercial", "design-print", "pricing", "work"]
 TYPES = {"html": "text/html; charset=utf-8", "css": "text/css", "js": "text/javascript", "json": "application/json", "svg": "image/svg+xml",
          "webp": "image/webp", "jpg": "image/jpeg", "png": "image/png", "mp4": "video/mp4", "xml": "application/xml", "txt": "text/plain",

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EveryWrap desk</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{--bg:#0b0b0c;--card:#141415;--card2:#1b1b1d;--line:rgba(243,237,226,.13);--fg:#f3ede2;--mute:#9a958d;--dim:#6f6b65;--amber:#ef5b2a;--bar:#ef5b2a;--bar-dim:#5a2a18;--good:#4cc38a;--blue:#6aa5ff;--ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Newsreader",Georgia,serif;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.45 var(--ui);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand svg{width:30px;height:30px}
+.brand h1{margin:0;font:500 24px/1 var(--display);letter-spacing:-.01em}
+.brand small{display:block;margin-top:3px;font:400 12px/1 var(--ui);color:var(--mute)}
+.seg{display:inline-flex;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.seg button{border:0;background:none;padding:8px 14px;border-radius:999px;font:500 13px/1 var(--ui);color:var(--mute)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:#0b0b0c}
+.grid{display:grid;gap:12px}
+.tiles{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:12px}
+.tile,.card{background:var(--card);border:1px solid var(--line);border-radius:16px}
+.tile{padding:14px 16px 15px}
+.tile .l{font:500 12.5px/1.2 var(--ui);color:var(--mute)}
+.tile .v{margin-top:8px;font:600 34px/1 var(--ui);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .d{margin-top:8px;font:400 12px/1.3 var(--ui);color:var(--dim)}
+.tile .d b{font-weight:600;color:var(--mute)}
+.tile.hot{border-color:color-mix(in srgb,var(--amber) 60%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--amber) 14%,var(--card)),var(--card))}
+.card{padding:16px}
+.card h2{margin:0 0 2px;font:600 15px/1.2 var(--ui)}
+.card .sub{margin:0 0 14px;font:400 12.5px/1.35 var(--ui);color:var(--mute)}
+.two{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);margin-bottom:12px;align-items:start}
+.three{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:12px;align-items:start}
+/* requests */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.chips button{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 11px;font:500 12.5px/1 var(--ui);color:var(--mute)}
+.chips button[aria-pressed="true"]{background:var(--card2);color:var(--fg);border-color:rgba(243,237,226,.3)}
+.reqs{display:grid;gap:8px;max-height:560px;overflow:auto;margin:0 -4px;padding:0 4px}
+.req{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2)}
+.req:hover{border-color:rgba(243,237,226,.3)}
+.req b{font:600 15px/1.25 var(--ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.req span{grid-column:1;font:400 13px/1.35 var(--ui);color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.req time{grid-column:2;grid-row:1;font:400 12px/1.25 var(--ui);color:var(--dim);white-space:nowrap;align-self:center}
+.req .st{grid-column:2;grid-row:2;justify-self:end}
+.st{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--ui);color:var(--mute)}
+.st i{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.st.new i{background:var(--amber)}.st.new{color:var(--fg)}
+.st.contacted i{background:var(--blue)}.st.booked i{background:var(--good)}
+.empty{padding:22px 8px;text-align:center;color:var(--mute);font-size:13.5px}
+/* charts */
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font:400 11px var(--ui);fill:var(--dim)}
+.tip{position:absolute;z-index:3;pointer-events:none;transform:translate(-50%,-100%);padding:7px 10px;border-radius:9px;background:#26262a;border:1px solid var(--line);font:500 12px/1.35 var(--ui);white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.tip small{display:block;font-weight:400;color:var(--mute)}
+details.tbl{margin-top:12px}
+details.tbl summary{font:500 12.5px/1 var(--ui);color:var(--mute);cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--mute)}
+.rows{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;font-size:13.5px}
+.row .n{font-weight:600;font-variant-numeric:tabular-nums}
+.row .n small{font-weight:400;color:var(--dim);margin-left:6px}
+.row .k{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{grid-column:1/-1;height:6px;border-radius:3px;background:rgba(243,237,226,.07);overflow:hidden}
+.track i{display:block;height:100%;border-radius:0 3px 3px 0;background:var(--bar);min-width:2px}
+.foot{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;color:var(--dim);font-size:12.5px}
+.foot button{border:0;background:none;color:var(--mute);text-decoration:underline;padding:0}
+/* sign in */
+.gate{max-width:420px;margin:14vh auto 0;text-align:center}
+.gate svg{width:56px;height:56px}
+.gate h1{margin:14px 0 6px;font:500 30px/1.1 var(--display)}
+.gate p{margin:0 0 18px;color:var(--mute)}
+.gate form{display:flex;gap:8px}
+.gate input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.btn{border:0;border-radius:12px;padding:12px 16px;font:600 14px/1 var(--ui);background:var(--fg);color:#0b0b0c;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.alt{background:var(--amber);color:#fff}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--fg)}
+.err{min-height:18px;margin-top:10px;color:#ff8a66;font-size:13px}
+/* request sheet */
+.scrim{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:end center}
+.sheet{width:min(560px,100%);max-height:92svh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px));animation:up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.sheet header{margin:0 0 4px;align-items:flex-start;flex-wrap:nowrap}
+.sheet header > div{flex:1;min-width:0}
+.sheet h2{margin:0;font:500 30px/1.05 var(--display);letter-spacing:-.01em;overflow-wrap:anywhere}
+.sheet .when{margin:4px 0 14px;color:var(--mute);font-size:13px}
+.x{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;font-size:20px;line-height:1}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 16px;font-size:14.5px}
+dt{color:var(--mute)}
+dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.photo{display:block;width:100%;max-height:340px;object-fit:contain;border-radius:12px;border:1px solid var(--line);background:#000;margin:14px 0 0}
+.sheet h3{margin:18px 0 8px;font:500 12.5px/1 var(--ui);color:var(--mute)}
+.sheet .seg{display:grid;grid-template-columns:repeat(4,1fr);width:100%}
+.sheet .seg button{padding:10px 4px}
+.copy{margin-top:12px;width:100%}
+@media (min-width:760px){.scrim{place-items:center}.sheet{border-radius:20px}}
+@media (max-width:860px){
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two,.three{grid-template-columns:minmax(0,1fr)}
+  .tile .v{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="gate" id="gate" hidden>
+    <svg viewBox="0 0 64 64" fill="none" stroke-width="9.5" aria-hidden="true"><path stroke="#f3ede2" d="M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"/><path stroke="#ef5b2a" d="M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"/></svg>
+    <h1>EveryWrap desk</h1>
+    <p>Open this page from your private link, or paste your key below.</p>
+    <form id="gateForm"><input id="gateKey" type="password" autocomplete="current-password" placeholder="Private key" aria-label="Private key"><button class="btn" type="submit">Open</button></form>
+    <p class="err" id="gateErr" role="alert"></p>
+  </div>
+
+  <div id="app" hidden>
+    <header>
+      <div class="brand">
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="9.5" aria-hidden="true"><path stroke="#f3ede2" d="M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"/><path stroke="#ef5b2a" d="M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"/></svg>
+        <div><h1>EveryWrap desk</h1><small id="stamp">Loading</small></div>
+      </div>
+      <div class="seg" id="range" role="group" aria-label="Time range">
+        <button type="button" data-d="1" aria-pressed="false">Today</button><button type="button" data-d="7" aria-pressed="true">7 days</button><button type="button" data-d="30" aria-pressed="false">30 days</button>
+      </div>
+    </header>
+
+    <div class="grid tiles" id="tiles"></div>
+
+    <div class="grid two">
+      <section class="card" aria-labelledby="hReq">
+        <h2 id="hReq">Booking requests</h2>
+        <p class="sub">Every request sent from the website. Tap one for the full details.</p>
+        <div class="chips" id="chips" role="group" aria-label="Filter requests"></div>
+        <div class="reqs" id="reqs"></div>
+      </section>
+      <div class="grid">
+        <section class="card" aria-labelledby="hFun">
+          <h2 id="hFun">From visit to request</h2>
+          <p class="sub">How many people got to each step.</p>
+          <div class="rows" id="funnel"></div>
+        </section>
+        <section class="card" aria-labelledby="hTap">
+          <h2 id="hTap">What people tapped</h2>
+          <p class="sub">People who did each thing at least once.</p>
+          <div class="rows" id="taps"></div>
+        </section>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <section class="card" aria-labelledby="hVis">
+        <h2 id="hVis">Visitors per day</h2>
+        <p class="sub" id="visSub">People who opened the site.</p>
+        <div class="chart" id="cVis"></div>
+        <details class="tbl"><summary>Show the numbers</summary><div id="tVis"></div></details>
+      </section>
+      <section class="card" aria-labelledby="hRq">
+        <h2 id="hRq">Requests per day</h2>
+        <p class="sub">Booking requests sent.</p>
+        <div class="chart" id="cReq"></div>
+      </section>
+    </div>
+
+    <div class="grid three">
+      <section class="card"><h2>Pages</h2><p class="sub">Most visited.</p><div class="rows" id="pages"></div></section>
+      <section class="card"><h2>Where they came from</h2><p class="sub">The site that sent them.</p><div class="rows" id="refs"></div></section>
+      <section class="card"><h2>Devices and finishes</h2><p class="sub">What they browse on, and the finishes they tried.</p><div class="rows" id="misc"></div></section>
+    </div>
+
+    <div class="foot"><span>Counts are anonymous. One person is counted once a day. No cookies are used.</span><button type="button" id="out">Sign out on this device</button></div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sName">
+    <header><div><h2 id="sName"></h2><p class="when" id="sWhen"></p></div><button class="x" type="button" id="sClose" aria-label="Close">×</button></header>
+    <div class="acts"><a class="btn" id="sCall">Call</a><a class="btn alt" id="sText">Text</a></div>
+    <dl id="sList"></dl>
+    <img class="photo" id="sPhoto" alt="Photo the customer sent" hidden>
+    <h3>Status</h3>
+    <div class="seg" id="sStatus" role="group" aria-label="Status"></div>
+    <button class="btn ghost copy" type="button" id="sCopy">Copy the summary</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const num = (n) => (n >= 10000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "K" : Number(n || 0).toLocaleString("en-US"));
+  const STATUS = [["new", "New"], ["contacted", "Contacted"], ["booked", "Booked"], ["closed", "Closed"]];
+  const PAGE = { "/": "Home", "/vinyl-wrap/": "Vinyl wrap", "/paint-protection-film/": "Paint protection film", "/window-tint/": "Window tint", "/body-kits/": "Body kits", "/commercial/": "Fleet and commercial", "/design-print/": "Design and print", "/pricing/": "Prices", "/work/": "Our work" };
+  const FIN = { "satin-black": "Satin black", "gloss-black": "Gloss black", "satin-grey": "Satin grey", "satin-red": "Satin red", "color-shift": "Colour shift" };
+  let days = 7, data = null, filter = "all", timer = 0, openId = "";
+
+  const api = (path, body) => fetch("/api/desk/" + path, body ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) } : {}).then(async (r) => ({ status: r.status, body: await r.json().catch(() => ({})) }));
+  const ago = (ts) => { const m = Math.round((Date.now() - ts) / 60000); return m < 1 ? "just now" : m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : m < 2880 ? "yesterday" : new Date(ts).toLocaleDateString("en-US", { month: "short", day: "numeric" }); };
+  const full = (ts) => new Date(ts).toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  const dlabel = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+  function gate(show, msg) { $("#gate").hidden = !show; $("#app").hidden = show; $("#gateErr").textContent = msg || ""; }
+
+  function tile(label, value, note, hot) { return `<div class="tile${hot ? " hot" : ""}"><div class="l">${label}</div><div class="v">${num(value)}</div><div class="d">${note}</div></div>`; }
+  function delta(now, before, word) {
+    if (!before) return days === 1 ? "today so far" : `in the last ${days} days`;
+    const d = now - before; return `<b>${d > 0 ? "+" : ""}${num(d)}</b> vs the ${word} before`;
+  }
+  function rows(el, list, max, emptyText) {
+    if (!list.length) { el.innerHTML = `<div class="empty">${emptyText}</div>`; return; }
+    const top = Math.max(1, max || Math.max(...list.map((r) => r[1])));
+    el.innerHTML = list.map(([k, n, extra]) => `<div class="row"><span class="k">${esc(k)}</span><span class="n">${num(n)}${extra ? `<small>${esc(extra)}</small>` : ""}</span><div class="track"><i style="width:${Math.max(0, (n / top) * 100).toFixed(1)}%"></i></div></div>`).join("");
+  }
+  // A column chart: thin bars with rounded tops, a faint grid, and a tooltip on hover or tap.
+  function columns(el, series, key, unit) {
+    const W = Math.max(260, Math.round(el.clientWidth) || 560), H = 190, L = 28, R = 6, T = 10, B = 24, n = series.length;
+    const max = Math.max(1, ...series.map((s) => s[key])), step = max <= 4 ? 1 : Math.ceil(max / 4 / (10 ** Math.floor(Math.log10(max / 4)))) * 10 ** Math.floor(Math.log10(max / 4));
+    const top = Math.ceil(max / step) * step, band = (W - L - R) / n, bw = Math.min(24, Math.max(3, band - 2)), y = (v) => T + (H - T - B) * (1 - v / top);
+    let g = "";
+    for (let v = 0; v <= top; v += step) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(243,237,226,.09)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${num(v)}</text>`;
+    const every = Math.ceil(n / Math.max(2, Math.floor((W - L - R) / 64)));
+    series.forEach((s, i) => {
+      const x = L + band * i + (band - bw) / 2, h = Math.max(s[key] ? 2 : 0, H - B - y(s[key])), r = Math.min(4, bw / 2, h);
+      if (h) g += `<path d="M${x} ${H - B}V${H - B - h + r}a${r} ${r} 0 0 1 ${r}-${r}h${bw - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}V${H - B}Z" fill="var(--bar)"/>`;
+      if (i % every === 0 || i === n - 1) g += `<text x="${L + band * i + band / 2}" y="${H - 6}" text-anchor="middle">${n === 1 ? "Today" : dlabel(s.day)}</text>`;
+      g += `<rect class="hit" data-i="${i}" x="${L + band * i}" y="${T}" width="${band}" height="${H - T - B}" fill="transparent"/>`;
+    });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${unit} per day">${g}</svg><div class="tip" hidden></div>`;
+    const tip = $(".tip", el), svg = $("svg", el);
+    const show = (e) => { const t = e.target.closest(".hit"); if (!t) { tip.hidden = true; return; } const s = series[+t.dataset.i], b = svg.getBoundingClientRect(), k = b.width / W;
+      tip.innerHTML = `${num(s[key])} ${unit}<small>${dlabel(s.day)}</small>`; tip.style.left = (L + band * (+t.dataset.i + .5)) * k + "px"; tip.style.top = Math.max(34, y(s[key]) * k - 6) + "px"; tip.hidden = false; };
+    svg.addEventListener("pointermove", show); svg.addEventListener("pointerdown", show); svg.addEventListener("pointerleave", () => (tip.hidden = true));
+  }
+
+  function draw() {
+    const d = data, t = d.totals, word = days === 1 ? "day" : days + " days";
+    const tap = Object.fromEntries(d.taps.map((x) => [x[0], x]));
+    $("#tiles").innerHTML =
+      tile("Visitors", t.visitors, delta(t.visitors, t.before.visitors, word)) +
+      tile("Opened Book now", tap["Opened Book now"][1], t.visitors ? `${Math.round((tap["Opened Book now"][1] / t.visitors) * 100)}% of visitors` : "no visits yet") +
+      tile("Booking requests", t.requests, t.fresh ? `<b>${num(t.fresh)} new</b> waiting for a reply` : delta(t.requests, t.before.requests, word), t.fresh > 0) +
+      tile("Voice chats", tap["Started a voice chat"][1], `${num(d.totals.views)} pages viewed`);
+    $("#stamp").textContent = "Updated " + new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+
+    const counts = { all: d.leads.length }; STATUS.forEach(([k]) => (counts[k] = d.leads.filter((l) => l.status === k).length));
+    $("#chips").innerHTML = [["all", "All"], ...STATUS].map(([k, label]) => `<button type="button" data-f="${k}" aria-pressed="${filter === k}">${label} ${counts[k]}</button>`).join("");
+    const list = d.leads.filter((l) => filter === "all" || l.status === filter);
+    $("#reqs").innerHTML = list.length ? list.map((l) => `<button class="req" type="button" data-id="${esc(l.id)}"><b>${esc(l.name)}</b><time>${ago(l.ts)}</time><span>${esc([l.services, l.vehicle].filter(Boolean).join(" · "))}${l.photo ? " · photo" : ""}</span><span class="st ${esc(l.status)}"><i></i>${esc((STATUS.find((s) => s[0] === l.status) || ["", l.status])[1])}</span></button>`).join("")
+      : `<div class="empty">${d.leads.length ? "Nothing with this status." : "No requests yet. They appear here the moment someone sends one."}</div>`;
+
+    const f0 = Math.max(1, d.funnel[0][1]);
+    rows($("#funnel"), d.funnel.map(([k, n], i) => [k, n, i ? Math.round((n / f0) * 100) + "%" : ""]), f0, "");
+    rows($("#taps"), d.taps.filter((x) => x[1] > 0).map(([k, p, c]) => [k, p, c > p ? c + " times" : ""]), 0, "Nothing tapped yet in this period.");
+    columns($("#cVis"), d.series, "visitors", "visitors"); columns($("#cReq"), d.series, "requests", "requests");
+    $("#tVis").innerHTML = `<table><thead><tr><th>Day</th><th>Visitors</th><th>Pages viewed</th><th>Requests</th></tr></thead><tbody>${d.series.slice().reverse().map((s) => `<tr><td>${dlabel(s.day)}</td><td>${num(s.visitors)}</td><td>${num(s.views)}</td><td>${num(s.requests)}</td></tr>`).join("")}</tbody></table>`;
+    rows($("#pages"), d.pages.map((p) => [PAGE[p.path] || p.path, p.p, p.c > p.p ? p.c + " views" : ""]), 0, "No visits yet.");
+    rows($("#refs"), d.refs.map((r) => [r.ref || "Typed the address or a saved link", r.p]), 0, "No visits yet.");
+    rows($("#misc"), [...d.devices.map((x) => [x.device === "phone" ? "On a phone" : x.device === "tablet" ? "On a tablet" : "On a computer", x.p]), ...d.finishes.map((x) => ["Tried " + (FIN[x.detail] || x.detail), x.c, "taps"])], 0, "No visits yet.");
+    if (openId) sheet(openId, true);
+  }
+
+  function sheet(id, keep) {
+    const l = data && data.leads.find((x) => x.id === id); if (!l) return;
+    openId = id; const digits = l.phone.replace(/\D/g, "").slice(-10);
+    $("#sName").textContent = l.name; $("#sWhen").textContent = `${full(l.ts)} · prefers a ${l.contact}${l.city ? " · " + l.city : ""}`;
+    $("#sCall").href = "tel:+1" + digits; $("#sText").href = "sms:+1" + digits;
+    const f = [["Phone", l.phone], ["Vehicle", l.vehicle], ["Wants", l.services], ["Finish", l.finish], ["Tint", l.tint], ["Size", l.size], ["Starting from", l.starts], ["Note", l.note], ["Sent from", PAGE[l.page] || l.page], ["Device", l.device]].filter((x) => x[1]);
+    $("#sList").innerHTML = f.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
+    const ph = $("#sPhoto"); if (l.photo) { if (!keep || ph.hidden) ph.src = "/api/desk/photo?id=" + encodeURIComponent(l.id); ph.hidden = false; } else { ph.hidden = true; ph.removeAttribute("src"); }
+    $("#sStatus").innerHTML = STATUS.map(([k, label]) => `<button type="button" data-s="${k}" aria-pressed="${l.status === k}">${label}</button>`).join("");
+    $("#sCopy").dataset.text = [l.name, ...f.map(([k, v]) => `${k}: ${v}`)].join("\n");
+    $("#scrim").hidden = false;
+  }
+  function closeSheet() { openId = ""; $("#scrim").hidden = true; if (location.hash.startsWith("#r=")) history.replaceState(null, "", location.pathname); }
+
+  async function load() {
+    const r = await api("summary?days=" + days).catch(() => null);
+    if (!r) { $("#stamp").textContent = "Offline. Trying again shortly."; return; }
+    if (r.status === 401) return gate(true);
+    if (!r.body.ok) { $("#stamp").textContent = "Could not load. Trying again shortly."; return; }
+    data = r.body; gate(false); draw();
+    const m = /^#r=([\w-]+)/.exec(location.hash); if (m && !openId) sheet(m[1]);
+  }
+  async function signIn(key) {
+    const r = await api("open", { key }).catch(() => null);
+    if (r && r.body.ok) { $("#gateKey").value = ""; await load(); } else gate(true, "That key did not work.");
+  }
+
+  $("#range").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; days = +b.dataset.d; $$("#range button").forEach((x) => x.setAttribute("aria-pressed", x === b)); load(); });
+  $("#chips").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; filter = b.dataset.f; draw(); });
+  $("#reqs").addEventListener("click", (e) => { const b = e.target.closest(".req"); if (b) sheet(b.dataset.id); });
+  $("#sClose").addEventListener("click", closeSheet); $("#scrim").addEventListener("click", (e) => { if (e.target.id === "scrim") closeSheet(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+  $("#sStatus").addEventListener("click", async (e) => { const b = e.target.closest("button"); if (!b || !openId) return; const l = data.leads.find((x) => x.id === openId); const was = l.status; l.status = b.dataset.s; draw();
+    const r = await api("lead", { id: openId, status: b.dataset.s }).catch(() => null); if (!r || !r.body.ok) { l.status = was; draw(); } else if (was === "new" || b.dataset.s === "new") load(); });
+  $("#sCopy").addEventListener("click", async function () { try { await navigator.clipboard.writeText(this.dataset.text); this.textContent = "Copied"; } catch { this.textContent = "Could not copy"; } setTimeout(() => (this.textContent = "Copy the summary"), 1600); });
+  $("#gateForm").addEventListener("submit", (e) => { e.preventDefault(); const k = $("#gateKey").value.trim(); if (k) signIn(k); });
+  $("#out").addEventListener("click", async () => { await api("close", {}); data = null; gate(true); });
+
+  // A private link carries the key after the # so it never reaches a server log.
+  const k = /^#k=([\w-]+)/.exec(location.hash);
+  if (k) { history.replaceState(null, "", location.pathname); signIn(k[1]); } else load();
+  timer = setInterval(() => { if (!document.hidden && !$("#app").hidden) load(); }, 60000);
+  let rz = 0; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (data && !$("#app").hidden) draw(); }, 200); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !$("#app").hidden) load(); });
+})();
+</script>
+</body>
+</html>

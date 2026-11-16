@@ -1,12 +1,14 @@
 import { CONFIG } from "./config.js";
 import { R, ROOT, $, $$, reduce, esc, FIN, S, DATA, hooks, fin, onScroll, fromPrice, money } from "./state.js";
 import { heroSweep } from "./hero.js";
+import { ev } from "./track.js";
 
 /* ---------- sheets ---------- */
 let lastFocus = null, qStep = 1, photo = false, note = "";
 function openSheet(id) { lastFocus = document.activeElement; const s = $(id); s.hidden = false; const f = s.querySelector("input:not([type=file]),button.btn"); if (f) setTimeout(() => f.focus(), 60); }
 function closeSheets() { $$(".scrim").forEach((s) => (s.hidden = true)); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 function step(n) {
+  if (n > qStep && (n === 2 || n === 3)) ev("book_step" + n);
   qStep = n; $$("#qForm .qstep").forEach((s) => s.classList.toggle("show", +s.dataset.step === n));
   $("#qProg").textContent = n < 4 ? `Step ${n} of 3` : "Request ready"; $$(".qbar i").forEach((el, k) => el.classList.toggle("on", k < n)); $("#qTitle").textContent = n < 4 ? "Book now" : "Here's what we got";
   const f = $(`#qForm .qstep[data-step="${n}"] input, #qForm .qstep[data-step="${n}"] button`); if (f) f.focus();
@@ -29,7 +31,7 @@ function details() {
   $("#qSizeF").hidden = com; finField();
 }
 function openQuote(pre = {}) {
-  menu(false);
+  menu(false); ev("book_open", pre.svc || "");
   const want = pre.svc || (S.commercial ? "fleet" : S.ch); note = pre.note || "";
   $("#qSvc").innerHTML = GROUPS.map(([g, items]) => `<span class="legend">${g}</span><div class="picks" role="group" aria-label="${g}">` + items.map(([id, label, grp, row]) => { const p = grp ? fromPrice(grp, row, 0) : null; return `<label><input type="checkbox" id="qS_${id}" value="${label}"${id === want ? " checked" : ""}>${label}${p ? `<small>from ${money(p)}</small>` : ""}</label>`; }).join("") + "</div>").join("");
   if (pre.note && (want === "design" || want === "print") && !pre.car) { $("#qCar").value = pre.note; note = ""; }
@@ -52,29 +54,38 @@ async function submitQuote(e) {
   if (digits.length < 10) { $("#qErr3").textContent = "That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
   const com = $("#qSizeF").hidden, size = com ? 0 : +($("#qSizeF input:checked") || { value: 0 }).value, shift = /shift/i.test($("#qFin").value);
   const starts = [["wrap", "Wrap", fromPrice("wrap", shift ? "shift" : "full", size)], ["ppf", "PPF", fromPrice("ppf", S.ppf, size)], ["tint", "Tint", fromPrice("tint", "carbon", size)]].filter(([id, , n]) => n && $("#qS_" + id).checked).map(([, name, n]) => `${name} ${money(n)}`);
-  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname };
+  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", note, page: location.pathname };
   const rows = [["Vehicle", lead.vehicle], ["Service", lead.services.join(", ")]];
   if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]);
   if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
   rows.push(["Contact", `${name}, ${lead.phone} (${lead.contact})`]);
   $("#qSum").innerHTML = rows.map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("");
-  if (MAIL && !CONFIG.leadEndpoint) {
-    // The live site hands the request to the visitor's email app, addressed to the shop.
+  // The live site stores the request (and the photo) and the team sees it on their dashboard.
+  const endpoint = CONFIG.leadEndpoint || (R.dataset.live ? "/api/lead" : "");
+  if (endpoint) {
+    const b = $("#qSend"); b.disabled = true; b.textContent = "Sending…";
+    let ok = false;
+    try {
+      const fd = new FormData(); fd.append("data", JSON.stringify(lead)); fd.append("website", $("#qWeb") ? $("#qWeb").value : "");
+      if (photoFile) fd.append("photo", photoFile, photoFile.name || "photo.jpg");
+      const r = await fetch(endpoint, { method: "POST", body: fd }); ok = r.ok && (await r.json()).ok === true;
+    } catch {}
+    b.disabled = false; b.textContent = "Request my price";
+    if (ok) { $("#qDone").textContent = `Sent. We'll ${lead.contact} you at ${lead.phone} with your price in writing.${photoFile ? " Your photo went with it." : ""}`; step(4); return; }
+    ev("lead_fail");
+    if (!MAIL) { $("#qErr3").textContent = "That didn't go through. Check your connection and try again."; return; }
+  }
+  if (MAIL) {
+    // If the request could not be stored, hand it to the visitor's email app instead.
     const body = rows.map((r) => `${r[0]}: ${r[1]}`).join("\n") + `\n\nSent from ${location.origin + location.pathname}`;
     const href = `mailto:${MAIL.to}?${MAIL.cc ? "cc=" + encodeURIComponent(MAIL.cc) + "&" : ""}subject=${encodeURIComponent("New EveryWrap quote request")}&body=${encodeURIComponent(body)}`;
     $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team.${photo ? " Attach your photo to that email before you send it." : ""} <a href="${esc(href)}">Open the email again</a>`;
     step(4); location.href = href; return;
   }
-  let msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
-  if (CONFIG.leadEndpoint) {
-    const b = $("#qSend"); b.disabled = true; b.textContent = "Sending…";
-    try { const r = await fetch(CONFIG.leadEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(lead) }); msg = r.ok ? `Sent. We'll ${lead.contact} you at ${lead.phone}.` : "That didn't go through. Please try again in a minute."; }
-    catch { msg = "That didn't go through. Check your connection and try again."; }
-    b.disabled = false; b.textContent = "Request my price";
-  }
+  const msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
   $("#qDone").textContent = msg; step(4);
 }
-function openUpload() { $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
+function openUpload() { ev("photo_open"); $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
 
 /* ---------- where requests go ---------- */
 // The live deployment answers /lead.json with the addresses requests are emailed to. Previews have none.
@@ -91,6 +102,7 @@ async function loadMail() {
 
 /* ---------- launch intro (home only) ---------- */
 let introT = [];
+let photoFile = null;
 function closeIntro() {
   const el = $("#intro"), m = $("#imark");
   el.hidden = true; el.classList.remove("play", "out"); m.style.transform = ""; document.documentElement.classList.remove("intro-on");
@@ -122,11 +134,11 @@ export function initSite() {
     const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote, note: q.dataset.note || "" } : {}); }
     if (e.target.closest("[data-upload]")) return openUpload();
     if (e.target.closest("[data-close]") || e.target.classList.contains("scrim")) return closeSheets();
-    if (e.target.closest("[data-menu]")) return menu($("#menu").hidden);
+    if (e.target.closest("[data-menu]")) { if ($("#menu").hidden) ev("menu_open"); return menu($("#menu").hidden); }
     if (e.target.closest("#menu a")) menu(false);
   });
   $("#usw").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#usw button").forEach((x) => x.setAttribute("aria-pressed", x === b)); if (hooks.heroGo && S.ch === "wrap") hooks.heroGo({ finish: b.dataset.f }); else S.finish = b.dataset.f; });
-  $("#uFile").addEventListener("change", function () { const f = this.files && this.files[0]; if (!f) return; const t = $("#dropT"); t.innerHTML = ""; const im = new Image(); im.alt = "Your car"; im.src = URL.createObjectURL(f); t.appendChild(im); photo = true; });
+  $("#uFile").addEventListener("change", function () { const f = this.files && this.files[0]; if (!f) return; const t = $("#dropT"); t.innerHTML = ""; const im = new Image(); im.alt = "Your car"; im.src = URL.createObjectURL(f); t.appendChild(im); photo = true; photoFile = f; ev("photo_added"); });
   $("#uGo").addEventListener("click", () => openQuote());
   $("#qForm").addEventListener("submit", submitQuote);
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });

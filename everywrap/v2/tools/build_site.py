@@ -580,6 +580,7 @@ def chrome(root, com=False):
     <p class="prog" id="qProg">Step 1 of 3</p>
     <div class="qbar" aria-hidden="true"><i></i><i></i><i></i></div>
     <form id="qForm" novalidate>
+      <input class="vh" id="qWeb" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="qstep show" data-step="1">
         <div id="qSvc"></div>
         <p class="err" id="qErr1" role="alert"></p>
@@ -930,7 +931,7 @@ def extras():
     pub = {"sizes": PRICING["sizes"], "groups": {k: {"rows": [{"id": r["id"], "from": r.get("from")} for r in g["rows"]]} for k, g in PRICING["groups"].items()}}
     write("assets/pricing.json", json.dumps(pub, separators=(",", ":")))
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
-    write("robots.txt", (f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
+    write("robots.txt", (f"User-agent: *\nAllow: /\nDisallow: /desk/\nDisallow: /api/\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
     write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><g fill="none" stroke-width="9.5" transform="translate(32 32) scale(.8) translate(-32.5 -32)"><path stroke="#f3ede2" d="' + MARK_A + '"/><path stroke="#ef5b2a" d="' + MARK_B + '"/></g></svg>\n')
 

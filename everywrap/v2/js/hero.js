@@ -1,5 +1,6 @@
 import { Stage, loadImage } from "./engine.js";
 import { CONFIG } from "./config.js";
+import { ev } from "./track.js";
 import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin, theme, fromPrice, money } from "./state.js";
 
 const CHAPTERS = [
@@ -105,8 +106,8 @@ export function initHero() {
   stage.onDraw = syncSeam;
   hooks.heroGo = go; hooks.relabel = () => theme(bookLabel());
   window.__ew = { S, stage, go };
-  $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) go({ ch: b.dataset.id }); });
-  $("#opts").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.f) go({ finish: b.dataset.f }); else if (b.dataset.p) go({ ppf: b.dataset.p }, false); else if (b.dataset.t) go({ tint: +b.dataset.t }, false); });
+  $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { ev("service_pick", b.dataset.id); go({ ch: b.dataset.id }); } });
+  $("#opts").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.f) { ev("finish_pick", b.dataset.f); go({ finish: b.dataset.f }); } else if (b.dataset.p) go({ ppf: b.dataset.p }, false); else if (b.dataset.t) go({ tint: +b.dataset.t }, false); });
   const seam = $("#seam");
   seam.addEventListener("input", () => { const left = seam.value / 1000; stage.setSeam(stage.noseLeft() ? left : 1 - left); });
   seam.addEventListener("pointerdown", () => (dragging = true)); addEventListener("pointerup", () => (dragging = false));

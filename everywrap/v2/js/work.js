@@ -1,4 +1,5 @@
 import { CONFIG } from "./config.js";
+import { ev } from "./track.js";
 import { ROOT, $, $$, esc, reduce, DATA, hooks } from "./state.js";
 
 // Real jobs, shown two ways: a reel that plays by itself, and a square grid
@@ -84,6 +85,7 @@ function makeReel(reel) {
 
 /* ---------- job view ---------- */
 function open(n) {
+  ev("work_open", "", true);
   at = (n + list.length) % list.length; const j = list[at], lb = $("#lightbox");
   $("#lbImg").src = src(j); $("#lbImg").alt = j.title;
   $("#lbTitle").textContent = j.title; $("#lbFinish").textContent = j.finish || "";

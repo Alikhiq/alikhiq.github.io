@@ -2,6 +2,7 @@
 // and the assistant can open the photo panel or the booking form while it talks.
 // If the browser cannot start it (no microphone, blocked, old browser), the link opens as before.
 import { ROOT, $, $$, hooks, reduce } from "./state.js";
+import { ev } from "./track.js";
 
 const SERVICES = ["wrap", "ppf", "tint", "kits", "fleet", "design", "print"];
 let convo = null, orb = null, raf = 0, busy = false, sdk = null, run = 0;
@@ -52,7 +53,7 @@ const tools = {
   open_photo_upload() {
     if (!hooks.upload) return "The photo panel is not on this page. Ask the visitor to tap Book now instead.";
     hooks.upload();
-    return "The photo panel is open on the visitor's screen. They add a photo there and continue to the booking form. You cannot see the photo, and it is not sent on its own: when the request opens in their email app at the end, they attach the photo to that email. Tell them this in one short sentence.";
+    return "The photo panel is open on the visitor's screen. They add a photo there and continue to the booking form. You cannot see the photo. It is sent to the team together with the booking request when they press the last button.";
   },
   open_booking_form(p = {}) {
     if (!hooks.quote) return "The booking form is not available. Ask the visitor to tap Book now on the page.";
@@ -87,7 +88,7 @@ async function connect(agentId, me) {
 async function start(btn) {
   if (convo || busy) return stop();
   const me = ++run;
-  busy = true; show(btn); set("wait", "Connecting");
+  busy = true; show(btn); set("wait", "Connecting"); ev("voice_start");
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("no microphone support");
     // Ask for the microphone first, so the permission prompt comes straight from the tap.
@@ -96,7 +97,7 @@ async function start(btn) {
     sdk = sdk || (await import(new URL(ROOT + "js/vendor/elevenlabs-client.js", location.href).href));
     const c = await connect(btn.dataset.voice, me);
     if (me !== run) { try { c.endSession(); } catch {} return; }
-    convo = c; busy = false;
+    convo = c; busy = false; ev("voice_live");
     if (orb.dataset.state === "wait") set("hear", "Listening");
     if (!reduce) meter();
   } catch (err) {

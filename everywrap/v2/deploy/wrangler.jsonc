@@ -1,11 +1,22 @@
 {
-  // The Worker that serves the site from the R2 bucket. Deploy with: npx wrangler deploy (from this folder).
+  // The Worker that serves the site from the R2 bucket, records visits and booking requests,
+  // and feeds the private dashboard at /desk/. Deploy with: npx wrangler deploy (from this folder).
   "name": "everywrap-v2",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "preview_urls": false,
-  // Where the booking form sends requests. The copy address is the secret LEAD_CC, set on the Worker and kept out of the repo.
+  // LEAD_TO is the address the booking form falls back to when a request cannot be stored.
+  // Secrets set on the Worker and kept out of the repo:
+  //   SESSION_SECRET  signs the dashboard session and the daily visitor hash
+  //   DESK_KEY        the private key that opens the dashboard
+  //   LEAD_CC         copy address for the email fallback
+  //   NOTIFY_TO       comma-separated addresses for new-request emails
+  //   RESEND_KEY      Resend sending key; with NOTIFY_FROM it switches the emails on
   "vars": { "LEAD_TO": "sales@everywrap.com" },
-  "r2_buckets": [{ "binding": "SITE", "bucket_name": "everywrap-site" }]
+  "r2_buckets": [
+    { "binding": "SITE", "bucket_name": "everywrap-site" },
+    { "binding": "PRIVATE", "bucket_name": "everywrap-private" }
+  ],
+  "d1_databases": [{ "binding": "DB", "database_name": "everywrap-desk", "database_id": "53483e55-23d4-465f-b146-3db726a67d70" }]
 }

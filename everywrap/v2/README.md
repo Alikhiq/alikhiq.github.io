@@ -109,6 +109,15 @@ To publish a change:
 
 On the live build every page loads its stylesheet and scripts from `/v/<build id>/...`. The Worker serves those as the same files; the id changes when a script or the stylesheet changes, so a new deploy never runs with files a browser cached from the last one.
 
-Booking requests: the form opens the visitor's email app with the request written out, addressed to `LEAD_TO` with a copy to `LEAD_CC`. Both are settings on the Worker (`/lead.json`); the copy address is a Worker secret and is not in the repo. The older site sent requests the same way. `sales@everywrap.com` has no mail records on the domain, so the copy address is the one that receives. Setting `leadEndpoint` in `js/config.js` replaces the email step with a direct post.
+Booking requests: on the live site the form posts to `/api/lead` on the Worker. The request is stored in the D1 database `everywrap-desk`, and a photo, if the visitor added one, goes to the private bucket `everywrap-private`. If that fails, the form falls back to opening the visitor's email app, addressed to `LEAD_TO` with a copy to `LEAD_CC` (`/lead.json`). `sales@everywrap.com` has no mail records on the domain, so the copy address is the one that receives.
+
+## Dashboard
+
+`https://everywrap.com/desk/` is the owner's private dashboard (`desk/index.html`, one file, no build step). It shows visitors, what people tapped, the path from visit to request, and every booking request with a contact sheet: call and text buttons, the details, the photo and a status.
+
+- **Access**: a private link, `https://everywrap.com/desk/#k=<DESK_KEY>`. The key sits after the `#`, so it is never sent in a page request. Opening the link sets a 90-day session cookie on that device. `DESK_KEY` and `SESSION_SECRET` are Worker secrets; changing `DESK_KEY` replaces the link, changing `SESSION_SECRET` signs every device out.
+- **Counting** (`js/track.js`, `/api/event`): page views and a fixed list of named taps, on the live domain only. No cookies. A visitor is a one-way hash of address, browser and the day, so one person counts once a day and cannot be followed across days. Known crawlers are ignored.
+- **Email alerts**: the Worker emails each new request to `NOTIFY_TO` once `RESEND_KEY` (a Resend sending key) and `NOTIFY_FROM` (a sender on a domain verified in Resend) are set on it. Until then requests only appear on the dashboard.
+- **Tables**: `events` and `leads`; the statements are in `deploy/schema.sql`.
 
 Prices: `data/pricing.json` has `"confirmed": true` since the owner approved publishing on 16 Nov 2026. The `source` notes say which numbers are the owner's own and which started from other shops' rates.

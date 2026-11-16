@@ -1,4 +1,5 @@
 import { $, $$, esc, reduce, hooks } from "./state.js";
+import { ev } from "./track.js";
 
 // Mockup studio: a vehicle side view drawn in SVG, with a wrap layout, two brand
 // colours and the customer's own name on it. Everything is drawn here, no images.
@@ -53,6 +54,7 @@ export function initMock() {
     const stop = () => { touched = true; clearInterval(demo); };
     el.addEventListener("click", (e) => {
       const b = e.target.closest("button"); if (!b) return;
+      ev("mock_use", "", true);
       if (b.dataset.veh) st.veh = b.dataset.veh; else if (b.dataset.art) st.art = b.dataset.art; else if (b.dataset.pal) [st.a, st.b] = PAL[+b.dataset.pal]; else if (b.dataset.base) st.base = b.dataset.base;
       else if (b.classList.contains("mk-go")) { stop(); if (hooks.quote) hooks.quote({ svc: "design", note: `Mockup: ${VEH[st.veh].label}, ${NAMES[st.art]} layout, colours ${st.a} and ${st.b} on a ${BASES.find((x) => x[0] === st.base)[1].toLowerCase()} vehicle${st.name ? `, name "${st.name}"` : ""}${st.line ? `, line "${st.line}"` : ""}` }); return; }
       else return;
