@@ -1134,3 +1134,16 @@ html.intro-on{overflow:hidden}
   .panel.p2{height:min(74%,300px);left:57%;bottom:15%}
   .panel.p3{height:min(56%,230px);left:86%;bottom:24%}
 }
+
+/* upload panel: swatch tray instead of a long list of chips */
+.usw{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px 6px;padding:12px 10px 40px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--fg) 4%,transparent)}
+.usw button{position:static;display:grid;place-items:center;aspect-ratio:1;padding:0;border:0;border-radius:50%;background:none;font-size:0;line-height:0;color:transparent;box-shadow:none}
+.usw .sph{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.usw .sph{font-size:34px;width:34px;height:34px}
+.usw button:hover .sph{transform:scale(1.08)}
+.usw button[aria-pressed="true"]{border:0;box-shadow:none}
+.usw button[aria-pressed="true"] .sph{transform:scale(1.1);outline:2px solid var(--glow);outline-offset:3px;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--glow) 70%,transparent))}
+.usw button[aria-pressed="true"]::after{content:attr(data-n);position:absolute;left:14px;right:14px;bottom:13px;font:600 13.5px/1 var(--ui);color:var(--fg);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.usw:not(:has([aria-pressed="true"]))::after{content:"Tap a finish";position:absolute;left:14px;right:14px;bottom:13px;font:500 13px/1 var(--ui);color:var(--mute);text-align:center}
+.srow .btn[data-back]{flex:0 0 auto;min-width:96px}
+#qForm .srow .btn{white-space:nowrap}
