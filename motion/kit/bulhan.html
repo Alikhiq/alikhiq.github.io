@@ -158,7 +158,7 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
   <div class="abs" style="left:520px;top:110px;width:710px" data-at="15">
     <div class="d" style="font-size:38px">Why three heads?</div>
     <div class="badge" style="color:var(--gold);margin:10px 0 18px">our best guess</div>
-    <svg id="fev" width="710" height="330" viewBox="0 0 710 330"></svg>
+    <svg id="fev" width="710" height="350" viewBox="0 0 710 350"></svg>
   </div>
 </div>
 
@@ -206,6 +206,7 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
   <div class="abs d" style="left:700px;top:520px;width:500px;font-size:27px;text-align:center;color:var(--gold)" data-at="9">A labelled guide to luck, illness and fear</div>
 </div>
 
+<div id="clip" style="position:absolute;inset:0;opacity:0;background:#000"><img id="clipimg" style="width:1280px;height:720px;object-fit:cover;display:block"><div style="position:absolute;right:28px;top:24px;font-size:17px;letter-spacing:.14em;text-transform:uppercase;background:#000a;padding:5px 14px;border:1px solid #fff5">Imagined in live action · AI-generated</div></div>
 <div id="chap"></div>
 <div id="cap"><div id="capt"></div></div><div id="bar"></div>
 </div>
@@ -242,10 +243,10 @@ const wc=el(W,"text",{y:-4,"text-anchor":"middle","font-size":24,style:"fill:#9a
 const SQ=[4,9,2,3,5,7,8,1,6],sqc=SQ.map((n,i)=>{const c=document.createElement("div");c.className="cell";c.textContent=n;c.style.left=(i%3)*92+"px";c.style.top=Math.floor(i/3)*92+"px";$("#sq").appendChild(c);return c});
 const sums=[0,1,2].map(i=>{const s=document.createElement("div");s.className="sum";s.textContent="= 15";s.style.left="290px";s.style.top=(i*92+26)+"px";$("#sq").appendChild(s);return s});
 // fever
-const FV=$("#fev"),fv=[["every day",1,"#f0655a"],["every third day",2,"#e0bd62"],["every fourth day",3,"#8bb4f0"]].map((r,i)=>{const y=44+i*106;
- el(FV,"text",{x:0,y:y-20,"font-size":23},r[0]);el(FV,"line",{x1:0,y1:y+50,x2:710,y2:y+50,stroke:"#2a364a","stroke-width":2});
+const FV=$("#fev"),fv=[["every day",1,"#f0655a"],["every third day",2,"#e0bd62"],["every fourth day",3,"#8bb4f0"]].map((r,i)=>{const y=40+i*114;
+ el(FV,"text",{x:0,y:y-12,"font-size":23},r[0]);el(FV,"line",{x1:0,y1:y+50,x2:710,y2:y+50,stroke:"#2a364a","stroke-width":2});
  let d="M0,"+(y+50);for(let k=0;k<12;k++){const x=k*59;d+=(k%r[1]==0)?` L${x+10},${y+50} L${x+26},${y+4} L${x+44},${y+50}`:` L${x+59},${y+50}`}d+=" L710,"+(y+50);
- for(let k=0;k<12;k++)el(FV,"text",{x:k*59+27,y:y+72,"text-anchor":"middle","font-size":14,style:"fill:#566377"},"day "+(k+1));
+ for(let k=0;k<12;k++)el(FV,"text",{x:k*59+27,y:y+68,"text-anchor":"middle","font-size":13,style:"fill:#566377"},"day "+(k+1));
  return el(FV,"path",{d,fill:"none",stroke:r[2],"stroke-width":4,"stroke-linejoin":"round",pathLength:1,"stroke-dasharray":1})});
 // body
 const B=$("#body");el(B,"line",{x1:155,y1:20,x2:155,y2:520,stroke:"#2a364a","stroke-width":2,"stroke-dasharray":"6 8"});
@@ -258,7 +259,8 @@ const PTS=[["forehead",160,50,1],["eyebrow",140,72,-1],["shoulder",80,160,-1],["
 const fire=$("#fire").getContext("2d");
 
 const scenes=[...document.querySelectorAll(".scene")].map(s=>({s,a:+s.dataset.a,b:+s.dataset.b,chap:s.dataset.chap,els:[...s.querySelectorAll("[data-at],[data-out]")],kb:[...s.querySelectorAll("[data-kb]")]}));
-window.seek=function(t){
+const CLIPS=[["king",95.5],["kabus",161],["fever",219.5],["mountain",245]];
+window.seek=async function(t){
  for(const sc of scenes){const vis=t>=sc.a-0.01&&t<sc.b;const L=t-sc.a;
   const o=vis?Math.min(ease(L/0.6),sc.b===DUR?1:ease((sc.b-t)/0.5)):0;sc.s.style.opacity=o;sc.s.style.visibility=o>0?"visible":"hidden";if(!vis)continue;
   for(const e of sc.els){const at=e.dataset.at===undefined?-9:+e.dataset.at,out=e.dataset.out===undefined?1e9:+e.dataset.out,p=ease((L-at)/0.8),q=1-ease((L-out)/0.5),fx=e.dataset.fx||"up";
@@ -281,6 +283,9 @@ window.seek=function(t){
   if(sc.a===256){bfig.style.opacity=ease((L-7)/1);bR.style.opacity=bL.style.opacity=ease((L-14)/0.8);PTS.forEach((p,i)=>{const s=L-8.5-i*1.6;p.g.style.opacity=ease(s/0.5);
     const tw=((L*1.1+i*0.37)%1);p.h.setAttribute("r",9+tw*16);p.h.style.opacity=(1-tw)*cl(s)})}
  }
+ let co=0;for(const[n,t0]of CLIPS){if(t>=t0&&t<t0+5){co=Math.min(ease((t-t0)/0.35),ease((t0+5-t)/0.35));const f=Math.min(119,Math.floor((t-t0)*24))+1,src="work/clips/"+n+"/"+String(f).padStart(3,"0")+".jpg",im=$("#clipimg");
+   if(im.dataset.s!==src){im.dataset.s=src;im.src=src;try{await im.decode()}catch(e){}}}}
+ $("#clip").style.opacity=co;$("#chap").style.visibility=co>0.5?"hidden":"visible";
  $("#bar").style.width=(t/DUR*1280)+"px";
 };
 document.fonts.ready.then(()=>{seek(+(new URLSearchParams(location.search).get("t")||0));window.READY=true});
