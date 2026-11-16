@@ -124,8 +124,15 @@ def price_label(ref):
 
 NAV = [("car", "Cars", ""), ("biz", "Business", "commercial"), ("studio", "Design", "design-print")]
 
+def logo(root, cls=""):
+    """The EveryWrap mark: a panel with a seam that keeps moving across it, and the name
+    set half in outline, half solid. Drawn in CSS, so it takes the live glow colour."""
+    return ('<a class="logo' + ((" " + cls) if cls else "") + '" href="' + link(root, "") + '" aria-label="EveryWrap home">'
+            '<span class="logo-mark" aria-hidden="true"><i></i></span><span class="logo-word" aria-hidden="true"><b>EVERY</b><b>WRAP</b></span></a>')
+
 def top(root, mode, cat=None):
     cat = ("biz" if mode == "commercial" else "car") if cat is None else cat
+    by = {j["id"]: j for j in WORK}
     pill = ""
     for k, label, slug in NAV:
         on = k == cat
@@ -133,16 +140,51 @@ def top(root, mode, cat=None):
     groups = ""
     for x in COPY["catalog"]["cats"]:
         items = "".join('<li><a href="' + href(root, t) + '">' + e(n) + "</a></li>" for n, _, _, t in x["items"])
-        groups += '<div class="mgroup"><a class="mhead" href="' + link(root, x["slug"] if x["id"] != "car" else "") + '">' + e(x["name"]) + "</a><ul>" + items + "</ul></div>"
+        home = link(root, x["slug"] if x["id"] != "car" else "")
+        groups += ('<div class="mgroup" style="--th:' + x["th"] + '"><a class="mpic" href="' + home + '"><img loading="lazy" src="' + root + "assets/" + x["img"] + '" alt="" width="1376" height="768"><span>' + e(x["name"]) + "</span></a><ul>" + items + "</ul></div>")
+    wj = by.get("everywrapca-porsche-911-turbo-tiffany-blue") or WORK[0]
+    tiles = ('<a class="mtile" href="' + link(root, "work") + '"><img loading="lazy" src="' + root + "assets/" + wj["src"] + '" alt=""><span>Our work</span></a>'
+             '<a class="mtile" href="' + link(root, "pricing") + '"><img loading="lazy" src="' + root + 'assets/dp/rolls.webp" alt=""><span>All prices</span></a>'
+             '<a class="mtile" href="' + link(root, "design-print") + '#mockup"><img loading="lazy" src="' + root + 'assets/concepts/elec.webp" alt=""><span>Mockup studio</span></a>')
     return f"""<header class="top">
+  {logo(root)}
   <nav class="mode glass" aria-label="What we do">{pill}</nav>
   <button class="menubtn glass" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
 </header>
 <nav class="menu" id="menu" hidden aria-label="Site">
   <div class="mgroups">{groups}</div>
-  <p class="mlinks"><a href="{link(root, 'work')}">Our work</a><a href="{link(root, 'pricing')}">All prices</a><a href="mailto:{SITE['email']}">{SITE['email']}</a></p>
-  {book('Book now', 'Get your price in writing')}
+  <div class="mtiles">{tiles}</div>
+  <div class="mfoot">{book('Book now', 'Get your price in writing')}<a href="mailto:{SITE['email']}">{SITE['email']}</a></div>
 </nav>
+"""
+
+TRUST_ICONS = {"quote": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/>', "check": '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
+               "truck": '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>'}
+
+def trust_strip(key="trust"):
+    def ic(k):
+        return svg(TRUST_ICONS.get(k) or ICONS[k])
+    return '<ul class="trust" data-reveal>' + "".join('<li><i class="kicon">' + ic(k) + "</i><b>" + e(a) + "</b><span>" + e(b) + "</span></li>" for k, a, b in COPY[key]) + "</ul>\n"
+
+def suppliers():
+    c = COPY["suppliers"]
+    badges = "".join('<li><span class="sup-ring" aria-hidden="true"></span><b>' + e(n) + "</b><small>Wrap film</small></li>" for n in SITE["suppliers"])
+    return f"""<section class="band suppliers" aria-labelledby="suph">
+  <div class="bandhead" data-reveal><h2 id="suph">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
+  <ul class="supgrid" data-reveal>{badges}</ul>
+</section>
+"""
+
+def partners(root):
+    c = COPY["partners"]; by = {j["id"]: j for j in WORK}
+    def tile(x):
+        j = by.get(x.get("job", ""))
+        pic = ('<img loading="lazy" src="' + root + "assets/" + j["src"] + '" alt="' + e(j["title"]) + '">') if j else ""
+        return '<li class="' + ("has-pic" if j else "") + '">' + pic + "<div><small>" + e(x["tag"]) + "</small><b>" + e(x["name"]) + "</b></div></li>"
+    return f"""<section class="band partners" aria-labelledby="parh">
+  <div class="bandhead" data-reveal><h2 id="parh">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
+  <ul class="pargrid" data-reveal>{''.join(tile(x) for x in SITE['partners'])}</ul>
+</section>
 """
 
 def book(label="Book now", sub="", cls="", ids=False):
@@ -466,6 +508,7 @@ def footer(root, home=False):
     area = ", ".join(SITE["area"])
     insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
     return f"""<footer class="foot">
+  {logo(root, 'big')}
   <p class="foot-big">{e(SITE['tagline'])}</p>
   <div class="foot-grid">
     <div><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
@@ -582,6 +625,7 @@ def chrome(root, com=False):
 INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
   <div class="ibg" id="ibg"></div>
   <div class="icard" id="icard"></div>
+  <div class="ilogo" aria-hidden="true"><span class="logo big"><span class="logo-mark"><i></i></span><span class="logo-word"><b>EVERY</b><b>WRAP</b></span></span></div>
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
 """
@@ -600,7 +644,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"]) + catalog(r) + how() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"]) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + partners(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -635,7 +679,7 @@ def page_commercial():
     tray = "".join(f'<button type="button" aria-pressed="{"true" if i == 0 else "false"}" data-src="{r}assets/{j["src"]}" data-alt="{e(j["title"])}"><img loading="lazy" src="{r}assets/{j["src"]}" alt="" width="{j["w"]}" height="{j["h"]}"><span>{e(x["label"])}</span></button>' for i, (x, j) in enumerate(cats))
     boards = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"])}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}</figcaption></figure>' for j in com)
     steps = "".join(f"<li>{e(x)}</li>" for x in c["steps"])
-    body = top(r, "commercial") + "<main>\n" + hero_fleet() + ticker(COPY["explain"]["ticker_fleet"]) + f"""<section class="fleetword" aria-labelledby="fwh">
+    body = top(r, "commercial") + "<main>\n" + hero_fleet() + '<div class="truststrip">' + trust_strip("trust_com") + "</div>" + ticker(COPY["explain"]["ticker_fleet"]) + f"""<section class="fleetword" aria-labelledby="fwh">
   <h2 class="fw-word" id="fwh"><span>YOUR</span><span>FLEET</span></h2>
   <div class="fw-prints">{prints}</div>
   <div class="fw-tray" role="group" aria-label="Vehicle type">{tray}</div>
@@ -663,7 +707,7 @@ def page_commercial():
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
-""" + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
+""" + partners(r) + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
     write("commercial/index.html", head(r, "commercial", c["title"], c["desc"], mode="commercial", extra_ld=[service_ld("Fleet graphics and commercial vehicle wraps", "commercial", c["desc"], "fleet"), faq_ld(c["faq"])]) + body)
 
 def page_pricing():

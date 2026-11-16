@@ -57,5 +57,27 @@
   "Grandview Heights",
   "Plain City",
   "New Albany"
+ ],
+ "suppliers": [
+  "3M",
+  "Avery Dennison",
+  "KPMF",
+  "TeckWrap",
+  "Arlon"
+ ],
+ "partners": [
+  {
+   "name": "Queens Public Library",
+   "tag": "Fleet graphics",
+   "job": "everywrapny-4-queens-public-library-bus"
+  },
+  {
+   "name": "Immaculate Detailz",
+   "tag": "Detailing"
+  },
+  {
+   "name": "Visionary Signs",
+   "tag": "Signs and print"
+  }
  ]
 }

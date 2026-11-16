@@ -610,5 +610,57 @@
     "A sports coupe in a black, orange and white geometric livery"
    ]
   ]
+ },
+ "trust": [
+  [
+   "quote",
+   "Price in writing",
+   "Before any work starts"
+  ],
+  [
+   "check",
+   "You approve first",
+   "Nothing starts until you say so"
+  ],
+  [
+   "layers",
+   "Named film brands",
+   "3M, Avery Dennison, KPMF"
+  ],
+  [
+   "scale",
+   "Legal tint",
+   "Fitted to Ohio law"
+  ]
+ ],
+ "trust_com": [
+  [
+   "quote",
+   "Price in writing",
+   "Per vehicle, before we print"
+  ],
+  [
+   "check",
+   "Proof before print",
+   "You approve the design first"
+  ],
+  [
+   "layers",
+   "Named film brands",
+   "3M and Avery Dennison"
+  ],
+  [
+   "truck",
+   "One job, whole fleet",
+   "Vehicles staggered so work keeps moving"
+  ]
+ ],
+ "suppliers": {
+  "h2": "The film we install",
+  "p": "Cast wrap film from the makers installers trust. Ask for a brand or a colour code and we will price it."
+ },
+ "partners": {
+  "h2": "Who we work with",
+  "p": "Organisations and shops we have worked with and alongside."
  }
 }
