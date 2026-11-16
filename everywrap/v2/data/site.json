@@ -45,22 +45,26 @@
   {
    "label": "Vans",
    "job": "everywrapny-2-sprinter-commercial-litmode",
-   "note": "Full custom print"
+   "note": "Full custom print",
+   "word": "van"
   },
   {
    "label": "Buses",
    "job": "everywrapny-4-queens-public-library-bus",
-   "note": "Full custom print"
+   "note": "Full custom print",
+   "word": "bus"
   },
   {
    "label": "Food trucks",
    "job": "2023-07-02-cunmnmqasdd",
-   "note": "Colour change and custom design"
+   "note": "Colour change and custom design",
+   "word": "truck"
   },
   {
    "label": "Boats",
    "job": "2022-07-18-cglbmplvpx3",
-   "note": "Custom printed livery"
+   "note": "Custom printed livery",
+   "word": "boat"
   }
  ],
  "preview": true

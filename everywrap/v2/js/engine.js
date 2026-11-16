@@ -43,6 +43,7 @@ export class Stage {
     this.bg = "#000";
     this.accent = "255,236,205";
     this.par = { x: 0, y: 0 };
+    this.fit = 0.94;            // how much of the region width the car may take
     this.tweens = new Set();
     this.dirty = true;
     this.raf = 0;
@@ -54,7 +55,7 @@ export class Stage {
 
   resize() {
     const r = this.c.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
     const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr));
     if (this.c.width !== w || this.c.height !== h) { this.c.width = w; this.c.height = h; }
     this.invalidate();
@@ -126,8 +127,7 @@ export class Stage {
     const rw = (R.x1 - R.x0) * W, rh = (R.y1 - R.y0) * H;
     const bw = (box[2] - box[0]) * im.width, bh = (box[3] - box[1]) * im.height;
     const cover = Math.max(W / im.width, H / im.height);
-    let s = Math.min((rw * 0.94) / bw, (rh * 0.9) / bh);
-    s = Math.min(s, cover * 1.25);
+    let s = Math.min((rw * this.fit) / bw, (rh * 0.94) / bh);
     const cx = R.x0 * W + rw / 2, cy = R.y0 * H + rh * (v.anchorY ?? 0.56);
     const bx = ((box[0] + box[2]) / 2) * im.width, by = ((box[1] + box[3]) / 2) * im.height;
     const dx = cx - bx * s + this.par.x * W * 0.008, dy = cy - by * s + this.par.y * H * 0.006;
@@ -190,7 +190,7 @@ export class Stage {
 
   // Soft edges so a plate that does not cover the canvas melts into the stage colour.
   feather(L) {
-    const x = this.x, W = this.c.width, H = this.c.height, f = Math.max(40, Math.min(W, H) * 0.14);
+    const x = this.x, W = this.c.width, H = this.c.height, f = Math.max(40, Math.min(W, H) * 0.22);
     const edge = (x0, y0, x1, y1, rx, ry, rw, rh) => { const g = x.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, this.bg); g.addColorStop(1, this.rgba0()); x.fillStyle = g; x.fillRect(rx, ry, rw, rh); };
     x.fillStyle = this.bg;
     if (L.dx > 0) { x.fillRect(0, 0, L.dx + 1, H); edge(L.dx, 0, L.dx + f, 0, L.dx, 0, f, H); }
@@ -224,14 +224,14 @@ export class Stage {
   }
 
   drawSeam(sx, L) {
-    const x = this.x, b = L.box, pad = (b.y1 - b.y0) * 0.1, y0 = b.y0 - pad, y1 = b.y1 + pad * 0.5, g = Math.max(8, this.c.width * 0.006);
+    const x = this.x, b = L.box, pad = (b.y1 - b.y0) * 0.1, y0 = b.y0 - pad, y1 = b.y1 + pad * 0.5, g = Math.max(5, this.c.width * 0.0035);
     x.save();
     x.globalCompositeOperation = "screen";
     const s = this.scratch, W = this.c.width, H = this.c.height;
     if (s.width !== W || s.height !== H) { s.width = W; s.height = H; }
     const q = s.getContext("2d"); q.setTransform(1, 0, 0, 1, 0, 0); q.globalCompositeOperation = "source-over"; q.clearRect(0, 0, W, H);
     const glow = q.createLinearGradient(sx - g, 0, sx + g, 0);
-    glow.addColorStop(0, `rgba(${this.accent},0)`); glow.addColorStop(0.5, `rgba(${this.accent},.5)`); glow.addColorStop(1, `rgba(${this.accent},0)`);
+    glow.addColorStop(0, `rgba(${this.accent},0)`); glow.addColorStop(0.5, `rgba(${this.accent},.28)`); glow.addColorStop(1, `rgba(${this.accent},0)`);
     q.fillStyle = glow; q.fillRect(sx - g, y0, g * 2, y1 - y0);
     q.globalCompositeOperation = "destination-in";
     const v = q.createLinearGradient(0, y0, 0, y1);
@@ -239,7 +239,7 @@ export class Stage {
     q.fillStyle = v; q.fillRect(0, 0, W, H);
     x.drawImage(s, 0, 0);
     const line = x.createLinearGradient(0, y0, 0, y1);
-    line.addColorStop(0, `rgba(${this.accent},0)`); line.addColorStop(0.2, `rgba(${this.accent},1)`); line.addColorStop(0.8, `rgba(${this.accent},1)`); line.addColorStop(1, `rgba(${this.accent},0)`);
+    line.addColorStop(0, `rgba(${this.accent},0)`); line.addColorStop(0.2, `rgba(${this.accent},.85)`); line.addColorStop(0.8, `rgba(${this.accent},.85)`); line.addColorStop(1, `rgba(${this.accent},0)`);
     x.fillStyle = line; x.fillRect(sx - 1, y0, 2, y1 - y0);
     x.restore();
     this.seamX = sx / this.c.width; this.seamBox = { y0: y0 / this.c.height, y1: y1 / this.c.height, x0: b.x0 / this.c.width, x1: b.x1 / this.c.width };

@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, progress, onScroll } from "./state.js";
+import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, progress, onScroll, glowAs, theme } from "./state.js";
 
 /* ---------- light tunnel (canvas) ---------- */
 class Tunnel {
@@ -47,14 +47,17 @@ class Tunnel {
 function initTunnel() {
   const sec = $(".tunnel"); if (!sec) return;
   const t = new Tunnel($("canvas", sec)), cars = $$(".tcar img", sec), head = $(".thead", sec), name = $(".tname", sec), count = $(".tcount", sec), ticks = $$(".truler i", sec);
-  let idx = -1, lastY = scrollY;
+  let idx = -1, lastY = scrollY, inside = false;
   const set = (i) => {
     if (i === idx) return; idx = i; const f = FIN[i];
     cars.forEach((im) => im.classList.toggle("on", im.dataset.f === f[0]));
     head.innerHTML = `GO ${esc(f[1].toUpperCase())}.`; name.textContent = f[1].toUpperCase(); count.textContent = `0${i + 1} / 0${FIN.length}`;
-    ticks.forEach((el, n) => el.classList.toggle("on", n === i)); t.boost = 1.2; S.finish = f[0];
+    ticks.forEach((el, n) => el.classList.toggle("on", n === i)); t.boost = 1.2;
   };
-  onScroll(() => { const p = progress(sec); t.boost = Math.min(1.6, t.boost + Math.abs(scrollY - lastY) / 700); lastY = scrollY; set(Math.min(FIN.length - 1, Math.floor(p * FIN.length))); });
+  onScroll(() => { const p = progress(sec); t.boost = Math.min(1.6, t.boost + Math.abs(scrollY - lastY) / 700); lastY = scrollY; set(Math.min(FIN.length - 1, Math.floor(p * FIN.length)));
+    const r = sec.getBoundingClientRect(), now = r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5;
+    if (now) glowAs(FIN[idx][0]); else if (inside) theme();
+    inside = now; });
   const jump = (d) => { const r = sec.getBoundingClientRect(), span = r.height - innerHeight, i = clamp(idx + d, 0, FIN.length - 1); scrollTo({ top: scrollY + r.top + ((i + 0.5) / FIN.length) * span, behavior: reduce ? "auto" : "smooth" }); };
   $(".tprev", sec).addEventListener("click", () => jump(-1)); $(".tnext", sec).addEventListener("click", () => jump(1));
 }
@@ -83,4 +86,43 @@ function initReveal() {
   els.forEach((e) => io.observe(e));
 }
 
-export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initReveal(); }
+/* ---------- moving pictures: they only run while they are on screen ---------- */
+function initLive() {
+  const els = $$("[data-live]"); if (!els.length || reduce || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    const v = $("video", e.target); e.target.classList.toggle("live-on", e.isIntersecting);
+    if (!v) return;
+    if (e.isIntersecting) { if (!v.getAttribute("src")) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
+  }), { threshold: 0.3 });
+  els.forEach((e) => io.observe(e));
+}
+
+/* ---------- a framed job photo that wipes to the next one by itself ---------- */
+function initBoards() {
+  $$(".board").forEach((el) => {
+    const cats = JSON.parse(el.dataset.board || "[]"); if (cats.length < 2) return;
+    const fig = $("figure", el), under = $(".under", el), over = $(".over", el), cap = $("figcaption", el), dots = $$(".board-dots li", el), sec = el.closest("section"), word = sec && $("[data-flip]", sec);
+    let cur = 0, busy = false; if (dots[0]) dots[0].classList.add("on");
+    const set = (k, e) => { fig.style.setProperty("--w", (e * 100).toFixed(1) + "%"); fig.style.setProperty("--wn", e.toFixed(3)); fig.style.setProperty("--so", k > 0 && k < 1 ? 1 : 0); };
+    const next = () => {
+      const r = el.getBoundingClientRect(); if (busy || document.hidden || r.bottom < 0 || r.top > innerHeight) return;
+      const n = (cur + 1) % cats.length, c = cats[n], im = new Image(); busy = true;
+      im.onerror = () => (busy = false);
+      im.onload = () => {
+        over.src = c.src; cur = n; cap.textContent = c.title; dots.forEach((d, i) => d.classList.toggle("on", i === n));
+        if (word) { word.textContent = c.word; word.classList.remove("go"); void word.offsetWidth; word.classList.add("go"); }
+        const t0 = performance.now();
+        (function step(now) {
+          const k = Math.min(1, (now - t0) / 900); set(k, 1 - Math.pow(1 - k, 3));
+          if (k < 1) return requestAnimationFrame(step);
+          under.onload = () => { under.onload = null; set(0, 0); over.removeAttribute("src"); busy = false; };
+          under.alt = c.title; under.src = c.src;
+        })(t0);
+      };
+      im.src = c.src;
+    };
+    if (!reduce) setInterval(next, 3000);
+  });
+}
+
+export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initReveal(); }

@@ -18,8 +18,19 @@ export const FIN = [
 // What the visitor is looking at. The price form reads this to pre-fill itself.
 export const S = { ch: R.dataset.ch || "wrap", finish: "satin-black", ppf: "front", tint: 20, vehicle: "sedan", commercial: R.dataset.mode === "commercial" };
 export const DATA = { manifest: null, work: [] };
-export const hooks = { heroGo: null, say: null };
+export const hooks = { heroGo: null, quote: null };
 export const fin = () => FIN.find((f) => f[0] === S.finish);
+
+// The glow colour follows what the visitor is looking at: the finish on wraps, a fixed colour per service otherwise.
+const GLOW = { "satin-black": ["#ef5b2a", "#ffd2a6"], "gloss-black": ["#8fb2ff", "#ffffff"], "satin-grey": ["#c9d2dc", "#7f8a96"], "satin-red": ["#ff2f45", "#ff9a6b"], "color-shift": ["#8a5cff", "#1fd6c8"] };
+const GLOW_CH = { ppf: ["#6fd3ff", "#ffffff"], tint: ["#a78bff", "#5b6cff"], kits: ["#ff3347", "#ff9a6b"] };
+export function glowAs(finishId) { const g = GLOW[finishId]; if (g) { R.style.setProperty("--glow", g[0]); R.style.setProperty("--glow2", g[1]); } }
+export function theme(label) {
+  if (S.commercial) return;
+  const g = GLOW_CH[S.ch] || GLOW[S.finish] || GLOW["satin-black"];
+  R.style.setProperty("--glow", g[0]); R.style.setProperty("--glow2", g[1]); R.style.setProperty("--dot", fin()[3]);
+  if (label) $$("#hero [data-booksub], #stickybar [data-booksub]").forEach((el) => (el.textContent = label));
+}
 
 // Scroll progress of an element through the viewport: 0 when its top reaches the
 // top of the screen, 1 when its bottom reaches the bottom (for sticky scenes).

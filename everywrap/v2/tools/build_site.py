@@ -76,44 +76,34 @@ def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(
 def top(root, mode):
     per, com = ("true", "false") if mode == "personal" else ("false", "true")
     return f"""<header class="top">
-  <a class="mark" href="{link(root, '')}" aria-label="EveryWrap home">EVERYWRAP</a>
-  <nav class="mode" aria-label="Who is this for">
-    <a href="{link(root, '')}" aria-current="{per}">Personal</a>
-    <a href="{link(root, 'commercial')}" aria-current="{com}">Commercial</a>
+  <nav class="mode glass" aria-label="Who is this for">
+    <a href="{link(root, '')}" aria-current="{per}"{' class="live"' if per == 'true' else ''}>Personal</a>
+    <a href="{link(root, 'commercial')}" aria-current="{com}"{' class="live"' if com == 'true' else ''}>Commercial</a>
   </nav>
-  <button class="menubtn" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+  <button class="menubtn glass" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
 </header>
 <nav class="menu" id="menu" hidden aria-label="Site">
   <ol>
+    <li><a href="{link(root, '')}">Home</a></li>
     {''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["nav"])}</a></li>' for s in SERVICES)}
     <li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li>
     <li><a href="{link(root, 'work')}">Our work</a></li>
   </ol>
-  <button class="btn pri" type="button" data-quote>Get my price</button>
+  {book('Book now', 'Get your price in writing')}
   <p><a href="mailto:{SITE['email']}">{SITE['email']}</a></p>
 </nav>
 """
 
-def dock(com=False, sticky=False):
-    ph = "Tell me your fleet…" if com else "Tell me your car…"
-    idp = "s" if sticky else ""
-    return f"""<div class="askwrap">
-        {'' if sticky else '<p class="say" id="say" aria-live="polite" hidden></p>'}
-        <form class="ask" autocomplete="off">
-          <button type="button" data-upload aria-label="Upload a photo">{CAM}</button>
-          <label class="vh" for="ask{idp}">{'Tell me about your fleet' if com else 'Tell me your car and what you want'}</label>
-          <input id="ask{idp}" type="text" placeholder="{ph}" enterkeyhint="send">
-          <button type="submit" aria-label="Send">{ARROW}</button>
-        </form>
-      </div>
-      <button class="btn pri" type="button" data-quote>Get my price</button>"""
+def book(label="Book now", sub="", cls="", ids=False):
+    """The one call to action: a glass capsule that carries what the visitor picked."""
+    return f"""<button class="book live{(' ' + cls) if cls else ''}" type="button" data-quote>
+        <i class="book-dot" aria-hidden="true"></i>
+        <span class="book-t"><b>{e(label)}</b><small{' id="bookSub"' if ids else ''} data-booksub>{e(sub)}</small></span>
+        <span class="book-go" aria-hidden="true">{ARROW}</span>
+      </button>"""
 
 def rail():
-    return f"""<nav class="rail" aria-label="Services">
-      <button class="step prev" type="button" id="railPrev" aria-label="Previous">{CHEV_L}</button>
-      <ol id="rail"></ol>
-      <button class="step next" type="button" id="railNext" aria-label="Next">{CHEV_R}</button>
-    </nav>"""
+    return """<nav class="rail" aria-label="Services"><ol class="glass" id="rail"></ol></nav>"""
 
 def hero_personal(eyebrow=""):
     title = ('<h1 class="eyebrow">' + e(eyebrow) + '</h1>\n      <p class="display" id="h1"><span>Satin black.</span> <span>Done right.</span></p>') if eyebrow else '<h1 class="display" id="h1"><span>Satin black.</span> <span>Done right.</span></h1>'
@@ -126,16 +116,13 @@ def hero_personal(eyebrow=""):
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
-      <p class="cap" id="cap">Placeholder render</p>
     </div>
-    <div class="copy">
+    <div class="copy glass">
       {title}
       <p class="sub" id="sub">Any car, wrapped by hand in Columbus, Ohio.</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
-      <div class="bodies" id="bodies" role="group" aria-label="Body style"></div>
-    </div>
-    <div class="dock">
-      {dock()}
+      {book('Book now', 'Satin black wrap', ids=True)}
+      <button class="trylink" type="button" data-upload>{CAM} See it on your own car</button>
     </div>
   </div>
 </section>
@@ -152,22 +139,19 @@ def hero_fleet():
         <figure class="panel p2" id="p2"><img alt=""></figure>
         <figure class="panel p1" id="p1"><img class="under" alt=""><img class="over" alt=""><span class="pseam" aria-hidden="true"></span><figcaption id="pcap"></figcaption></figure>
       </div>
-      <p class="cap" id="cap">Real EveryWrap jobs</p>
     </div>
-    <div class="copy">
+    <div class="copy glass">
       <p class="eyebrow">Fleet graphics · Columbus, Ohio</p>
       <h1 class="display" id="h1"><span>Your van is</span> <span>a billboard.</span></h1>
       <p class="sub" id="sub">Fleet graphics, printed and installed in Columbus, Ohio.</p>
-    </div>
-    <div class="dock">
-      {dock(com=True)}
+      {book('Book now', 'Fleet graphics')}
     </div>
   </div>
 </section>
 """
 
 def tunnel(root):
-    cars = "".join(f'<img data-f="{f}" src="{root}assets/cut/sedan/{f}.webp" alt="" width="918" height="560"{" class=on" if i == 0 else " loading=lazy"}>' for i, f in enumerate(["satin-black", "gloss-black", "satin-grey", "satin-red", "color-shift"]))
+    cars = "".join(f'<img data-f="{f}" src="{root}assets/cut/sedan/{f}.webp" alt="" width="1300" height="578"{" class=on" if i == 0 else " loading=lazy"}>' for i, f in enumerate(["satin-black", "gloss-black", "satin-grey", "satin-red", "color-shift"]))
     return f"""<section class="tunnel" aria-label="Finishes">
   <div class="tpin">
     <canvas aria-hidden="true"></canvas>
@@ -185,72 +169,124 @@ def tunnel(root):
 </section>
 """
 
+# Each service card has its own colour and its own moving picture. If a short loop
+# exists at assets/loops/<ch>.mp4 it plays instead of the coded effect.
+SVC_LIVE = {
+    "wrap": ("#ef5b2a", "wipe", "sets/sedan/factory-white/000.webp", "sets/sedan/satin-black/000.webp"),
+    "ppf": ("#6fd3ff", "sheen", "sets/sedan/gloss-black/000.webp", ""),
+    "tint": ("#a78bff", "fade", "sets/sedan/clear-glass/000.webp", "sets/sedan/satin-black/000.webp"),
+    "kits": ("#ff3347", "wipe", "sets/sedan/satin-black/000.webp", "sets/sedan/kit/000.webp"),
+}
+
+def svc_visual(root, ch):
+    th, fx, a, b = SVC_LIVE[ch]
+    loop = f"assets/loops/{ch}.mp4"
+    if os.path.exists(os.path.join(ROOT, loop)):
+        return f'<div class="svc-vis" data-live><video muted loop playsinline preload="none" poster="{root}assets/{a}" data-src="{root}{loop}"></video></div>'
+    second = f'<img class="svc-b" loading="lazy" src="{root}assets/{b}" alt="" width="1637" height="914">' if b else ""
+    mask = f' style="--mask:url({root}assets/sets/sedan/_masks/ppf-full.png)"' if fx == "sheen" else ""
+    return f'<div class="svc-vis fx-{fx}" data-live{mask}><img loading="lazy" src="{root}assets/{a}" alt="" width="1637" height="914">{second}<i class="svc-fx" aria-hidden="true"></i></div>'
+
 def services_band(root):
-    cards = "".join(f"""<li class="svc" data-reveal style="--i:{i}">
+    cards = "".join(f"""<li class="svc" style="--i:{i};--th:{SVC_LIVE[s['ch']][0]}">
       <a href="{link(root, s['slug'])}">
-        <img loading="lazy" src="{root}assets/{s['img']}" alt="" width="1920" height="1072">
-        <span class="svc-n">0{i + 1}</span>
-        <h3>{e(s['name'])}</h3>
-        <p>{e(s['card'])}</p>
-        <span class="svc-go">Written quote, no guesswork {ARROW}</span>
+        {svc_visual(root, s['ch'])}
+        <div class="svc-txt">
+          <span class="svc-n">0{i + 1}</span>
+          <h3>{e(s['name'])}</h3>
+          <p>{e(s['card'])}</p>
+          <span class="svc-go">Explore {ARROW}</span>
+        </div>
       </a>
     </li>""" for i, s in enumerate(SERVICES))
     return f"""<section class="band services" aria-labelledby="svch">
-  <div class="bandhead" data-reveal><h2 id="svch">Four things we do to a car.</h2><p>Each one has its own page with the options and real jobs.</p></div>
+  <div class="bandhead" data-reveal><h2 id="svch">Four things we do to a car.</h2></div>
   <ol class="svclist">{cards}</ol>
 </section>
 """
 
-def stats():
-    s = SITE["stats"]
-    brands = ", ".join(b for b, _ in s["brands"])
-    return f"""<dl class="stats" data-reveal>
-    <div><dt>Jobs posted</dt><dd>{s['posts']}</dd></div>
-    <div><dt>Likes on those posts</dt><dd>{s['likes']:,}</dd></div>
-    <div><dt>On Instagram since</dt><dd>{s['first_post']}</dd></div>
-    <div><dt>Films in our captions</dt><dd class="small">{e(brands)}</dd></div>
-  </dl>"""
+def reel():
+    return f"""<div class="reel" id="reel" role="group" aria-roledescription="carousel" aria-label="Recent work">
+    <div class="reel-stage" aria-hidden="true"></div>
+    <div class="reel-bars" aria-hidden="true"></div>
+    <div class="reel-txt" aria-live="off"><p class="reel-kicker"></p><h3 class="reel-title"></h3><p class="reel-fin"></p></div>
+    <button class="reel-hit prev" type="button" aria-label="Previous job"></button>
+    <button class="reel-hit next" type="button" aria-label="Next job"></button>
+    <button class="reel-open glass" type="button">View job {ARROW}</button>
+    <button class="reel-pause glass" type="button" aria-label="Pause" aria-pressed="false"><i></i></button>
+  </div>"""
 
-def wall(root, limit=0, tag="all", filters=True, more=True):
-    return f"""<div class="wall" data-tag="{tag}"{f' data-limit="{limit}"' if limit else ''}>
-    {'<div class="filters" role="group" aria-label="Filter the work"></div>' if filters else ''}
+def wall(root, limit=0, tag="all", filters=True, more=True, live=False):
+    return f"""<div class="wall" data-tag="{tag}"{f' data-limit="{limit}"' if limit else ''}{' data-live="1"' if live else ''}>
+    {'<div class="tabs glass" role="group" aria-label="Filter the work"></div>' if filters else ''}
     <div class="tiles"></div>
-    {f'<p class="wallmore"><a class="btn sec" href="{link(root, "work")}">See all {len(WORK)} jobs {ARROW}</a></p>' if more else ''}
+    {f'<p class="wallmore"><a class="btn sec" href="{link(root, "work")}">All {len(WORK)} jobs {ARROW}</a></p>' if more else ''}
   </div>"""
 
 def work_band(root):
     return f"""<section class="band workband" aria-labelledby="workh">
-  <div class="bandhead" data-reveal><h2 id="workh">Proof in the finish.</h2><p>Real EveryWrap jobs from our own Instagram. Tap one for the details. No renders in this section.</p></div>
-  {stats()}
-  {wall(root, limit=12)}
+  <div class="bandhead" data-reveal><h2 id="workh">Proof in the finish.</h2></div>
+  <div class="work-split">
+  {reel()}
+  {wall(root, limit=12, live=True)}
+  </div>
 </section>
 """
 
-def fleet_teaser(root):
+def live_board(root, cls=""):
+    """A framed job photo that wipes to the next one by itself."""
     by = {j["id"]: j for j in WORK}
-    pics = "".join(f'<img loading="lazy" src="{root}assets/{by[c["job"]]["src"]}" alt="{e(by[c["job"]]["title"])}" width="{by[c["job"]]["w"]}" height="{by[c["job"]]["h"]}">' for c in SITE["fleet"][:3] if c["job"] in by)
+    cats = [{"word": c["word"], "label": c["label"], "src": f"{root}assets/{by[c['job']]['src']}", "title": by[c["job"]]["title"]} for c in SITE["fleet"] if c["job"] in by]
+    first = cats[0]
+    return f"""<div class="board{(' ' + cls) if cls else ''}" data-board='{e(json.dumps(cats), quote=True)}'>
+      <figure><img class="under" src="{first['src']}" alt="{e(first['title'])}" loading="lazy"><img class="over" alt="" aria-hidden="true"><span class="board-seam" aria-hidden="true"></span><figcaption>{e(first['title'])}</figcaption></figure>
+      <ol class="board-dots" aria-hidden="true">{''.join('<li></li>' for _ in cats)}</ol>
+    </div>"""
+
+def fleet_teaser(root):
     return f"""<section class="teaser" aria-labelledby="teaserh">
   <div class="teaser-in">
     <div data-reveal>
       <p class="eyebrow">For business</p>
-      <h2 id="teaserh">Your van is a billboard.</h2>
+      <h2 id="teaserh">Your <span class="flip" data-flip>van</span> is a billboard.</h2>
       <p>Vans, buses, food trucks and boats, printed and installed. One design carried across every vehicle.</p>
       <a class="btn pri" href="{link(root, 'commercial')}">See fleet work {ARROW}</a>
     </div>
-    <div class="teaser-pics" data-reveal>{pics}</div>
+    {live_board(root)}
   </div>
 </section>
 """
 
 def how():
-    return """<section class="band" aria-labelledby="howh">
+    return """<section class="band how" aria-labelledby="howh">
   <div class="bandhead" data-reveal><h2 id="howh">Price first. Then we talk.</h2></div>
-  <ol class="steps">
-    <li data-reveal><h3>Tell us the car</h3><p>Year, make and model, or just a photo. Pick the service and the finish.</p></li>
-    <li data-reveal><h3>Get it in writing</h3><p>You get a written quote with the film, the coverage and the price before any work starts.</p></li>
-    <li data-reveal><h3>Book the install</h3><p>We confirm fitment and a date by call or text, whichever you chose.</p></li>
+  <ol class="steps3" data-reveal>
+    <li><i>1</i><b>Send the car</b><span>A photo, or year, make and model</span></li>
+    <li><i>2</i><b>Get it in writing</b><span>Film, coverage and price</span></li>
+    <li><i>3</i><b>Book the install</b><span>Date set by call or text</span></li>
   </ol>
 </section>
+"""
+
+def final(com=False):
+    return f"""<section class="final" aria-labelledby="finalh">
+  <h2 id="finalh" data-reveal>{'Send the logo. We do the rest.' if com else 'See your car in it first.'}</h2>
+  <p data-reveal>{'Tell us the vehicles and how many. You get a design proof and a written quote.' if com else 'Send a photo or the year, make and model. You get a written quote, and nothing starts until you say so.'}</p>
+  <div class="final-cta" data-reveal>{book('Book now', 'Fleet graphics' if com else 'Get your price in writing')}<button class="trylink" type="button" data-upload>{CAM} {'Send a photo of the vehicle' if com else 'See it on your own car'}</button></div>
+</section>
+"""
+
+def footer(root, home=False):
+    area = ", ".join(SITE["area"])
+    insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
+    return f"""<footer class="foot">
+  <div class="foot-grid">
+    <div><p class="tag">{e(SITE['tagline'])}</p><p>{e(SITE['name'])}. Serving {e(area)} and the rest of central {SITE['region']}.</p></div>
+    <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li></ul></nav>
+    <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
+    <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
+  </div>
+</footer>
 """
 
 def faq(items, title="Questions people ask"):
@@ -264,31 +300,9 @@ def faq(items, title="Questions people ask"):
 def faq_ld(items):
     return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
 
-def final(com=False):
-    return f"""<section class="final" aria-labelledby="finalh">
-  <h2 id="finalh" data-reveal>{'Send the logo. We do the rest.' if com else 'See your car in it first.'}</h2>
-  <p data-reveal>{'Tell us the vehicles and how many. You get a design proof and a written quote.' if com else 'Send a photo or the year, make and model. You get a written quote, and nothing starts until you say so.'}</p>
-  <div class="final-cta" data-reveal><button class="btn pri" type="button" data-quote>Get my price</button><button class="btn sec" type="button" data-upload>{CAM} Upload a photo</button></div>
-</section>
-"""
-
-def footer(root, home=False):
-    area = ", ".join(SITE["area"])
-    insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
-    return f"""<footer class="foot">
-  <div class="foot-grid">
-    <div><p class="mark">EVERYWRAP</p><p class="tag">{e(SITE['tagline'])}</p><p>Serving {e(area)} and the rest of central {SITE['region']}.</p></div>
-    <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li></ul></nav>
-    <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
-    <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Get my price</button></li></ul></div>
-  </div>
-  <p class="fine">{'Preview build. ' if not LIVE else ''}Cars in the studio scenes are placeholder renders. Every photo in the work sections is a real EveryWrap job.{' <button type="button" id="replay">Replay the intro</button>' if home else ''}</p>
-</footer>
-"""
-
 def chrome(root, com=False):
-    return f"""<div class="stickybar" id="stickybar">
-  {dock(com=com, sticky=True)}
+    return f"""<div class="floatbook" id="stickybar">
+  {book('Book now', 'Fleet graphics' if com else 'Get your price in writing')}
 </div>
 
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Job details">
@@ -310,7 +324,7 @@ def chrome(root, com=False):
 
 <div class="scrim" id="qScrim" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qTitle">
-    <div class="shead"><h2 id="qTitle">Get my price</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <div class="shead"><h2 id="qTitle">Book now</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
     <p class="prog" id="qProg">Step 1 of 3</p>
     <form id="qForm" novalidate>
       <div class="qstep show" data-step="1">
@@ -359,7 +373,7 @@ def chrome(root, com=False):
       </label>
       <span class="legend">Finish to try</span>
       <div class="usw" id="usw" role="group" aria-label="Finish to try"></div>
-      <p class="note">Your photo stays on this device in the preview. On the live site it comes back wrapped in this finish, with your quote.</p>
+      <p class="note">We send your car back in this finish, with your quote.</p>
       <div class="srow"><button class="btn pri" type="button" id="uGo">Continue to my price</button></div>
     </div>
   </div>
@@ -372,9 +386,7 @@ def chrome(root, com=False):
 
 INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
   <div class="ibg" id="ibg"></div>
-  <p class="itag">Real work · EveryWrap archive</p>
   <div class="icard" id="icard"></div>
-  <p class="iword">EVERYWRAP</p>
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
 """
@@ -406,8 +418,8 @@ def page_service(s):
     r = "../"
     pts = "".join(f"<div data-reveal><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in s["points"])
     related = f"""<section class="band workband" aria-labelledby="relh">
-  <div class="bandhead" data-reveal><h2 id="relh">Real jobs.</h2><p>From our own Instagram. Tap one for the details.</p></div>
-  {wall(r, limit=8, tag=s['tag'], filters=False)}
+  <div class="bandhead" data-reveal><h2 id="relh">Our work.</h2></div>
+  {wall(r, limit=9, tag=s['tag'], filters=False)}
 </section>
 """ if s["tag"] else ""
     svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["name"], "serviceType": s["name"], "provider": {"@id": SITE["domain"] + "/#business"},
@@ -417,7 +429,7 @@ def page_service(s):
     <h2 id="abouth" data-reveal>{e(s['name'])}, plainly.</h2>
     <p class="lead" data-reveal>{e(s['lead'])}</p>
     <dl class="points">{pts}</dl>
-    <aside class="pricebox" data-reveal><h3>What it costs</h3><p>Every vehicle is priced on its own, so there is no flat number here. You get a written quote first, and nothing starts until you agree to it.</p><button class="btn pri" type="button" data-quote="{s['ch']}">Get my price</button></aside>
+    <aside class="pricebox" data-reveal><h3>What it costs</h3><p>Every vehicle is priced on its own, so there is no flat number here. You get a written quote first, and nothing starts until you agree to it.</p><button class="btn pri" type="button" data-quote="{s['ch']}">Book now</button></aside>
   </div>
 </section>
 """ + related + faq(s["faq"]) + final() + "</main>\n" + footer(r) + chrome(r)
@@ -435,7 +447,7 @@ def page_commercial():
   <h2 class="fw-word" id="fwh"><span>YOUR</span><span>FLEET</span></h2>
   <div class="fw-prints">{prints}</div>
   <div class="fw-tray" role="group" aria-label="Vehicle type">{tray}</div>
-  <p class="fw-note">Real EveryWrap jobs. Tap a type to bring it forward.</p>
+  <p class="fw-note">Tap a type to bring it forward.</p>
 </section>
 <section class="motion" aria-labelledby="moh">
   <div class="mo-pin">
@@ -447,7 +459,7 @@ def page_commercial():
 </section>
 <section class="band lineup" aria-labelledby="lineh">
   <div class="lineup-in">
-    <figure data-reveal><img loading="lazy" src="{r}assets/fleet-render.jpg" alt="Three work vehicles in matching graphics" width="1920" height="1072"><figcaption>Sample render, not a customer fleet</figcaption></figure>
+    {live_board(r, 'wide')}
     <div data-reveal>
       <h2 id="lineh">Make it work.</h2>
       <p>One design, laid out for each vehicle so the brand reads the same on all of them.</p>
@@ -456,7 +468,7 @@ def page_commercial():
   </div>
 </section>
 <section class="band workband" aria-labelledby="cwh">
-  <div class="bandhead" data-reveal><h2 id="cwh">Work that works.</h2><p>Commercial jobs from the EveryWrap archive. Tap one for the details.</p></div>
+  <div class="bandhead" data-reveal><h2 id="cwh">Work that works.</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
 """ + faq(FLEET_FAQ, "Fleet questions") + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
@@ -472,11 +484,13 @@ def page_work():
 <section class="pagehead">
   <p class="eyebrow">Our work</p>
   <h1 class="display">Proof in the finish.</h1>
-  <p class="sub">{len(WORK)} real jobs from our own Instagram, most liked first. Filter them, and tap any one for the film, the place and what we wrote about it.</p>
-  {stats()}
+  <p class="sub">Wraps, colour changes and fleet graphics we have installed. Tap any one for the film and the story.</p>
 </section>
 <section class="band workband">
+  <div class="work-split">
+  {reel()}
   {wall(r, more=False)}
+  </div>
 </section>
 """ + final() + "</main>\n" + footer(r) + chrome(r)
     write("work/index.html", head(r, "work", "Our work: real wraps and fleet graphics | EveryWrap",
@@ -487,7 +501,7 @@ def extras():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
-    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#000"/><rect x="0" y="0" width="31" height="64" fill="#f3ede2"/><rect x="30.5" y="6" width="3" height="52" fill="#ef5b2a"/><text x="15.5" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#000">E</text><text x="48" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#f3ede2">W</text></svg>\n')
+    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><rect x="0" y="0" width="32" height="64" rx="0" fill="#f3ede2" clip-path="inset(0 round 14px 0 0 14px)"/><rect x="30" y="8" width="4" height="48" rx="2" fill="#ef5b2a"/></svg>\n')
 
 if __name__ == "__main__":
     page_home()

@@ -5,12 +5,12 @@
   "body": "sedan",
   "nose": "left",
   "carBox": [
-   0.4,
-   0.34,
-   0.865,
-   0.7
+   0.1092,
+   0.1261,
+   0.8908,
+   0.7311
   ],
-  "anchorY": 0.56
+  "anchorY": 0.5
  },
  "coupe": {
   "label": "Coupe",

@@ -9,8 +9,8 @@ function show(wipe) {
   const job = cats[cur].job, n1 = cats[(cur + 1) % cats.length].job, n2 = cats[(cur + 2) % cats.length].job;
   const p1 = $("#p1"), over = $(".over", p1), under = $(".under", p1), t = ++tok;
   $("#p2 img").src = src(n1); $("#p2 img").alt = n1.title; $("#p3 img").src = src(n2); $("#p3 img").alt = n2.title;
-  $("#pcap").innerHTML = `${esc(job.title)}<span>${esc(cats[cur].note)}</span>`; $("#cap").textContent = "Real job · " + job.title;
-  $$("#rail li").forEach((li, i) => { li.classList.toggle("on", i === cur); li.firstElementChild.setAttribute("aria-current", i === cur); });
+  $("#pcap").innerHTML = `${esc(job.title)}<span>${esc(cats[cur].note)}</span>`;
+  $$("#rail li").forEach((li, i) => { li.firstElementChild.setAttribute("aria-current", i === cur); li.firstElementChild.classList.toggle("live", i === cur); });
   if (!wipe || reduce || !under.getAttribute("src")) { under.src = src(job); under.alt = job.title; over.src = src(job); p1.style.setProperty("--w", "100%"); p1.style.setProperty("--so", 0); return; }
   loadImage(src(job)).then(() => {
     if (t !== tok) return;
@@ -28,9 +28,9 @@ export function initFleet() {
   const by = Object.fromEntries(DATA.work.map((j) => [j.id, j]));
   cats = JSON.parse(el.dataset.cats).map((c) => ({ ...c, job: by[c.job] })).filter((c) => c.job);
   if (!cats.length) return;
-  $("#rail").innerHTML = cats.map((c, i) => `<li><button type="button" data-i="${i}"><b>0${i + 1}</b>${esc(c.label)}</button></li>`).join("");
-  $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { cur = +b.dataset.i; show(true); } });
-  const stepBy = (d) => { cur = (cur + d + cats.length) % cats.length; show(true); };
-  $("#railPrev").addEventListener("click", () => stepBy(-1)); $("#railNext").addEventListener("click", () => stepBy(1));
+  $("#rail").innerHTML = cats.map((c, i) => `<li><button type="button" data-i="${i}">${esc(c.label)}</button></li>`).join("");
+  // Plays by itself until someone picks a type.
+  let auto = reduce ? 0 : setInterval(() => { if (document.hidden || el.getBoundingClientRect().bottom < 0) return; cur = (cur + 1) % cats.length; show(true); }, 3400);
+  $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { clearInterval(auto); auto = 0; cur = +b.dataset.i; show(true); } });
   show(false);
 }

@@ -58,41 +58,41 @@
    "body": "sedan",
    "nose": "left",
    "carBox": [
-    0.4,
-    0.34,
-    0.865,
-    0.7
+    0.1092,
+    0.1261,
+    0.8908,
+    0.7311
    ],
-   "anchorY": 0.56,
+   "anchorY": 0.5,
    "sets": {
     "clear-glass": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/clear-glass/000.jpg"
+      "sets/sedan/clear-glass/000.webp"
      ]
     },
     "color-shift": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/color-shift/000.jpg"
+      "sets/sedan/color-shift/000.webp"
      ]
     },
     "factory-white": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/factory-white/000.jpg"
+      "sets/sedan/factory-white/000.webp"
      ]
     },
     "gloss-black": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/gloss-black/000.jpg"
+      "sets/sedan/gloss-black/000.webp"
      ]
     },
     "kit": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/kit/000.jpg"
+      "sets/sedan/kit/000.webp"
      ]
     },
     "satin-black": {
@@ -104,13 +104,13 @@
     "satin-grey": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/satin-grey/000.jpg"
+      "sets/sedan/satin-grey/000.webp"
      ]
     },
     "satin-red": {
      "kind": "plate",
      "frames": [
-      "sets/sedan/satin-red/000.jpg"
+      "sets/sedan/satin-red/000.webp"
      ]
     }
    },

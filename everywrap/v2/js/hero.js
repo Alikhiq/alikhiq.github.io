@@ -1,6 +1,6 @@
 import { Stage, loadImage } from "./engine.js";
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin } from "./state.js";
+import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin, theme } from "./state.js";
 
 const CHAPTERS = [
   { id: "wrap", label: "Wrap", sub: "Any car, wrapped by hand in Columbus, Ohio." },
@@ -31,14 +31,14 @@ function scene() {
   return { before: factoryOf(v), after: S.finish, seam: true };
 }
 function renderRail() {
-  const fleet = `<li><a href="${ROOT}commercial/index.html"><b>05</b>Fleet</a></li>`;
-  $("#rail").innerHTML = CHAPTERS.map((c, i) => `<li class="${c.id === S.ch ? "on" : ""}"><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"><b>0${i + 1}</b>${c.label}</button></li>`).join("") + fleet;
+  $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"${c.id === S.ch ? ' class="live"' : ""}>${c.label}</button></li>`).join("");
 }
+const PPF_NAME = { partial: "Partial front", front: "Full front", full: "Full body" };
+const bookLabel = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " protection film" : S.ch === "tint" ? S.tint + "% window tint" : S.ch === "kits" ? "Body kit, fitted and wrapped" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");
 function renderCopy() {
   const c = CHAPTERS.find((x) => x.id === S.ch), head = c.head || [fin()[2], "Done right."];
   const h = $("#h1"), html = head.map((t) => `<span>${esc(t)}</span>`).join(" ");
   if (h.innerHTML !== html) { h.innerHTML = html; h.classList.remove("swap"); void h.offsetWidth; h.classList.add("swap"); }
-  $("#sub").textContent = c.sub;
 }
 function renderOpts() {
   const o = $("#opts");
@@ -46,13 +46,12 @@ function renderOpts() {
   else if (S.ch === "ppf") o.innerHTML = PPF.map((p) => `<button type="button" class="chip" data-p="${p[0]}" aria-pressed="${p[0] === S.ppf}">${p[1]}</button>`).join("");
   else if (S.ch === "tint") o.innerHTML = TINT.map((t) => `<button type="button" class="chip" data-t="${t}" aria-pressed="${t === S.tint}">${t}%</button>`).join("");
   else o.innerHTML = "";
-  const list = Object.entries(M().vehicles).filter(([, v]) => supports(v, S.ch));
-  $("#bodies").innerHTML = list.length > 1 ? `<span>Show on</span>` + list.map(([id, v]) => `<button type="button" data-v="${id}" aria-pressed="${id === S.vehicle}">${esc(v.body.charAt(0).toUpperCase() + v.body.slice(1))}</button>`).join("") : "";
 }
 function measure() {
   const cz = $("#carzone").getBoundingClientRect(), cv = $("#stage").getBoundingClientRect();
   if (!cv.width || !cv.height) return;
-  stage.setRegion({ x0: (cz.left - cv.left) / cv.width, x1: (cz.right - cv.left) / cv.width, y0: (cz.top - cv.top) / cv.height + (phone.matches ? 0 : 0.02), y1: (cz.bottom - cv.top) / cv.height });
+  stage.setRegion({ x0: (cz.left - cv.left) / cv.width, x1: (cz.right - cv.left) / cv.width, y0: (cz.top - cv.top) / cv.height, y1: (cz.bottom - cv.top) / cv.height });
+  stage.fit = phone.matches ? 1.02 : 0.94;
 }
 function syncSeam() {
   const cz = $("#carzone").getBoundingClientRect(), cv = $("#stage").getBoundingClientRect(), b = stage.box;
@@ -73,17 +72,18 @@ async function paint(sweep) {
   $("#carzone").classList.toggle("spin", stage.frameCount() > 1);
 }
 function hint() {
-  if (!hooks.say) return;
-  if (S.ch === "tint" && S.tint < 50) hooks.say(`${S.tint}% lets ${S.tint}% of light through. In Ohio the front side windows must let in at least 50%, so this shade is for the rear.`);
-  else if (S.ch === "ppf") hooks.say(HINTS[S.ppf]);
-  else hooks.say("");
+  const c = CHAPTERS.find((x) => x.id === S.ch);
+  let t = c.sub;
+  if (S.ch === "tint" && S.tint < 50) t = `${S.tint}% lets ${S.tint}% of light through. Ohio needs 50% or more on the front side windows, so this shade is for the rear.`;
+  else if (S.ch === "ppf") t = HINTS[S.ppf];
+  $("#sub").textContent = t;
 }
 function go(patch, sweep = true) {
   if (patch.vehicle && !M().vehicles[patch.vehicle]) delete patch.vehicle;
   if (patch.ch && !CHAPTERS.some((c) => c.id === patch.ch)) delete patch.ch;
   if (R.dataset.lock && patch.ch && patch.ch !== S.ch) { location.href = ROOT + { wrap: "vinyl-wrap", ppf: "paint-protection-film", tint: "window-tint", kits: "body-kits" }[patch.ch] + "/index.html"; return; }
   Object.assign(S, patch);
-  renderRail(); renderCopy(); renderOpts(); paint(sweep); hint();
+  renderRail(); renderCopy(); renderOpts(); paint(sweep); hint(); theme(bookLabel());
 }
 
 export function initHero() {
@@ -97,10 +97,7 @@ export function initHero() {
   hooks.heroGo = go;
   window.__ew = { S, stage, go };
   $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) go({ ch: b.dataset.id }); });
-  const stepRail = (d) => { const i = CHAPTERS.findIndex((c) => c.id === S.ch) + d; if (i >= CHAPTERS.length) location.href = ROOT + "commercial/index.html"; else go({ ch: CHAPTERS[(i + CHAPTERS.length) % CHAPTERS.length].id }); };
-  $("#railPrev").addEventListener("click", () => stepRail(-1)); $("#railNext").addEventListener("click", () => stepRail(1));
   $("#opts").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.f) go({ finish: b.dataset.f }); else if (b.dataset.p) go({ ppf: b.dataset.p }, false); else if (b.dataset.t) go({ tint: +b.dataset.t }, false); });
-  $("#bodies").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) go({ vehicle: b.dataset.v }); });
   const seam = $("#seam");
   seam.addEventListener("input", () => { const left = seam.value / 1000; stage.setSeam(stage.noseLeft() ? left : 1 - left); });
   seam.addEventListener("pointerdown", () => (dragging = true)); addEventListener("pointerup", () => (dragging = false));
@@ -111,7 +108,7 @@ export function initHero() {
   if (!reduce && matchMedia("(pointer:fine)").matches) $("#hero").addEventListener("pointermove", (e) => { const r = $("#stage").getBoundingClientRect(); stage.setParallax(0.5 - (e.clientX - r.left) / r.width, 0.5 - (e.clientY - r.top) / r.height); });
   addEventListener("resize", () => { measure(); stage.resize(); });
   if (phone.addEventListener) phone.addEventListener("change", () => { measure(); stage.invalidate(); });
-  renderRail(); renderCopy(); renderOpts(); paint(false); hint();
-  setTimeout(() => { for (const v of Object.values(M().vehicles)) for (const s of Object.values(v.sets)) s.frames.forEach((f) => loadImage(ROOT + CONFIG.assets + f)); }, 1500);
+  renderRail(); renderCopy(); renderOpts(); paint(false); hint(); theme(bookLabel());
+  setTimeout(() => { for (const s of Object.values(veh().sets)) s.frames.forEach((f) => loadImage(ROOT + CONFIG.assets + f)); }, 1500);
 }
 export function heroSweep() { if (stage) { stage.seam = 0; stage.setSeam(0.5, true); } }
