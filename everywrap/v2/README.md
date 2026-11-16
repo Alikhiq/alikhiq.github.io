@@ -5,20 +5,29 @@ The hero is driven by image sets, not 3D. Drop new images into folders, run one 
 ## Run it
 Serve this folder with any static web server (for example `python3 -m http.server`) and open `index.html`.
 
-## What works now
-- **The seam.** A straight glowing line wipes between a BEFORE set and an AFTER set, starting at the car's nose. Drag it, or change service and it sweeps across.
-- **Five chapters:** Wrap (factory white against five finishes), Protect (coverage lit up on the car), Tint (clear glass against four shades), Kits (stock against a kit), Fleet (switches to the commercial theme).
-- **Commercial theme:** concrete grey, navy and yellow, with real EveryWrap job photos as upright panels and a seam wipe between them.
-- **Body style switch** ("Show on: Sedan, Coupe"). It lists every vehicle folder that has the sets a chapter needs.
-- **Rotate.** When a set has more than one angle, dragging the car rotates it. Today every set has one angle, so this stays off until more frames are added. (`?dev=spin` fakes extra frames to test it.)
-- **Price form, upload sheet and the "Tell me your car…" input**, carried over from round 1.
-- **Launch intro** from real job photos.
+The pages are generated. Edit the data or the templates, then run `python3 tools/build_site.py` (add `--live` for the launch build: indexable, clean links).
+
+## Pages
+| Page | What is on it |
+|---|---|
+| `index.html` | One Light hero with the seam, the light-tunnel scene where scrolling changes the finish, four service cards, the work wall with real numbers, a commercial teaser, steps, FAQ |
+| `vinyl-wrap/`, `paint-protection-film/`, `window-tint/`, `body-kits/` | The hero locked to that service, plain-language detail, real jobs where the archive has them, FAQ |
+| `commercial/` | Light-box hero with real job photos, the "YOUR FLEET" scene, the "YOUR BRAND IN MOTION." tunnel with a wall of real jobs, the fleet line-up, fleet FAQ |
+| `work/` | All 75 real jobs, filterable, each opening to the owner's caption, year, place, film and likes |
+
+Every page has a title, description, canonical link, share tags and structured data (business, breadcrumbs, service, FAQ, gallery), one H1, alt text on every image, plus `sitemap.xml` and `robots.txt`. Preview builds are marked noindex.
+
+## Data
+- `data/site.json`: name, email, service area, Instagram, the proof numbers, fleet categories.
+- `data/services.json`: the copy and FAQ for each service page.
+- `data/work.json`: the 75 jobs (title, finish, caption, date, place, film brands, likes, tags).
 
 ## What is not real yet
+- **No prices.** None exist in the Drive, the Instagram captions or the live site. Pages say "written quote" until real numbers are supplied.
+- No phone number, street address or opening hours: none could be verified.
 - The price form sends nothing until `leadEndpoint` is set in `js/config.js`.
-- The input is scripted rules, not a language model.
-- The uploaded photo is not re-rendered.
-- The hero cars are placeholder renders, labelled on the page. The final set comes from `SHOTLIST.csv`.
+- The input is scripted rules, not a language model. An uploaded photo is not re-rendered.
+- The cars in the studio and tunnel scenes are placeholder renders, labelled on the page. The final set comes from `SHOTLIST.csv`.
 
 ## Adding images
 See `SHOTLIST.md`. In short:

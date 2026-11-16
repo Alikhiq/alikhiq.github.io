@@ -1,113 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="personal" data-root="">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<!--PAGE-->
-<title>EveryWrap Hero</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="EveryWrap, Columbus, Ohio. Vinyl wrap, paint protection film, window tint, body kits and fleet graphics.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<title>EveryWrap | Vinyl wraps, PPF and window tint in Columbus, Ohio</title>
+<meta name="description" content="Colour-change vinyl wraps, paint protection film, window tint, body kits and fleet graphics in Columbus, Ohio. See real jobs and get a written quote.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://everywrap.com/">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EveryWrap">
+<meta property="og:title" content="EveryWrap | Vinyl wraps, PPF and window tint in Columbus, Ohio">
+<meta property="og:description" content="Colour-change vinyl wraps, paint protection film, window tint, body kits and fleet graphics in Columbus, Ohio. See real jobs and get a written quote.">
+<meta property="og:url" content="https://everywrap.com/">
+<meta property="og:image" content="https://everywrap.com/assets/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <link rel="stylesheet" href="styles.css">
-<!--/PAGE-->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": "https://everywrap.com/#business", "name": "EveryWrap", "url": "https://everywrap.com/", "email": "sales@everywrap.com", "slogan": "Wrap it. Protect it. Make it yours.", "image": "https://everywrap.com/assets/share.jpg", "areaServed": [{"@type": "City", "name": "Columbus, Ohio"}, {"@type": "City", "name": "Dublin, Ohio"}, {"@type": "City", "name": "Hilliard, Ohio"}], "sameAs": ["https://www.instagram.com/everywrapca/", "https://www.instagram.com/everywrapny/"], "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://everywrap.com/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does a wrap cost?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the vehicle, the film and how much of it is covered, so we do not post a flat number. Send the car and you get a written quote."}}, {"@type": "Question", "name": "Where are you?", "acceptedAnswer": {"@type": "Answer", "text": "We work in Columbus, Ohio and nearby, including Dublin and Hilliard. Start with the price form and we will arrange the rest."}}, {"@type": "Question", "name": "Can I see it on my own car first?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Upload a photo and pick a finish, and we send your car back in that finish with the quote."}}, {"@type": "Question", "name": "Do you do business vehicles?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Vans, buses, food trucks and boats are all in our archive. See the commercial page."}}]}</script>
 </head>
 <body>
-<!--PAGE-->
-<div class="intro" id="intro" aria-hidden="true">
+<div class="intro" id="intro" hidden aria-hidden="true">
   <div class="ibg" id="ibg"></div>
   <p class="itag">Real work · EveryWrap archive</p>
   <div class="icard" id="icard"></div>
   <p class="iword">EVERYWRAP</p>
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
-
+<header class="top">
+  <a class="mark" href="index.html" aria-label="EveryWrap home">EVERYWRAP</a>
+  <nav class="mode" aria-label="Who is this for">
+    <a href="index.html" aria-current="true">Personal</a>
+    <a href="commercial/index.html" aria-current="false">Commercial</a>
+  </nav>
+  <button class="menubtn" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+</header>
+<nav class="menu" id="menu" hidden aria-label="Site">
+  <ol>
+    <li><a href="vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="paint-protection-film/index.html">Protection film</a></li><li><a href="window-tint/index.html">Window tint</a></li><li><a href="body-kits/index.html">Body kits</a></li>
+    <li><a href="commercial/index.html">Fleet and commercial</a></li>
+    <li><a href="work/index.html">Our work</a></li>
+  </ol>
+  <button class="btn pri" type="button" data-quote>Get my price</button>
+  <p><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></p>
+</nav>
 <main>
 <section class="hero" id="hero" aria-label="EveryWrap">
   <canvas class="stage" id="stage" aria-hidden="true"></canvas>
-  <div class="softbox" aria-hidden="true"></div>
-
-  <header class="top">
-    <a class="mark" href="#hero">EVERYWRAP</a>
-    <div class="mode" role="group" aria-label="Who is this for">
-      <button type="button" id="mPer" aria-pressed="true">Personal</button>
-      <button type="button" id="mCom" aria-pressed="false">Commercial</button>
-    </div>
-  </header>
-
   <div class="ui">
     <nav class="rail" aria-label="Services">
-      <button class="step prev" type="button" id="railPrev" aria-label="Previous service">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </button>
+      <button class="step prev" type="button" id="railPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
       <ol id="rail"></ol>
-      <button class="step next" type="button" id="railNext" aria-label="Next service">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
+      <button class="step next" type="button" id="railNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </nav>
-
     <div class="carzone" id="carzone">
       <div class="seamctl" id="seamctl">
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
-      <div class="fleet" id="fleet" hidden>
-        <figure class="panel p3" id="p3"><img alt=""></figure>
-        <figure class="panel p2" id="p2"><img alt=""></figure>
-        <figure class="panel p1" id="p1"><img class="under" alt=""><img class="over" alt=""><span class="pseam" aria-hidden="true"></span><figcaption id="pcap"></figcaption></figure>
-      </div>
       <p class="cap" id="cap">Placeholder render</p>
     </div>
-
     <div class="copy">
-      <h1 id="h1"><span>Satin black.</span> <span>Done right.</span></h1>
+      <h1 class="display" id="h1"><span>Satin black.</span> <span>Done right.</span></h1>
       <p class="sub" id="sub">Any car, wrapped by hand in Columbus, Ohio.</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
       <div class="bodies" id="bodies" role="group" aria-label="Body style"></div>
     </div>
-
     <div class="dock">
       <div class="askwrap">
         <p class="say" id="say" aria-live="polite" hidden></p>
-        <form class="ask" id="askf" autocomplete="off">
-          <button type="button" id="askCam" aria-label="Upload a photo of your car">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-          </button>
-          <label class="vh" for="ask" id="askLabel">Tell me your car and what you want</label>
+        <form class="ask" autocomplete="off">
+          <button type="button" data-upload aria-label="Upload a photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+          <label class="vh" for="ask">Tell me your car and what you want</label>
           <input id="ask" type="text" placeholder="Tell me your car…" enterkeyhint="send">
-          <button type="submit" aria-label="Send">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
+          <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </form>
       </div>
-      <button class="btn pri" type="button" id="bQuote">Get my price</button>
+      <button class="btn pri" type="button" data-quote>Get my price</button>
     </div>
   </div>
 </section>
-
-<section class="band" aria-labelledby="workh">
-  <div class="bandhead">
-    <h2 id="workh">Proof in the finish.</h2>
-    <p id="workp">Real EveryWrap jobs from our own Instagram. Not renders.</p>
+<section class="tunnel" aria-label="Finishes">
+  <div class="tpin">
+    <canvas aria-hidden="true"></canvas>
+    <h2 class="thead">GO SATIN BLACK.</h2>
+    <p class="tsub">Five finishes on the same car. Keep scrolling.</p>
+    <div class="tcar"><img data-f="satin-black" src="assets/cut/sedan/satin-black.webp" alt="" width="918" height="560" class=on><img data-f="gloss-black" src="assets/cut/sedan/gloss-black.webp" alt="" width="918" height="560" loading=lazy><img data-f="satin-grey" src="assets/cut/sedan/satin-grey.webp" alt="" width="918" height="560" loading=lazy><img data-f="satin-red" src="assets/cut/sedan/satin-red.webp" alt="" width="918" height="560" loading=lazy><img data-f="color-shift" src="assets/cut/sedan/color-shift.webp" alt="" width="918" height="560" loading=lazy></div>
+    <div class="tread">
+      <button class="tprev" type="button" aria-label="Previous finish"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <span class="tname">SATIN BLACK</span>
+      <button class="tnext" type="button" aria-label="Next finish"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <span class="tcount">01 / 05</span>
+    </div>
+    <div class="truler" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
   </div>
-  <div class="work" id="work" tabindex="0" aria-label="Work gallery"></div>
 </section>
-
-<section class="band tight" aria-labelledby="howh">
-  <div class="bandhead"><h2 id="howh">Price first. Then we talk.</h2></div>
+<section class="band services" aria-labelledby="svch">
+  <div class="bandhead" data-reveal><h2 id="svch">Four things we do to a car.</h2><p>Each one has its own page with the options and real jobs.</p></div>
+  <ol class="svclist"><li class="svc" data-reveal style="--i:0">
+      <a href="vinyl-wrap/index.html">
+        <img loading="lazy" src="assets/sets/sedan/satin-red/000.jpg" alt="" width="1920" height="1072">
+        <span class="svc-n">01</span>
+        <h3>Vinyl wrap</h3>
+        <p>A new colour without a respray. Satin black is the one people ask for most.</p>
+        <span class="svc-go">Written quote, no guesswork <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li><li class="svc" data-reveal style="--i:1">
+      <a href="paint-protection-film/index.html">
+        <img loading="lazy" src="assets/sets/sedan/gloss-black/000.jpg" alt="" width="1920" height="1072">
+        <span class="svc-n">02</span>
+        <h3>Paint protection film</h3>
+        <p>Clear film on the panels that take the stone chips.</p>
+        <span class="svc-go">Written quote, no guesswork <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li><li class="svc" data-reveal style="--i:2">
+      <a href="window-tint/index.html">
+        <img loading="lazy" src="assets/sets/sedan/clear-glass/000.jpg" alt="" width="1920" height="1072">
+        <span class="svc-n">03</span>
+        <h3>Window tint</h3>
+        <p>Four shades. See each one on the glass before you choose.</p>
+        <span class="svc-go">Written quote, no guesswork <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li><li class="svc" data-reveal style="--i:3">
+      <a href="body-kits/index.html">
+        <img loading="lazy" src="assets/sets/sedan/kit/000.jpg" alt="" width="1920" height="1072">
+        <span class="svc-n">04</span>
+        <h3>Body kits</h3>
+        <p>Tell us the car. We find the kit that fits, fit it and wrap it.</p>
+        <span class="svc-go">Written quote, no guesswork <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li></ol>
+</section>
+<section class="band workband" aria-labelledby="workh">
+  <div class="bandhead" data-reveal><h2 id="workh">Proof in the finish.</h2><p>Real EveryWrap jobs from our own Instagram. Tap one for the details. No renders in this section.</p></div>
+  <dl class="stats" data-reveal>
+    <div><dt>Jobs posted</dt><dd>197</dd></div>
+    <div><dt>Likes on those posts</dt><dd>14,538</dd></div>
+    <div><dt>On Instagram since</dt><dd>2019</dd></div>
+    <div><dt>Films in our captions</dt><dd class="small">3M, Avery Dennison, KPMF</dd></div>
+  </dl>
+  <div class="wall" data-tag="all" data-limit="12">
+    <div class="filters" role="group" aria-label="Filter the work"></div>
+    <div class="tiles"></div>
+    <p class="wallmore"><a class="btn sec" href="work/index.html">See all 75 jobs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+  </div>
+</section>
+<section class="teaser" aria-labelledby="teaserh">
+  <div class="teaser-in">
+    <div data-reveal>
+      <p class="eyebrow">For business</p>
+      <h2 id="teaserh">Your van is a billboard.</h2>
+      <p>Vans, buses, food trucks and boats, printed and installed. One design carried across every vehicle.</p>
+      <a class="btn pri" href="commercial/index.html">See fleet work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="teaser-pics" data-reveal><img loading="lazy" src="assets/work/everywrapny-2-sprinter-commercial-litmode.jpg" alt="Sprinter van" width="640" height="640"><img loading="lazy" src="assets/work/everywrapny-4-queens-public-library-bus.jpg" alt="Queens Public Library bus" width="640" height="640"><img loading="lazy" src="assets/work/2023-07-02-cunmnmqasdd.jpg" alt="Food truck" width="520" height="924"></div>
+  </div>
+</section>
+<section class="band" aria-labelledby="howh">
+  <div class="bandhead" data-reveal><h2 id="howh">Price first. Then we talk.</h2></div>
   <ol class="steps">
-    <li><h3>Tell us the car</h3><p>Year, make and model, or just a photo. Pick the service and the finish.</p></li>
-    <li><h3>See it before you pay</h3><p>We send your own car back in the finish you chose, with the price next to it.</p></li>
-    <li><h3>Get a callback</h3><p>We call or text to confirm fitment, film and a date. You get the quote in writing.</p></li>
+    <li data-reveal><h3>Tell us the car</h3><p>Year, make and model, or just a photo. Pick the service and the finish.</p></li>
+    <li data-reveal><h3>Get it in writing</h3><p>You get a written quote with the film, the coverage and the price before any work starts.</p></li>
+    <li data-reveal><h3>Book the install</h3><p>We confirm fitment and a date by call or text, whichever you chose.</p></li>
   </ol>
 </section>
-
-<footer class="foot">
-  <span>Preview build. Hero cars are placeholder renders until the final image set is in. The gallery is real EveryWrap work.</span>
-  <button type="button" id="replay">Replay the intro</button>
-</footer>
+<section class="band faq" aria-labelledby="faqh">
+  <div class="bandhead" data-reveal><h2 id="faqh">Questions people ask</h2></div>
+  <div class="faqlist"><details data-reveal><summary>How much does a wrap cost?</summary><p>It depends on the vehicle, the film and how much of it is covered, so we do not post a flat number. Send the car and you get a written quote.</p></details><details data-reveal><summary>Where are you?</summary><p>We work in Columbus, Ohio and nearby, including Dublin and Hilliard. Start with the price form and we will arrange the rest.</p></details><details data-reveal><summary>Can I see it on my own car first?</summary><p>Yes. Upload a photo and pick a finish, and we send your car back in that finish with the quote.</p></details><details data-reveal><summary>Do you do business vehicles?</summary><p>Yes. Vans, buses, food trucks and boats are all in our archive. See the commercial page.</p></details></div>
+</section>
+<section class="final" aria-labelledby="finalh">
+  <h2 id="finalh" data-reveal>See your car in it first.</h2>
+  <p data-reveal>Send a photo or the year, make and model. You get a written quote, and nothing starts until you say so.</p>
+  <div class="final-cta" data-reveal><button class="btn pri" type="button" data-quote>Get my price</button><button class="btn sec" type="button" data-upload><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> Upload a photo</button></div>
+</section>
 </main>
+<footer class="foot">
+  <div class="foot-grid">
+    <div><p class="mark">EVERYWRAP</p><p class="tag">Wrap it. Protect it. Make it yours.</p><p>Serving Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
+    <nav aria-label="Services"><h2>Services</h2><ul><li><a href="vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="paint-protection-film/index.html">Paint protection film</a></li><li><a href="window-tint/index.html">Window tint</a></li><li><a href="body-kits/index.html">Body kits</a></li><li><a href="commercial/index.html">Fleet and commercial</a></li></ul></nav>
+    <nav aria-label="More"><h2>See</h2><ul><li><a href="work/index.html">Our work</a></li><li><a href="https://www.instagram.com/everywrapca/" rel="noopener">@everywrapca</a></li><li><a href="https://www.instagram.com/everywrapny/" rel="noopener">@everywrapny</a></li></ul></nav>
+    <div><h2>Talk to us</h2><ul><li><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></li><li><button type="button" data-quote>Get my price</button></li></ul></div>
+  </div>
+  <p class="fine">Preview build. Cars in the studio scenes are placeholder renders. Every photo in the work sections is a real EveryWrap job. <button type="button" id="replay">Replay the intro</button></p>
+</footer>
+<div class="stickybar" id="stickybar">
+  <div class="askwrap">
+        
+        <form class="ask" autocomplete="off">
+          <button type="button" data-upload aria-label="Upload a photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+          <label class="vh" for="asks">Tell me your car and what you want</label>
+          <input id="asks" type="text" placeholder="Tell me your car…" enterkeyhint="send">
+          <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </form>
+      </div>
+      <button class="btn pri" type="button" data-quote>Get my price</button>
+</div>
 
-<!-- price sheet -->
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Job details">
+  <div class="lb-in">
+    <div class="lb-img"><img id="lbImg" alt=""></div>
+    <div class="lb-txt">
+      <p class="lb-count" id="lbCount"></p>
+      <h2 id="lbTitle"></h2>
+      <p class="lb-finish" id="lbFinish"></p>
+      <p class="lb-cap" id="lbCap"></p>
+      <ul class="lb-meta" id="lbMeta"></ul>
+      <button class="btn pri" type="button" id="lbQuote">Price a job like this</button>
+    </div>
+    <button class="x lb-close" type="button" id="lbClose" aria-label="Close">×</button>
+    <button class="lb-nav prev" type="button" id="lbPrev" aria-label="Previous job"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <button class="lb-nav next" type="button" id="lbNext" aria-label="Next job"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
 <div class="scrim" id="qScrim" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qTitle">
     <div class="shead"><h2 id="qTitle">Get my price</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
@@ -116,6 +227,7 @@
       <div class="qstep show" data-step="1">
         <div class="field"><label for="qCar" id="qCarL">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
         <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
+        <p class="note" id="qNote" hidden></p>
         <p class="err" id="qErr1" role="alert"></p>
         <div class="srow"><button class="btn pri" type="button" data-next>Next</button></div>
       </div>
@@ -147,7 +259,6 @@
   </div>
 </div>
 
-<!-- upload sheet -->
 <div class="scrim" id="uScrim" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="uTitle">
     <div class="shead"><h2 id="uTitle">See it on your car</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
@@ -159,13 +270,12 @@
       </label>
       <span class="legend">Finish to try</span>
       <div class="usw" id="usw" role="group" aria-label="Finish to try"></div>
-      <p class="note">Your photo stays on this device in the preview. On the live site it comes back wrapped in this finish, with your price.</p>
+      <p class="note">Your photo stays on this device in the preview. On the live site it comes back wrapped in this finish, with your quote.</p>
       <div class="srow"><button class="btn pri" type="button" id="uGo">Continue to my price</button></div>
     </div>
   </div>
 </div>
 
-<script type="module" src="js/app.js"></script>
-<!--/PAGE-->
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
