@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, progress, onScroll, glowAs, theme } from "./state.js";
+import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, hooks, progress, onScroll, glowAs, theme } from "./state.js";
 
 /* ---------- light tunnel (canvas) ---------- */
 class Tunnel {
@@ -125,4 +125,15 @@ function initBoards() {
   });
 }
 
-export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initReveal(); }
+/* ---------- price tables: one size choice applies to every table on the page ---------- */
+function initPrices() {
+  const tables = $$(".ptable"); if (!tables.length) return;
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".ptabs button"); if (!b) return;
+    S.size = +b.dataset.size;
+    tables.forEach((t) => { t.dataset.size = S.size; $$(".ptabs button", t).forEach((x) => { const on = +x.dataset.size === S.size; x.setAttribute("aria-pressed", on); x.classList.toggle("live", on); }); });
+    if (hooks.relabel) hooks.relabel();
+  });
+}
+
+export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initPrices(); initReveal(); }

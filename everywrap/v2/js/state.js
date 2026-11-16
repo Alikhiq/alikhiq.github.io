@@ -16,9 +16,16 @@ export const FIN = [
   ["color-shift", "Color Shift", "Color shift.", "conic-gradient(from 210deg,#6d3bd6,#1fb8b0,#2b6fe0,#7a3fd1,#6d3bd6)"],
 ];
 // What the visitor is looking at. The price form reads this to pre-fill itself.
-export const S = { ch: R.dataset.ch || "wrap", finish: "satin-black", ppf: "front", tint: 20, vehicle: "sedan", commercial: R.dataset.mode === "commercial" };
-export const DATA = { manifest: null, work: [] };
-export const hooks = { heroGo: null, quote: null };
+export const S = { ch: R.dataset.ch || "wrap", finish: "satin-black", ppf: "front", tint: 20, vehicle: "sedan", size: 0, commercial: R.dataset.mode === "commercial" };
+export const DATA = { manifest: null, work: [], pricing: null };
+export const money = (n) => "$" + n.toLocaleString("en-US");
+// Starting price of one row of the price list, for the vehicle size the visitor picked.
+export function fromPrice(group, id, size = S.size) {
+  const g = DATA.pricing && DATA.pricing.groups[group], r = g && g.rows.find((x) => x.id === id);
+  if (!r || r.from == null) return null;
+  return Array.isArray(r.from) ? r.from[size] ?? r.from[0] : r.from;
+}
+export const hooks = { heroGo: null, quote: null, relabel: null };
 export const fin = () => FIN.find((f) => f[0] === S.finish);
 
 // The glow colour follows what the visitor is looking at: the finish on wraps, a fixed colour per service otherwise.

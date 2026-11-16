@@ -1,0 +1,260 @@
+{
+ "confirmed": false,
+ "status": "DRAFT. Starting prices built from what other shops publish (November 2026): one Columbus shop's PPF price list and US price guides for wraps, tint and commercial work. Rows marked estimate had no published source. These are not EveryWrap's own rates until the owner checks every number and sets confirmed to true. The launch build refuses to run while this is false.",
+ "currency": "USD",
+ "sizes": [
+  "Coupe / sedan",
+  "SUV / truck",
+  "Van / large SUV"
+ ],
+ "groups": {
+  "wrap": {
+   "title": "Vinyl wrap",
+   "rows": [
+    {
+     "id": "full",
+     "name": "Full colour change",
+     "note": "Gloss, satin or matte film, edges tucked",
+     "from": [
+      2800,
+      3400,
+      4000
+     ],
+     "source": "US guides: small car from $2,500, sedan from $3,000, SUV or truck from $4,000"
+    },
+    {
+     "id": "shift",
+     "name": "Colour-shift and specialty film",
+     "note": "Colour-shift, chrome-look and textured films",
+     "from": [
+      3600,
+      4300,
+      5000
+     ],
+     "source": "US guides: specialty films add $300 to $2,500"
+    },
+    {
+     "id": "roof",
+     "name": "Roof",
+     "note": "Gloss black is the usual pick",
+     "from": [
+      350,
+      400,
+      450
+     ],
+     "source": "US guide: about $350"
+    },
+    {
+     "id": "hood",
+     "name": "Hood",
+     "note": "Satin, gloss or carbon-look",
+     "from": [
+      350,
+      400,
+      450
+     ],
+     "source": "US guide: about $350"
+    },
+    {
+     "id": "chrome",
+     "name": "Chrome delete",
+     "note": "Window trim, grille and badges in black",
+     "from": [
+      350,
+      450,
+      550
+     ],
+     "source": "US guide: about $350, range $300 to $800"
+    },
+    {
+     "id": "mirrors",
+     "name": "Mirror caps",
+     "note": "The pair",
+     "from": 200,
+     "source": "US guide: about $200"
+    },
+    {
+     "id": "stripes",
+     "name": "Stripes",
+     "note": "Racing stripes or accents",
+     "from": 300,
+     "source": "US guide: about $300"
+    }
+   ],
+   "lead": "full"
+  },
+  "ppf": {
+   "title": "Paint protection film",
+   "rows": [
+    {
+     "id": "partial",
+     "name": "Partial front",
+     "note": "Bumper, plus the leading edge of the hood and fenders",
+     "from": [
+      1100,
+      1200,
+      1350
+     ],
+     "source": "Columbus shop: from $1,199. US median $1,195"
+    },
+    {
+     "id": "front",
+     "name": "Full front",
+     "note": "Bumper, full hood, both fenders and mirrors",
+     "from": [
+      1900,
+      2100,
+      2400
+     ],
+     "source": "Columbus shop: from $1,999. US median $2,100"
+    },
+    {
+     "id": "full",
+     "name": "Full body",
+     "note": "Every painted panel",
+     "from": [
+      5500,
+      6200,
+      7000
+     ],
+     "source": "Columbus shop: from $5,999. US median $6,000"
+    },
+    {
+     "id": "rockers",
+     "name": "Rocker panels",
+     "note": "The low panels behind the wheels that catch road grit",
+     "from": 400,
+     "source": "US guide: from $400"
+    }
+   ],
+   "lead": "partial"
+  },
+  "tint": {
+   "title": "Window tint",
+   "rows": [
+    {
+     "id": "carbon",
+     "name": "Carbon film, full car",
+     "note": "All side windows and the rear glass",
+     "from": [
+      280,
+      340,
+      400
+     ],
+     "source": "Ohio guide: sedan $300 to $450, SUV $400 to $550"
+    },
+    {
+     "id": "ceramic",
+     "name": "Ceramic film, full car",
+     "note": "Blocks more heat at the same shade",
+     "from": [
+      450,
+      520,
+      600
+     ],
+     "source": "Ohio guide: sedan $500 to $800, SUV $600 to $950"
+    },
+    {
+     "id": "fronts",
+     "name": "Two front windows",
+     "note": "To match factory rear glass, 50% or lighter by Ohio law",
+     "from": 120,
+     "source": "estimate"
+    },
+    {
+     "id": "strip",
+     "name": "Windshield strip",
+     "note": "The band across the top of the windshield",
+     "from": 60,
+     "source": "estimate"
+    },
+    {
+     "id": "removal",
+     "name": "Old tint removal",
+     "note": "Priced by the window",
+     "from": 100,
+     "source": "estimate"
+    }
+   ],
+   "lead": "carbon"
+  },
+  "kits": {
+   "title": "Body kits",
+   "rows": [
+    {
+     "id": "lip",
+     "name": "Front lip or splitter",
+     "note": "Fitting only, you supply or we source",
+     "from": null
+    },
+    {
+     "id": "skirts",
+     "name": "Side skirts and diffuser",
+     "note": "Fitted and aligned",
+     "from": null
+    },
+    {
+     "id": "wide",
+     "name": "Full kit or widebody",
+     "note": "Test fit, install, then wrap or paint match",
+     "from": null
+    },
+    {
+     "id": "wrapkit",
+     "name": "Wrapping the kit to match",
+     "note": "Priced with the rest of the car's wrap",
+     "from": null
+    }
+   ],
+   "lead": "lip"
+  },
+  "fleet": {
+   "title": "Fleet and commercial",
+   "rows": [
+    {
+     "id": "lettering",
+     "name": "Door logos and lettering",
+     "note": "Cut vinyl: name, number, DOT numbers",
+     "from": 250,
+     "source": "US guide: $100 to $500"
+    },
+    {
+     "id": "partial",
+     "name": "Partial wrap",
+     "note": "Printed graphics on the sides and rear",
+     "from": 1200,
+     "source": "US guide: van $750 to $1,800"
+    },
+    {
+     "id": "van",
+     "name": "Full van wrap",
+     "note": "Cargo van or Sprinter, printed and laminated",
+     "from": 3000,
+     "source": "US guide: $2,500 to $4,500"
+    },
+    {
+     "id": "box",
+     "name": "Box truck",
+     "note": "Both sides, rear and cab",
+     "from": 3800,
+     "source": "US guide: $3,500 to $6,500"
+    },
+    {
+     "id": "foodtruck",
+     "name": "Food truck or trailer",
+     "note": "Full print with cut-outs for windows and hatches",
+     "from": 4200,
+     "source": "US guide: $4,000 to $7,000"
+    },
+    {
+     "id": "design",
+     "name": "Design",
+     "note": "Layout for each vehicle type, proof included",
+     "from": 150,
+     "source": "one US shop: $150"
+    }
+   ],
+   "lead": "lettering"
+  }
+ }
+}

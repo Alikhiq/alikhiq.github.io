@@ -1,9 +1,9 @@
 import { Stage, loadImage } from "./engine.js";
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin, theme } from "./state.js";
+import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin, theme, fromPrice, money } from "./state.js";
 
 const CHAPTERS = [
-  { id: "wrap", label: "Wrap", sub: "Any car, wrapped by hand in Columbus, Ohio." },
+  { id: "wrap", label: "Wrap", sub: "Pick a finish, then drag the line across the car." },
   { id: "ppf", label: "Protect", head: ["Protection film.", "Done right."], sub: "Clear film over the panels that take the hits. The lit area is what gets covered." },
   { id: "tint", label: "Tint", head: ["Window tint.", "Done right."], sub: "Pick a shade. The number is how much light gets through." },
   { id: "kits", label: "Kits", head: ["Body kits.", "Done right."], sub: "Tell us what you drive. We find the kit that fits, fit it and wrap it." },
@@ -34,7 +34,9 @@ function renderRail() {
   $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"${c.id === S.ch ? ' class="live"' : ""}>${c.label}</button></li>`).join("");
 }
 const PPF_NAME = { partial: "Partial front", front: "Full front", full: "Full body" };
-const bookLabel = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " protection film" : S.ch === "tint" ? S.tint + "% window tint" : S.ch === "kits" ? "Body kit, fitted and wrapped" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");
+const bookName = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " PPF" : S.ch === "tint" ? S.tint + "% tint" : S.ch === "kits" ? "Body kit, quoted per car" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");
+const bookPrice = () => (S.ch === "ppf" ? fromPrice("ppf", S.ppf) : S.ch === "tint" ? fromPrice("tint", "carbon") : S.ch === "kits" ? null : fromPrice("wrap", S.finish === "color-shift" ? "shift" : "full"));
+const bookLabel = () => { const p = bookPrice(); return bookName() + (p ? " · from " + money(p) : ""); };
 function renderCopy() {
   const c = CHAPTERS.find((x) => x.id === S.ch), head = c.head || [fin()[2], "Done right."];
   const h = $("#h1"), html = head.map((t) => `<span>${esc(t)}</span>`).join(" ");
@@ -94,7 +96,7 @@ export function initHero() {
   }
   stage = new Stage($("#stage"), { base: ROOT + CONFIG.assets, reduceMotion: reduce });
   stage.onDraw = syncSeam;
-  hooks.heroGo = go;
+  hooks.heroGo = go; hooks.relabel = () => theme(bookLabel());
   window.__ew = { S, stage, go };
   $("#rail").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) go({ ch: b.dataset.id }); });
   $("#opts").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.f) go({ finish: b.dataset.f }); else if (b.dataset.p) go({ ppf: b.dataset.p }, false); else if (b.dataset.t) go({ tint: +b.dataset.t }, false); });

@@ -277,6 +277,42 @@ img{display:block;max-width:100%;height:auto}
 .board-dots li{width:22px;height:3px;border-radius:2px;background:rgba(15,28,63,.22);transition:background .3s}
 .board-dots li.on{background:var(--navy)}
 
+/* ---------- prices ---------- */
+.price-in{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.8fr);gap:28px;align-items:start}
+.ptable .tabs{max-width:460px}
+.prows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.prows li{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.prows li > div b{display:block;font:600 16px/1.25 var(--ui)}
+.prows li > div span{display:block;margin-top:3px;color:var(--mute);font-size:13.5px;line-height:1.35;max-width:40ch}
+.pp{margin:0;flex:none;text-align:right;font:500 12px/1 var(--ui);color:var(--mute);white-space:nowrap}
+.pp b{display:block;margin-top:4px;font:400 clamp(24px,2.4vw,32px)/1 var(--display);letter-spacing:-.02em;color:var(--fg);font-variant-numeric:tabular-nums}
+:root[data-mode="commercial"] .pp b{font:700 clamp(22px,2.2vw,28px)/1 var(--ui);letter-spacing:-.03em}
+.pp .q{font:600 13px/1.2 var(--ui);color:var(--fg)}
+.ptable[data-size="0"] [data-s]:not([data-s="0"]),.ptable[data-size="1"] [data-s]:not([data-s="1"]),.ptable[data-size="2"] [data-s]:not([data-s="2"]){display:none}
+.pfact{border:1px solid color-mix(in srgb,var(--th,var(--glow)) 36%,var(--line));border-radius:24px;padding:22px;background:var(--card)}
+.pfact h3{margin:0 0 12px;font:600 16px/1.2 var(--ui)}
+.pfact ul,.pfactlist{margin:0 0 20px;padding-left:18px;color:var(--mute);display:grid;gap:8px}
+.pfactlist{max-width:70ch;font-size:16px}
+.pfact .btn{width:100%}
+.pfine{margin:16px 0 0;font-size:13px;line-height:1.5;color:var(--mute);max-width:72ch}
+.prices .bandhead a{color:var(--fg)}
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.pcard{display:block;padding:18px 18px 20px;border-radius:22px;border:1px solid color-mix(in srgb,var(--th) 36%,var(--line));background:radial-gradient(120% 90% at 100% 100%,color-mix(in srgb,var(--th) 18%,transparent),transparent 62%),var(--card);color:inherit;text-decoration:none;transition:box-shadow .5s}
+.pcard:hover{box-shadow:0 0 40px -14px var(--th)}
+.pcard span{font:600 11.5px/1.2 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--th)}
+.pcard b{display:block;margin-top:12px;font:400 clamp(26px,2.8vw,38px)/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pcard small{display:block;margin-top:8px;color:var(--mute);font-size:12.5px;line-height:1.3}
+.know{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.know div{padding:20px;border:1px solid var(--line);border-radius:22px;background:var(--card)}
+.know dt{font:600 12px/1.2 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--glow)}
+.know dd{margin:10px 0 0;color:var(--mute);font-size:15px;line-height:1.5}
+.arealist,.crosslinks{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.arealist li{padding:9px 14px;border:1px solid var(--line);border-radius:999px;font:500 13.5px/1 var(--ui);color:var(--mute)}
+.crosslinks{margin-top:18px;gap:8px 18px}
+.crosslinks a{color:var(--fg);font:600 14px/1.4 var(--ui);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.crosslinks a:hover{text-decoration-color:var(--glow)}
+.points{grid-column:1 / -1}
+
 /* ---------- steps, FAQ, closing call ---------- */
 .steps3{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:relative;max-width:860px}
 .steps3::before,.steps3::after{content:"";position:absolute;top:21px;left:16.66%;width:66.67%;height:2px;background:var(--line)}
@@ -458,7 +494,10 @@ img{display:block;max-width:100%;height:auto}
   .lb-nav.prev{left:4px}.lb-nav.next{left:auto;right:4px;transform:none}
   .lb-close{top:-4px;right:0;background:rgba(0,0,0,.6)}
   .teaser-in,.about-in,.lineup-in{grid-template-columns:1fr;gap:24px}
-  .pricebox{grid-column:1;grid-row:auto}
+  .price-in{grid-template-columns:1fr;gap:20px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .know{grid-template-columns:1fr}
+  .prows li > div b{font-size:15px}
   .about-vis .svc-vis{aspect-ratio:16/10}
   .points div{grid-template-columns:1fr;gap:4px}
   .steps3 b{font-size:13.5px}

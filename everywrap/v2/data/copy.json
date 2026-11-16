@@ -1,0 +1,102 @@
+{
+ "price_fine": "Starting prices for vehicles with sound paint and glass. Size, film and condition move the number, so your exact price comes in a written quote before any work starts.",
+ "areas_p": "We work in the Columbus area by appointment, and customers bring cars and fleets to us from across central Ohio.",
+ "how": {
+  "h2": "Price first. Then we book.",
+  "steps": [
+   ["Send the car", "A photo, or the year, make and model"],
+   ["Get it in writing", "Film, coverage and your exact price"],
+   ["Book the install", "A date set by call or text"]
+  ]
+ },
+ "final": {
+  "h2": "See your car in it first.",
+  "p": "Send a photo or the year, make and model. You get your exact price in writing, and nothing starts until you say so.",
+  "book": "Get your exact price",
+  "photo": "See it on your own car"
+ },
+ "final_com": {
+  "h2": "Send the logo. We do the rest.",
+  "p": "Tell us the vehicles and how many. You get a design proof and a written price for each one.",
+  "book": "Fleet graphics",
+  "photo": "Send a photo of the vehicle"
+ },
+ "home": {
+  "title": "Car Wraps, PPF & Window Tint in Columbus, Ohio | EveryWrap",
+  "desc": "Vinyl car wraps from {$wrap.full}, paint protection film, window tint, body kits and fleet graphics in Columbus, Ohio. See real jobs, see the prices and book a quote.",
+  "h1": "Car wraps, paint protection film and window tint in Columbus, Ohio",
+  "sub": "Pick a finish, then drag the line across the car.",
+  "tunnel_sub": "One car, five finishes. Keep scrolling.",
+  "services_h2": "Wrap it. Protect it. Tint it. Build it.",
+  "services_p": "Tap a service for the options, real jobs and prices.",
+  "prices_h2": "Prices, up front.",
+  "prices_p": "Most shops make you call. Here are our starting prices for a coupe or sedan.",
+  "price_notes": ["Full colour change", "Partial front", "Carbon film, full car", "Door logos and lettering"],
+  "teaser_p": "Vans, box trucks, buses, food trucks and boats. We design it, print it and install it, and one design carries across every vehicle you run.",
+  "faq": [
+   ["How much does it cost to wrap a car in Columbus, Ohio?", "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV. Colour-shift and specialty films start at {$wrap.shift}. Roofs, hoods and chrome delete are priced on their own."],
+   ["How long does a car wrap last?", "Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and hand washing get you the long end of that."],
+   ["Is a wrap cheaper than a paint job?", "For a colour change of the same quality, usually yes. A wrap also comes off, so the factory paint is still there underneath."],
+   ["What window tint is legal in Ohio?", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark."],
+   ["How much is paint protection film?", "A partial front starts at {$ppf.partial}, a full front at {$ppf.front} and full body at {$ppf.full} for a coupe or sedan."],
+   ["Can I see it on my own car first?", "Yes. Upload a photo and pick a finish, and we send your car back in that finish with your price."],
+   ["Do you wrap business vehicles?", "Yes. Vans, box trucks, buses, food trucks and boats, from door lettering at {$fleet.lettering} to full printed wraps. See the commercial page."],
+   ["Where are you?", "We work in the Columbus area by appointment, with customers from Dublin, Hilliard and the rest of central Ohio. Book and we send the details with your price."]
+  ]
+ },
+ "commercial": {
+  "title": "Fleet Wraps & Commercial Vehicle Graphics in Columbus, Ohio",
+  "desc": "Fleet wraps, van wraps, box truck and food truck graphics in Columbus, Ohio. Designed, printed and installed, from door lettering at {$fleet.lettering} to full wraps.",
+  "h1": "Fleet wraps and commercial vehicle graphics in Columbus, Ohio",
+  "sub": "Designed, printed and installed. From one van to the whole fleet.",
+  "fleet_note": "Tap a type to bring it forward.",
+  "motion_sub": "A wrapped vehicle advertises every mile it drives and every hour it is parked. These are jobs we have printed and installed.",
+  "line_h2": "One brand on every vehicle.",
+  "line_p": "A van, a box truck and a trailer are different shapes. We lay the design out for each one, so the logo, the phone number and the colours read the same across the fleet.",
+  "steps": ["Send the logo and the list of vehicles.", "Approve the design proof and the written price.", "We print, laminate and install, then hand the vehicles back."],
+  "price_h2": "Fleet and commercial wrap prices",
+  "price_intro": "Starting prices per vehicle. Fleets are quoted together.",
+  "factors": [
+   "Vehicle size and how much of it is covered",
+   "Printed and laminated wrap, or cut-vinyl lettering",
+   "Design work: a new design costs more than applying artwork you already have",
+   "The number of vehicles, since fleets are priced as one job"
+  ],
+  "work_h2": "Commercial work we have installed",
+  "faq": [
+   ["How much does a commercial vehicle wrap cost?", "Door logos and lettering start at {$fleet.lettering}. A partial wrap starts at {$fleet.partial}, a full van wrap at {$fleet.van}, a box truck at {$fleet.box} and a food truck or trailer at {$fleet.foodtruck}."],
+   ["Do you design the graphics?", "Yes. Send the logo and the vehicle list. Design starts at {$fleet.design} and the proof comes back with your price."],
+   ["Can you match one design across different vehicles?", "Yes. The design is laid out per vehicle so the brand reads the same on a van, a box truck and a trailer."],
+   ["How long does a fleet wrap last?", "Printed and laminated wraps are made to last years of daily use. Up to about seven is typical for a vehicle that is washed regularly."],
+   ["How long are the vehicles off the road?", "Installing a wrap on a van or box truck usually takes two to three days. For a fleet we stagger the vehicles so the work keeps moving."],
+   ["Can you wrap a leased van?", "Yes. A wrap comes off without marking sound factory paint, which is why leased fleets are wrapped and not painted."],
+   ["Do you do food trucks, trailers and boats?", "Yes. All three are in our work, including a full colour change and custom design on a food truck in Dublin."]
+  ]
+ },
+ "pricing": {
+  "title": "Car Wrap, PPF & Tint Prices in Columbus, Ohio | EveryWrap",
+  "desc": "Starting prices for car wraps, paint protection film, window tint and fleet graphics in Columbus, Ohio. Full wraps from {$wrap.full}, PPF from {$ppf.partial}, tint from {$tint.carbon}.",
+  "h1": "Wrap, PPF and tint prices in Columbus, Ohio",
+  "sub": "Most shops make you call for a number. These are our starting prices, by service and vehicle size.",
+  "factors": [
+   "Vehicle size. More panels and more glass mean more film and more hours.",
+   "The film. Colour-shift, chrome-look and textured wrap films cost more, and ceramic tint costs more than carbon.",
+   "Coverage. A roof is not a full wrap, and a partial front is not full body protection film.",
+   "Condition. Chipped paint, old tint and poor resprays need dealing with before new film goes on."
+  ],
+  "faq": [
+   ["Are these the final prices?", "They are starting prices for vehicles in good condition. Your exact price comes in a written quote, and nothing starts until you agree to it."],
+   ["How much does it cost to wrap a car in Columbus?", "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV."],
+   ["Why do colour-shift and chrome-look wraps cost more?", "The film itself costs more per roll and takes more care to install, so specialty films start at {$wrap.shift}."],
+   ["Is it cheaper to do a wrap, PPF and tint together?", "It saves you time, because the car is off the road once. Ask for all three in one quote and we price them as one job."],
+   ["How do I get an exact price?", "Tap Book now, tell us the car and what you want done, and you get the price in writing by text or call."]
+  ]
+ },
+ "work": {
+  "title": "Car Wrap Gallery: Real Wraps & Fleet Graphics | EveryWrap",
+  "desc": "Real EveryWrap jobs: satin black wraps, colour changes, colour-shift film and fleet graphics, with the film and location for each. Browse the gallery.",
+  "h1": "Car wrap gallery: real EveryWrap jobs",
+  "display": "Proof in the finish.",
+  "sub": "Wraps, colour changes and fleet graphics we have installed. Tap any one for the film and the story."
+ }
+}

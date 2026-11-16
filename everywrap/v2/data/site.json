@@ -22,25 +22,6 @@
   ]
  ],
  "tagline": "Wrap it. Protect it. Make it yours.",
- "stats": {
-  "posts": 197,
-  "likes": 14538,
-  "first_post": "2019",
-  "brands": [
-   [
-    "3M",
-    44
-   ],
-   [
-    "Avery Dennison",
-    38
-   ],
-   [
-    "KPMF",
-    11
-   ]
-  ]
- },
  "fleet": [
   {
    "label": "Vans",
@@ -67,5 +48,14 @@
    "word": "boat"
   }
  ],
- "preview": true
+ "preview": true,
+ "nearby": [
+  "Upper Arlington",
+  "Worthington",
+  "Powell",
+  "Westerville",
+  "Grandview Heights",
+  "Plain City",
+  "New Albany"
+ ]
 }

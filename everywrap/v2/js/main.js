@@ -11,6 +11,7 @@ async function boot() {
   try {
     DATA.manifest = pre ? pre.manifest : await (await fetch(ROOT + CONFIG.assets + "manifest.json")).json();
     DATA.work = pre ? pre.work : await (await fetch(ROOT + "data/work.json")).json();
+    DATA.pricing = pre ? pre.pricing : await (await fetch(ROOT + CONFIG.assets + "pricing.json")).json();
   } catch (e) { console.error("EveryWrap data failed to load", e); }
   initSite(); initHero(); initFleet(); initScenes(); initWork();
 }

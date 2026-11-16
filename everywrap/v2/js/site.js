@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, esc, FIN, S, DATA, hooks, fin, onScroll } from "./state.js";
+import { R, ROOT, $, $$, reduce, esc, FIN, S, DATA, hooks, fin, onScroll, fromPrice, money } from "./state.js";
 import { heroSweep } from "./hero.js";
 
 /* ---------- sheets ---------- */
@@ -21,6 +21,7 @@ function openQuote(pre = {}) {
   $("#qCarL").textContent = com ? "What vehicles, and how many?" : "What are you driving?"; $("#qCar").placeholder = com ? "3 Sprinter vans and a box truck" : "2021 Dodge Charger";
   if (pre.car) $("#qCar").value = pre.car;
   $("#qFin").value = fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase();
+  $("#qSizeF").hidden = com; const sz = $(`#qSizeF input[value="${S.size}"]`); if (sz) sz.checked = true;
   $("#qPhoto").hidden = !photo; $("#qNote").hidden = !note; $("#qNote").textContent = note;
   $$("#qForm .err").forEach((e) => (e.textContent = ""));
   finField(); closeSheets(); openSheet("#qScrim"); step(1);
@@ -37,9 +38,12 @@ async function submitQuote(e) {
   const name = $("#qName").value.trim(), digits = $("#qPhone").value.replace(/\D/g, "");
   if (!name) { $("#qErr3").textContent = "Add your name so we know who to ask for."; $("#qName").focus(); return; }
   if (digits.length < 10) { $("#qErr3").textContent = "That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
-  const lead = { vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname };
+  const com = $("#qSizeF").hidden, size = com ? 0 : +($("#qSizeF input:checked") || { value: 0 }).value, shift = /shift/i.test($("#qFin").value);
+  const starts = [["wrap", "Wrap", fromPrice("wrap", shift ? "shift" : "full", size)], ["ppf", "PPF", fromPrice("ppf", S.ppf, size)], ["tint", "Tint", fromPrice("tint", "carbon", size)]].filter(([id, , n]) => n && $("#qS_" + id).checked).map(([, name, n]) => `${name} ${money(n)}`);
+  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname };
   const rows = [["Vehicle", lead.vehicle], ["Service", lead.services.join(", ")]];
   if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]);
+  if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
   rows.push(["Contact", `${name}, ${lead.phone} (${lead.contact})`]);
   $("#qSum").innerHTML = rows.map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("");
   let msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
@@ -88,6 +92,7 @@ export function initSite() {
   $("#qForm").addEventListener("submit", submitQuote);
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });
   $("#qSvc").addEventListener("change", finField);
+  $("#qSizeF").addEventListener("change", (e) => { S.size = +e.target.value; if (hooks.relabel) hooks.relabel(); });
   document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; const i = $("#intro"); if (i && !i.hidden) endIntro(true); else { closeSheets(); menu(false); } });
   // The floating capsule shows once the hero is gone, and steps aside for the closing one.
   const bar = $("#stickybar"), hero = $("#hero"), end = $(".final");

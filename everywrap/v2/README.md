@@ -13,6 +13,7 @@ The pages are generated. Edit the data or the templates, then run `python3 tools
 | `index.html` | Hero with the seam, the light-tunnel scene where scrolling changes the finish, four live service cards, the work reel and grid, a commercial board that changes job by itself, three compact steps, FAQ |
 | `vinyl-wrap/`, `paint-protection-film/`, `window-tint/`, `body-kits/` | The hero locked to that service, plain-language detail, real jobs where the archive has them, FAQ |
 | `commercial/` | Light-box hero that cycles real job photos, the "YOUR FLEET" scene, the "YOUR BRAND IN MOTION." tunnel, a live job board, fleet FAQ |
+| `pricing/` | Every price table in one place, what moves the price, pricing FAQ |
 | `work/` | The reel and all 75 real jobs in a square grid, each opening to the owner's caption, year, place and film |
 
 Shared pieces on every page:
@@ -29,12 +30,20 @@ Each service has one themed picture at `assets/svc/<wrap|ppf|tint|kits>.webp` (g
 Every page has a title, description, canonical link, share tags and structured data (business, breadcrumbs, service, FAQ, gallery), one H1, alt text on every image, plus `sitemap.xml` and `robots.txt`. Preview builds are marked noindex.
 
 ## Data
-- `data/site.json`: name, email, service area, Instagram, the proof numbers, fleet categories.
-- `data/services.json`: the copy and FAQ for each service page.
-- `data/work.json`: the 75 jobs (title, finish, caption, date, place, film brands, likes, tags).
+- `data/site.json`: name, email, service area (`area` plus `nearby` suburbs), Instagram, fleet categories.
+- `data/services.json`: everything on the four service pages: title, description, H1, copy, price notes, FAQ.
+- `data/copy.json`: the copy for the home, commercial, pricing and work pages, and the shared closing sections.
+- `data/pricing.json`: every starting price, by service and vehicle size. Each row carries a `source` note saying where the draft number came from.
+- `data/work.json`: the 75 jobs (title, finish, caption, date, place, film brands, tags).
+
+Copy can quote a price as `{$wrap.full}` (or `{$wrap.full.1}` for the second size column), so the words always match the table.
+
+### Prices are a draft
+`pricing.json` has `"confirmed": false`. The numbers come from what other shops publish, not from EveryWrap. The launch build (`--live`) stops with an error until the owner has checked every number and set `confirmed` to `true`. The page scripts read `assets/pricing.json`, a generated copy with the notes and sources stripped out.
 
 ## What is not real yet
-- **No prices.** None exist in the Drive, the Instagram captions or the live site. Pages say "written quote" until real numbers are supplied.
+- **Prices are draft numbers** from other shops' published rates. See above.
+- Turnaround times, film lifespans and the nearby-suburb list are typical figures, not statements the owner has confirmed.
 - No phone number, street address or opening hours: none could be verified.
 - The price form sends nothing until `leadEndpoint` is set in `js/config.js`.
 - An uploaded photo is not re-rendered yet.

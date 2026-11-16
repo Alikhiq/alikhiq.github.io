@@ -8,13 +8,49 @@ Reads data/site.json, data/services.json, data/work.json and assets/manifest.jso
 Writes index.html, one folder per service, commercial/, work/, sitemap.xml,
 robots.txt, site.webmanifest and favicon.svg. Edit the data, not the output.
 """
-import html, json, os, sys
+import html, json, os, re, sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 LIVE = "--live" in sys.argv
 J = lambda p: json.load(open(os.path.join(ROOT, p)))
-SITE, SERVICES, WORK = J("data/site.json"), J("data/services.json"), J("data/work.json")
+SITE, SERVICES, WORK, PRICING, COPY = J("data/site.json"), J("data/services.json"), J("data/work.json"), J("data/pricing.json"), J("data/copy.json")
 e = html.escape
+if LIVE and not PRICING.get("confirmed"):
+    sys.exit('data/pricing.json is still a draft. Check every number with the owner, set "confirmed": true, then run --live again.')
+
+def money(n):
+    return f"${n:,}"
+
+def price(ref):
+    """'wrap.full' or 'wrap.full.1' -> the starting price for that row (and size column)."""
+    parts = ref.split(".")
+    row = next(r for r in PRICING["groups"][parts[0]]["rows"] if r["id"] == parts[1])
+    v = row["from"]
+    return v[int(parts[2]) if len(parts) > 2 else 0] if isinstance(v, list) else v
+
+def low(group):
+    """Lowest starting price in a group."""
+    vals = [r["from"][0] if isinstance(r["from"], list) else r["from"] for r in PRICING["groups"][group]["rows"] if r.get("from")]
+    return min(vals) if vals else None
+
+def lead(group):
+    """The headline starting price of a group: the row its cards and summaries quote."""
+    g = PRICING["groups"][group]
+    v = next(r for r in g["rows"] if r["id"] == g["lead"])["from"]
+    return v[0] if isinstance(v, list) else v
+
+def fill(x):
+    """Copy can quote prices as {$wrap.full} so the words never drift from the table."""
+    if isinstance(x, str):
+        return re.sub(r"\{\$([\w.-]+)\}", lambda m: money(price(m.group(1))), x)
+    if isinstance(x, list):
+        return [fill(v) for v in x]
+    if isinstance(x, dict):
+        return {k: fill(v) for k, v in x.items()}
+    return x
+
+SERVICES, COPY = fill(SERVICES), fill(COPY)
+AREAS = SITE["area"] + SITE.get("nearby", [])
 FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap"
 CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
@@ -36,7 +72,7 @@ def ld(obj):
 def business():
     return {"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": SITE["domain"] + "/#business", "name": SITE["name"], "url": SITE["domain"] + "/",
             "email": SITE["email"], "slogan": SITE["tagline"], "image": SITE["domain"] + "/assets/share.jpg",
-            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in SITE["area"]], "sameAs": [u for _, u in SITE["instagram"]],
+            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
             "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}
 
 def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=()):
@@ -87,6 +123,7 @@ def top(root, mode):
     <li><a href="{link(root, '')}">Home</a></li>
     {''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["nav"])}</a></li>' for s in SERVICES)}
     <li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li>
+    <li><a href="{link(root, 'pricing')}">Pricing</a></li>
     <li><a href="{link(root, 'work')}">Our work</a></li>
   </ol>
   {book('Book now', 'Get your price in writing')}
@@ -119,7 +156,7 @@ def hero_personal(eyebrow=""):
     </div>
     <div class="copy glass">
       {title}
-      <p class="sub" id="sub">Any car, wrapped by hand in Columbus, Ohio.</p>
+      <p class="sub" id="sub">{e(COPY['home']['sub'])}</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
       {book('Book now', 'Satin black wrap', ids=True)}
       <button class="trylink" type="button" data-upload>{CAM} See it on your own car</button>
@@ -141,9 +178,9 @@ def hero_fleet():
       </div>
     </div>
     <div class="copy glass">
-      <p class="eyebrow">Fleet graphics · Columbus, Ohio</p>
-      <h1 class="display" id="h1"><span>Your van is</span> <span>a billboard.</span></h1>
-      <p class="sub" id="sub">Fleet graphics, printed and installed in Columbus, Ohio.</p>
+      <h1 class="eyebrow">{e(COPY['commercial']['h1'])}</h1>
+      <p class="display" id="h1"><span>Your van is</span> <span>a billboard.</span></p>
+      <p class="sub" id="sub">{e(COPY['commercial']['sub'])}</p>
       {book('Book now', 'Fleet graphics')}
     </div>
   </div>
@@ -156,7 +193,7 @@ def tunnel(root):
   <div class="tpin">
     <canvas aria-hidden="true"></canvas>
     <h2 class="thead">GO SATIN BLACK.</h2>
-    <p class="tsub">Five finishes on the same car. Keep scrolling.</p>
+    <p class="tsub">{e(COPY['home']['tunnel_sub'])}</p>
     <div class="tcar">{cars}</div>
     <div class="tread">
       <button class="tprev" type="button" aria-label="Previous finish">{CHEV_L}</button>
@@ -187,15 +224,70 @@ def services_band(root):
           <span class="svc-n">0{i + 1}</span>
           <h3>{e(s['name'])}</h3>
           <p>{e(s['card'])}</p>
-          <span class="svc-go">Explore {ARROW}</span>
+          <span class="svc-go">{('From ' + money(lead(s['price_group']))) if lead(s['price_group']) else 'Quoted per car'} {ARROW}</span>
         </div>
       </a>
     </li>""" for i, s in enumerate(SERVICES))
     return f"""<section class="band services" aria-labelledby="svch">
-  <div class="bandhead" data-reveal><h2 id="svch">Four things we do to a car.</h2></div>
+  <div class="bandhead" data-reveal><h2 id="svch">{e(COPY['home']['services_h2'])}</h2><p>{e(COPY['home']['services_p'])}</p></div>
   <ol class="svclist">{cards}</ol>
 </section>
 """
+
+def price_table(group):
+    """Rows of starting prices. Where the price depends on vehicle size, tabs switch the column."""
+    g, sizes = PRICING["groups"][group], PRICING["sizes"]
+    sized = any(isinstance(r.get("from"), list) for r in g["rows"])
+    tabs = ('<div class="tabs glass ptabs" role="group" aria-label="Vehicle size">' + "".join(f'<button type="button" data-size="{i}" aria-pressed="{"true" if i == 0 else "false"}"{" class=live" if i == 0 else ""}>{e(lab)}</button>' for i, lab in enumerate(sizes)) + "</div>") if sized else ""
+    def cell(r):
+        v = r.get("from")
+        if isinstance(v, list):
+            return "".join(f'<span data-s="{i}">from <b>{money(n)}</b></span>' for i, n in enumerate(v))
+        if v:
+            return f"<span>from <b>{money(v)}</b></span>"
+        return '<span class="q">Quoted per car</span>'
+    rows = "".join(f'<li><div><b>{e(r["name"])}</b>{("<span>" + e(r["note"]) + "</span>") if r.get("note") else ""}</div><p class="pp">{cell(r)}</p></li>' for r in g["rows"])
+    return f'<div class="ptable" data-size="0">{tabs}<ul class="prows">{rows}</ul></div>'
+
+def price_band(group, h2, intro, factors, theme="", book_sub="Get your exact price"):
+    facts = "".join(f"<li>{e(x)}</li>" for x in factors)
+    return f"""<section class="band prices" id="prices" aria-labelledby="priceh"{f' style="--th:{theme}"' if theme else ''}>
+  <div class="bandhead" data-reveal><h2 id="priceh">{e(h2)}</h2><p>{e(intro)}</p></div>
+  <div class="price-in">
+    {price_table(group)}
+    <aside class="pfact" data-reveal><h3>What moves the price</h3><ul>{facts}</ul><button class="btn pri" type="button" data-quote>Get my exact price</button></aside>
+  </div>
+  <p class="pfine">{e(COPY['price_fine'])}</p>
+</section>
+"""
+
+def prices_home(root):
+    c = COPY["home"]
+    cards = "".join(f'<a class="pcard" href="{link(root, slug)}" style="--th:{th}"><span>{e(name)}</span><b>{("from " + money(lead(g))) if lead(g) else "Quoted"}</b><small>{e(note)}</small></a>' for name, g, slug, th, note in [
+        ("Vinyl wrap", "wrap", "vinyl-wrap", SVC_THEME["wrap"], c["price_notes"][0]), ("Protection film", "ppf", "paint-protection-film", SVC_THEME["ppf"], c["price_notes"][1]),
+        ("Window tint", "tint", "window-tint", SVC_THEME["tint"], c["price_notes"][2]), ("Fleet graphics", "fleet", "commercial", "#f2c200", c["price_notes"][3])])
+    return f"""<section class="band prices" aria-labelledby="phomeh">
+  <div class="bandhead" data-reveal><h2 id="phomeh">{e(c['prices_h2'])}</h2><p>{e(c['prices_p'])}</p></div>
+  <div class="pgrid" data-reveal>{cards}</div>
+  <p class="wallmore"><a class="btn sec" href="{link(root, 'pricing')}">See every price {ARROW}</a></p>
+</section>
+"""
+
+def know(items):
+    return '<dl class="know">' + "".join(f"<div data-reveal><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in items) + "</dl>"
+
+def areas(root, current=""):
+    others = "".join(f'<li><a href="{link(root, x["slug"])}">{e(x["name"])}</a></li>' for x in SERVICES if x["slug"] != current)
+    return f"""<section class="band areas" aria-labelledby="areah">
+  <div class="bandhead" data-reveal><h2 id="areah">Where we work</h2><p>{e(COPY['areas_p'])}</p></div>
+  <ul class="arealist" data-reveal>{''.join(f'<li>{e(a)}</li>' for a in AREAS)}</ul>
+  <ul class="crosslinks" data-reveal>{others}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'pricing')}">All prices</a></li></ul>
+</section>
+"""
+
+def offer(group):
+    lo = low(group)
+    return {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": lo} if lo else None
 
 def reel():
     return f"""<div class="reel" id="reel" role="group" aria-roledescription="carousel" aria-label="Recent work">
@@ -241,7 +333,7 @@ def fleet_teaser(root):
     <div data-reveal>
       <p class="eyebrow">For business</p>
       <h2 id="teaserh">Your <span class="flip" data-flip>van</span> is a billboard.</h2>
-      <p>Vans, buses, food trucks and boats, printed and installed. One design carried across every vehicle.</p>
+      <p>{e(COPY['home']['teaser_p'])}</p>
       <a class="btn pri" href="{link(root, 'commercial')}">See fleet work {ARROW}</a>
     </div>
     {live_board(root)}
@@ -250,21 +342,21 @@ def fleet_teaser(root):
 """
 
 def how():
-    return """<section class="band how" aria-labelledby="howh">
-  <div class="bandhead" data-reveal><h2 id="howh">Price first. Then we talk.</h2></div>
+    c = COPY["how"]
+    return f"""<section class="band how" aria-labelledby="howh">
+  <div class="bandhead" data-reveal><h2 id="howh">{e(c['h2'])}</h2></div>
   <ol class="steps3" data-reveal>
-    <li><i>1</i><b>Send the car</b><span>A photo, or year, make and model</span></li>
-    <li><i>2</i><b>Get it in writing</b><span>Film, coverage and price</span></li>
-    <li><i>3</i><b>Book the install</b><span>Date set by call or text</span></li>
+    {''.join(f'<li><i>{n + 1}</i><b>{e(a)}</b><span>{e(b)}</span></li>' for n, (a, b) in enumerate(c['steps']))}
   </ol>
 </section>
 """
 
 def final(com=False):
+    c = COPY["final_com" if com else "final"]
     return f"""<section class="final" aria-labelledby="finalh">
-  <h2 id="finalh" data-reveal>{'Send the logo. We do the rest.' if com else 'See your car in it first.'}</h2>
-  <p data-reveal>{'Tell us the vehicles and how many. You get a design proof and a written quote.' if com else 'Send a photo or the year, make and model. You get a written quote, and nothing starts until you say so.'}</p>
-  <div class="final-cta" data-reveal>{book('Book now', 'Fleet graphics' if com else 'Get your price in writing')}<button class="trylink" type="button" data-upload>{CAM} {'Send a photo of the vehicle' if com else 'See it on your own car'}</button></div>
+  <h2 id="finalh" data-reveal>{e(c['h2'])}</h2>
+  <p data-reveal>{e(c['p'])}</p>
+  <div class="final-cta" data-reveal>{book('Book now', c['book'])}<button class="trylink" type="button" data-upload>{CAM} {e(c['photo'])}</button></div>
 </section>
 """
 
@@ -273,9 +365,9 @@ def footer(root, home=False):
     insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
     return f"""<footer class="foot">
   <div class="foot-grid">
-    <div><p class="tag">{e(SITE['tagline'])}</p><p>{e(SITE['name'])}. Serving {e(area)} and the rest of central {SITE['region']}.</p></div>
+    <div><p class="tag">{e(SITE['tagline'])}</p><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
     <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li></ul></nav>
-    <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
+    <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'pricing')}">Pricing</a></li><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
   </div>
 </footer>
@@ -321,6 +413,8 @@ def chrome(root, com=False):
     <form id="qForm" novalidate>
       <div class="qstep show" data-step="1">
         <div class="field"><label for="qCar" id="qCarL">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
+        <div id="qSizeF"><span class="legend" id="qSizeL">Vehicle size</span>
+          <div class="picks" role="group" aria-labelledby="qSizeL">{''.join(f'<label><input type="radio" name="qSize" value="{i}"{" checked" if i == 0 else ""}>{e(x)}</label>' for i, x in enumerate(PRICING["sizes"]))}</div></div>
         <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
         <p class="note" id="qNote" hidden></p>
         <p class="err" id="qErr1" role="alert"></p>
@@ -383,70 +477,66 @@ INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
 </div>
 """
 
-HOME_FAQ = [
-    ["How much does a wrap cost?", "It depends on the vehicle, the film and how much of it is covered, so we do not post a flat number. Send the car and you get a written quote."],
-    ["Where are you?", "We work in Columbus, Ohio and nearby, including Dublin and Hilliard. Start with the price form and we will arrange the rest."],
-    ["Can I see it on my own car first?", "Yes. Upload a photo and pick a finish, and we send your car back in that finish with the quote."],
-    ["Do you do business vehicles?", "Yes. Vans, buses, food trucks and boats are all in our archive. See the commercial page."],
-]
-FLEET_FAQ = [
-    ["Do you design the graphics?", "Yes. Send the logo and the vehicle list and the design proof comes back with the quote."],
-    ["Can you match one design across different vehicles?", "Yes. The design is laid out per vehicle so the brand reads the same on a van, a bus and a truck."],
-    ["How is fleet work priced?", "Per vehicle, by size and coverage, with the design quoted once. Everything is in writing before printing starts."],
-]
-
 def write(path, text):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full) or ROOT, exist_ok=True)
     open(full, "w").write(text)
 
+def service_ld(name, slug, desc, group):
+    d = {"@context": "https://schema.org", "@type": "Service", "name": name, "serviceType": name, "provider": {"@id": SITE["domain"] + "/#business"},
+         "areaServed": [f"{a}, {SITE['region']}" for a in AREAS], "url": canonical(slug), "description": desc}
+    if offer(group):
+        d["offers"] = offer(group)
+    return d
+
 def page_home():
-    r = ""
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal() + tunnel(r) + services_band(r) + work_band(r) + fleet_teaser(r) + how() + faq(HOME_FAQ) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
-    write("index.html", head(r, "", "EveryWrap | Vinyl wraps, PPF and window tint in Columbus, Ohio",
-          "Colour-change vinyl wraps, paint protection film, window tint, body kits and fleet graphics in Columbus, Ohio. See real jobs and get a written quote.", extra_ld=[faq_ld(HOME_FAQ)]) + body)
+    r, c = "", COPY["home"]
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(eyebrow=c["h1"]) + tunnel(r) + services_band(r) + work_band(r) + prices_home(r) + fleet_teaser(r) + how() + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
-    r = "../"
+    r, th = "../", SVC_THEME[s["ch"]]
     pts = "".join(f"<div data-reveal><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in s["points"])
     related = f"""<section class="band workband" aria-labelledby="relh">
-  <div class="bandhead" data-reveal><h2 id="relh">Our work.</h2></div>
+  <div class="bandhead" data-reveal><h2 id="relh">{e(s['work_h2'])}</h2></div>
   {wall(r, limit=9, tag=s['tag'], filters=False)}
 </section>
 """ if s["tag"] else ""
-    svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["name"], "serviceType": s["name"], "provider": {"@id": SITE["domain"] + "/#business"},
-              "areaServed": f"{SITE['city']}, {SITE['region']}", "url": canonical(s["slug"]), "description": s["desc"]}
     body = top(r, "personal") + "<main>\n" + hero_personal(eyebrow=s["h1"]) + f"""<section class="band about" aria-labelledby="abouth">
-  <div class="about-in" style="--th:{SVC_THEME[s['ch']]}">
-    <div class="about-vis" data-reveal>{svc_visual(r, s['ch'])}</div>
-    <h2 id="abouth" data-reveal>{e(s['name'])}, plainly.</h2>
+  <div class="about-in" style="--th:{th}">
+    <div class="about-vis" data-reveal>{svc_visual(r, s['ch'], s['img_alt'])}</div>
+    <h2 id="abouth" data-reveal>{e(s['about_h2'])}</h2>
     <p class="lead" data-reveal>{e(s['lead'])}</p>
     <dl class="points">{pts}</dl>
-    <aside class="pricebox" data-reveal><h3>What it costs</h3><p>Every vehicle is priced on its own, so there is no flat number here. You get a written quote first, and nothing starts until you agree to it.</p><button class="btn pri" type="button" data-quote="{s['ch']}">Book now</button></aside>
   </div>
 </section>
-""" + related + faq(s["faq"]) + final() + "</main>\n" + footer(r) + chrome(r)
-    write(f"{s['slug']}/index.html", head(r, s["slug"], s["title"], s["desc"], ch=s["ch"], lock=True, extra_ld=[svc_ld, faq_ld(s["faq"])]) + body)
+""" + price_band(s["price_group"], s["price_h2"], s["price_intro"], s["factors"], th, s["name"]) + f"""<section class="band" aria-labelledby="knowh">
+  <div class="bandhead" data-reveal><h2 id="knowh">Good to know</h2></div>
+  {know(s['know'])}
+</section>
+""" + related + faq(s["faq"], s["faq_h2"]) + areas(r, s["slug"]) + final() + "</main>\n" + footer(r) + chrome(r)
+    write(f"{s['slug']}/index.html", head(r, s["slug"], s["title"], s["desc"], ch=s["ch"], lock=True, extra_ld=[service_ld(s["name"], s["slug"], s["desc"], s["price_group"]), faq_ld(s["faq"])]) + body)
 
 def page_commercial():
-    r = "../"
+    r, c = "../", COPY["commercial"]
     by = {j["id"]: j for j in WORK}
     com = [j for j in WORK if "commercial" in j["tags"]]
-    cats = [(c, by[c["job"]]) for c in SITE["fleet"] if c["job"] in by]
+    cats = [(x, by[x["job"]]) for x in SITE["fleet"] if x["job"] in by]
     prints = "".join(f'<figure class="fw-print"><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"])}" width="{j["w"]}" height="{j["h"]}"></figure>' for _, j in (cats[1], cats[0], cats[2]))
-    tray = "".join(f'<button type="button" aria-pressed="{"true" if i == 0 else "false"}" data-src="{r}assets/{j["src"]}" data-alt="{e(j["title"])}"><img loading="lazy" src="{r}assets/{j["src"]}" alt="" width="{j["w"]}" height="{j["h"]}"><span>{e(c["label"])}</span></button>' for i, (c, j) in enumerate(cats))
+    tray = "".join(f'<button type="button" aria-pressed="{"true" if i == 0 else "false"}" data-src="{r}assets/{j["src"]}" data-alt="{e(j["title"])}"><img loading="lazy" src="{r}assets/{j["src"]}" alt="" width="{j["w"]}" height="{j["h"]}"><span>{e(x["label"])}</span></button>' for i, (x, j) in enumerate(cats))
     boards = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"])}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}</figcaption></figure>' for j in com)
+    steps = "".join(f"<li>{e(x)}</li>" for x in c["steps"])
     body = top(r, "commercial") + "<main>\n" + hero_fleet() + f"""<section class="fleetword" aria-labelledby="fwh">
   <h2 class="fw-word" id="fwh"><span>YOUR</span><span>FLEET</span></h2>
   <div class="fw-prints">{prints}</div>
   <div class="fw-tray" role="group" aria-label="Vehicle type">{tray}</div>
-  <p class="fw-note">Tap a type to bring it forward.</p>
+  <p class="fw-note">{e(c['fleet_note'])}</p>
 </section>
 <section class="motion" aria-labelledby="moh">
   <div class="mo-pin">
     <canvas aria-hidden="true"></canvas>
     <h2 class="mo-head" id="moh"><span>YOUR BRAND</span><span>IN MOTION.</span></h2>
-    <p class="mo-sub">Every vehicle on the road is seen all day. These are jobs we have printed and installed.</p>
+    <p class="mo-sub">{e(c['motion_sub'])}</p>
     <div class="mo-wall"><div class="mo-track">{boards}</div></div>
   </div>
 </section>
@@ -454,30 +544,54 @@ def page_commercial():
   <div class="lineup-in">
     {live_board(r, 'wide')}
     <div data-reveal>
-      <h2 id="lineh">Make it work.</h2>
-      <p>One design, laid out for each vehicle so the brand reads the same on all of them.</p>
-      <ol class="fleetsteps"><li>Send the logo and the vehicle list.</li><li>Approve the design proof and the written quote.</li><li>We print, install and hand the vehicles back.</li></ol>
+      <h2 id="lineh">{e(c['line_h2'])}</h2>
+      <p>{e(c['line_p'])}</p>
+      <ol class="fleetsteps">{steps}</ol>
     </div>
   </div>
 </section>
-<section class="band workband" aria-labelledby="cwh">
-  <div class="bandhead" data-reveal><h2 id="cwh">Work that works.</h2></div>
+""" + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
+  <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
-""" + faq(FLEET_FAQ, "Fleet questions") + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
-    svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": "Fleet graphics and commercial vehicle wraps", "provider": {"@id": SITE["domain"] + "/#business"}, "areaServed": f"{SITE['city']}, {SITE['region']}", "url": canonical("commercial")}
-    write("commercial/index.html", head(r, "commercial", "Fleet graphics and commercial wraps in Columbus, Ohio | EveryWrap",
-          "Fleet graphics for vans, buses, food trucks and boats, designed, printed and installed in Columbus, Ohio. See real jobs and get a written quote.", mode="commercial", extra_ld=[svc_ld, faq_ld(FLEET_FAQ)]) + body)
+""" + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
+    write("commercial/index.html", head(r, "commercial", c["title"], c["desc"], mode="commercial", extra_ld=[service_ld("Fleet graphics and commercial vehicle wraps", "commercial", c["desc"], "fleet"), faq_ld(c["faq"])]) + body)
+
+def page_pricing():
+    r, c = "../", COPY["pricing"]
+    groups = [(x["name"], x["price_group"], x["slug"], x["price_intro"], SVC_THEME[x["ch"]]) for x in SERVICES] + [("Fleet and commercial", "fleet", "commercial", COPY["commercial"]["price_intro"], "#f2c200")]
+    blocks = "".join(f"""<section class="band prices" id="{slug}" aria-labelledby="ph-{g}" style="--th:{th}">
+  <div class="bandhead" data-reveal><h2 id="ph-{g}">{e(name)}</h2><p>{e(intro)} <a href="{link(r, slug)}">More on {e(name.lower())}</a></p></div>
+  {price_table(g)}
+</section>
+""" for name, g, slug, intro, th in groups)
+    facts = "".join(f"<li>{e(x)}</li>" for x in c["factors"])
+    catalog = {"@context": "https://schema.org", "@type": "OfferCatalog", "name": "EveryWrap prices", "url": canonical("pricing"),
+               "itemListElement": [{"@type": "Offer", "name": row["name"], "priceCurrency": "USD", "price": (row["from"][0] if isinstance(row["from"], list) else row["from"]), "category": PRICING["groups"][g]["title"]}
+                                   for g in PRICING["groups"] for row in PRICING["groups"][g]["rows"] if row.get("from")]}
+    body = top(r, "personal") + f"""<main>
+<section class="pagehead">
+  <p class="eyebrow">Pricing</p>
+  <h1 class="display">{e(c['h1'])}</h1>
+  <p class="sub">{e(c['sub'])}</p>
+</section>
+""" + blocks + f"""<section class="band" aria-labelledby="pfh">
+  <div class="bandhead" data-reveal><h2 id="pfh">What moves the price</h2></div>
+  <ul class="pfactlist" data-reveal>{facts}</ul>
+  <p class="pfine">{e(COPY['price_fine'])}</p>
+</section>
+""" + faq(c["faq"], "Pricing questions") + areas(r) + final() + "</main>\n" + footer(r) + chrome(r)
+    write("pricing/index.html", head(r, "pricing", c["title"], c["desc"], extra_ld=[catalog, faq_ld(c["faq"])]) + body)
 
 def page_work():
-    r = "../"
+    r, c = "../", COPY["work"]
     gal = {"@context": "https://schema.org", "@type": "ImageGallery", "name": "EveryWrap work", "url": canonical("work"),
            "image": [{"@type": "ImageObject", "contentUrl": f"{SITE['domain']}/assets/{j['src']}", "name": j["title"], "caption": j.get("finish", "")} for j in WORK[:40]]}
     body = top(r, "personal") + f"""<main>
 <section class="pagehead">
-  <p class="eyebrow">Our work</p>
-  <h1 class="display">Proof in the finish.</h1>
-  <p class="sub">Wraps, colour changes and fleet graphics we have installed. Tap any one for the film and the story.</p>
+  <h1 class="eyebrow">{e(c['h1'])}</h1>
+  <p class="display">{e(c['display'])}</p>
+  <p class="sub">{e(c['sub'])}</p>
 </section>
 <section class="band workband">
   <div class="work-split">
@@ -485,12 +599,14 @@ def page_work():
   {wall(r, more=False)}
   </div>
 </section>
-""" + final() + "</main>\n" + footer(r) + chrome(r)
-    write("work/index.html", head(r, "work", "Our work: real wraps and fleet graphics | EveryWrap",
-          f"{len(WORK)} real EveryWrap jobs: satin black wraps, colour changes, colour-shift film and fleet graphics, with the film and location for each.", extra_ld=[gal]) + body)
+""" + areas(r) + final() + "</main>\n" + footer(r) + chrome(r)
+    write("work/index.html", head(r, "work", c["title"], c["desc"], extra_ld=[gal]) + body)
 
 def extras():
-    paths = [""] + [s["slug"] for s in SERVICES] + ["commercial", "work"]
+    paths = [""] + [x["slug"] for x in SERVICES] + ["commercial", "pricing", "work"]
+    # The page scripts read this copy: prices only, without the owner's notes and sources.
+    pub = {"sizes": PRICING["sizes"], "groups": {k: {"rows": [{"id": r["id"], "from": r.get("from")} for r in g["rows"]]} for k, g in PRICING["groups"].items()}}
+    write("assets/pricing.json", json.dumps(pub, separators=(",", ":")))
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
@@ -501,6 +617,7 @@ if __name__ == "__main__":
     for s in SERVICES:
         page_service(s)
     page_commercial()
+    page_pricing()
     page_work()
     extras()
-    print(("LIVE" if LIVE else "PREVIEW"), "build:", 3 + len(SERVICES), "pages,", len(WORK), "jobs")
+    print(("LIVE" if LIVE else "PREVIEW"), "build:", 4 + len(SERVICES), "pages,", len(WORK), "jobs,", "prices", "confirmed" if PRICING.get("confirmed") else "DRAFT")
