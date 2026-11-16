@@ -171,20 +171,18 @@ img{display:block;max-width:100%;height:auto}
 .svc a{position:relative;display:block;height:100%;color:inherit;text-decoration:none;background:radial-gradient(120% 80% at 100% 100%,color-mix(in srgb,var(--th) 20%,transparent),transparent 62%),var(--card);border:1px solid color-mix(in srgb,var(--th) 36%,var(--line));border-radius:24px;overflow:hidden;transition:box-shadow .5s}
 .svc a:hover{box-shadow:0 0 46px -14px var(--th)}
 .svc-vis{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000}
-.svc-vis img,.svc-vis video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 46%;transform:scale(1.16);transform-origin:50% 40%}
-.svc-vis::after{content:"";position:absolute;inset:auto 0 -1px;height:36%;background:linear-gradient(transparent,var(--card));pointer-events:none}
-.svc-fx{position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--th);box-shadow:0 0 18px 2px var(--th);opacity:0}
-.fx-wipe .svc-b{clip-path:inset(0 100% 0 0)}
-.live-on.fx-wipe .svc-b{animation:fxwipe 5.4s cubic-bezier(.6,0,.3,1) infinite}
-.live-on.fx-wipe .svc-fx{animation:fxline 5.4s cubic-bezier(.6,0,.3,1) infinite}
-@keyframes fxwipe{0%,8%{clip-path:inset(0 100% 0 0)}42%,62%{clip-path:inset(0 0 0 0)}96%,100%{clip-path:inset(0 100% 0 0)}}
-@keyframes fxline{0%,8%{left:0;opacity:0}10%{left:0;opacity:1}42%{left:100%;opacity:1}44%,62%{left:100%;opacity:0}64%{left:100%;opacity:1}96%{left:0;opacity:1}100%{left:0;opacity:0}}
-.fx-fade .svc-b{opacity:0}
-.live-on.fx-fade .svc-b{animation:fxfade 4.6s ease-in-out infinite}
-@keyframes fxfade{0%,12%{opacity:0}45%,64%{opacity:1}95%,100%{opacity:0}}
-.fx-sheen .svc-fx{inset:0;width:auto;opacity:1;box-shadow:none;background:linear-gradient(105deg,transparent 38%,rgba(200,240,255,.8) 50%,transparent 62%) 130% 0/300% 100% no-repeat;mix-blend-mode:screen;-webkit-mask:var(--mask) 50% 46%/cover no-repeat;mask:var(--mask) 50% 46%/cover no-repeat;transform:scale(1.16);transform-origin:50% 40%}
-.live-on.fx-sheen .svc-fx{animation:fxsheen 3.4s ease-in-out infinite}
+.svc-vis img,.svc-vis video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.svc-vis video{opacity:0;transition:opacity .6s ease}
+.svc-vis video.playing{opacity:1}
+.svc-vis img{transform:scale(1.02)}
+.live-on.svc-vis img{animation:svcdrift 9s ease-in-out infinite alternate}
+@keyframes svcdrift{to{transform:scale(1.1) translate(-1.2%,-.8%)}}
+.svc-vis::after{content:"";position:absolute;inset:auto 0 -1px;height:34%;background:linear-gradient(transparent,var(--card));pointer-events:none}
+.svc-fx{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,color-mix(in srgb,var(--th) 55%,#fff) 50%,transparent 60%) 130% 0/300% 100% no-repeat;mix-blend-mode:screen;opacity:.5}
+.live-on .svc-fx{animation:fxsheen 4.2s ease-in-out infinite}
 @keyframes fxsheen{0%{background-position:130% 0}70%,100%{background-position:-30% 0}}
+.svc-vis:has(video.playing) .svc-fx{display:none}
+.svc-vis:has(video.playing) img{animation:none}
 .svc-txt{position:relative;padding:6px 22px 24px}
 .svc-n{font:600 12px/1 var(--ui);letter-spacing:.14em;color:var(--th)}
 .svc h3{margin:8px 0 6px;font:400 clamp(28px,2.6vw,40px)/1.05 var(--display);letter-spacing:-.02em}
@@ -306,6 +304,9 @@ img{display:block;max-width:100%;height:auto}
 /* ---------- service pages ---------- */
 .about-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr);gap:28px 56px;align-items:start}
 .about h2{grid-column:1 / -1}
+.about-vis{grid-column:1 / -1;border-radius:24px;overflow:hidden;border:1px solid color-mix(in srgb,var(--th) 36%,var(--line))}
+.about-vis .svc-vis{aspect-ratio:21/9}
+.about-vis .svc-vis::after{display:none}
 .lead{margin:0;font:400 clamp(20px,1.9vw,27px)/1.4 var(--display);max-width:38ch}
 .points{grid-column:1;margin:0;display:grid;gap:0;border-top:1px solid var(--line)}
 .points div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
@@ -458,6 +459,7 @@ img{display:block;max-width:100%;height:auto}
   .lb-close{top:-4px;right:0;background:rgba(0,0,0,.6)}
   .teaser-in,.about-in,.lineup-in{grid-template-columns:1fr;gap:24px}
   .pricebox{grid-column:1;grid-row:auto}
+  .about-vis .svc-vis{aspect-ratio:16/10}
   .points div{grid-template-columns:1fr;gap:4px}
   .steps3 b{font-size:13.5px}
   .steps3 span{font-size:11.5px}

@@ -92,7 +92,7 @@ function initLive() {
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     const v = $("video", e.target); e.target.classList.toggle("live-on", e.isIntersecting);
     if (!v) return;
-    if (e.isIntersecting) { if (!v.getAttribute("src")) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
+    if (e.isIntersecting) { if (!v.getAttribute("src")) { v.addEventListener("playing", () => v.classList.add("playing"), { once: true }); v.src = v.dataset.src; } v.play().catch(() => {}); } else v.pause();
   }), { threshold: 0.3 });
   els.forEach((e) => io.observe(e));
 }

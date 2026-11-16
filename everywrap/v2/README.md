@@ -23,8 +23,8 @@ Shared pieces on every page:
 
 Moving parts only run while they are on screen, and stop for visitors who ask for reduced motion.
 
-### Loops
-Each service card plays a coded effect on stills. To use a real clip instead, save it as `assets/loops/<wrap|ppf|tint|kits>.mp4` and rebuild: the card then lazy-loads and loops the video.
+### Service pictures and loops
+Each service has one themed picture at `assets/svc/<wrap|ppf|tint|kits>.webp` (generated at 4K, stored 2400 px wide) and a three-second silent loop at `assets/loops/<same>.mp4` (1920 px, about 200 KB). The loop starts and ends on the picture, so it fades in over it without a jump, and it is only fetched when its card scrolls into view. Delete a loop and rebuild to fall back to the picture with a light sweep.
 
 Every page has a title, description, canonical link, share tags and structured data (business, breadcrumbs, service, FAQ, gallery), one H1, alt text on every image, plus `sitemap.xml` and `robots.txt`. Preview builds are marked noindex.
 

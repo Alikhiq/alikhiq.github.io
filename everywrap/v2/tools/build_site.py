@@ -169,26 +169,18 @@ def tunnel(root):
 </section>
 """
 
-# Each service card has its own colour and its own moving picture. If a short loop
-# exists at assets/loops/<ch>.mp4 it plays instead of the coded effect.
-SVC_LIVE = {
-    "wrap": ("#ef5b2a", "wipe", "sets/sedan/factory-white/000.webp", "sets/sedan/satin-black/000.webp"),
-    "ppf": ("#6fd3ff", "sheen", "sets/sedan/gloss-black/000.webp", ""),
-    "tint": ("#a78bff", "fade", "sets/sedan/clear-glass/000.webp", "sets/sedan/satin-black/000.webp"),
-    "kits": ("#ff3347", "wipe", "sets/sedan/satin-black/000.webp", "sets/sedan/kit/000.webp"),
-}
+# Each service has its own colour and its own picture: assets/svc/<ch>.webp.
+# If a short clip exists at assets/loops/<ch>.mp4 it fades in over the picture and loops.
+SVC_THEME = {"wrap": "#ef5b2a", "ppf": "#6fd3ff", "tint": "#a78bff", "kits": "#ff3347"}
 
-def svc_visual(root, ch):
-    th, fx, a, b = SVC_LIVE[ch]
+def svc_visual(root, ch, alt=""):
+    still = f'<img loading="lazy" src="{root}assets/svc/{ch}.webp" alt="{e(alt)}" width="2400" height="1340">'
     loop = f"assets/loops/{ch}.mp4"
-    if os.path.exists(os.path.join(ROOT, loop)):
-        return f'<div class="svc-vis" data-live><video muted loop playsinline preload="none" poster="{root}assets/{a}" data-src="{root}{loop}"></video></div>'
-    second = f'<img class="svc-b" loading="lazy" src="{root}assets/{b}" alt="" width="1637" height="914">' if b else ""
-    mask = f' style="--mask:url({root}assets/sets/sedan/_masks/ppf-full.png)"' if fx == "sheen" else ""
-    return f'<div class="svc-vis fx-{fx}" data-live{mask}><img loading="lazy" src="{root}assets/{a}" alt="" width="1637" height="914">{second}<i class="svc-fx" aria-hidden="true"></i></div>'
+    clip = f'<video muted loop playsinline preload="none" aria-hidden="true" data-src="{root}{loop}"></video>' if os.path.exists(os.path.join(ROOT, loop)) else ""
+    return f'<div class="svc-vis" data-live>{still}{clip}<i class="svc-fx" aria-hidden="true"></i></div>'
 
 def services_band(root):
-    cards = "".join(f"""<li class="svc" style="--i:{i};--th:{SVC_LIVE[s['ch']][0]}">
+    cards = "".join(f"""<li class="svc" style="--i:{i};--th:{SVC_THEME[s['ch']]}">
       <a href="{link(root, s['slug'])}">
         {svc_visual(root, s['ch'])}
         <div class="svc-txt">
@@ -425,7 +417,8 @@ def page_service(s):
     svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["name"], "serviceType": s["name"], "provider": {"@id": SITE["domain"] + "/#business"},
               "areaServed": f"{SITE['city']}, {SITE['region']}", "url": canonical(s["slug"]), "description": s["desc"]}
     body = top(r, "personal") + "<main>\n" + hero_personal(eyebrow=s["h1"]) + f"""<section class="band about" aria-labelledby="abouth">
-  <div class="about-in">
+  <div class="about-in" style="--th:{SVC_THEME[s['ch']]}">
+    <div class="about-vis" data-reveal>{svc_visual(r, s['ch'])}</div>
     <h2 id="abouth" data-reveal>{e(s['name'])}, plainly.</h2>
     <p class="lead" data-reveal>{e(s['lead'])}</p>
     <dl class="points">{pts}</dl>
