@@ -37,11 +37,7 @@ const PPF_NAME = { partial: "Partial front", front: "Full front", full: "Full bo
 const bookName = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " PPF" : S.ch === "tint" ? S.tint + "% tint" : S.ch === "kits" ? "Body kit, quoted per car" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");
 const bookPrice = () => (S.ch === "ppf" ? fromPrice("ppf", S.ppf) : S.ch === "tint" ? fromPrice("tint", "carbon") : S.ch === "kits" ? null : fromPrice("wrap", S.finish === "color-shift" ? "shift" : "full"));
 const bookLabel = () => { const p = bookPrice(); return bookName() + (p ? " · from " + money(p) : ""); };
-function renderCopy() {
-  const c = CHAPTERS.find((x) => x.id === S.ch), head = c.head || [fin()[2], "Done right."];
-  const h = $("#h1"), html = head.map((t) => `<span>${esc(t)}</span>`).join(" ");
-  if (h.innerHTML !== html) { h.innerHTML = html; h.classList.remove("swap"); void h.offsetWidth; h.classList.add("swap"); }
-}
+function renderCopy() {} // the headline is fixed now: it says what we sell
 function renderOpts() {
   const o = $("#opts");
   if (S.ch === "wrap") o.innerHTML = FIN.map((f) => `<button type="button" class="dot" data-f="${f[0]}" aria-label="${f[1]}" aria-pressed="${f[0] === S.finish}" style="background:${f[3]}"></button>`).join("") + `<span class="optname">${fin()[1]}</span>`;

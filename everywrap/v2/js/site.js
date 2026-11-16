@@ -8,30 +8,41 @@ function openSheet(id) { lastFocus = document.activeElement; const s = $(id); s.
 function closeSheets() { $$(".scrim").forEach((s) => (s.hidden = true)); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 function step(n) {
   qStep = n; $$("#qForm .qstep").forEach((s) => s.classList.toggle("show", +s.dataset.step === n));
-  $("#qProg").textContent = n < 4 ? `Step ${n} of 3` : "Request ready"; $("#qTitle").textContent = n < 4 ? "Book now" : "Here's what we got";
+  $("#qProg").textContent = n < 4 ? `Step ${n} of 3` : "Request ready"; $$(".qbar i").forEach((el, k) => el.classList.toggle("on", k < n)); $("#qTitle").textContent = n < 4 ? "Book now" : "Here's what we got";
   const f = $(`#qForm .qstep[data-step="${n}"] input, #qForm .qstep[data-step="${n}"] button`); if (f) f.focus();
 }
-const SVC = [["wrap", "Vinyl wrap"], ["ppf", "Protection film"], ["tint", "Window tint"], ["kits", "Body kit"], ["fleet", "Fleet graphics"], ["design", "Design"], ["print", "Printing"]];
+// What the booking form offers, in the same three groups as the rest of the site.
+const GROUPS = [
+  ["For your car", [["wrap", "Vinyl wrap", "wrap", "full"], ["ppf", "Protection film", "ppf", "partial"], ["tint", "Window tint", "tint", "carbon"], ["kits", "Body kit"]]],
+  ["For your business", [["fleet", "Fleet wrap or lettering", "fleet", "lettering"]]],
+  ["Design and print", [["design", "Design", "design", "setup"], ["print", "Printing", "print", "wall"]]],
+];
 function menu(open) { const m = $("#menu"); if (!m) return; m.hidden = !open; $("[data-menu]").setAttribute("aria-expanded", open); R.classList.toggle("menu-open", open); }
+const ids = () => $$("#qSvc input:checked").map((i) => i.id.slice(3));
+const picked = () => $$("#qSvc input:checked").map((i) => i.value);
+function finField() { const w = $("#qS_wrap"); $("#qFinF").hidden = !(w && w.checked); }
+// The second step asks for what fits the services picked: a car, a list of vehicles, or a job description.
+function details() {
+  const sel = ids(), studio = sel.length > 0 && sel.every((x) => x === "design" || x === "print"), com = studio || sel.includes("fleet");
+  $("#qCarL").textContent = studio ? "What do you need designed or printed?" : com ? "What vehicles, and how many?" : "What are you driving?";
+  $("#qCar").placeholder = studio ? "Full wrap design for a Ford Transit" : com ? "3 Sprinter vans and a box truck" : "2021 Dodge Charger";
+  $("#qSizeF").hidden = com; finField();
+}
 function openQuote(pre = {}) {
   menu(false);
   const want = pre.svc || (S.commercial ? "fleet" : S.ch); note = pre.note || "";
-  $("#qSvc").innerHTML = SVC.map((s) => `<label><input type="checkbox" id="qS_${s[0]}" value="${s[1]}"${s[0] === want ? " checked" : ""}>${s[1]}</label>`).join("");
-  const com = want === "fleet" || want === "design" || want === "print", studio = want === "design" || want === "print";
-  $("#qCarL").textContent = studio ? "What do you need designed or printed?" : com ? "What vehicles, and how many?" : "What are you driving?"; $("#qCar").placeholder = studio ? "Full wrap design for a Ford Transit" : com ? "3 Sprinter vans and a box truck" : "2021 Dodge Charger";
-  if (pre.note && studio && !pre.car) { $("#qCar").value = pre.note; note = ""; }
+  $("#qSvc").innerHTML = GROUPS.map(([g, items]) => `<span class="legend">${g}</span><div class="picks" role="group" aria-label="${g}">` + items.map(([id, label, grp, row]) => { const p = grp ? fromPrice(grp, row, 0) : null; return `<label><input type="checkbox" id="qS_${id}" value="${label}"${id === want ? " checked" : ""}>${label}${p ? `<small>from ${money(p)}</small>` : ""}</label>`; }).join("") + "</div>").join("");
+  if (pre.note && (want === "design" || want === "print") && !pre.car) { $("#qCar").value = pre.note; note = ""; }
   if (pre.car) $("#qCar").value = pre.car;
   $("#qFin").value = fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase();
-  $("#qSizeF").hidden = com; const sz = $(`#qSizeF input[value="${S.size}"]`); if (sz) sz.checked = true;
+  const sz = $(`#qSizeF input[value="${S.size}"]`); if (sz) sz.checked = true;
   $("#qPhoto").hidden = !photo; $("#qNote").hidden = !note; $("#qNote").textContent = note;
   $$("#qForm .err").forEach((e) => (e.textContent = ""));
-  finField(); closeSheets(); openSheet("#qScrim"); step(1);
+  details(); closeSheets(); openSheet("#qScrim"); step(1);
 }
-function finField() { const w = $("#qS_wrap"); $("#qFinF").hidden = !(w && w.checked); }
-const picked = () => $$("#qSvc input:checked").map((i) => i.value);
 function next() {
-  if (qStep === 1) { if (!$("#qCar").value.trim() && !photo) { $("#qErr1").textContent = "Add the year, make and model so we can price the right vehicle."; $("#qCar").focus(); return; } $("#qErr1").textContent = ""; step(2); }
-  else if (qStep === 2) { if (!picked().length) { $("#qErr2").textContent = "Pick at least one service."; return; } $("#qErr2").textContent = ""; step(3); }
+  if (qStep === 1) { if (!picked().length) { $("#qErr1").textContent = "Pick at least one thing you need."; return; } $("#qErr1").textContent = ""; details(); step(2); }
+  else if (qStep === 2) { if (!$("#qCar").value.trim() && !photo) { $("#qErr2").textContent = $("#qSizeF").hidden ? "Tell us a little about the job so we can price it." : "Add the year, make and model so we can price the right vehicle."; $("#qCar").focus(); return; } $("#qErr2").textContent = ""; step(3); }
 }
 async function submitQuote(e) {
   e.preventDefault();
@@ -92,7 +103,9 @@ export function initSite() {
   $("#uGo").addEventListener("click", () => openQuote());
   $("#qForm").addEventListener("submit", submitQuote);
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });
-  $("#qSvc").addEventListener("change", finField);
+  $("#qSvc").addEventListener("change", details);
+  // The catalogue tabs on phones.
+  document.addEventListener("click", (e) => { const b = e.target.closest(".ctabs button"); if (!b) return; const box = b.closest(".catalog"); $(".ccols", box).dataset.cat = b.dataset.cat; $$(".ctabs button", box).forEach((x) => { x.setAttribute("aria-pressed", x === b); x.classList.toggle("live", x === b); }); });
   $("#qSizeF").addEventListener("change", (e) => { S.size = +e.target.value; if (hooks.relabel) hooks.relabel(); });
   document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; const i = $("#intro"); if (i && !i.hidden) endIntro(true); else { closeSheets(); menu(false); } });
   // The floating capsule shows once the hero is gone, and steps aside for the closing one.

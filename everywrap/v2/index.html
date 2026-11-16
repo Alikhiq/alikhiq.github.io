@@ -32,27 +32,17 @@
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
 <header class="top">
-  <nav class="mode glass" aria-label="Who is this for">
-    <a href="index.html" aria-current="true" class="live">Personal</a>
-    <a href="commercial/index.html" aria-current="false">Commercial</a>
-  </nav>
+  <nav class="mode glass" aria-label="What we do"><a href="index.html" aria-current="true" class="live">Cars</a><a href="commercial/index.html" aria-current="false">Business</a><a href="design-print/index.html" aria-current="false">Design</a></nav>
   <button class="menubtn glass" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
 </header>
 <nav class="menu" id="menu" hidden aria-label="Site">
-  <ol>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="paint-protection-film/index.html">Protection film</a></li><li><a href="window-tint/index.html">Window tint</a></li><li><a href="body-kits/index.html">Body kits</a></li>
-    <li><a href="commercial/index.html">Fleet and commercial</a></li>
-    <li><a href="design-print/index.html">Design and print</a></li>
-    <li><a href="pricing/index.html">Pricing</a></li>
-    <li><a href="work/index.html">Our work</a></li>
-  </ol>
+  <div class="mgroups"><div class="mgroup"><a class="mhead" href="index.html">For your car</a><ul><li><a href="vinyl-wrap/index.html">Full colour-change wrap</a></li><li><a href="vinyl-wrap/index.html#prices">Roof, hood, stripes, chrome delete</a></li><li><a href="paint-protection-film/index.html">Paint protection film</a></li><li><a href="window-tint/index.html">Window tint</a></li><li><a href="body-kits/index.html">Body kits</a></li></ul></div><div class="mgroup"><a class="mhead" href="commercial/index.html">For your business</a><ul><li><a href="commercial/index.html#prices">Door logos and lettering</a></li><li><a href="commercial/index.html#prices">Partial wraps</a></li><li><a href="commercial/index.html#prices">Full van and truck wraps</a></li><li><a href="commercial/index.html#prices">Food trucks, trailers and boats</a></li><li><a href="commercial/index.html#mockup">Fleet design</a></li></ul></div><div class="mgroup"><a class="mhead" href="design-print/index.html">Design and print</a><ul><li><a href="design-print/index.html#design">Custom wrap design</a></li><li><a href="design-print/index.html">Branding and logo design</a></li><li><a href="design-print/index.html#print">Printed wrap film</a></li><li><a href="design-print/index.html#print">Wall graphics</a></li><li><a href="design-print/index.html#print">Window, chrome and reflective prints</a></li><li><a href="design-print/index.html#mockup">Mockup studio</a></li></ul></div></div>
+  <p class="mlinks"><a href="work/index.html">Our work</a><a href="pricing/index.html">All prices</a><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></p>
   <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>
         <span class="book-t"><b>Book now</b><small data-booksub>Get your price in writing</small></span>
         <span class="book-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
-  <p><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></p>
 </nav>
 <main>
 <section class="hero" id="hero" aria-label="EveryWrap">
@@ -67,18 +57,41 @@
       <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
-      <h1 class="eyebrow">Car wraps, paint protection film and window tint in Columbus, Ohio</h1>
-      <p class="display" id="h1"><span>Satin black.</span> <span>Done right.</span></p>
-      <p class="sub" id="sub">Pick a finish, then drag the line across the car.</p>
+      <p class="eyebrow">Vehicle wrap shop</p>
+      <h1 class="display long">Car wraps, protection film and window tint in Columbus.</h1>
+      <p class="sub" id="sub">Pick a service above, then a finish. Drag the line across the car to compare.</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
       <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>
         <span class="book-t"><b>Book now</b><small id="bookSub" data-booksub>Satin black wrap</small></span>
         <span class="book-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
-      <button class="trylink" type="button" data-upload><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg> See it on your own car</button>
     </div>
   </div>
+</section>
+<section class="band catalog" id="services" aria-labelledby="cath">
+  <div class="bandhead" data-reveal><h2 id="cath">What do you need?</h2><p>Everything we do, with starting prices. Pick one.</p></div>
+  <div class="tabs glass ctabs" role="group" aria-label="Category"><button type="button" data-cat="car" aria-pressed="true" class="live">Your car</button><button type="button" data-cat="biz" aria-pressed="false">Your business</button><button type="button" data-cat="studio" aria-pressed="false">Design and print</button></div>
+  <div class="ccols" data-cat="car"><div class="ccol" data-cat="car" style="--th:#ef5b2a">
+      <h3><a href="vinyl-wrap/index.html">For your car</a></h3>
+      <p>Change the colour, protect the paint, tint the glass.</p>
+      <ul><li><a class="crow" href="vinyl-wrap/index.html"><span><b>Full colour-change wrap</b><small>A new colour without a respray</small></span><em>from <b>$2,800</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="vinyl-wrap/index.html#prices"><span><b>Roof, hood, stripes, chrome delete</b><small>Change one part, not the whole car</small></span><em>from <b>$350</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="paint-protection-film/index.html"><span><b>Paint protection film</b><small>Clear film that takes the stone chips</small></span><em>from <b>$1,100</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="window-tint/index.html"><span><b>Window tint</b><small>Carbon or ceramic, fitted to Ohio law</small></span><em>from <b>$280</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="body-kits/index.html"><span><b>Body kits</b><small>Found, fitted and wrapped to match</small></span><em><b>Quoted</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li></ul>
+    </div><div class="ccol" data-cat="biz" style="--th:#f2c200">
+      <h3><a href="commercial/index.html">For your business</a></h3>
+      <p>Turn the vehicles you already run into advertising.</p>
+      <ul><li><a class="crow" href="commercial/index.html#prices"><span><b>Door logos and lettering</b><small>Name, number and DOT numbers</small></span><em>from <b>$250</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="commercial/index.html#prices"><span><b>Partial wraps</b><small>Printed graphics on the sides and rear</small></span><em>from <b>$1,500</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="commercial/index.html#prices"><span><b>Full van and truck wraps</b><small>Vans, box trucks and buses</small></span><em>from <b>$4,500</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="commercial/index.html#prices"><span><b>Food trucks, trailers and boats</b><small>Full custom prints</small></span><em>from <b>$5,200</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="commercial/index.html#mockup"><span><b>Fleet design</b><small>One brand laid out for every vehicle</small></span><em>from <b>$318</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li></ul>
+    </div><div class="ccol" data-cat="studio" style="--th:#27d3ff">
+      <h3><a href="design-print/index.html">Design and print</a></h3>
+      <p>We draw it and print it. Install it yourself, or leave it to us.</p>
+      <ul><li><a class="crow" href="design-print/index.html#design"><span><b>Custom wrap design</b><small>Shown on your vehicle before we print</small></span><em>from <b>$1,560</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="design-print/index.html"><span><b>Branding and logo design</b><small>Logo, colours and type</small></span><em><b>Quoted</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="design-print/index.html#print"><span><b>Printed wrap film</b><small>3M and Avery Dennison, by the square foot</small></span><em><b>$8.43</b> / sq ft</em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="design-print/index.html#print"><span><b>Wall graphics</b><small>Murals for offices and shops</small></span><em><b>$3.30</b> / sq ft</em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="design-print/index.html#print"><span><b>Window, chrome and reflective prints</b><small>Specialty films</small></span><em>from <b>$9.52</b> / sq ft</em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li><li><a class="crow" href="design-print/index.html#mockup"><span><b>Mockup studio</b><small>Try layouts and colours with your own name</small></span><em><b>Quoted</b></em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li></ul>
+    </div></div>
+  <p class="wallmore"><a class="btn sec" href="pricing/index.html">See every price <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+</section>
+<section class="band how" aria-labelledby="howh">
+  <div class="bandhead" data-reveal><h2 id="howh">How it works</h2></div>
+  <ol class="steps3" data-reveal>
+    <li><i>1</i><b>Tell us what you need</b><span>Pick a service, add your car or a photo</span></li><li><i>2</i><b>Get your price in writing</b><span>Film, coverage and the exact number</span></li><li><i>3</i><b>Book the install</b><span>A date set by call or text</span></li>
+  </ol>
 </section>
 <section class="tunnel" aria-label="Finishes">
   <div class="tpin">
@@ -166,11 +179,6 @@
   </div>
   </div>
 </section>
-<section class="band prices" aria-labelledby="phomeh">
-  <div class="bandhead" data-reveal><h2 id="phomeh">Prices, up front.</h2><p>Most shops make you call. Here are our starting prices for a coupe or sedan.</p></div>
-  <div class="pgrid" data-reveal><a class="pcard" href="vinyl-wrap/index.html" style="--th:#ef5b2a"><span>Vinyl wrap</span><b>from $2,800</b><small>Full colour change</small></a><a class="pcard" href="paint-protection-film/index.html" style="--th:#6fd3ff"><span>Protection film</span><b>from $1,100</b><small>Partial front</small></a><a class="pcard" href="window-tint/index.html" style="--th:#a78bff"><span>Window tint</span><b>from $280</b><small>Carbon film, full car</small></a><a class="pcard" href="commercial/index.html" style="--th:#f2c200"><span>Fleet graphics</span><b>from $250</b><small>Door logos and lettering</small></a></div>
-  <p class="wallmore"><a class="btn sec" href="pricing/index.html">See every price <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
-</section>
 <section class="teaser" aria-labelledby="teaserh">
   <div class="teaser-in">
     <div data-reveal>
@@ -190,12 +198,6 @@
     <div class="printer" data-live><img loading="lazy" src="assets/dp/van.webp" alt="A cargo van in a full printed advertising wrap" width="1920" height="1072"><i class="printer-bar" aria-hidden="true"></i></div>
     <div class="dt-txt"><h2 id="dth">Need it designed or printed?</h2><p>Custom wrap design, branding and large-format printing on 3M and Avery Dennison film, from $3.30 per square foot.</p><span class="svc-go">Design and print <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
   </a>
-</section>
-<section class="band how" aria-labelledby="howh">
-  <div class="bandhead" data-reveal><h2 id="howh">Price first. Then we book.</h2></div>
-  <ol class="steps3" data-reveal>
-    <li><i>1</i><b>Send the car</b><span>A photo, or the year, make and model</span></li><li><i>2</i><b>Get it in writing</b><span>Film, coverage and your exact price</span></li><li><i>3</i><b>Book the install</b><span>A date set by call or text</span></li>
-  </ol>
 </section>
 <section class="band faq" aria-labelledby="faqh">
   <div class="bandhead" data-reveal><h2 id="faqh">Questions people ask</h2></div>
@@ -226,13 +228,16 @@
   </div>
 </footer>
 <div class="progress" id="progress" aria-hidden="true"></div>
-<div class="floatbook" id="stickybar">
+<nav class="dock" id="stickybar" aria-label="Quick links">
+  <a href="index.html#services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg><span>Services</span></a>
+  <a href="work/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg><span>Work</span></a>
   <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>
         <span class="book-t"><b>Book now</b><small data-booksub>Get your price in writing</small></span>
         <span class="book-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </button>
-</div>
+  <a href="pricing/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12V5h7l9 9-7 7z"/><circle cx="8.5" cy="8.5" r="1.3"/></svg><span>Prices</span></a>
+</nav>
 
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Job details">
   <div class="lb-in">
@@ -255,21 +260,21 @@
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qTitle">
     <div class="shead"><h2 id="qTitle">Book now</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
     <p class="prog" id="qProg">Step 1 of 3</p>
+    <div class="qbar" aria-hidden="true"><i></i><i></i><i></i></div>
     <form id="qForm" novalidate>
       <div class="qstep show" data-step="1">
-        <div class="field"><label for="qCar" id="qCarL">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
-        <div id="qSizeF"><span class="legend" id="qSizeL">Vehicle size</span>
-          <div class="picks" role="group" aria-labelledby="qSizeL"><label><input type="radio" name="qSize" value="0" checked>Coupe / sedan</label><label><input type="radio" name="qSize" value="1">SUV / truck</label><label><input type="radio" name="qSize" value="2">Van / large SUV</label></div></div>
-        <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
-        <p class="note" id="qNote" hidden></p>
+        <div id="qSvc"></div>
         <p class="err" id="qErr1" role="alert"></p>
         <div class="srow"><button class="btn pri" type="button" data-next>Next</button></div>
       </div>
       <div class="qstep" data-step="2">
-        <span class="legend" id="qSvcL">What do you want done?</span>
-        <div class="picks" id="qSvc" role="group" aria-labelledby="qSvcL"></div>
+        <div class="field"><label for="qCar" id="qCarL">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
+        <div id="qSizeF"><span class="legend" id="qSizeL">Vehicle size</span>
+          <div class="picks" role="group" aria-labelledby="qSizeL"><label><input type="radio" name="qSize" value="0" checked>Coupe / sedan</label><label><input type="radio" name="qSize" value="1">SUV / truck</label><label><input type="radio" name="qSize" value="2">Van / large SUV</label></div></div>
         <div class="field" id="qFinF"><label for="qFin">Wrap finish</label>
           <select id="qFin"><option>Satin black</option><option>Gloss black</option><option>Satin grey</option><option>Satin red</option><option>Color shift</option><option>Not sure yet</option></select></div>
+        <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
+        <p class="note" id="qNote" hidden></p>
         <p class="err" id="qErr2" role="alert"></p>
         <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="button" data-next>Next</button></div>
       </div>
@@ -287,6 +292,8 @@
       <div class="qstep" data-step="4">
         <dl class="sum" id="qSum"></dl>
         <p class="note flag" id="qDone"></p>
+        <span class="legend">What happens next</span>
+        <ol class="nextsteps"><li>We text or call you with your price in writing.</li><li>You approve it, or ask for changes.</li><li>We book your install date.</li></ol>
         <div class="srow"><button class="btn pri" type="button" data-close>Done</button></div>
       </div>
     </form>

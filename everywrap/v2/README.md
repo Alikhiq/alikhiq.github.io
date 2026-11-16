@@ -18,9 +18,11 @@ The pages are generated. Edit the data or the templates, then run `python3 tools
 | `work/` | The reel and all 75 real jobs in a square grid, each opening to the owner's caption, year, place and film |
 
 Shared pieces on every page:
-- **Top bar**: a centred glass pill for Personal / Commercial and a menu button. No logo: the EveryWrap mark has not been designed yet.
-- **Service switcher** under the top bar in the hero.
-- **Book now capsule**: the one call to action. It carries what the visitor picked (for example "Satin red wrap") into the form. A floating copy appears after the hero.
+- **Top bar**: a glass pill with the three things EveryWrap sells: Cars, Business, Design. No logo: the mark has not been designed yet.
+- **Menu**: the same three groups, each listing its services.
+- **Catalogue** (`#services` on the home page): every service in those three groups with its starting price, straight under the hero. The list is `catalog` in `data/copy.json`.
+- **Dock**: Services, Work, Book now and Prices, fixed at the bottom once the hero has scrolled away.
+- **Booking**: three steps. What do you need (grouped, with starting prices), the details that fit that choice (a car and its size, a list of vehicles, or a job description), then contact. The last screen says what happens next.
 - **Live glow**: `--glow` and `--glow2` follow the finish on wraps and a fixed colour per service otherwise (`theme()` in `js/state.js`).
 
 Moving parts only run while they are on screen, and stop for visitors who ask for reduced motion.
