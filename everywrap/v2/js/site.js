@@ -182,7 +182,8 @@ export function initSite() {
   $("#uGo").addEventListener("click", () => openQuote());
   $("#uShow").addEventListener("click", paint);
   $("#uAgain").addEventListener("click", () => { $("#uOut").hidden = true; $("#drop").hidden = false; $("#uFile").click(); });
-  const hold = $("#uHold"), peek = (on) => { if (renderUrl) $("#uOutImg").src = on ? photoUrl : renderUrl; };
+  const hold = $("#uHold"), peek = (on) => { if (!renderUrl) return; const tag = $("#uTag"); if (on && !tag.dataset.t) tag.dataset.t = tag.textContent;
+    $("#uOutImg").src = on ? photoUrl : renderUrl; tag.textContent = on ? "Your photo" : tag.dataset.t || tag.textContent; if (!on) delete tag.dataset.t; };
   hold.addEventListener("pointerdown", (e) => { e.preventDefault(); peek(true); }); ["pointerup", "pointerleave", "pointercancel"].forEach((n) => hold.addEventListener(n, () => peek(false)));
   hold.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") peek(true); }); hold.addEventListener("keyup", () => peek(false));
   $("#qForm").addEventListener("submit", submitQuote);

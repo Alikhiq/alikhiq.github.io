@@ -240,6 +240,29 @@ async function desk(request, env, url) {
     if (!obj) return new Response("Not found", { status: 404 });
     return new Response(obj.body, { headers: { "content-type": (obj.httpMetadata && obj.httpMetadata.contentType) || "image/jpeg", "cache-control": "private, max-age=3600", "x-robots-tag": "noindex" } });
   }
+  // Finished videos, kept in the private bucket: videos/index.json lists them, and each has a 4K master, a 1080 copy and a poster.
+  if (path === "/api/desk/videos") {
+    const obj = env.PRIVATE ? await env.PRIVATE.get("videos/index.json") : null;
+    let list = { videos: [] }; try { if (obj) list = await obj.json(); } catch {}
+    return json({ ok: true, made: list.made || "", videos: list.videos || [] });
+  }
+  if (path === "/api/desk/video") {
+    const id = url.searchParams.get("id") || "", q = url.searchParams.get("q") || "1080";
+    if (!/^[a-z0-9-]{1,80}$/.test(id) || !["4k", "1080", "poster"].includes(q) || !env.PRIVATE) return new Response("Not found", { status: 404 });
+    const key = q === "poster" ? `videos/poster/${id}.jpg` : `videos/${q}/${id}.mp4`, range = request.headers.has("range");
+    let obj;
+    try { obj = await env.PRIVATE.get(key, { range: range ? request.headers : undefined }); } catch { obj = await env.PRIVATE.get(key); }
+    if (!obj) return new Response("Not found", { status: 404 });
+    const h = new Headers({ "content-type": q === "poster" ? "image/jpeg" : "video/mp4", "accept-ranges": "bytes", "cache-control": "private, max-age=3600", "x-robots-tag": "noindex", "x-content-type-options": "nosniff" });
+    if (url.searchParams.get("save")) h.set("content-disposition", `attachment; filename="everywrap-${id}${q === "4k" ? "-4k" : ""}.mp4"`);
+    if (range && obj.range && obj.range.length !== undefined && obj.range.length < obj.size) {
+      const start = obj.range.offset || 0;
+      h.set("content-range", `bytes ${start}-${start + obj.range.length - 1}/${obj.size}`); h.set("content-length", String(obj.range.length));
+      return new Response(obj.body, { status: 206, headers: h });
+    }
+    h.set("content-length", String(obj.size));
+    return new Response(obj.body, { headers: h });
+  }
   return json({ ok: false }, 404);
 }
 

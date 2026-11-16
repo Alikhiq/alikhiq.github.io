@@ -102,6 +102,8 @@ function initWall() {
   el.addEventListener("click", (e) => { const b = e.target.closest(".swchip"); if (!b || !hooks.heroGo) return; hooks.heroGo({ ch: "wrap", finish: b.dataset.f }); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
 }
 
+// Shrinks a headline until its longest word fits the width it has.
+function fit(el) { el.style.fontSize = ""; let fs = parseFloat(getComputedStyle(el).fontSize), n = 0; while (el.scrollWidth > el.clientWidth + 1 && fs > 28 && n++ < 30) { fs -= 3; el.style.fontSize = fs + "px"; } }
 /* ---------- "GO SATIN BLACK." : scroll drives the finish ---------- */
 function initTunnel() {
   const sec = $(".tunnel"); if (!sec) return;
@@ -111,7 +113,7 @@ function initTunnel() {
   const set = (i) => {
     if (i === idx) return; idx = i; const f = TF[i];
     cars.forEach((im) => im.classList.toggle("on", im.dataset.f === f[0]));
-    head.innerHTML = `GO ${esc(f[1].toUpperCase())}.`; name.textContent = f[1].toUpperCase(); count.textContent = `${two(i + 1)} / ${two(TF.length)}`;
+    head.innerHTML = `GO ${esc(f[1].toUpperCase())}.`; fit(head); name.textContent = f[1].toUpperCase(); count.textContent = `${two(i + 1)} / ${two(TF.length)}`;
     ticks.forEach((el, n) => el.classList.toggle("on", n === i)); t.boost = 1.2;
   };
   onScroll(() => { const p = progress(sec); t.boost = Math.min(1.6, t.boost + Math.abs(scrollY - lastY) / 700); lastY = scrollY; set(Math.min(TF.length - 1, Math.floor(p * TF.length)));

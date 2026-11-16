@@ -121,6 +121,7 @@ Booking requests: on the live site the form posts to `/api/lead` on the Worker. 
 - **Counting** (`js/track.js`, `/api/event`): page views and a fixed list of named taps, on the live domain only. No cookies. A visitor is a one-way hash of address, browser and the day, so one person counts once a day and cannot be followed across days. Known crawlers are ignored.
 - **Email alerts**: the Worker emails each new request to `NOTIFY_TO` once `RESEND_KEY` (a Resend sending key) and `NOTIFY_FROM` (a sender on a domain verified in Resend) are set on it. Until then requests only appear on the dashboard.
 - **Tables**: `events`, `leads` and `renders`; the statements are in `deploy/schema.sql`.
+- **Videos**: the dashboard's Videos section plays and saves the promotional videos. They live in the private bucket under `videos/` (`index.json` lists them; `4k/`, `1080/` and `poster/` hold the files) and are served only to a signed-in dashboard through `/api/desk/videos` and `/api/desk/video`. To add or replace one, upload the files under the same keys and add it to `index.json`.
 
 ## Finishes
 

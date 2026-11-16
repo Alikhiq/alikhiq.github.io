@@ -5,7 +5,7 @@ import { ev } from "./track.js";
 // colours and the customer's own name on it. Everything is drawn here, no images.
 const VEH = {
   van: { label: "Van", body: "M40 200V84q0-18 18-18h342q20 0 34 16l66 68q12 14 12 32v18z", glass: ["M418 84l56 64h-74V84z"], wheels: [[140, 204], [430, 204]], lines: ["M392 66v134", "M250 66v134"], text: [62, 92, 310, 96] },
-  box: { label: "Box truck", body: "M40 40h362v160H40zM410 200v-90q0-14 14-14h60q12 0 20 10l34 48q8 10 8 22v24z", glass: ["M432 110h50l30 44h-80z"], wheels: [[120, 206], [310, 206], [490, 206]], lines: [], text: [58, 58, 326, 126] },
+  box: { label: "Box truck", body: "M40 40h362v160H40zM410 200v-90q0-14 14-14h60q12 0 20 10l34 48q8 10 8 22v24z", glass: ["M432 110h50l30 44h-80z"], wheels: [[120, 206], [310, 206], [490, 206]], lines: [], text: [58, 54, 326, 108] },
   trailer: { label: "Trailer", body: "M70 56h470v144H70z", glass: [], wheels: [[380, 206], [450, 206]], lines: ["M18 184h52"], text: [92, 74, 420, 108] },
   car: { label: "Car", body: "M28 196v-12q0-26 30-32l92-12q52-46 130-48h100q62 4 102 48l58 10q32 6 32 34v12z", glass: ["M176 140q40-34 106-36h18v36z", "M312 104h66q46 4 74 36H312z"], wheels: [[148, 196], [462, 196]], lines: ["M306 104v92"], text: [176, 146, 272, 44] },
 };

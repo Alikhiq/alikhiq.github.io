@@ -154,7 +154,9 @@ img{display:block;max-width:100%;height:auto}
 .book-dot{flex:none;width:30px;height:30px;border-radius:50%;background:var(--dot);border:1px solid rgba(255,255,255,.3);box-shadow:inset -5px -5px 8px rgba(0,0,0,.45),inset 3px 3px 6px rgba(255,255,255,.16);transition:background .5s}
 .book-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .book-t b{font:600 16.5px/1 var(--ui);letter-spacing:-.01em}
-.book-t small{font:500 12px/1.15 var(--ui);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;contain:inline-size}
+.book-t small{font:500 12px/1.15 var(--ui);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;contain:inline-size}
+.book-t small .bs-n{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.book-t small .bs-p{flex:none;white-space:pre}
 .opts:has(.wheel) .optname{contain:inline-size}
 .book-go{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--btn);color:var(--btn-fg)}
 .book-go svg{width:20px;height:20px;transition:transform .3s}
@@ -189,7 +191,7 @@ img{display:block;max-width:100%;height:auto}
 .tpin{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:calc(84px + env(safe-area-inset-top, 0px)) var(--gr) calc(84px + env(safe-area-inset-bottom, 0px)) var(--gl)}
 .tpin canvas{position:absolute;inset:0;width:100%;height:100%}
 .tpin > *:not(canvas){position:relative}
-.thead{align-self:flex-start;margin:0;font:italic 700 clamp(60px,10.5vw,190px)/.84 var(--cond);letter-spacing:-.01em;text-transform:uppercase;text-shadow:0 0 40px rgba(0,0,0,.8)}
+.thead{align-self:flex-start;max-width:100%;margin:0;font:italic 700 clamp(60px,10.5vw,190px)/.84 var(--cond);letter-spacing:-.01em;text-transform:uppercase;text-shadow:0 0 40px rgba(0,0,0,.8)}
 .tsub{align-self:flex-start;margin:10px 0 0;font:400 15px/1.4 var(--ui);color:rgba(255,255,255,.8)}
 .tcar{flex:1;min-height:0;width:100%}
 .tcar img{position:absolute;left:50%;bottom:6%;width:min(100vw,980px);max-width:none;height:auto;max-height:100%;object-fit:contain;transform:translateX(-50%);opacity:0;transition:opacity .55s ease;-webkit-box-reflect:below -4% linear-gradient(transparent 62%,rgba(0,0,0,.28))}
@@ -882,8 +884,8 @@ main{counter-reset:sec}
 .foot-loc b{color:var(--fg);font-weight:600}
 
 /* ---------- voice: the live orb ---------- */
-.trylink.voice.live{color:var(--fg)}
-.trylink.voice.live svg{animation:micpulse .9s ease-in-out infinite;color:var(--glow-ink,var(--glow))}
+.trylink.voice.on-air{color:var(--fg)}
+.trylink.voice.on-air svg{animation:micpulse .9s ease-in-out infinite;color:var(--glow-ink,var(--glow))}
 .vorb{--v:0;position:fixed;z-index:120;right:max(16px, env(safe-area-inset-right, 0px));bottom:calc(84px + env(safe-area-inset-bottom, 0px));width:76px;height:76px;padding:0;border-radius:50%;border:1px solid color-mix(in srgb,var(--glow) 55%,transparent);background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--glow) 38%,#0b0b0c),#070708 72%);color:#fff;display:grid;place-items:center;box-shadow:0 14px 44px rgba(0,0,0,.55),0 0 calc(18px + var(--v) * 46px) calc(var(--v) * 10px) color-mix(in srgb,var(--glow) 70%,transparent);transform:translate(var(--fx,0),var(--fy,0)) scale(.3);opacity:0;transition:transform .55s cubic-bezier(.2,.9,.25,1.15),opacity .3s ease,box-shadow .12s linear,top .4s ease,right .4s ease,width .3s ease,height .3s ease;-webkit-tap-highlight-color:transparent}
 .vorb.in{transform:none;opacity:1}
 .vorb-ring{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from var(--spin,0deg),transparent 0 55%,var(--glow) 78%,#fff 88%,transparent 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:vspin 2.4s linear infinite}
@@ -1147,3 +1149,6 @@ html.intro-on{overflow:hidden}
 .usw:not(:has([aria-pressed="true"]))::after{content:"Tap a finish";position:absolute;left:14px;right:14px;bottom:13px;font:500 13px/1 var(--ui);color:var(--mute);text-align:center}
 .srow .btn[data-back]{flex:0 0 auto;min-width:96px}
 #qForm .srow .btn{white-space:nowrap}
+
+/* proof request on phones: the drawing scrolls with the form instead of sitting over its labels */
+@media (max-width:760px){.mk-view{position:relative;top:auto}}

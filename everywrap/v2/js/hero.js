@@ -38,7 +38,7 @@ function scene() {
   return { before: factoryOf(v), after: S.finish, seam: true };
 }
 function renderRail() {
-  $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"${c.id === S.ch ? ' class="live"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RICON[c.id] || ""}</svg><span>${c.label}</span></button></li>`).join("");
+  $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RICON[c.id] || ""}</svg><span>${c.label}</span></button></li>`).join("");
 }
 const PPF_NAME = { partial: "Partial front", front: "Full front", full: "Full body" };
 const bookName = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " PPF" : S.ch === "tint" ? S.tint + "% tint" : S.ch === "kits" ? "Body kit, quoted per car" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");

@@ -45,7 +45,8 @@ export function theme(label) {
   if (S.commercial) return;
   const g = GLOW_CH[S.ch] || GLOW[S.finish] || GLOW["satin-black"];
   R.style.setProperty("--glow", g[0]); R.style.setProperty("--glow2", g[1]); R.style.setProperty("--dot", fin()[3]);
-  if (label) $$("#hero [data-booksub], #stickybar [data-booksub]").forEach((el) => (el.textContent = label));
+  if (label) { const i = label.lastIndexOf(" · "), html = i < 0 ? esc(label) : `<span class="bs-n">${esc(label.slice(0, i))}</span><span class="bs-p"> · ${esc(label.slice(i + 3))}</span>`;
+    $$("#hero [data-booksub], #stickybar [data-booksub]").forEach((el) => (el.innerHTML = html)); }
 }
 
 // Scroll progress of an element through the viewport: 0 when its top reaches the

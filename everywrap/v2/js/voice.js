@@ -20,7 +20,7 @@ function build() {
 function set(state, text) {
   if (!orb) return;
   orb.dataset.state = state; $(".vorb-cap", orb).textContent = text;
-  $$("[data-voice]").forEach((b) => { b.classList.toggle("live", state !== "off"); const t = $(".voice-t", b); if (t) t.textContent = state === "off" ? t.dataset.idle : "Live · tap to end"; });
+  $$("[data-voice]").forEach((b) => { b.classList.toggle("on-air", state !== "off"); const t = $(".voice-t", b); if (t) t.textContent = state === "off" ? t.dataset.idle : "Live · tap to end"; });
 }
 function show(from) {
   build(); orb.hidden = false; orb.classList.remove("in");
