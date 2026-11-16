@@ -60,6 +60,7 @@
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
+      <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
       <h1 class="eyebrow">Car wraps in Columbus, Ohio</h1>
@@ -83,6 +84,13 @@
     <dl class="points"><div data-reveal><dt>Finishes</dt><dd>Satin, gloss, matte and colour-shift. Satin black is the most requested, and we have wrapped cars in pink, Tiffany blue, purple and chrome-look green too.</dd></div><div data-reveal><dt>Full or partial</dt><dd>A full colour change, or one part of the car: roof, hood, mirrors, stripes or a chrome delete.</dd></div><div data-reveal><dt>Film</dt><dd>We install cast film from 3M, Avery Dennison and KPMF. Tell us if you have a colour code in mind.</dd></div><div data-reveal><dt>Your paint first</dt><dd>Film follows whatever is under it. We check the paint before we quote, because film will not hide chips and can lift a poor respray.</dd></div></dl>
   </div>
 </section>
+<section class="band explain" aria-labelledby="ex-wrap" style="--th:#ef5b2a">
+  <div class="bandhead" data-reveal><h2 id="ex-wrap">How a wrap sits on the car</h2><p>The film bonds to the paint, not into it. That is why it can come off.</p></div>
+  <div class="layers" data-live>
+    <div class="stack" aria-hidden="true"><i class="ly ly-panel" style="--n:0"></i><i class="ly ly-paint" style="--n:1"></i><i class="ly ly-film" style="--n:2"></i></div>
+    <ol class="layer-list"><li style="--k:0"><i class="ly-dot ly-film"></i><b>Vinyl wrap</b><span>Cast film, laid panel by panel with the edges tucked</span></li><li style="--k:1"><i class="ly-dot ly-paint"></i><b>Factory paint</b><span>Untouched, and shielded while the film is on</span></li><li style="--k:2"><i class="ly-dot ly-panel"></i><b>Body panel</b><span>Nothing is sanded, filled or resprayed</span></li></ol>
+  </div>
+</section>
 <section class="band prices" id="prices" aria-labelledby="priceh" style="--th:#ef5b2a">
   <div class="bandhead" data-reveal><h2 id="priceh">Car wrap prices in Columbus</h2><p>Starting prices by vehicle size. Pick yours.</p></div>
   <div class="price-in">
@@ -93,7 +101,7 @@
 </section>
 <section class="band" aria-labelledby="knowh">
   <div class="bandhead" data-reveal><h2 id="knowh">Good to know</h2></div>
-  <dl class="know"><div data-reveal><dt>How long it takes</dt><dd>Most full wraps are in the shop for a few days. A roof, hood or chrome delete is a much shorter visit. You get the dates with your price.</dd></div><div data-reveal><dt>How long it lasts</dt><dd>Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and regular hand washing get you the long end of that.</dd></div><div data-reveal><dt>Looking after it</dt><dd>Hand wash or use a touchless wash. Skip brush washes, abrasive polish and wax on satin or matte film, and wipe off fuel and bird droppings quickly.</dd></div></dl>
+  <dl class="know"><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><dt>How long it takes</dt><dd>Most full wraps are in the shop for a few days. A roof, hood or chrome delete is a much shorter visit. You get the dates with your price.</dd></div><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></i><dt>How long it lasts</dt><dd>Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and regular hand washing get you the long end of that.</dd></div><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 01-12 0c0-4 3-7 6-11z"/></svg></i><dt>Looking after it</dt><dd>Hand wash or use a touchless wash. Skip brush washes, abrasive polish and wax on satin or matte film, and wipe off fuel and bird droppings quickly.</dd></div></dl>
 </section>
 <section class="band workband" aria-labelledby="relh">
   <div class="bandhead" data-reveal><h2 id="relh">Cars we have wrapped</h2></div>
@@ -123,13 +131,15 @@
 </section>
 </main>
 <footer class="foot">
+  <p class="foot-big">Wrap it. Protect it. Make it yours.</p>
   <div class="foot-grid">
-    <div><p class="tag">Wrap it. Protect it. Make it yours.</p><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
+    <div><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
     <nav aria-label="Services"><h2>Services</h2><ul><li><a href="../vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="../paint-protection-film/index.html">Paint protection film</a></li><li><a href="../window-tint/index.html">Window tint</a></li><li><a href="../body-kits/index.html">Body kits</a></li><li><a href="../commercial/index.html">Fleet and commercial</a></li><li><a href="../design-print/index.html">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="../pricing/index.html">Pricing</a></li><li><a href="../work/index.html">Our work</a></li><li><a href="https://www.instagram.com/everywrapca/" rel="noopener">@everywrapca</a></li><li><a href="https://www.instagram.com/everywrapny/" rel="noopener">@everywrapny</a></li></ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></li><li><button type="button" data-quote>Book now</button></li></ul></div>
   </div>
 </footer>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="floatbook" id="stickybar">
   <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>

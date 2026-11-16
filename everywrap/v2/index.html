@@ -64,6 +64,7 @@
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
+      <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
       <h1 class="eyebrow">Car wraps, paint protection film and window tint in Columbus, Ohio</h1>
@@ -94,6 +95,7 @@
     <div class="truler" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Satin black</span><span>Gloss</span><span>Matte</span><span>Colour-shift</span><span>Chrome</span><span>Protection film</span><span>Window tint</span><span>Body kits</span><span>Fleet graphics</span><span>3M</span><span>Avery Dennison</span><span>KPMF</span><span>Satin black</span><span>Gloss</span><span>Matte</span><span>Colour-shift</span><span>Chrome</span><span>Protection film</span><span>Window tint</span><span>Body kits</span><span>Fleet graphics</span><span>3M</span><span>Avery Dennison</span><span>KPMF</span></div></div>
 <section class="band services" aria-labelledby="svch">
   <div class="bandhead" data-reveal><h2 id="svch">Wrap it. Protect it. Tint it. Build it.</h2><p>Tap a service for the options, real jobs and prices.</p></div>
   <ol class="svclist"><li class="svc" style="--i:0;--th:#ef5b2a">
@@ -137,6 +139,13 @@
         </div>
       </a>
     </li></ol>
+</section>
+<section class="band explain" aria-labelledby="ex-home">
+  <div class="bandhead" data-reveal><h2 id="ex-home">What actually goes on your car</h2><p>Nothing is sanded or resprayed. Each layer sits on the one below and comes off again.</p></div>
+  <div class="layers" data-live>
+    <div class="stack" aria-hidden="true"><i class="ly ly-panel" style="--n:0"></i><i class="ly ly-paint" style="--n:1"></i><i class="ly ly-film" style="--n:2"></i><i class="ly ly-clear" style="--n:3"></i></div>
+    <ol class="layer-list"><li style="--k:0"><i class="ly-dot ly-clear"></i><b>Protection film</b><span>Optional. A clear layer that takes the stone chips</span></li><li style="--k:1"><i class="ly-dot ly-film"></i><b>Vinyl wrap</b><span>Your new colour, in the finish you picked</span></li><li style="--k:2"><i class="ly-dot ly-paint"></i><b>Factory paint</b><span>Untouched, and shielded while the film is on</span></li><li style="--k:3"><i class="ly-dot ly-panel"></i><b>Body panel</b><span>Exactly as it left the factory</span></li></ol>
+  </div>
 </section>
 <section class="band workband" aria-labelledby="workh">
   <div class="bandhead" data-reveal><h2 id="workh">Proof in the finish.</h2></div>
@@ -208,13 +217,15 @@
 </section>
 </main>
 <footer class="foot">
+  <p class="foot-big">Wrap it. Protect it. Make it yours.</p>
   <div class="foot-grid">
-    <div><p class="tag">Wrap it. Protect it. Make it yours.</p><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
+    <div><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
     <nav aria-label="Services"><h2>Services</h2><ul><li><a href="vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="paint-protection-film/index.html">Paint protection film</a></li><li><a href="window-tint/index.html">Window tint</a></li><li><a href="body-kits/index.html">Body kits</a></li><li><a href="commercial/index.html">Fleet and commercial</a></li><li><a href="design-print/index.html">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="pricing/index.html">Pricing</a></li><li><a href="work/index.html">Our work</a></li><li><a href="https://www.instagram.com/everywrapca/" rel="noopener">@everywrapca</a></li><li><a href="https://www.instagram.com/everywrapny/" rel="noopener">@everywrapny</a></li></ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></li><li><button type="button" data-quote>Book now</button></li><li><button type="button" id="replay">Replay the intro</button></li></ul></div>
   </div>
 </footer>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="floatbook" id="stickybar">
   <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>

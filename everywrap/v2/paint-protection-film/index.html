@@ -60,6 +60,7 @@
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
+      <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
       <h1 class="eyebrow">Paint protection film (PPF) in Columbus, Ohio</h1>
@@ -83,6 +84,20 @@
     <dl class="points"><div data-reveal><dt>Partial front</dt><dd>The bumper, plus the leading edge of the hood and fenders. The lowest-cost way to cover where chips land first.</dd></div><div data-reveal><dt>Full front</dt><dd>The bumper, the whole hood, both fenders and the mirrors, with no line across the hood. The most popular choice.</dd></div><div data-reveal><dt>Full body</dt><dd>Every painted panel. For a car you plan to keep, or one you want to hand back unmarked.</dd></div><div data-reveal><dt>With a wrap or tint</dt><dd>Protection film, a colour wrap and tint can be planned as one job, so the car is off the road once.</dd></div></dl>
   </div>
 </section>
+<section class="band explain" aria-labelledby="ex-ppf" style="--th:#6fd3ff">
+  <div class="bandhead" data-reveal><h2 id="ex-ppf">A clear layer between the road and your paint</h2><p>You do not see it. The stones hit it first.</p></div>
+  <div class="layers" data-live>
+    <div class="stack" aria-hidden="true"><i class="ly ly-panel" style="--n:0"></i><i class="ly ly-paint" style="--n:1"></i><i class="ly ly-clear" style="--n:2"></i></div>
+    <ol class="layer-list"><li style="--k:0"><i class="ly-dot ly-clear"></i><b>Protection film</b><span>Clear urethane with a self-healing top coat</span></li><li style="--k:1"><i class="ly-dot ly-paint"></i><b>Factory paint</b><span>Stays glossy and unmarked underneath</span></li><li style="--k:2"><i class="ly-dot ly-panel"></i><b>Body panel</b><span>Bumper, hood, fenders, mirrors or the whole car</span></li></ol>
+  </div>
+</section>
+<section class="band explain" aria-labelledby="ex-fx">
+  <div class="bandhead" data-reveal><h2 id="ex-fx">What the film does</h2></div>
+  <div class="fxpair">
+    <figure class="fxcard" data-live><div class="fx-scene fx-chip" aria-hidden="true"><i class="fx-film"></i><i class="fx-stone"></i><i class="fx-ring"></i></div><figcaption><b>Stone chips</b><span>The film takes the hit. The paint under it does not.</span></figcaption></figure>
+    <figure class="fxcard" data-live><div class="fx-scene fx-heal" aria-hidden="true"><i class="fx-film"></i><i class="fx-scratch"></i><i class="fx-warm"></i></div><figcaption><b>Light scratches</b><span>Fine swirl marks in the top coat soften and close with warmth.</span></figcaption></figure>
+  </div>
+</section>
 <section class="band prices" id="prices" aria-labelledby="priceh" style="--th:#6fd3ff">
   <div class="bandhead" data-reveal><h2 id="priceh">PPF prices in Columbus</h2><p>Starting prices by coverage and vehicle size.</p></div>
   <div class="price-in">
@@ -93,7 +108,7 @@
 </section>
 <section class="band" aria-labelledby="knowh">
   <div class="bandhead" data-reveal><h2 id="knowh">Good to know</h2></div>
-  <dl class="know"><div data-reveal><dt>How long it takes</dt><dd>A full front is usually two to three days. Full body takes most of a week.</dd></div><div data-reveal><dt>How long it lasts</dt><dd>Modern film is made to stay clear for years, and the makers back it with long warranties. We tell you the warranty for the film you pick.</dd></div><div data-reveal><dt>Looking after it</dt><dd>Wait about a week before the first wash, then wash it like paint. Light swirl marks in self-healing film soften with warmth.</dd></div></dl>
+  <dl class="know"><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><dt>How long it takes</dt><dd>A full front is usually two to three days. Full body takes most of a week.</dd></div><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></i><dt>How long it lasts</dt><dd>Modern film is made to stay clear for years, and the makers back it with long warranties. We tell you the warranty for the film you pick.</dd></div><div data-reveal><i class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 01-12 0c0-4 3-7 6-11z"/></svg></i><dt>Looking after it</dt><dd>Wait about a week before the first wash, then wash it like paint. Light swirl marks in self-healing film soften with warmth.</dd></div></dl>
 </section>
 <section class="band faq" aria-labelledby="faqh">
   <div class="bandhead" data-reveal><h2 id="faqh">PPF questions</h2></div>
@@ -115,13 +130,15 @@
 </section>
 </main>
 <footer class="foot">
+  <p class="foot-big">Wrap it. Protect it. Make it yours.</p>
   <div class="foot-grid">
-    <div><p class="tag">Wrap it. Protect it. Make it yours.</p><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
+    <div><p>EveryWrap. Car wraps, paint protection film, window tint and fleet graphics for Columbus, Dublin, Hilliard and the rest of central Ohio.</p></div>
     <nav aria-label="Services"><h2>Services</h2><ul><li><a href="../vinyl-wrap/index.html">Vinyl wrap</a></li><li><a href="../paint-protection-film/index.html">Paint protection film</a></li><li><a href="../window-tint/index.html">Window tint</a></li><li><a href="../body-kits/index.html">Body kits</a></li><li><a href="../commercial/index.html">Fleet and commercial</a></li><li><a href="../design-print/index.html">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="../pricing/index.html">Pricing</a></li><li><a href="../work/index.html">Our work</a></li><li><a href="https://www.instagram.com/everywrapca/" rel="noopener">@everywrapca</a></li><li><a href="https://www.instagram.com/everywrapny/" rel="noopener">@everywrapny</a></li></ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:sales@everywrap.com">sales@everywrap.com</a></li><li><button type="button" data-quote>Book now</button></li></ul></div>
   </div>
 </footer>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="floatbook" id="stickybar">
   <button class="book live" type="button" data-quote>
         <i class="book-dot" aria-hidden="true"></i>

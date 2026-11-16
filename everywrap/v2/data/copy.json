@@ -286,5 +286,123 @@
     "Yes. Chrome prints run on mirror-finish film and cost {$print.chrome} per square foot."
    ]
   ]
+ },
+ "explain": {
+  "home": {
+   "h2": "What actually goes on your car",
+   "p": "Nothing is sanded or resprayed. Each layer sits on the one below and comes off again.",
+   "layers": [
+    [
+     "Protection film",
+     "Optional. A clear layer that takes the stone chips",
+     "clear"
+    ],
+    [
+     "Vinyl wrap",
+     "Your new colour, in the finish you picked",
+     "film"
+    ],
+    [
+     "Factory paint",
+     "Untouched, and shielded while the film is on",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Exactly as it left the factory",
+     "panel"
+    ]
+   ]
+  },
+  "wrap": {
+   "h2": "How a wrap sits on the car",
+   "p": "The film bonds to the paint, not into it. That is why it can come off.",
+   "layers": [
+    [
+     "Vinyl wrap",
+     "Cast film, laid panel by panel with the edges tucked",
+     "film"
+    ],
+    [
+     "Factory paint",
+     "Untouched, and shielded while the film is on",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Nothing is sanded, filled or resprayed",
+     "panel"
+    ]
+   ]
+  },
+  "ppf": {
+   "h2": "A clear layer between the road and your paint",
+   "p": "You do not see it. The stones hit it first.",
+   "layers": [
+    [
+     "Protection film",
+     "Clear urethane with a self-healing top coat",
+     "clear"
+    ],
+    [
+     "Factory paint",
+     "Stays glossy and unmarked underneath",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Bumper, hood, fenders, mirrors or the whole car",
+     "panel"
+    ]
+   ]
+  },
+  "ppf_fx": {
+   "h2": "What the film does",
+   "items": [
+    [
+     "Stone chips",
+     "The film takes the hit. The paint under it does not."
+    ],
+    [
+     "Light scratches",
+     "Fine swirl marks in the top coat soften and close with warmth."
+    ]
+   ]
+  },
+  "tint": {
+   "h2": "What the percentage means",
+   "p": "It is how much light gets through the glass. Tap a shade."
+  },
+  "fleet": {
+   "h2": "One design, every vehicle",
+   "p": "The same brand, laid out again for each shape so it reads the same on all of them."
+  },
+  "ticker": [
+   "Satin black",
+   "Gloss",
+   "Matte",
+   "Colour-shift",
+   "Chrome",
+   "Protection film",
+   "Window tint",
+   "Body kits",
+   "Fleet graphics",
+   "3M",
+   "Avery Dennison",
+   "KPMF"
+  ],
+  "ticker_fleet": [
+   "Vans",
+   "Box trucks",
+   "Buses",
+   "Food trucks",
+   "Trailers",
+   "Boats",
+   "Door lettering",
+   "Full wraps",
+   "Design",
+   "Print",
+   "Install"
+  ]
  }
 }

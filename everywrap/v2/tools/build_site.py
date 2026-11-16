@@ -154,6 +154,7 @@ def hero_personal(eyebrow=""):
         <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
         <input type="range" id="seam" min="0" max="1000" step="1" value="500">
       </div>
+      <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
       {title}
@@ -276,8 +277,92 @@ def prices_home(root):
 </section>
 """
 
+def svg(d):
+    return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>'
+
+ICONS = {
+    "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "shield": '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    "drop": '<path d="M12 3c3 4 6 7 6 11a6 6 0 01-12 0c0-4 3-7 6-11z"/>',
+    "scale": '<path d="M12 4v16M7 20h10M5 8h14"/><path d="M5 8l-2.5 6a2.5 2.5 0 005 0zM19 8l-2.5 6a2.5 2.5 0 005 0z"/>',
+    "layers": '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    "tool": '<path d="M14.5 5.5a4 4 0 00-5 5L4 16l2 2 5.5-5.5a4 4 0 005-5L14 10l-2-2z"/>',
+    "undo": '<path d="M8 8H4V4"/><path d="M4 8a8 8 0 111.5 8"/>',
+    "ruler": '<path d="M3 16L16 3l5 5L8 21z"/><path d="M7 12l2 2M10 9l2 2M13 6l2 2"/>',
+}
+
+def icon_for(label):
+    l = label.lower()
+    for key, words in (("clock", ("takes",)), ("drop", ("looking after", "curing", "care")), ("scale", ("law",)), ("undo", ("reversible",)), ("ruler", ("clearance",)),
+                       ("shield", ("lasts", "laminate")), ("tool", ("printed by", "installers")), ("layers", ("film",))):
+        if any(w in l for w in words):
+            return svg(ICONS[key])
+    return svg(ICONS["layers"])
+
 def know(items):
-    return '<dl class="know">' + "".join(f"<div data-reveal><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in items) + "</dl>"
+    return '<dl class="know">' + "".join(f'<div data-reveal><i class="kicon">{icon_for(a)}</i><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in items) + "</dl>"
+
+def ticker(words):
+    row = "".join(f"<span>{e(w)}</span>" for w in words)
+    return f'<div class="ticker" aria-hidden="true"><div class="ticker-track">{row}{row}</div></div>\n'
+
+def explain_layers(key, theme=""):
+    """An exploded view of what sits on the car, drawn in CSS."""
+    x = COPY["explain"][key]; n = len(x["layers"])
+    plates = "".join(f'<i class="ly ly-{kind}" style="--n:{n - 1 - k}"></i>' for k, (_, _, kind) in reversed(list(enumerate(x["layers"]))))
+    legend = "".join(f'<li style="--k:{k}"><i class="ly-dot ly-{kind}"></i><b>{e(a)}</b><span>{e(b)}</span></li>' for k, (a, b, kind) in enumerate(x["layers"]))
+    return f"""<section class="band explain" aria-labelledby="ex-{key}"{f' style="--th:{theme}"' if theme else ''}>
+  <div class="bandhead" data-reveal><h2 id="ex-{key}">{e(x['h2'])}</h2><p>{e(x['p'])}</p></div>
+  <div class="layers" data-live>
+    <div class="stack" aria-hidden="true">{plates}</div>
+    <ol class="layer-list">{legend}</ol>
+  </div>
+</section>
+"""
+
+def explain_ppf():
+    x = COPY["explain"]["ppf_fx"]
+    return f"""<section class="band explain" aria-labelledby="ex-fx">
+  <div class="bandhead" data-reveal><h2 id="ex-fx">{e(x['h2'])}</h2></div>
+  <div class="fxpair">
+    <figure class="fxcard" data-live><div class="fx-scene fx-chip" aria-hidden="true"><i class="fx-film"></i><i class="fx-stone"></i><i class="fx-ring"></i></div><figcaption><b>{e(x['items'][0][0])}</b><span>{e(x['items'][0][1])}</span></figcaption></figure>
+    <figure class="fxcard" data-live><div class="fx-scene fx-heal" aria-hidden="true"><i class="fx-film"></i><i class="fx-scratch"></i><i class="fx-warm"></i></div><figcaption><b>{e(x['items'][1][0])}</b><span>{e(x['items'][1][1])}</span></figcaption></figure>
+  </div>
+</section>
+"""
+
+def explain_tint():
+    x = COPY["explain"]["tint"]
+    tabs = "".join(f'<button type="button" data-v="{v}" aria-pressed="{"true" if v == 20 else "false"}"{" class=live" if v == 20 else ""}>{v}%</button>' for v in (70, 50, 35, 20, 5))
+    return f"""<section class="band explain" aria-labelledby="ex-tint">
+  <div class="bandhead" data-reveal><h2 id="ex-tint">{e(x['h2'])}</h2><p>{e(x['p'])}</p></div>
+  <div class="vlt" data-live style="--v:.2">
+    <div class="vlt-scene" aria-hidden="true"><i class="vlt-sun"></i><i class="vlt-rays vlt-in"></i><i class="vlt-glass"></i><i class="vlt-rays vlt-out"></i></div>
+    <div class="vlt-side">
+      <p class="vlt-num"><b>20%</b> of light gets through</p>
+      <div class="tabs glass vlt-tabs" role="group" aria-label="Tint shade">{tabs}</div>
+      <p class="vlt-note" aria-live="polite"></p>
+      <div class="vlt-law" aria-hidden="true"><span>Front side windows: 50% or lighter</span><span>Rear glass: any shade</span></div>
+    </div>
+  </div>
+</section>
+"""
+
+def explain_fleet():
+    x = COPY["explain"]["fleet"]
+    wheel = lambda cx, cy: f'<circle cx="{cx}" cy="{cy}" r="13" fill="#0f1c3f"/><circle cx="{cx}" cy="{cy}" r="5" fill="#cfcac1"/>'
+    return f"""<section class="band explain" aria-labelledby="ex-fleet">
+  <div class="bandhead" data-reveal><h2 id="ex-fleet">{e(x['h2'])}</h2><p>{e(x['p'])}</p></div>
+  <div class="fleetfx" data-live aria-hidden="true">
+    <svg viewBox="0 0 900 220" role="img">
+      <g class="fv"><path d="M20 150V92q0-14 14-14h118q10 0 16 8l26 34q6 8 6 18v12z" fill="#fff" stroke="#0f1c3f" stroke-width="3"/><path class="fv-art" d="M24 132C80 96 130 150 196 110" /><circle class="fv-dot" cx="92" cy="112" r="14"/>{wheel(62, 152)}{wheel(164, 152)}</g>
+      <g class="fv"><rect x="270" y="52" width="220" height="100" rx="8" fill="#fff" stroke="#0f1c3f" stroke-width="3"/><path d="M490 150V98q0-10 10-10h34q8 0 12 7l14 24q4 7 4 14v17z" fill="#fff" stroke="#0f1c3f" stroke-width="3"/><path class="fv-art" d="M276 124C340 70 410 150 484 84"/><circle class="fv-dot" cx="356" cy="100" r="18"/>{wheel(318, 154)}{wheel(446, 154)}{wheel(540, 154)}</g>
+      <g class="fv"><rect x="640" y="62" width="230" height="90" rx="8" fill="#fff" stroke="#0f1c3f" stroke-width="3"/><path d="M640 138h-30" stroke="#0f1c3f" stroke-width="4"/><path class="fv-art" d="M646 126C710 80 790 146 864 92"/><circle class="fv-dot" cx="730" cy="104" r="16"/>{wheel(770, 154)}{wheel(822, 154)}</g>
+      <path d="M0 168h900" stroke="#0f1c3f" stroke-opacity=".25" stroke-width="2"/>
+    </svg>
+  </div>
+</section>
+"""
 
 def areas(root, current=""):
     others = "".join(f'<li><a href="{link(root, x["slug"])}">{e(x["name"])}</a></li>' for x in SERVICES if x["slug"] != current)
@@ -367,8 +452,9 @@ def footer(root, home=False):
     area = ", ".join(SITE["area"])
     insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
     return f"""<footer class="foot">
+  <p class="foot-big">{e(SITE['tagline'])}</p>
   <div class="foot-grid">
-    <div><p class="tag">{e(SITE['tagline'])}</p><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
+    <div><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
     <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'pricing')}">Pricing</a></li><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
@@ -388,7 +474,8 @@ def faq_ld(items):
     return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
 
 def chrome(root, com=False):
-    return f"""<div class="floatbook" id="stickybar">
+    return f"""<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="floatbook" id="stickybar">
   {book('Book now', 'Fleet graphics' if com else 'Get your price in writing')}
 </div>
 
@@ -494,7 +581,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(eyebrow=c["h1"]) + tunnel(r) + services_band(r) + work_band(r) + prices_home(r) + fleet_teaser(r) + design_teaser(r) + how() + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(eyebrow=c["h1"]) + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + prices_home(r) + fleet_teaser(r) + design_teaser(r) + how() + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -513,7 +600,7 @@ def page_service(s):
     <dl class="points">{pts}</dl>
   </div>
 </section>
-""" + price_band(s["price_group"], s["price_h2"], s["price_intro"], s["factors"], th, s["name"]) + f"""<section class="band" aria-labelledby="knowh">
+""" + {"wrap": explain_layers("wrap", th), "ppf": explain_layers("ppf", th) + explain_ppf(), "tint": explain_tint()}.get(s["ch"], "") + price_band(s["price_group"], s["price_h2"], s["price_intro"], s["factors"], th, s["name"]) + f"""<section class="band" aria-labelledby="knowh">
   <div class="bandhead" data-reveal><h2 id="knowh">Good to know</h2></div>
   {know(s['know'])}
 </section>
@@ -529,7 +616,7 @@ def page_commercial():
     tray = "".join(f'<button type="button" aria-pressed="{"true" if i == 0 else "false"}" data-src="{r}assets/{j["src"]}" data-alt="{e(j["title"])}"><img loading="lazy" src="{r}assets/{j["src"]}" alt="" width="{j["w"]}" height="{j["h"]}"><span>{e(x["label"])}</span></button>' for i, (x, j) in enumerate(cats))
     boards = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"])}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}</figcaption></figure>' for j in com)
     steps = "".join(f"<li>{e(x)}</li>" for x in c["steps"])
-    body = top(r, "commercial") + "<main>\n" + hero_fleet() + f"""<section class="fleetword" aria-labelledby="fwh">
+    body = top(r, "commercial") + "<main>\n" + hero_fleet() + ticker(COPY["explain"]["ticker_fleet"]) + f"""<section class="fleetword" aria-labelledby="fwh">
   <h2 class="fw-word" id="fwh"><span>YOUR</span><span>FLEET</span></h2>
   <div class="fw-prints">{prints}</div>
   <div class="fw-tray" role="group" aria-label="Vehicle type">{tray}</div>
@@ -553,7 +640,7 @@ def page_commercial():
     </div>
   </div>
 </section>
-""" + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
+""" + explain_fleet() + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>

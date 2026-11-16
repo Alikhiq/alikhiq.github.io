@@ -63,12 +63,23 @@ function syncSeam() {
   ctl.style.setProperty("--seam-x1", `calc(${(x1 * 100).toFixed(2)}% + 22px)`);
   ctl.style.setProperty("--seam-y", (cy * 100).toFixed(2) + "%");
   if (!dragging) $("#seam").value = Math.round((stage.noseLeft() ? stage.seam : 1 - stage.seam) * 1000);
+  const ta = $("#tagA"), tb = $("#tagB");
+  if (ta && tb) {
+    const on = !ctl.hidden && stage.seamX != null; ta.hidden = tb.hidden = !on;
+    if (on) {
+      const sx = stage.seamX * cv.width + cv.left - cz.left, y = Math.max(0, b.y0 * cv.height + cv.top - cz.top - 4) + "px", left = stage.noseLeft();
+      const [l, r] = left ? [ta, tb] : [tb, ta];
+      l.style.cssText = `top:${y};right:${(cz.width - sx + 12).toFixed(1)}px;left:auto`; r.style.cssText = `top:${y};left:${(sx + 12).toFixed(1)}px;right:auto`;
+    }
+  }
 }
 async function paint(sweep) {
   if (!supports(veh(), S.ch)) S.vehicle = Object.keys(M().vehicles).find((k) => supports(M().vehicles[k], S.ch)) || S.vehicle;
   const sc = scene();
   $("#seamctl").hidden = !sc.seam;
   $("#seamLabel").textContent = { wrap: "Drag the seam: factory paint on one side, " + fin()[1] + " on the other", tint: "Drag the seam: clear glass on one side, tinted on the other", kits: "Drag the seam: stock on one side, with the kit on the other" }[S.ch] || "";
+  const tags = { wrap: [fin()[1], "Factory"], tint: [S.tint + "% tint", "Clear glass"], kits: ["With kit", "Stock"] }[S.ch];
+  if (tags && $("#tagA")) { $("#tagA").textContent = tags[0]; $("#tagB").textContent = tags[1]; }
   measure();
   await stage.show(veh(), sc.before, sc.after, { sweep, afterAlpha: sc.alpha ?? 1, seam: sc.seam, maskSrc: sc.mask || null });
   $("#carzone").classList.toggle("spin", stage.frameCount() > 1);

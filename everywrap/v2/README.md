@@ -25,6 +25,13 @@ Shared pieces on every page:
 
 Moving parts only run while they are on screen, and stop for visitors who ask for reduced motion.
 
+### Explainers and motion, all in code
+- **Layers**: an exploded view of what sits on the car (panel, paint, film, protection film), on the home, wrap and PPF pages.
+- **What the film does**: a stone bouncing off the film and a scratch closing with warmth, on the PPF page.
+- **What the percentage means**: light passing through glass at 70, 50, 35, 20 or 5 percent, with the Ohio rule, on the tint page.
+- **One design, every vehicle**: the same graphic drawing itself across a van, a box truck and a trailer, on the commercial page.
+- A moving band of words, numbered section headings that wipe in, a scroll line at the top, film grain, soft light pools per section, icons on the good-to-know cards, and two tags either side of the hero seam that say which side is which.
+
 ### Service pictures and loops
 Each service has one themed picture at `assets/svc/<wrap|ppf|tint|kits>.webp` (generated at 4K, stored 2400 px wide) and a three-second silent loop at `assets/loops/<same>.mp4` (1920 px, about 200 KB). The loop starts and ends on the picture, so it fades in over it without a jump, and it is only fetched when its card scrolls into view. Delete a loop and rebuild to fall back to the picture with a light sweep.
 

@@ -5,6 +5,7 @@ import { initFleet } from "./fleet.js";
 import { initScenes } from "./scenes.js";
 import { initWork } from "./work.js";
 import { initSite } from "./site.js";
+import { initFx } from "./fx.js";
 
 async function boot() {
   const pre = window.__EW_DATA;
@@ -13,6 +14,6 @@ async function boot() {
     DATA.work = pre ? pre.work : await (await fetch(ROOT + "data/work.json")).json();
     DATA.pricing = pre ? pre.pricing : await (await fetch(ROOT + CONFIG.assets + "pricing.json")).json();
   } catch (e) { console.error("EveryWrap data failed to load", e); }
-  initSite(); initHero(); initFleet(); initScenes(); initWork();
+  initSite(); initHero(); initFleet(); initScenes(); initWork(); initFx();
 }
 boot();
