@@ -56,13 +56,13 @@ Every page has a title, description, canonical link, share tags and structured d
 Copy can quote a price as `{$wrap.full}` (or `{$wrap.full.1}` for the second size column), so the words always match the table.
 
 ### Print prices
-Six rows in the `print` group are the owner's own prices (their `source` starts with `owner`): 3M laminated $8.43 and unlaminated $7.21 per square foot, Avery Dennison at 3M plus 5%, chrome at double the laminated 3M price, wall graphics $3.30. The other print and design rows are a trade printer's published prices multiplied by 1.6, the ratio of the owner's 3M price to that printer's, and are draft.
+Six rows in the `print` group are the owner's own prices (their `source` starts with `owner`): 3M laminated $8.43 and unlaminated $7.21 per square foot, Avery Dennison at 3M plus 5%, chrome at double the laminated 3M price, wall graphics $3.30. The other print and design rows are a trade printer's published prices multiplied by 1.6, the ratio of the owner's 3M price to that printer's, and started as drafts.
 
-### Prices are a draft
-`pricing.json` has `"confirmed": false`. The numbers come from what other shops publish, not from EveryWrap. The launch build (`--live`) stops with an error until the owner has checked every number and set `confirmed` to `true`. The page scripts read `assets/pricing.json`, a generated copy with the notes and sources stripped out.
+### Price approval
+`pricing.json` has `"confirmed": true`: the owner approved publishing the prices as starting prices on 16 Nov 2026. Apart from the six print rows, the numbers started from what other shops publish, and the owner can correct any of them in that file. The launch build (`--live`) stops with an error whenever `confirmed` is `false`. The page scripts read `assets/pricing.json`, a generated copy with the notes and sources stripped out.
 
 ## What is not real yet
-- **Prices are draft numbers** from other shops' published rates. See above.
+- **Most prices started from other shops' published rates.** The owner approved publishing them; see above.
 - Turnaround times, film lifespans and the nearby-suburb list are typical figures, not statements the owner has confirmed.
 - No phone number, street address or opening hours: none could be verified.
 - The price form sends nothing until `leadEndpoint` is set in `js/config.js`.
