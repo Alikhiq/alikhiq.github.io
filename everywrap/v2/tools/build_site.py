@@ -659,7 +659,7 @@ def page_commercial():
     </div>
   </div>
 </section>
-""" + explain_fleet() + mock_studio("mock_fleet") + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
+""" + explain_fleet() + concepts(r, skip=("coupe",)) + mock_studio("mock_fleet") + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
@@ -724,6 +724,7 @@ def catalog(root):
     for x in c["cats"]:
         rows = "".join('<li><a class="crow" href="' + href(root, t) + '"><span><b>' + e(n) + "</b><small>" + e(d) + "</small></span><em>" + price_label(ref) + "</em>" + ARROW + "</a></li>" for n, d, ref, t in x["items"])
         cols += f"""<div class="ccol" data-cat="{x['id']}" style="--th:{x['th']}">
+      <a class="ccol-img" href="{link(root, x['slug'])}" tabindex="-1" aria-hidden="true"><img loading="lazy" src="{root}assets/{x['img']}" alt="" width="1376" height="768"></a>
       <h3><a href="{link(root, x['slug'])}">{e(x['name'])}</a></h3>
       <p>{e(x['blurb'])}</p>
       <ul>{rows}</ul>
@@ -733,6 +734,16 @@ def catalog(root):
   <div class="tabs glass ctabs" role="group" aria-label="Category">{tabs}</div>
   <div class="ccols" data-cat="car">{cols}</div>
   <p class="wallmore"><a class="btn sec" href="{link(root, 'pricing')}">See every price {ARROW}</a></p>
+</section>
+"""
+
+def concepts(root, skip=()):
+    """Generated design concepts, by trade. Tapping one starts a design request from it."""
+    c = COPY["concepts"]
+    tiles = "".join(f'<button class="concept" type="button" data-quote="design" data-note="Like this concept: {e(name)}"><img loading="lazy" src="{root}assets/concepts/{k}.webp" alt="{e(alt)}" width="1376" height="768"><span>{e(name)}</span></button>' for k, name, alt in c["items"] if k not in skip)
+    return f"""<section class="band" id="concepts" aria-labelledby="cch">
+  <div class="bandhead" data-reveal><h2 id="cch">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
+  <div class="concepts" data-reveal>{tiles}</div>
 </section>
 """
 
@@ -759,7 +770,10 @@ def page_design():
     cards = "".join(card(i, x) for i, x in enumerate(c["services"]))
     prods = PRICING["groups"]["print"]["rows"]
     opts = "".join(f'<option value="{x["id"]}" data-price="{x["from"]}">{e(x["name"])}</option>' for x in prods if x.get("unit") == "sq ft")
-    tiles = "".join(f'<li><i class="sw sw-{x["swatch"]}" aria-hidden="true"></i><b>{e(x["name"])}</b><span>{e(x["note"])}</span></li>' for x in prods)
+    def tile(x):
+        pic = ('<img loading="lazy" src="' + r + "assets/" + x["img"] + '" alt="' + e(x["name"]) + '" width="1376" height="768">') if x.get("img") else ('<i class="sw sw-' + x["swatch"] + '" aria-hidden="true"></i>')
+        return "<li>" + pic + "<b>" + e(x["name"]) + "</b><span>" + e(x["note"]) + "</span></li>"
+    tiles = "".join(tile(x) for x in prods)
     jobs = [by[i] for i in ("everywrapny-2-sprinter-commercial-litmode", "2021-04-07-cnwvghosdur", "everywrapny-4-queens-public-library-bus", "2023-07-02-cunmnmqasdd", "2022-07-18-cglbmplvpx3", "614lux-4-wall-mural-install", "2022-08-20-chdssmxrqyy", "2021-04-28-conrpnrjnuq", "2022-03-12-ca_mzkerq_j") if i in by]
     shots = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"] + ", " + j.get("finish", ""))}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}<span>{e(j.get("finish", ""))}</span></figcaption></figure>' for j in jobs)
     body = top(r, "personal", "studio") + f"""<main>
@@ -773,7 +787,7 @@ def page_design():
   <div class="bandhead" data-reveal><h2 id="dsh">{e(c['design_h2'])}</h2><p>{e(c['design_p'])}</p></div>
   <ol class="svclist">{cards}</ol>
 </section>
-""" + mock_studio() + f"""<section class="band how" aria-labelledby="dhow">
+""" + concepts(r) + mock_studio() + f"""<section class="band how" aria-labelledby="dhow">
   <div class="bandhead" data-reveal><h2 id="dhow">{e(c['steps_h2'])}</h2></div>
   <ol class="steps3" data-reveal>{''.join(f'<li><i>{n + 1}</i><b>{e(a)}</b><span>{e(b)}</span></li>' for n, (a, b) in enumerate(c['steps']))}</ol>
 </section>

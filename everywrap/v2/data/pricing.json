@@ -268,7 +268,8 @@
      "unit": "sq ft",
      "exact": true,
      "swatch": "gloss",
-     "source": "owner, 16 Nov 2026"
+     "source": "owner, 16 Nov 2026",
+     "img": "dp/rolls.webp"
     },
     {
      "id": "3m",
@@ -278,7 +279,8 @@
      "unit": "sq ft",
      "exact": true,
      "swatch": "matte",
-     "source": "owner, 16 Nov 2026"
+     "source": "owner, 16 Nov 2026",
+     "img": "dp/printer.webp"
     },
     {
      "id": "avery-lam",
@@ -308,7 +310,8 @@
      "unit": "sq ft",
      "exact": true,
      "swatch": "chrome",
-     "source": "owner, 16 Nov 2026: double the laminated 3M price"
+     "source": "owner, 16 Nov 2026: double the laminated 3M price",
+     "img": "dp/chrome.webp"
     },
     {
      "id": "wall",
@@ -318,7 +321,8 @@
      "unit": "sq ft",
      "exact": true,
      "swatch": "wall",
-     "source": "owner, 16 Nov 2026"
+     "source": "owner, 16 Nov 2026",
+     "img": "dp/wall.webp"
     },
     {
      "id": "contour",
@@ -327,7 +331,8 @@
      "from": 11.07,
      "unit": "sq ft",
      "swatch": "cut",
-     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($6.92)"
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($6.92)",
+     "img": "dp/contour.webp"
     },
     {
      "id": "perf",
@@ -336,7 +341,8 @@
      "from": 9.52,
      "unit": "sq ft",
      "swatch": "perf",
-     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($5.95)"
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($5.95)",
+     "img": "dp/perf.webp"
     },
     {
      "id": "reflective",
@@ -345,7 +351,8 @@
      "from": 19.18,
      "unit": "sq ft",
      "swatch": "reflective",
-     "source": "DRAFT: another trade printer's $11.99 x 1.6"
+     "source": "DRAFT: another trade printer's $11.99 x 1.6",
+     "img": "dp/reflective.webp"
     },
     {
      "id": "fade",
@@ -353,7 +360,8 @@
      "note": "A colour gradient printed to fit the sides of your vehicle",
      "from": 960,
      "swatch": "fade",
-     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price (from $600)"
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price (from $600)",
+     "img": "dp/fade.webp"
     },
     {
      "id": "pattern",
@@ -362,7 +370,8 @@
      "from": 153,
      "unit": "yard",
      "swatch": "pattern",
-     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($95.50 a yard)"
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($95.50 a yard)",
+     "img": "dp/pattern.webp"
     },
     {
      "id": "decals",
@@ -370,7 +379,8 @@
      "note": "Printed and cut on sheets or rolls",
      "from": null,
      "swatch": "decal",
-     "source": "no published price found"
+     "source": "no published price found",
+     "img": "dp/decals.webp"
     },
     {
      "id": "floor",
@@ -378,7 +388,8 @@
      "note": "Printed film with a non-slip laminate",
      "from": null,
      "swatch": "floor",
-     "source": "no published price found"
+     "source": "no published price found",
+     "img": "dp/floor.webp"
     },
     {
      "id": "banner",
@@ -386,7 +397,8 @@
      "note": "Printed vinyl banners, hemmed with grommets",
      "from": null,
      "swatch": "banner",
-     "source": "no published price found"
+     "source": "no published price found",
+     "img": "dp/banner.webp"
     }
    ]
   },

@@ -92,7 +92,7 @@ export function initSite() {
   hooks.quote = openQuote;
   $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i style="background:${f[3]}"></i>${f[1]}</button>`).join("");
   document.addEventListener("click", (e) => {
-    const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote } : {}); }
+    const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote, note: q.dataset.note || "" } : {}); }
     if (e.target.closest("[data-upload]")) return openUpload();
     if (e.target.closest("[data-close]") || e.target.classList.contains("scrim")) return closeSheets();
     if (e.target.closest("[data-menu]")) return menu($("#menu").hidden);

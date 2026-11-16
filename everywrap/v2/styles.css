@@ -439,6 +439,18 @@ main{counter-reset:sec}
 .picks label small{margin-left:8px;color:var(--mute);font-size:12px;font-weight:500}
 .nextsteps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;color:var(--mute)}
 
+/* ---------- generated pictures: products, concepts, categories ---------- */
+.mats img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:18px;margin-bottom:10px;border:1px solid var(--line)}
+.concepts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.concept{position:relative;display:block;padding:0;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--card);color:#fff;text-align:left;transition:box-shadow .5s,border-color .5s}
+.concept img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.concept:hover{border-color:var(--glow);box-shadow:0 0 36px -14px var(--glow)}
+.concept:hover img{transform:scale(1.05)}
+.concept span{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;font:600 13px/1.2 var(--ui);background:linear-gradient(transparent,rgba(0,0,0,.78))}
+.ccol-img{display:block;margin:-6px -4px 16px;border-radius:16px;overflow:hidden}
+.ccol-img img{display:block;width:100%;aspect-ratio:16/8;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.ccol:hover .ccol-img img{transform:scale(1.04)}
+
 /* ---------- mockup studio ---------- */
 .mock{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;align-items:start;max-width:1120px}
 .mk-view{position:sticky;top:84px;z-index:2;border-radius:26px;border:1px solid var(--line);padding:22px 12px 8px;background:radial-gradient(90% 90% at 50% 0%,#34373f,#15161a 72%)}
@@ -720,6 +732,8 @@ main{counter-reset:sec}
   .price-in{grid-template-columns:1fr;gap:20px}
   .layers,.vlt{grid-template-columns:1fr;gap:10px}
   .mock{grid-template-columns:1fr;gap:12px}
+  .concepts{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .concept span{font-size:12px;padding:22px 10px 8px}
   .mk-view{top:66px;padding:14px 6px 4px;border-radius:22px}
   .mk-arts{grid-template-columns:repeat(3,minmax(0,1fr))}
   .stack{max-width:300px}

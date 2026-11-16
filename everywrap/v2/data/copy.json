@@ -202,8 +202,9 @@
    {
     "name": "Custom car wrap design",
     "text": "One-off liveries, stripes, camo and printed colour. Drawn to your car's body lines, so nothing lands on a door gap by accident.",
-    "job": "2021-04-07-cnwvghosdur",
-    "th": "#ef5b2a"
+    "th": "#ef5b2a",
+    "img": "concepts/coupe.webp",
+    "alt": "A sports coupe in a black, orange and white geometric livery"
    },
    {
     "name": "Commercial van and fleet wraps",
@@ -215,8 +216,8 @@
    {
     "name": "Print-ready artwork",
     "text": "Have a logo but no print files? We rebuild it as clean vector art and fit it to the vehicle, panel by panel.",
-    "img": "dp/rolls.webp",
-    "alt": "Rolls of printed and laminated wrap film on a cutting table",
+    "img": "dp/printer.webp",
+    "alt": "A wide-format printer printing a vehicle wrap",
     "th": "#27d3ff"
    }
   ],
@@ -463,7 +464,9 @@
       "",
       "body-kits"
      ]
-    ]
+    ],
+    "img": "svc/wrap.webp",
+    "img_alt": "Satin black film going onto a white car"
    },
    {
     "id": "biz",
@@ -503,7 +506,9 @@
       "design.setup",
       "commercial#mockup"
      ]
-    ]
+    ],
+    "img": "concepts/fleet.webp",
+    "img_alt": "A van, a box truck and a pickup in one matching livery"
    },
    {
     "id": "studio",
@@ -549,7 +554,9 @@
       "",
       "design-print#mockup"
      ]
-    ]
+    ],
+    "img": "dp/printer.webp",
+    "img_alt": "A wide-format printer printing a vehicle wrap"
    }
   ]
  },
@@ -557,5 +564,51 @@
   "We text or call you with your price in writing.",
   "You approve it, or ask for changes.",
   "We book your install date."
- ]
+ ],
+ "concepts": {
+  "h2": "Design concepts",
+  "p": "Starting points for different trades. Yours is drawn around your own brand. Tap one to start from it.",
+  "items": [
+   [
+    "plumb",
+    "Plumbing van",
+    "A cargo van in a blue and white wrap with a water-drop emblem"
+   ],
+   [
+    "move",
+    "Moving company box truck",
+    "A box truck in bold orange and black diagonal blocks"
+   ],
+   [
+    "food",
+    "Food truck",
+    "A food truck in a colourful illustrated wrap"
+   ],
+   [
+    "elec",
+    "Electrician van",
+    "A black compact van with yellow lightning graphics"
+   ],
+   [
+    "land",
+    "Landscaping truck and trailer",
+    "A pickup and trailer in a matching green leaf wrap"
+   ],
+   [
+    "clean",
+    "Cleaning service car",
+    "A white hatchback with teal bubble graphics"
+   ],
+   [
+    "fleet",
+    "Matching fleet",
+    "A van, a box truck and a pickup in the same navy and red livery"
+   ],
+   [
+    "coupe",
+    "One-off car livery",
+    "A sports coupe in a black, orange and white geometric livery"
+   ]
+  ]
+ }
 }
