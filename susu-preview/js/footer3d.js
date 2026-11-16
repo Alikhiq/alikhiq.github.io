@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — footer jewel: a slowly turning champagne-gold hoop (three.js).
    Lazy: three.js is only fetched when the footer comes near. Pauses off-screen and
    in background tabs. Skipped under prefers-reduced-motion or without WebGL, in

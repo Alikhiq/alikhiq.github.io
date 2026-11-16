@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — intro: the SUSU wordmark in crystal & gold (three.js).
    - First visit of a session: full piece (~4 s). Later pages in the session: a ~1 s version.
    - Letters turn in from edge-on, "INK & GLOW" settles in, a light sweep crosses the glass,

@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — site styles (Round City) */
 :root{
   --plum:#211b23; --plum-deep:#19121b; --ink:#140e16; --charcoal:#292329; --smoke:#3a2d35;
@@ -477,3 +478,4 @@ body.show-mbar .mbar{transform:none}
   .chapter--hero .display{margin-bottom:12px}
   .chapter--hero .lede{font-size:14.5px;line-height:1.5}
 }
+.lede a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
