@@ -51,6 +51,19 @@ def fill(x):
 
 SERVICES, COPY = fill(SERVICES), fill(COPY)
 AREAS = SITE["area"] + SITE.get("nearby", [])
+
+def build_id():
+    """A short id that changes whenever a script or the stylesheet changes."""
+    import hashlib
+    h = hashlib.sha256()
+    for d, _, names in sorted(os.walk(os.path.join(ROOT, "js"))):
+        for n in sorted(names):
+            h.update(open(os.path.join(d, n), "rb").read())
+    h.update(open(os.path.join(ROOT, "styles.css"), "rb").read())
+    return h.hexdigest()[:10]
+
+# On the live site the Worker serves /v/<id>/... as the same files, so every script a page loads carries the build id.
+VER = ("v/" + build_id() + "/") if LIVE else ""
 FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap"
 CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
@@ -103,7 +116,7 @@ def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="{root}styles.css">
+<link rel="stylesheet" href="{root}{VER}styles.css">
 {chr(10).join(ld(x) for x in lds)}
 </head>
 <body>
@@ -174,7 +187,7 @@ MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 def voice(label="Talk to our assistant"):
     """A link to the voice assistant, if one is set in data/site.json."""
     a = SITE.get("voice_agent")
-    return ('<a class="trylink voice" href="https://elevenlabs.io/app/talk-to?agent_id=' + a + '" target="_blank" rel="noopener">' + MIC + " " + e(label) + "</a>") if a else ""
+    return ('<a class="trylink voice" data-voice="' + a + '" href="https://elevenlabs.io/app/talk-to?agent_id=' + a + '" target="_blank" rel="noopener">' + MIC + ' <span class="voice-t" data-idle="' + e(label) + '">' + e(label) + "</span></a>") if a else ""
 
 def trust_strip(key="trust"):
     def ic(k):
@@ -622,7 +635,7 @@ def chrome(root, com=False):
   </div>
 </div>
 
-<script type="module" src="{root}js/main.js"></script>
+<script type="module" src="{root}{VER}js/main.js"></script>
 </body>
 </html>
 """

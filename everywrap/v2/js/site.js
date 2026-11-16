@@ -62,7 +62,7 @@ async function submitQuote(e) {
     // The live site hands the request to the visitor's email app, addressed to the shop.
     const body = rows.map((r) => `${r[0]}: ${r[1]}`).join("\n") + `\n\nSent from ${location.origin + location.pathname}`;
     const href = `mailto:${MAIL.to}?${MAIL.cc ? "cc=" + encodeURIComponent(MAIL.cc) + "&" : ""}subject=${encodeURIComponent("New EveryWrap quote request")}&body=${encodeURIComponent(body)}`;
-    $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team. <a href="${esc(href)}">Open the email again</a>`;
+    $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team.${photo ? " Attach your photo to that email before you send it." : ""} <a href="${esc(href)}">Open the email again</a>`;
     step(4); location.href = href; return;
   }
   let msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
@@ -116,7 +116,7 @@ function playIntro() {
 }
 
 export function initSite() {
-  hooks.quote = openQuote; loadMail();
+  hooks.quote = openQuote; hooks.upload = openUpload; loadMail();
   $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i style="background:${f[3]}"></i>${f[1]}</button>`).join("");
   document.addEventListener("click", (e) => {
     const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote, note: q.dataset.note || "" } : {}); }

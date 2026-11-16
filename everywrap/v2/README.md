@@ -26,7 +26,7 @@ Shared pieces on every page:
 - **Logo**: an inline SVG (`mark()` and `logo()` in the generator, `.logo` in the stylesheet). One strip of film that wraps round twice and reads as an E: the first turn in the text colour, the second in the live glow colour, with a glint running along it. The name is set in Newsreader, with Wrap in italic. The favicon uses the same paths.
 - **Launch intro** (home page, once per visit, skipped for reduced motion): the mark draws itself, the name rises, then the black sheet lifts off the page while the mark travels to the logo in the top bar. `INTRO` in the generator, `.intro` in the stylesheet, `playIntro()` in `js/site.js`.
 - **Trust badges and film brands**: `trust` and `trust_com` in `data/copy.json`, `suppliers` in `data/site.json`. Brands are named in text; no third-party logos are used.
-- **Voice assistant**: an ElevenLabs agent, linked from the hero, the menu and the closing section. Its id is `voice_agent` in `data/site.json`; remove it to hide the links. The agent's prices are written into its prompt and must be updated there when `pricing.json` changes.
+- **Voice assistant**: an ElevenLabs agent, started from the hero, the menu and the closing section. Its id is `voice_agent` in `data/site.json`; remove it to hide the buttons. The conversation runs on the page (`js/voice.js`): the button turns into a live orb, and the agent can open the photo panel (`open_photo_upload`) or the booking form (`open_booking_form`) on the visitor's screen. Those two are client tools on the agent, and their names must match the handlers in `js/voice.js`. The ElevenLabs web client is bundled in `js/vendor/elevenlabs-client.js` and only loads on the first tap. If the browser cannot start a session, the button opens the hosted conversation in a new tab. Leaving the page ends the conversation. The agent's prices are written into its prompt and must be updated there when `pricing.json` changes.
 - **Live glow**: `--glow` and `--glow2` follow the finish on wraps and a fixed colour per service otherwise (`theme()` in `js/state.js`).
 
 Moving parts only run while they are on screen, and stop for visitors who ask for reduced motion.
@@ -106,6 +106,8 @@ To publish a change:
 2. `python3 deploy/upload.py` (needs `CLOUDFLARE_ACCOUNT_ID`).
 3. `python3 tools/build_site.py` again, so the pages kept in the repo stay the preview build.
 4. Only when `deploy/worker.js` changes: `npx wrangler deploy` from `deploy/`.
+
+On the live build every page loads its stylesheet and scripts from `/v/<build id>/...`. The Worker serves those as the same files; the id changes when a script or the stylesheet changes, so a new deploy never runs with files a browser cached from the last one.
 
 Booking requests: the form opens the visitor's email app with the request written out, addressed to `LEAD_TO` with a copy to `LEAD_CC`. Both are settings on the Worker (`/lead.json`); the copy address is a Worker secret and is not in the repo. The older site sent requests the same way. `sales@everywrap.com` has no mail records on the domain, so the copy address is the one that receives. Setting `leadEndpoint` in `js/config.js` replaces the email step with a direct post.
 

@@ -25,7 +25,7 @@ export function fromPrice(group, id, size = S.size) {
   if (!r || r.from == null) return null;
   return Array.isArray(r.from) ? r.from[size] ?? r.from[0] : r.from;
 }
-export const hooks = { heroGo: null, quote: null, relabel: null };
+export const hooks = { heroGo: null, quote: null, relabel: null, upload: null };
 export const fin = () => FIN.find((f) => f[0] === S.finish);
 
 // The glow colour follows what the visitor is looking at: the finish on wraps, a fixed colour per service otherwise.

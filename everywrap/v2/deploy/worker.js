@@ -15,6 +15,9 @@ export default {
     }
     let key;
     try { key = decodeURIComponent(url.pathname).replace(/^\/+/, ""); } catch { return new Response("Bad request", { status: 400 }); }
+    // Pages load scripts and styles as /v/<build id>/...; the id only keeps old cached copies out of a new build.
+    const versioned = /^v\/[a-z0-9]+\//.test(key);
+    if (versioned) key = key.replace(/^v\/[a-z0-9]+\//, "");
     if (key === "" || key.endsWith("/")) key += "index.html";
     else if (!/\.[a-z0-9]+$/i.test(key)) { url.pathname += "/"; return Response.redirect(url.toString(), 301); }
 
@@ -29,7 +32,8 @@ export default {
     h.set("content-type", TYPES[ext] || "application/octet-stream");
     h.set("etag", obj.httpEtag);
     h.set("accept-ranges", "bytes");
-    h.set("cache-control", ext === "html" ? "public, max-age=0, must-revalidate" : "public, max-age=3600");
+    const media = ["webp", "jpg", "jpeg", "png", "mp4", "ico"].includes(ext);
+    h.set("cache-control", versioned ? "public, max-age=31536000, immutable" : media ? "public, max-age=86400" : "public, max-age=0, must-revalidate");
     h.set("x-content-type-options", "nosniff");
     h.set("referrer-policy", "strict-origin-when-cross-origin");
     if (copy) h.set("x-robots-tag", "noindex, nofollow");
