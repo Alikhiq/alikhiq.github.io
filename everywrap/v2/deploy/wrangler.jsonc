@@ -1,0 +1,11 @@
+{
+  // The Worker that serves the site from the R2 bucket. Deploy with: npx wrangler deploy (from this folder).
+  "name": "everywrap-v2",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  // "1" adds a noindex header to every response. Set to "0" only for the launch build.
+  "vars": { "PREVIEW": "1" },
+  "r2_buckets": [{ "binding": "SITE", "bucket_name": "everywrap-site" }]
+}

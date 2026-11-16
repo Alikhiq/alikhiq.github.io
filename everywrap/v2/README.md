@@ -91,3 +91,13 @@ Transparent PNG cutouts work too: the engine then draws the studio light and the
 - `js/engine.js`: the canvas stage (layout, seam, coverage sheen, rotate, cutout studio)
 - `js/app.js`: chapters, themes, form, input rules, gallery, intro
 - `js/config.js`: lead endpoint and asset folder
+
+## Hosting
+
+The site runs on Cloudflare, on the account that holds everywrap.com.
+
+- The files live in the R2 bucket `everywrap-site`. `deploy/upload.py` sends the public files there after a build.
+- The Worker `everywrap-v2` (`deploy/worker.js`, `deploy/wrangler.jsonc`) serves them, at `new.everywrap.com`.
+- It is the preview build: every response carries a noindex header, and `robots.txt` blocks crawlers.
+- `everywrap.com` and `www.everywrap.com` still point at the older Worker `everywrap-columbus`. Moving them to `everywrap-v2` is the launch step. Before that: confirm the prices, set `leadEndpoint` in `js/config.js`, build with `--live`, and set `PREVIEW` to `"0"`.
+
