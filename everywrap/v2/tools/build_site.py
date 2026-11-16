@@ -628,10 +628,16 @@ def chrome(root, com=False):
         <input id="uFile" type="file" accept="image/*">
         <span id="dropT"><b>Add a photo of your car</b><br>A side or front three-quarter shot in daylight works best.</span>
       </label>
+      <div class="uout" id="uOut" hidden>
+        <img id="uOutImg" alt="Your car in the finish you picked. A preview made by AI.">
+        <span class="utag" id="uTag"></span>
+        <button class="uhold" id="uHold" type="button">Hold to see your photo</button>
+        <button class="uagain" id="uAgain" type="button">Change photo</button>
+      </div>
       <span class="legend">Finish to try</span>
       <div class="usw" id="usw" role="group" aria-label="Finish to try"></div>
-      <p class="note">We send your car back in this finish, with your quote.</p>
-      <div class="srow"><button class="btn pri" type="button" id="uGo">Continue to my price</button></div>
+      <p class="note" id="uMsg" aria-live="polite">Add a photo and pick a finish to see your car in it. The preview is made by AI, so treat it as a guide, not the finished job.</p>
+      <div class="srow"><button class="btn pri" type="button" id="uShow" disabled>Show my car in this finish</button><button class="btn" type="button" id="uGo">Continue to my price</button></div>
     </div>
   </div>
 </div>

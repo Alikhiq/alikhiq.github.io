@@ -54,7 +54,7 @@ async function submitQuote(e) {
   if (digits.length < 10) { $("#qErr3").textContent = "That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
   const com = $("#qSizeF").hidden, size = com ? 0 : +($("#qSizeF input:checked") || { value: 0 }).value, shift = /shift/i.test($("#qFin").value);
   const starts = [["wrap", "Wrap", fromPrice("wrap", shift ? "shift" : "full", size)], ["ppf", "PPF", fromPrice("ppf", S.ppf, size)], ["tint", "Tint", fromPrice("tint", "carbon", size)]].filter(([id, , n]) => n && $("#qS_" + id).checked).map(([, name, n]) => `${name} ${money(n)}`);
-  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", note, page: location.pathname };
+  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname, render: renderId };
   const rows = [["Vehicle", lead.vehicle], ["Service", lead.services.join(", ")]];
   if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]);
   if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
@@ -85,7 +85,42 @@ async function submitQuote(e) {
   const msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
   $("#qDone").textContent = msg; step(4);
 }
-function openUpload() { ev("photo_open"); $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
+function openUpload() { ev("photo_open"); uState(); $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
+
+/* ---------- see it on your car: an AI preview of the visitor's photo in the picked finish ---------- */
+function uState(msg) {
+  const b = $("#uShow"), name = fin()[1].toLowerCase();
+  b.disabled = !photoFile || painting; b.textContent = painting ? "Painting your car…" : `Show my car in ${name}`;
+  const done = !!renderId; b.classList.toggle("pri", !done); $("#uGo").classList.toggle("pri", done);
+  if (msg) $("#uMsg").textContent = msg;
+}
+// The model takes a small picture, so the photo is shrunk in the browser before it is sent.
+async function shrink(file) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, 504 / Math.max(bmp.width, bmp.height));
+  const w = Math.max(64, Math.floor((bmp.width * k) / 8) * 8), h = Math.max(64, Math.floor((bmp.height * k) / 8) * 8);
+  const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(bmp, 0, 0, w, h);
+  return { w, h, blob: await new Promise((r) => c.toBlob(r, "image/jpeg", 0.9)) };
+}
+async function paint() {
+  if (!photoFile || painting) return;
+  if (!R.dataset.live) return uState("Previews run on the live site. Continue and we send your car back in this finish with your quote.");
+  painting = true; uState("About five seconds. We are painting your car in " + fin()[1].toLowerCase() + "."); $("#drop").classList.add("busy");
+  const finish = S.finish, label = fin()[1];
+  let out = null, why = "";
+  try {
+    const small = await shrink(photoFile);
+    for (let n = 0; n < 2 && !out; n++) {
+      const fd = new FormData(); fd.append("photo", small.blob, "car.jpg"); fd.append("finish", finish); fd.append("w", small.w); fd.append("h", small.h); fd.append("page", location.pathname);
+      const r = await fetch("/api/render", { method: "POST", body: fd }), d = await r.json().catch(() => ({}));
+      if (d.ok) out = d; else { why = d.error || "x"; if (r.status !== 502) break; }
+    }
+  } catch { why = why || "x"; }
+  painting = false; $("#drop").classList.remove("busy");
+  if (!out) return uState(why === "limit" ? "That is all the previews for today. Continue and we send your car back in this finish with your quote." : "The preview did not work this time. Try again, or continue and we send your car back in this finish with your quote.");
+  renderId = out.id; renderUrl = out.image;
+  $("#uOutImg").src = renderUrl; $("#uTag").textContent = label + " · AI preview"; $("#uOut").hidden = false; $("#drop").hidden = true;
+  uState("A preview made by AI. The real film, the light and your car's lines will look a little different. Try another finish, or continue for your price.");
+}
 
 /* ---------- where requests go ---------- */
 // The live deployment answers /lead.json with the addresses requests are emailed to. Previews have none.
@@ -102,7 +137,7 @@ async function loadMail() {
 
 /* ---------- launch intro (home only) ---------- */
 let introT = [];
-let photoFile = null;
+let photoFile = null, photoUrl = "", renderId = "", renderUrl = "", painting = false;
 function closeIntro() {
   const el = $("#intro"), m = $("#imark");
   el.hidden = true; el.classList.remove("play", "out"); m.style.transform = ""; document.documentElement.classList.remove("intro-on");
@@ -137,9 +172,14 @@ export function initSite() {
     if (e.target.closest("[data-menu]")) { if ($("#menu").hidden) ev("menu_open"); return menu($("#menu").hidden); }
     if (e.target.closest("#menu a")) menu(false);
   });
-  $("#usw").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#usw button").forEach((x) => x.setAttribute("aria-pressed", x === b)); if (hooks.heroGo && S.ch === "wrap") hooks.heroGo({ finish: b.dataset.f }); else S.finish = b.dataset.f; });
-  $("#uFile").addEventListener("change", function () { const f = this.files && this.files[0]; if (!f) return; const t = $("#dropT"); t.innerHTML = ""; const im = new Image(); im.alt = "Your car"; im.src = URL.createObjectURL(f); t.appendChild(im); photo = true; photoFile = f; ev("photo_added"); });
+  $("#usw").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#usw button").forEach((x) => x.setAttribute("aria-pressed", x === b)); if (hooks.heroGo && S.ch === "wrap") hooks.heroGo({ finish: b.dataset.f }); else S.finish = b.dataset.f; uState(); });
+  $("#uFile").addEventListener("change", function () { const f = this.files && this.files[0]; if (!f) return; const t = $("#dropT"); t.innerHTML = ""; const im = new Image(); im.alt = "Your car"; im.src = URL.createObjectURL(f); photoUrl = im.src; t.appendChild(im); photo = true; photoFile = f; renderId = ""; renderUrl = ""; $("#uOut").hidden = true; $("#drop").hidden = false; uState(); ev("photo_added"); });
   $("#uGo").addEventListener("click", () => openQuote());
+  $("#uShow").addEventListener("click", paint);
+  $("#uAgain").addEventListener("click", () => { $("#uOut").hidden = true; $("#drop").hidden = false; $("#uFile").click(); });
+  const hold = $("#uHold"), peek = (on) => { if (renderUrl) $("#uOutImg").src = on ? photoUrl : renderUrl; };
+  hold.addEventListener("pointerdown", (e) => { e.preventDefault(); peek(true); }); ["pointerup", "pointerleave", "pointercancel"].forEach((n) => hold.addEventListener(n, () => peek(false)));
+  hold.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") peek(true); }); hold.addEventListener("keyup", () => peek(false));
   $("#qForm").addEventListener("submit", submitQuote);
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });
   $("#qSvc").addEventListener("change", details);

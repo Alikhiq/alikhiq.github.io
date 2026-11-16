@@ -94,14 +94,65 @@ async function lead(request, env, ctx, url) {
     await env.PRIVATE.put(photo, file.stream(), { httpMetadata: { contentType: file.type } });
   }
   const L = { id, name, phone, contact: d.contact === "call" ? "call" : "text", vehicle: clip(d.vehicle, 120), services: clip((d.services || []).join(", "), 200), finish: clip(d.finish, 60), tint: clip(d.tint, 20),
-    size: clip(d.size, 40), starts: clip((d.from || []).join(", "), 200), note: clip(d.note, 500), page: clip(d.page, 120), photo };
-  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.page, photo, visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
+    size: clip(d.size, 40), starts: clip((d.from || []).join(", "), 200), note: clip(d.note, 500), page: clip(d.page, 120), photo, render: /^[a-z0-9]{8,24}$/.test(String(d.render || "")) ? `renders/${d.render}.jpg` : "" };
+  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, render, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.page, photo, L.render, visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
   ctx.waitUntil(Promise.all([
     env.DB.prepare("INSERT INTO events (ts, day, name, path, visitor, device, country, ref, detail) VALUES (?,?,?,?,?,?,?,?,?)").bind(ts, day, "lead_sent", L.page, visitor, device(ua), clip(request.cf && request.cf.country, 2), "", L.services.slice(0, 80)).run().catch(() => {}),
     notify(env, L, url.origin),
   ]));
   return json({ ok: true, id });
+}
+
+/* ---------- "see it on your car": an AI preview of the visitor's photo in a finish ---------- */
+const RENDER_MODEL = "@cf/black-forest-labs/flux-2-klein-9b";
+const RENDER_PER_VISITOR = 4, RENDER_PER_DAY = 150;
+const FINISH = {
+  "satin-black": "satin black vinyl wrap, a smooth low-sheen black with soft highlights",
+  "gloss-black": "gloss black vinyl wrap, deep black with crisp mirror-like reflections",
+  "satin-grey": "satin grey vinyl wrap, a flat mid grey with a soft sheen",
+  "satin-red": "satin red vinyl wrap, a rich red with a smooth low-sheen finish",
+  "color-shift": "iridescent colour-shift (chameleon) vinyl wrap: one continuous pearlescent paint whose hue drifts smoothly between deep purple, blue and teal with the light, with no separate colour blocks or hard edges",
+};
+async function render(request, env, ctx, url) {
+  if (!env.AI || !env.DB) return json({ ok: false, error: "off" }, 503);
+  const ua = request.headers.get("user-agent") || "";
+  if (!sameSite(request) || !ua || BOT.test(ua)) return json({ ok: false }, 403);
+  let form; try { form = await request.formData(); } catch { return json({ ok: false, error: "bad form" }, 400); }
+  const file = form.get("photo"), finish = String(form.get("finish") || "");
+  if (!FINISH[finish] || !file || typeof file !== "object" || !file.size || file.size > 600 * 1024 || !["image/jpeg", "image/png", "image/webp"].includes(file.type)) return json({ ok: false, error: "bad input" }, 400);
+  const ts = Date.now(), day = dayOf(ts), visitor = await visitorOf(request, env, day);
+  const [mine, all] = await Promise.all([
+    env.DB.prepare("SELECT COUNT(*) c FROM renders WHERE visitor = ? AND day = ?").bind(visitor, day).first(),
+    env.DB.prepare("SELECT COUNT(*) c FROM renders WHERE day = ?").bind(day).first(),
+  ]);
+  if ((mine && mine.c >= RENDER_PER_VISITOR) || (all && all.c >= RENDER_PER_DAY)) return json({ ok: false, error: "limit" }, 429);
+  // The photo arrives already shrunk to fit the model's input size. The output keeps its shape.
+  const w = Math.min(512, Math.max(64, +form.get("w") || 512)), h = Math.min(512, Math.max(64, +form.get("h") || 384)), k = 1024 / Math.max(w, h);
+  const prompt = `Repaint this exact car in ${FINISH[finish]}. Change only the painted body panels. Keep the same car, the same camera angle, wheels, tyres, windows, lights, grille, badges, background and lighting. Photorealistic photograph.`;
+  const photo = await file.arrayBuffer();
+  let out = null, last = "";
+  // The model answers in about two seconds but now and then fails at once with an internal error, so try a few times.
+  for (let n = 0; n < 4 && !(out && out.image); n++) {
+    if (n) await new Promise((r) => setTimeout(r, 250 * n));
+    const f = new FormData();
+    f.append("prompt", prompt);
+    f.append("input_image_0", new Blob([photo], { type: file.type }), "car.jpg");
+    f.append("width", String(Math.round((w * k) / 16) * 16)); f.append("height", String(Math.round((h * k) / 16) * 16));
+    const fr = new Response(f);
+    try { out = await env.AI.run(RENDER_MODEL, { multipart: { body: fr.body, contentType: fr.headers.get("content-type") } }); }
+    catch (e) { last = String(e && e.message).slice(0, 300); console.error("render", n, last); }
+  }
+  if (!out || !out.image) return json({ ok: false, error: "model", detail: /EWSelfTest/.test(ua) ? last : undefined }, 502);
+  const b64 = out && out.image;
+  const id = ts.toString(36) + hex(crypto.getRandomValues(new Uint8Array(4)));
+  const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  ctx.waitUntil(Promise.all([
+    env.PRIVATE ? env.PRIVATE.put(`renders/${id}.jpg`, bytes, { httpMetadata: { contentType: "image/jpeg" } }) : null,
+    env.DB.prepare("INSERT INTO renders (id, ts, day, visitor, finish) VALUES (?,?,?,?,?)").bind(id, ts, day, visitor, finish).run(),
+    env.DB.prepare("INSERT INTO events (ts, day, name, path, visitor, device, country, ref, detail) VALUES (?,?,?,?,?,?,?,?,?)").bind(ts, day, "render", clip(form.get("page"), 120), visitor, device(ua), clip(request.cf && request.cf.country, 2), "", finish).run().catch(() => {}),
+  ]));
+  return json({ ok: true, id, image: "data:image/jpeg;base64," + b64 });
 }
 
 /* ---------- the dashboard's data ---------- */
@@ -132,7 +183,7 @@ async function desk(request, env, url) {
       q("SELECT device, COUNT(DISTINCT visitor) p FROM events WHERE day >= ? GROUP BY device ORDER BY p DESC", since),
       q("SELECT detail, COUNT(*) c FROM events WHERE day >= ? AND name = 'finish_pick' AND detail != '' GROUP BY detail ORDER BY c DESC LIMIT 5", since),
       q("SELECT day, COUNT(*) c FROM leads WHERE day >= ? GROUP BY day", since),
-      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
+      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, render, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
       q("SELECT COUNT(DISTINCT visitor) v FROM events WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE status = 'new'"),
@@ -145,7 +196,7 @@ async function desk(request, env, url) {
       totals: { visitors: perDay.reduce((a, r) => a + r.v, 0), views: perDay.reduce((a, r) => a + r.pv, 0), requests, fresh: fresh[0] ? fresh[0].c : 0, before: { visitors: before[0] ? before[0].v : 0, requests: beforeLeads[0] ? beforeLeads[0].c : 0 } },
       series: list.map((d) => ({ day: d, visitors: pd[d] ? pd[d].v : 0, views: pd[d] ? pd[d].pv : 0, requests: ld[d] || 0 })),
       funnel: [["Visited the site", perDay.reduce((a, r) => a + r.v, 0)], ["Opened Book now", people("book_open")], ["Filled in the vehicle", people("book_step3")], ["Sent a request", requests]],
-      taps: [["Opened Book now", people("book_open"), times("book_open")], ["Started a voice chat", people("voice_start"), times("voice_start")], ["Opened the photo panel", people("photo_open"), times("photo_open")], ["Tried a finish on the car", people("finish_pick"), times("finish_pick")],
+      taps: [["Opened Book now", people("book_open"), times("book_open")], ["Started a voice chat", people("voice_start"), times("voice_start")], ["Opened the photo panel", people("photo_open"), times("photo_open")], ["Previewed their car in a finish", people("render"), times("render")], ["Tried a finish on the car", people("finish_pick"), times("finish_pick")],
         ["Switched service", people("service_pick"), times("service_pick")], ["Opened a job photo", people("work_open"), times("work_open")], ["Used the print calculator", people("calc_use"), times("calc_use")], ["Used the mockup studio", people("mock_use"), times("mock_use")], ["Tapped an email link", people("mail_click"), times("mail_click")], ["Tapped Instagram", people("social_click"), times("social_click")]],
       pages, refs, devices, finishes, leads });
   }
@@ -157,8 +208,9 @@ async function desk(request, env, url) {
     return json({ ok: true });
   }
   if (path === "/api/desk/photo") {
-    const row = await DB.prepare("SELECT photo FROM leads WHERE id = ?").bind(url.searchParams.get("id") || "").first();
-    const obj = row && row.photo && env.PRIVATE ? await env.PRIVATE.get(row.photo) : null;
+    const row = await DB.prepare("SELECT photo, render FROM leads WHERE id = ?").bind(url.searchParams.get("id") || "").first();
+    const key = row && (url.searchParams.get("kind") === "render" ? row.render : row.photo);
+    const obj = key && env.PRIVATE ? await env.PRIVATE.get(key) : null;
     if (!obj) return new Response("Not found", { status: 404 });
     return new Response(obj.body, { headers: { "content-type": (obj.httpMetadata && obj.httpMetadata.contentType) || "image/jpeg", "cache-control": "private, max-age=3600", "x-robots-tag": "noindex" } });
   }
@@ -217,6 +269,7 @@ export default {
     try {
       if (url.pathname === "/api/event" && request.method === "POST") return await event(request, env, ctx, url);
       if (url.pathname === "/api/lead" && request.method === "POST") return await lead(request, env, ctx, url);
+      if (url.pathname === "/api/render" && request.method === "POST") return await render(request, env, ctx, url);
       if (url.pathname.startsWith("/api/desk/")) return await desk(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ ok: false }, 404);
     } catch (e) {

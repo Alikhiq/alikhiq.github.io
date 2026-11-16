@@ -118,6 +118,15 @@ Booking requests: on the live site the form posts to `/api/lead` on the Worker. 
 - **Access**: a private link, `https://everywrap.com/desk/#k=<DESK_KEY>`. The key sits after the `#`, so it is never sent in a page request. Opening the link sets a 90-day session cookie on that device. `DESK_KEY` and `SESSION_SECRET` are Worker secrets; changing `DESK_KEY` replaces the link, changing `SESSION_SECRET` signs every device out.
 - **Counting** (`js/track.js`, `/api/event`): page views and a fixed list of named taps, on the live domain only. No cookies. A visitor is a one-way hash of address, browser and the day, so one person counts once a day and cannot be followed across days. Known crawlers are ignored.
 - **Email alerts**: the Worker emails each new request to `NOTIFY_TO` once `RESEND_KEY` (a Resend sending key) and `NOTIFY_FROM` (a sender on a domain verified in Resend) are set on it. Until then requests only appear on the dashboard.
-- **Tables**: `events` and `leads`; the statements are in `deploy/schema.sql`.
+- **Tables**: `events`, `leads` and `renders`; the statements are in `deploy/schema.sql`.
+
+## See it on your car
+
+In the photo panel a visitor adds a photo, picks a finish and gets their own car back in that finish in about two seconds (`paint()` in `js/site.js`, `/api/render` on the Worker).
+
+- The browser shrinks the photo to fit 504 pixels and posts it. The Worker asks Workers AI (`@cf/black-forest-labs/flux-2-klein-9b`) to repaint only the body panels, and tries up to four times because the model now and then fails at once.
+- It is labelled as an AI preview on the page, and the visitor can hold a button to compare with their photo.
+- Limits, set at the top of that section in `deploy/worker.js`: 4 previews per visitor per day and 150 for the whole site per day. Workers AI is billed to the Cloudflare account.
+- The preview is stored in the private bucket and travels with the booking request, so the dashboard shows the photo and what the visitor saw.
 
 Prices: `data/pricing.json` has `"confirmed": true` since the owner approved publishing on 16 Nov 2026. The `source` notes say which numbers are the owner's own and which started from other shops' rates.

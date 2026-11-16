@@ -53,7 +53,7 @@ const tools = {
   open_photo_upload() {
     if (!hooks.upload) return "The photo panel is not on this page. Ask the visitor to tap Book now instead.";
     hooks.upload();
-    return "The photo panel is open on the visitor's screen. They add a photo there and continue to the booking form. You cannot see the photo. It is sent to the team together with the booking request when they press the last button.";
+    return "The photo panel is open on the visitor's screen. They add a photo, pick a finish and tap the button to see their own car in that finish in about five seconds. It is an AI preview, a guide and not the finished job. You cannot see the photo. From there they continue to the booking form, and the photo is sent to the team with the request.";
   },
   open_booking_form(p = {}) {
     if (!hooks.quote) return "The booking form is not available. Ask the visitor to tap Book now on the page.";

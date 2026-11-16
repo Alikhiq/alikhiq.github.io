@@ -18,5 +18,7 @@
     { "binding": "SITE", "bucket_name": "everywrap-site" },
     { "binding": "PRIVATE", "bucket_name": "everywrap-private" }
   ],
-  "d1_databases": [{ "binding": "DB", "database_name": "everywrap-desk", "database_id": "53483e55-23d4-465f-b146-3db726a67d70" }]
+  "d1_databases": [{ "binding": "DB", "database_name": "everywrap-desk", "database_id": "53483e55-23d4-465f-b146-3db726a67d70" }],
+  // Workers AI makes the "see it on your car" preview. It is billed to the account; the Worker caps it per visitor and per day.
+  "ai": { "binding": "AI" }
 }
