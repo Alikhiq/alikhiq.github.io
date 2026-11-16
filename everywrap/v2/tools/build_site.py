@@ -640,7 +640,7 @@ def page_commercial():
     </div>
   </div>
 </section>
-""" + explain_fleet() + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
+""" + explain_fleet() + mock_studio("mock_fleet") + price_band("fleet", c["price_h2"], c["price_intro"], c["factors"], "", "Fleet graphics") + f"""<section class="band workband" aria-labelledby="cwh">
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
@@ -672,6 +672,30 @@ def page_pricing():
 </section>
 """ + faq(c["faq"], "Pricing questions") + areas(r) + final() + "</main>\n" + footer(r) + chrome(r)
     write("pricing/index.html", head(r, "pricing", c["title"], c["desc"], extra_ld=[catalog, faq_ld(c["faq"])]) + body)
+
+def mock_studio(key="mock"):
+    """The live mockup studio. js/mock.js draws the vehicle and fills in the controls."""
+    c = COPY[key]
+    return f"""<section class="band" id="mockup" aria-labelledby="mkh">
+  <div class="bandhead" data-reveal><h2 id="mkh">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
+  <div class="mock">
+    <div class="mk-view"><div class="mk-stage"></div></div>
+    <div class="mk-ctl">
+      <span class="legend">Vehicle</span>
+      <div class="tabs glass mk-vehs" role="group" aria-label="Vehicle"></div>
+      <span class="legend">Layout</span>
+      <div class="mk-arts" role="group" aria-label="Layout"></div>
+      <span class="legend">Colours</span>
+      <div class="mk-row"><div class="mk-pals" role="group" aria-label="Brand colours"></div><div class="mk-bases" role="group" aria-label="Vehicle colour"></div></div>
+      <div class="mk-fields">
+        <div class="field"><label for="mkName">Business name</label><input id="mkName" type="text" maxlength="26" placeholder="Your name" autocomplete="off"></div>
+        <div class="field"><label for="mkLine">Phone or tagline</label><input id="mkLine" type="text" maxlength="30" placeholder="614 555 0123" autocomplete="off"></div>
+      </div>
+      <button class="btn pri mk-go" type="button">Send us this mockup</button>
+    </div>
+  </div>
+</section>
+"""
 
 def design_teaser(root):
     c = COPY["home"]
@@ -710,7 +734,7 @@ def page_design():
   <div class="bandhead" data-reveal><h2 id="dsh">{e(c['design_h2'])}</h2><p>{e(c['design_p'])}</p></div>
   <ol class="svclist">{cards}</ol>
 </section>
-<section class="band how" aria-labelledby="dhow">
+""" + mock_studio() + f"""<section class="band how" aria-labelledby="dhow">
   <div class="bandhead" data-reveal><h2 id="dhow">{e(c['steps_h2'])}</h2></div>
   <ol class="steps3" data-reveal>{''.join(f'<li><i>{n + 1}</i><b>{e(a)}</b><span>{e(b)}</span></li>' for n, (a, b) in enumerate(c['steps']))}</ol>
 </section>

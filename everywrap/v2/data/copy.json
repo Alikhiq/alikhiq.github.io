@@ -262,6 +262,10 @@
     "A full custom design starts at {$design.custom}. If you already have artwork, setting it up for print starts at {$design.setup}."
    ],
    [
+    "Can I see a mockup before I pay for a design?",
+    "Yes. Use the mockup studio on this page to try layouts and colours with your own name, and send us the one you like. A full design is then drawn to your exact vehicle."
+   ],
+   [
     "How many square feet does it take to wrap a vehicle?",
     "As a rough guide, a sedan takes 250 to 300 square feet of film, an SUV 300 to 375 and a cargo van 400 to 500, including the overlap and waste. We measure your exact vehicle for the quote."
    ],
@@ -404,5 +408,13 @@
    "Print",
    "Install"
   ]
+ },
+ "mock": {
+  "h2": "Mock up your vehicle",
+  "p": "Pick a vehicle, a layout and your colours, then type your name. Send it to us and we turn it into a real design."
+ },
+ "mock_fleet": {
+  "h2": "See your brand on a van",
+  "p": "Pick a vehicle, a layout and your colours, then type your business name. Send it to us as a starting point."
  }
 }

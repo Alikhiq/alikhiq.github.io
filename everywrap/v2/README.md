@@ -32,6 +32,9 @@ Moving parts only run while they are on screen, and stop for visitors who ask fo
 - **One design, every vehicle**: the same graphic drawing itself across a van, a box truck and a trailer, on the commercial page.
 - A moving band of words, numbered section headings that wipe in, a scroll line at the top, film grain, soft light pools per section, icons on the good-to-know cards, and two tags either side of the hero seam that say which side is which.
 
+### Mockup studio
+`js/mock.js` draws a van, box truck, trailer or car in SVG and puts a wrap on it: six layouts, eight colour pairs, three vehicle colours, plus the visitor's own business name and a second line. It cycles through examples until someone touches it. "Send us this mockup" passes the choices to the booking form as a note. It is on the design and print page and the commercial page. Add a vehicle or a layout by adding an entry to `VEH` or `ART` at the top of the file.
+
 ### Service pictures and loops
 Each service has one themed picture at `assets/svc/<wrap|ppf|tint|kits>.webp` (generated at 4K, stored 2400 px wide) and a three-second silent loop at `assets/loops/<same>.mp4` (1920 px, about 200 KB). The loop starts and ends on the picture, so it fades in over it without a jump, and it is only fetched when its card scrolls into view. Delete a loop and rebuild to fall back to the picture with a light sweep.
 
