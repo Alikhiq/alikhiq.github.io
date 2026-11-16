@@ -125,7 +125,8 @@
   "know": [
    ["How long it takes", "Most cars are done the same day."],
    ["Curing", "Leave the windows up for a few days. Haze or small water pockets are normal while the film dries and clear by themselves."],
-   ["Ohio law", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any shade. No reflective film."]
+   ["Ohio law", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any shade. No reflective film."],
+   ["Michigan law", "On the front side windows, only a strip across the top four inches can be tinted. Rear side windows and the back glass can be any shade."]
   ],
   "work_h2": "",
   "faq_h2": "Window tint questions",
@@ -133,6 +134,7 @@
    ["How much does window tint cost in Columbus, Ohio?", "A full car in carbon film starts at {$tint.carbon} and in ceramic at {$tint.ceramic}. Two front windows to match factory rear glass start at {$tint.fronts}."],
    ["What is the legal tint in Ohio?", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark. Reflective film is not allowed on any window. We confirm what applies to your car before we cut film."],
    ["Is 20% tint legal in Ohio?", "On the rear side windows and the back glass, yes. On the front side windows, no: those need to let in at least 50%."],
+   ["What is the legal tint in Michigan?", "For cars we tint at our Dearborn Heights location: the front side windows can only carry a strip across the top four inches. Rear side windows and the back glass can be any darkness. On the windshield, only the top four inches can be tinted. We confirm what applies to your car before we cut film."],
    ["Is ceramic tint worth the extra?", "If heat is the reason you want tint, yes. Ceramic blocks noticeably more heat than carbon at the same shade, and it does not interfere with phone or radio signal."],
    ["How long does it take to tint a car?", "Most cars are done the same day."],
    ["When can I roll my windows down?", "Give it a few days so the film can cure. We tell you exactly how long when you collect the car."],

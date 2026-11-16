@@ -20,13 +20,23 @@ function render(wall) {
   wall._all = pool(tag); wall._shown = wall._all.slice(0, limit);
   $(".tiles", wall).innerHTML = wall._shown.map(tile).join("") || `<p class="empty">Nothing in this group yet.</p>`;
   const more = $(".wallmore", wall); if (more) more.hidden = wall._all.length <= limit;
+  fill(wall);
+}
+// When the last row is short, the gap becomes a tile that starts a request.
+function fill(wall) {
+  const box = $(".tiles", wall), old = $(".tile.fill", box); if (old) old.remove();
+  const n = $$(".tile", box).length; if (!n) return;
+  const cols = getComputedStyle(box).gridTemplateColumns.split(" ").filter(Boolean).length || 1, rest = n % cols;
+  if (!rest) return;
+  const com = document.documentElement.dataset.mode === "commercial";
+  box.insertAdjacentHTML("beforeend", `<figure class="tile fill" style="--span:${cols - rest}"><button type="button"><b>${com ? "Your vehicle next" : "Your car next"}</b><span>Get a price <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></figure>`);
 }
 // The grid keeps moving: every few seconds one square changes to a job that is not
 // on screen yet, and its name shows for a moment.
 function keepLive(wall) {
   if (reduce) return;
   setInterval(() => {
-    const tiles = $$(".tile", wall), all = wall._all || [], shown = wall._shown || [], r = wall.getBoundingClientRect();
+    const tiles = $$(".tile:not(.fill)", wall), all = wall._all || [], shown = wall._shown || [], r = wall.getBoundingClientRect();
     if (document.hidden || tiles.length < 4 || r.bottom < 0 || r.top > innerHeight || !$("#lightbox").hidden) return;
     const i = Math.floor(Math.random() * tiles.length), el = tiles[i], spare = all.filter((j) => !shown.includes(j));
     const flash = () => { el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2200); };
@@ -112,7 +122,8 @@ export function initWork() {
       });
     }
     render(wall); keepLive(wall);
-    $(".tiles", wall).addEventListener("click", (e) => { const t = e.target.closest(".tile"); if (!t) return; list = wall._all; open(Math.max(0, list.findIndex((j) => j.id === t.dataset.id))); });
+    let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => fill(wall), 200); });
+    $(".tiles", wall).addEventListener("click", (e) => { const t = e.target.closest(".tile"); if (!t) return; if (t.classList.contains("fill")) { ev("grid_cta"); return hooks.quote && hooks.quote({}); } list = wall._all; open(Math.max(0, list.findIndex((j) => j.id === t.dataset.id))); });
   });
   if (reel) reel.load("all");
   $("#lbClose").addEventListener("click", close); $("#lbPrev").addEventListener("click", () => open(at - 1)); $("#lbNext").addEventListener("click", () => open(at + 1));
