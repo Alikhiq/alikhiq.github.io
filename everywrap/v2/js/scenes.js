@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, hooks, progress, onScroll, glowAs, theme } from "./state.js";
+import { R, ROOT, $, $$, reduce, esc, clamp, FIN, S, DATA, hooks, progress, onScroll, glowAs, theme, money } from "./state.js";
 
 /* ---------- light tunnel (canvas) ---------- */
 class Tunnel {
@@ -136,4 +136,17 @@ function initPrices() {
   });
 }
 
-export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initPrices(); initReveal(); }
+/* ---------- print price: width x length x copies x price per square foot ---------- */
+function initCalc() {
+  const el = $("#calc"); if (!el) return;
+  const prod = $("#calcProd"), w = $("#calcW"), h = $("#calcH"), q = $("#calcQ");
+  const calc = () => {
+    const area = Math.max(0, +w.value || 0) * Math.max(0, +h.value || 0) * Math.max(1, Math.round(+q.value || 1));
+    $("#calcArea").textContent = (Math.round(area * 10) / 10).toLocaleString("en-US") + " sq ft";
+    $("#calcTotal").textContent = money(Math.round(area * +prod.selectedOptions[0].dataset.price * 100) / 100);
+  };
+  el.addEventListener("input", calc); calc();
+  $("#calcGo").addEventListener("click", () => { calc(); if (hooks.quote) hooks.quote({ svc: "print", note: `${prod.selectedOptions[0].textContent}: ${w.value} x ${h.value} ft, ${Math.max(1, Math.round(+q.value || 1))} copies, ${$("#calcArea").textContent}, ${$("#calcTotal").textContent}` }); });
+}
+
+export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initPrices(); initCalc(); initReveal(); }

@@ -18,7 +18,7 @@ export const FIN = [
 // What the visitor is looking at. The price form reads this to pre-fill itself.
 export const S = { ch: R.dataset.ch || "wrap", finish: "satin-black", ppf: "front", tint: 20, vehicle: "sedan", size: 0, commercial: R.dataset.mode === "commercial" };
 export const DATA = { manifest: null, work: [], pricing: null };
-export const money = (n) => "$" + n.toLocaleString("en-US");
+export const money = (n) => "$" + (Number.isInteger(n) ? n.toLocaleString("en-US") : n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 // Starting price of one row of the price list, for the vehicle size the visitor picked.
 export function fromPrice(group, id, size = S.size) {
   const g = DATA.pricing && DATA.pricing.groups[group], r = g && g.rows.find((x) => x.id === id);

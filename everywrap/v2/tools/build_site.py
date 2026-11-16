@@ -19,7 +19,7 @@ if LIVE and not PRICING.get("confirmed"):
     sys.exit('data/pricing.json is still a draft. Check every number with the owner, set "confirmed": true, then run --live again.')
 
 def money(n):
-    return f"${n:,}"
+    return f"${n:,}" if float(n).is_integer() else f"${n:,.2f}"
 
 def price(ref):
     """'wrap.full' or 'wrap.full.1' -> the starting price for that row (and size column)."""
@@ -75,14 +75,14 @@ def business():
             "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
             "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}
 
-def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=()):
+def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(), glow=None):
     robots = "index,follow" if LIVE else "noindex,nofollow"
     crumbs = [{"@type": "ListItem", "position": 1, "name": "Home", "item": canonical("")}]
     if path:
         crumbs.append({"@type": "ListItem", "position": 2, "name": title.split(" | ")[0], "item": canonical(path)})
     lds = [business(), {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": crumbs}, *extra_ld]
     return f"""<!DOCTYPE html>
-<html lang="en" data-mode="{mode}" data-root="{root}"{f' data-ch="{ch}"' if ch else ''}{' data-lock="1"' if lock else ''}>
+<html lang="en" data-mode="{mode}" data-root="{root}"{f' data-ch="{ch}"' if ch else ''}{' data-lock="1"' if lock else ''}{f' style="--glow:{glow[0]};--glow2:{glow[1]}"' if glow else ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -123,6 +123,7 @@ def top(root, mode):
     <li><a href="{link(root, '')}">Home</a></li>
     {''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["nav"])}</a></li>' for s in SERVICES)}
     <li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li>
+    <li><a href="{link(root, 'design-print')}">Design and print</a></li>
     <li><a href="{link(root, 'pricing')}">Pricing</a></li>
     <li><a href="{link(root, 'work')}">Our work</a></li>
   </ol>
@@ -244,9 +245,11 @@ def price_table(group):
         if isinstance(v, list):
             return "".join(f'<span data-s="{i}">from <b>{money(n)}</b></span>' for i, n in enumerate(v))
         if v:
-            return f"<span>from <b>{money(v)}</b></span>"
-        return '<span class="q">Quoted per car</span>'
-    rows = "".join(f'<li><div><b>{e(r["name"])}</b>{("<span>" + e(r["note"]) + "</span>") if r.get("note") else ""}</div><p class="pp">{cell(r)}</p></li>' for r in g["rows"])
+            return f"<span>{'' if r.get('exact') else 'from '}<b>{money(v)}</b>{(' <em>per ' + e(r['unit']) + '</em>') if r.get('unit') else ''}</span>"
+        return f'<span class="q">{"Quoted per car" if group == "kits" else "Quoted"}</span>'
+    def sw(r):
+        return ('<i class="sw sw-' + r["swatch"] + '" aria-hidden="true"></i>') if r.get("swatch") else ""
+    rows = "".join(f'<li>{sw(r)}<div><b>{e(r["name"])}</b>{("<span>" + e(r["note"]) + "</span>") if r.get("note") else ""}</div><p class="pp">{cell(r)}</p></li>' for r in g["rows"])
     return f'<div class="ptable" data-size="0">{tabs}<ul class="prows">{rows}</ul></div>'
 
 def price_band(group, h2, intro, factors, theme="", book_sub="Get your exact price"):
@@ -281,7 +284,7 @@ def areas(root, current=""):
     return f"""<section class="band areas" aria-labelledby="areah">
   <div class="bandhead" data-reveal><h2 id="areah">Where we work</h2><p>{e(COPY['areas_p'])}</p></div>
   <ul class="arealist" data-reveal>{''.join(f'<li>{e(a)}</li>' for a in AREAS)}</ul>
-  <ul class="crosslinks" data-reveal>{others}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'pricing')}">All prices</a></li></ul>
+  <ul class="crosslinks" data-reveal>{others}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li><li><a href="{link(root, 'pricing')}">All prices</a></li></ul>
 </section>
 """
 
@@ -366,7 +369,7 @@ def footer(root, home=False):
     return f"""<footer class="foot">
   <div class="foot-grid">
     <div><p class="tag">{e(SITE['tagline'])}</p><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
-    <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li></ul></nav>
+    <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'pricing')}">Pricing</a></li><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
   </div>
@@ -491,7 +494,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(eyebrow=c["h1"]) + tunnel(r) + services_band(r) + work_band(r) + prices_home(r) + fleet_teaser(r) + how() + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(eyebrow=c["h1"]) + tunnel(r) + services_band(r) + work_band(r) + prices_home(r) + fleet_teaser(r) + design_teaser(r) + how() + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -559,7 +562,7 @@ def page_commercial():
 
 def page_pricing():
     r, c = "../", COPY["pricing"]
-    groups = [(x["name"], x["price_group"], x["slug"], x["price_intro"], SVC_THEME[x["ch"]]) for x in SERVICES] + [("Fleet and commercial", "fleet", "commercial", COPY["commercial"]["price_intro"], "#f2c200")]
+    groups = [(x["name"], x["price_group"], x["slug"], x["price_intro"], SVC_THEME[x["ch"]]) for x in SERVICES] + [("Fleet and commercial", "fleet", "commercial", COPY["commercial"]["price_intro"], "#f2c200"), ("Large-format printing", "print", "design-print", "Priced by the square foot.", "#27d3ff"), ("Design", "design", "design-print", COPY["design"]["design_price_p"], "#ff4fa3")]
     blocks = "".join(f"""<section class="band prices" id="{slug}" aria-labelledby="ph-{g}" style="--th:{th}">
   <div class="bandhead" data-reveal><h2 id="ph-{g}">{e(name)}</h2><p>{e(intro)} <a href="{link(r, slug)}">More on {e(name.lower())}</a></p></div>
   {price_table(g)}
@@ -567,7 +570,7 @@ def page_pricing():
 """ for name, g, slug, intro, th in groups)
     facts = "".join(f"<li>{e(x)}</li>" for x in c["factors"])
     catalog = {"@context": "https://schema.org", "@type": "OfferCatalog", "name": "EveryWrap prices", "url": canonical("pricing"),
-               "itemListElement": [{"@type": "Offer", "name": row["name"], "priceCurrency": "USD", "price": (row["from"][0] if isinstance(row["from"], list) else row["from"]), "category": PRICING["groups"][g]["title"]}
+               "itemListElement": [{"@type": "Offer", "name": row["name"], "priceCurrency": "USD", "price": (row["from"][0] if isinstance(row["from"], list) else row["from"]), **({"unitText": row["unit"]} if row.get("unit") else {}), "category": PRICING["groups"][g]["title"]}
                                    for g in PRICING["groups"] for row in PRICING["groups"][g]["rows"] if row.get("from")]}
     body = top(r, "personal") + f"""<main>
 <section class="pagehead">
@@ -582,6 +585,93 @@ def page_pricing():
 </section>
 """ + faq(c["faq"], "Pricing questions") + areas(r) + final() + "</main>\n" + footer(r) + chrome(r)
     write("pricing/index.html", head(r, "pricing", c["title"], c["desc"], extra_ld=[catalog, faq_ld(c["faq"])]) + body)
+
+def design_teaser(root):
+    c = COPY["home"]
+    return f"""<section class="band dteaser" aria-labelledby="dth">
+  <a class="dt-card" href="{link(root, 'design-print')}" data-reveal>
+    <div class="printer" data-live><img loading="lazy" src="{root}assets/dp/van.webp" alt="A cargo van in a full printed advertising wrap" width="1920" height="1072"><i class="printer-bar" aria-hidden="true"></i></div>
+    <div class="dt-txt"><h2 id="dth">{e(c['design_h2'])}</h2><p>{e(c['design_p'])}</p><span class="svc-go">Design and print {ARROW}</span></div>
+  </a>
+</section>
+"""
+
+def page_design():
+    r, c = "../", COPY["design"]
+    by = {j["id"]: j for j in WORK}
+    def card(i, x):
+        if x.get("job"):
+            j = by[x["job"]]; img = f'<img loading="lazy" style="object-position:50% 74%" src="{r}assets/{j["src"]}" alt="{e(j["title"] + ", " + j.get("finish", ""))}" width="{j["w"]}" height="{j["h"]}">'
+        else:
+            img = f'<img loading="lazy" src="{r}assets/{x["img"]}" alt="{e(x["alt"])}" width="1920" height="1072">'
+        return f"""<li class="svc" style="--i:{i};--th:{x['th']}"><div class="svc-card"><div class="svc-vis" data-live>{img}<i class="svc-fx" aria-hidden="true"></i></div>
+        <div class="svc-txt"><span class="svc-n">0{i + 1}</span><h3>{e(x['name'])}</h3><p>{e(x['text'])}</p></div></div></li>"""
+    cards = "".join(card(i, x) for i, x in enumerate(c["services"]))
+    prods = PRICING["groups"]["print"]["rows"]
+    opts = "".join(f'<option value="{x["id"]}" data-price="{x["from"]}">{e(x["name"])}</option>' for x in prods if x.get("unit") == "sq ft")
+    tiles = "".join(f'<li><i class="sw sw-{x["swatch"]}" aria-hidden="true"></i><b>{e(x["name"])}</b><span>{e(x["note"])}</span></li>' for x in prods)
+    jobs = [by[i] for i in ("everywrapny-2-sprinter-commercial-litmode", "2021-04-07-cnwvghosdur", "everywrapny-4-queens-public-library-bus", "2023-07-02-cunmnmqasdd", "2022-07-18-cglbmplvpx3", "614lux-4-wall-mural-install", "2022-08-20-chdssmxrqyy", "2021-04-28-conrpnrjnuq", "2022-03-12-ca_mzkerq_j") if i in by]
+    shots = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"] + ", " + j.get("finish", ""))}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}<span>{e(j.get("finish", ""))}</span></figcaption></figure>' for j in jobs)
+    body = top(r, "personal") + f"""<main>
+<section class="pagehead dp-head">
+  <h1 class="eyebrow">{e(c['h1'])}</h1>
+  <p class="display">{e(c['display'])}</p>
+  <p class="sub">{e(c['sub'])}</p>
+  <div class="printer big" data-live><img src="{r}assets/dp/van.webp" alt="A cargo van in a full printed advertising wrap" width="1920" height="1072"><i class="printer-bar" aria-hidden="true"></i></div>
+</section>
+<section class="band services" aria-labelledby="dsh">
+  <div class="bandhead" data-reveal><h2 id="dsh">{e(c['design_h2'])}</h2><p>{e(c['design_p'])}</p></div>
+  <ol class="svclist">{cards}</ol>
+</section>
+<section class="band how" aria-labelledby="dhow">
+  <div class="bandhead" data-reveal><h2 id="dhow">{e(c['steps_h2'])}</h2></div>
+  <ol class="steps3" data-reveal>{''.join(f'<li><i>{n + 1}</i><b>{e(a)}</b><span>{e(b)}</span></li>' for n, (a, b) in enumerate(c['steps']))}</ol>
+</section>
+<section class="band prices" id="design" aria-labelledby="dph" style="--th:#ff4fa3">
+  <div class="bandhead" data-reveal><h2 id="dph">{e(c['design_price_h2'])}</h2><p>{e(c['design_price_p'])}</p></div>
+  <div class="price-in">
+    {price_table('design')}
+    <aside class="pfact" data-reveal><h3>Start a design</h3><ul><li>Tell us the vehicle and send the logo if you have one</li><li>You get a proof on your own vehicle</li><li>Nothing is printed until you approve it</li></ul><button class="btn pri" type="button" data-quote="design">Start a design</button></aside>
+  </div>
+</section>
+<section class="band prices" id="print" aria-labelledby="prh" style="--th:#27d3ff">
+  <div class="bandhead" data-reveal><h2 id="prh">{e(c['print_h2'])}</h2><p>{e(c['print_p'])}</p></div>
+  <div class="price-in">
+    {price_table('print')}
+    <aside class="pfact calc" id="calc" data-reveal>
+      <h3>Price a print</h3>
+      <div class="field"><label for="calcProd">Product</label><select id="calcProd">{opts}</select></div>
+      <div class="calc-dims">
+        <div class="field"><label for="calcW">Width (ft)</label><input id="calcW" type="number" inputmode="decimal" min="0" step="0.1" value="4.5"></div>
+        <div class="field"><label for="calcH">Length (ft)</label><input id="calcH" type="number" inputmode="decimal" min="0" step="0.1" value="10"></div>
+        <div class="field"><label for="calcQ">Copies</label><input id="calcQ" type="number" inputmode="numeric" min="1" step="1" value="1"></div>
+      </div>
+      <p class="calc-out" aria-live="polite"><span id="calcArea">45 sq ft</span><b id="calcTotal"></b></p>
+      <button class="btn pri" type="button" id="calcGo">Order this print</button>
+    </aside>
+  </div>
+  <p class="pfine">{e(COPY['price_fine'])}</p>
+</section>
+<section class="band" aria-labelledby="mph">
+  <div class="bandhead" data-reveal><h2 id="mph">{e(c['more_h2'])}</h2></div>
+  <ul class="mats" data-reveal>{tiles}</ul>
+</section>
+<section class="band" aria-labelledby="whyh">
+  <div class="bandhead" data-reveal><h2 id="whyh">{e(c['why_h2'])}</h2></div>
+  {know(c['why'])}
+</section>
+<section class="band" aria-labelledby="dwh">
+  <div class="bandhead" data-reveal><h2 id="dwh">{e(c['work_h2'])}</h2></div>
+  <div class="strip" data-reveal>{shots}</div>
+</section>
+""" + faq(c["faq"], "Design and print questions") + areas(r) + f"""<section class="final" aria-labelledby="finalh">
+  <h2 id="finalh" data-reveal>Send the idea. Or send the files.</h2>
+  <p data-reveal>Tell us what you need designed or printed. You get the price in writing, and nothing is printed until you approve the proof.</p>
+  <div class="final-cta" data-reveal><button class="book live" type="button" data-quote="design"><i class="book-dot" aria-hidden="true"></i><span class="book-t"><b>Start a design</b><small>Or order a print</small></span><span class="book-go" aria-hidden="true">{ARROW}</span></button></div>
+</section>
+""" + "</main>\n" + footer(r) + chrome(r).replace("Get your price in writing", "Design and print")
+    lds = [service_ld("Wrap design", "design-print", c["desc"], "design"), service_ld("Large-format printing", "design-print", c["desc"], "print"), faq_ld(c["faq"])]
+    write("design-print/index.html", head(r, "design-print", c["title"], c["desc"], extra_ld=lds, glow=("#ff4fa3", "#27d3ff")) + body)
 
 def page_work():
     r, c = "../", COPY["work"]
@@ -603,7 +693,7 @@ def page_work():
     write("work/index.html", head(r, "work", c["title"], c["desc"], extra_ld=[gal]) + body)
 
 def extras():
-    paths = [""] + [x["slug"] for x in SERVICES] + ["commercial", "pricing", "work"]
+    paths = [""] + [x["slug"] for x in SERVICES] + ["commercial", "design-print", "pricing", "work"]
     # The page scripts read this copy: prices only, without the owner's notes and sources.
     pub = {"sizes": PRICING["sizes"], "groups": {k: {"rows": [{"id": r["id"], "from": r.get("from")} for r in g["rows"]]} for k, g in PRICING["groups"].items()}}
     write("assets/pricing.json", json.dumps(pub, separators=(",", ":")))
@@ -617,7 +707,8 @@ if __name__ == "__main__":
     for s in SERVICES:
         page_service(s)
     page_commercial()
+    page_design()
     page_pricing()
     page_work()
     extras()
-    print(("LIVE" if LIVE else "PREVIEW"), "build:", 4 + len(SERVICES), "pages,", len(WORK), "jobs,", "prices", "confirmed" if PRICING.get("confirmed") else "DRAFT")
+    print(("LIVE" if LIVE else "PREVIEW"), "build:", 5 + len(SERVICES), "pages,", len(WORK), "jobs,", "prices", "confirmed" if PRICING.get("confirmed") else "DRAFT")

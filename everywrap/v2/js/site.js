@@ -11,14 +11,15 @@ function step(n) {
   $("#qProg").textContent = n < 4 ? `Step ${n} of 3` : "Request ready"; $("#qTitle").textContent = n < 4 ? "Book now" : "Here's what we got";
   const f = $(`#qForm .qstep[data-step="${n}"] input, #qForm .qstep[data-step="${n}"] button`); if (f) f.focus();
 }
-const SVC = [["wrap", "Vinyl wrap"], ["ppf", "Protection film"], ["tint", "Window tint"], ["kits", "Body kit"], ["fleet", "Fleet graphics"]];
+const SVC = [["wrap", "Vinyl wrap"], ["ppf", "Protection film"], ["tint", "Window tint"], ["kits", "Body kit"], ["fleet", "Fleet graphics"], ["design", "Design"], ["print", "Printing"]];
 function menu(open) { const m = $("#menu"); if (!m) return; m.hidden = !open; $("[data-menu]").setAttribute("aria-expanded", open); R.classList.toggle("menu-open", open); }
 function openQuote(pre = {}) {
   menu(false);
   const want = pre.svc || (S.commercial ? "fleet" : S.ch); note = pre.note || "";
   $("#qSvc").innerHTML = SVC.map((s) => `<label><input type="checkbox" id="qS_${s[0]}" value="${s[1]}"${s[0] === want ? " checked" : ""}>${s[1]}</label>`).join("");
-  const com = want === "fleet";
-  $("#qCarL").textContent = com ? "What vehicles, and how many?" : "What are you driving?"; $("#qCar").placeholder = com ? "3 Sprinter vans and a box truck" : "2021 Dodge Charger";
+  const com = want === "fleet" || want === "design" || want === "print", studio = want === "design" || want === "print";
+  $("#qCarL").textContent = studio ? "What do you need designed or printed?" : com ? "What vehicles, and how many?" : "What are you driving?"; $("#qCar").placeholder = studio ? "Full wrap design for a Ford Transit" : com ? "3 Sprinter vans and a box truck" : "2021 Dodge Charger";
+  if (pre.note && studio && !pre.car) { $("#qCar").value = pre.note; note = ""; }
   if (pre.car) $("#qCar").value = pre.car;
   $("#qFin").value = fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase();
   $("#qSizeF").hidden = com; const sz = $(`#qSizeF input[value="${S.size}"]`); if (sz) sz.checked = true;

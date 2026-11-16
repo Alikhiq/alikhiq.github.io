@@ -13,6 +13,7 @@ The pages are generated. Edit the data or the templates, then run `python3 tools
 | `index.html` | Hero with the seam, the light-tunnel scene where scrolling changes the finish, four live service cards, the work reel and grid, a commercial board that changes job by itself, three compact steps, FAQ |
 | `vinyl-wrap/`, `paint-protection-film/`, `window-tint/`, `body-kits/` | The hero locked to that service, plain-language detail, real jobs where the archive has them, FAQ |
 | `commercial/` | Light-box hero that cycles real job photos, the "YOUR FLEET" scene, the "YOUR BRAND IN MOTION." tunnel, a live job board, fleet FAQ |
+| `design-print/` | Design services (branding, custom car wraps, commercial van and fleet wraps, artwork setup), design prices, a per-square-foot print price list with a calculator, the full product range drawn as coded material swatches, real printed jobs, FAQ |
 | `pricing/` | Every price table in one place, what moves the price, pricing FAQ |
 | `work/` | The reel and all 75 real jobs in a square grid, each opening to the owner's caption, year, place and film |
 
@@ -37,6 +38,9 @@ Every page has a title, description, canonical link, share tags and structured d
 - `data/work.json`: the 75 jobs (title, finish, caption, date, place, film brands, tags).
 
 Copy can quote a price as `{$wrap.full}` (or `{$wrap.full.1}` for the second size column), so the words always match the table.
+
+### Print prices
+Six rows in the `print` group are the owner's own prices (their `source` starts with `owner`): 3M laminated $8.43 and unlaminated $7.21 per square foot, Avery Dennison at 3M plus 5%, chrome at double the laminated 3M price, wall graphics $3.30. The other print and design rows are a trade printer's published prices multiplied by 1.6, the ratio of the owner's 3M price to that printer's, and are draft.
 
 ### Prices are a draft
 `pricing.json` has `"confirmed": false`. The numbers come from what other shops publish, not from EveryWrap. The launch build (`--live`) stops with an error until the owner has checked every number and set `confirmed` to `true`. The page scripts read `assets/pricing.json`, a generated copy with the notes and sources stripped out.

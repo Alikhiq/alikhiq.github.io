@@ -1,6 +1,6 @@
 {
  "confirmed": false,
- "status": "DRAFT. Starting prices built from what other shops publish (November 2026): one Columbus shop's PPF price list and US price guides for wraps, tint and commercial work. Rows marked estimate had no published source. These are not EveryWrap's own rates until the owner checks every number and sets confirmed to true. The launch build refuses to run while this is false.",
+ "status": "DRAFT, except the rows whose source says owner. Other numbers come from what other shops and trade printers publish (November 2026). They are not EveryWrap's own rates until the owner checks every number and sets confirmed to true. The launch build refuses to run while this is false.",
  "currency": "USD",
  "sizes": [
   "Coupe / sedan",
@@ -222,39 +222,208 @@
      "id": "partial",
      "name": "Partial wrap",
      "note": "Printed graphics on the sides and rear",
-     "from": 1200,
-     "source": "US guide: van $750 to $1,800"
+     "from": 1500,
+     "source": "DRAFT: sized so the price covers the film at the owner's $8.43 per sq ft plus installation. Needs the owner's real installed price"
     },
     {
      "id": "van",
      "name": "Full van wrap",
      "note": "Cargo van or Sprinter, printed and laminated",
-     "from": 3000,
-     "source": "US guide: $2,500 to $4,500"
+     "from": 4500,
+     "source": "DRAFT: sized so the price covers the film at the owner's $8.43 per sq ft plus installation. Needs the owner's real installed price"
     },
     {
      "id": "box",
      "name": "Box truck",
      "note": "Both sides, rear and cab",
-     "from": 3800,
-     "source": "US guide: $3,500 to $6,500"
+     "from": 5200,
+     "source": "DRAFT: sized so the price covers the film at the owner's $8.43 per sq ft plus installation. Needs the owner's real installed price"
     },
     {
      "id": "foodtruck",
      "name": "Food truck or trailer",
      "note": "Full print with cut-outs for windows and hatches",
-     "from": 4200,
-     "source": "US guide: $4,000 to $7,000"
+     "from": 5200,
+     "source": "DRAFT: sized so the price covers the film at the owner's $8.43 per sq ft plus installation. Needs the owner's real installed price"
     },
     {
      "id": "design",
-     "name": "Design",
-     "note": "Layout for each vehicle type, proof included",
-     "from": 150,
-     "source": "one US shop: $150"
+     "name": "Artwork setup",
+     "note": "Fitting artwork you already have to each vehicle. Full custom design is on the design page",
+     "from": 318,
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($199)"
     }
    ],
    "lead": "lettering"
+  },
+  "print": {
+   "title": "Large-format printing",
+   "lead": "3m-lam",
+   "rows": [
+    {
+     "id": "3m-lam",
+     "name": "3M wrap film, printed and laminated",
+     "note": "Cast wrap film with a clear laminate. The standard for vehicle wraps",
+     "from": 8.43,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "gloss",
+     "source": "owner, 16 Nov 2026"
+    },
+    {
+     "id": "3m",
+     "name": "3M wrap film, printed, no laminate",
+     "note": "For shops that laminate in-house, or short-term graphics",
+     "from": 7.21,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "matte",
+     "source": "owner, 16 Nov 2026"
+    },
+    {
+     "id": "avery-lam",
+     "name": "Avery Dennison wrap film, printed and laminated",
+     "note": "Cast wrap film with a clear laminate",
+     "from": 8.85,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "gloss2",
+     "source": "owner, 16 Nov 2026: 3M price plus 5% (assumed plus, not minus)"
+    },
+    {
+     "id": "avery",
+     "name": "Avery Dennison wrap film, printed, no laminate",
+     "note": "Print only",
+     "from": 7.57,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "matte2",
+     "source": "owner, 16 Nov 2026: 3M price plus 5% (assumed plus, not minus)"
+    },
+    {
+     "id": "chrome",
+     "name": "Chrome print",
+     "note": "Printed on mirror-finish film, laminated",
+     "from": 16.86,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "chrome",
+     "source": "owner, 16 Nov 2026: double the laminated 3M price"
+    },
+    {
+     "id": "wall",
+     "name": "Wall graphics",
+     "note": "Printed wall film for murals, offices and shop interiors",
+     "from": 3.3,
+     "unit": "sq ft",
+     "exact": true,
+     "swatch": "wall",
+     "source": "owner, 16 Nov 2026"
+    },
+    {
+     "id": "contour",
+     "name": "Contour-cut graphics",
+     "note": "Logos and lettering cut to shape, weeded and masked, ready to apply",
+     "from": 11.07,
+     "unit": "sq ft",
+     "swatch": "cut",
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($6.92)"
+    },
+    {
+     "id": "perf",
+     "name": "Perforated window film",
+     "note": "See-through from inside, printed outside. For vehicle and shop windows",
+     "from": 9.52,
+     "unit": "sq ft",
+     "swatch": "perf",
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($5.95)"
+    },
+    {
+     "id": "reflective",
+     "name": "Reflective print",
+     "note": "Lights up in headlights. For work trucks and emergency vehicles",
+     "from": 19.18,
+     "unit": "sq ft",
+     "swatch": "reflective",
+     "source": "DRAFT: another trade printer's $11.99 x 1.6"
+    },
+    {
+     "id": "fade",
+     "name": "Fade wraps",
+     "note": "A colour gradient printed to fit the sides of your vehicle",
+     "from": 960,
+     "swatch": "fade",
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price (from $600)"
+    },
+    {
+     "id": "pattern",
+     "name": "Pattern wraps",
+     "note": "Camo, carbon, marble or your own pattern, printed 60 inches wide",
+     "from": 153,
+     "unit": "yard",
+     "swatch": "pattern",
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($95.50 a yard)"
+    },
+    {
+     "id": "decals",
+     "name": "Stickers and decals",
+     "note": "Printed and cut on sheets or rolls",
+     "from": null,
+     "swatch": "decal",
+     "source": "no published price found"
+    },
+    {
+     "id": "floor",
+     "name": "Floor graphics",
+     "note": "Printed film with a non-slip laminate",
+     "from": null,
+     "swatch": "floor",
+     "source": "no published price found"
+    },
+    {
+     "id": "banner",
+     "name": "Banners",
+     "note": "Printed vinyl banners, hemmed with grommets",
+     "from": null,
+     "swatch": "banner",
+     "source": "no published price found"
+    }
+   ]
+  },
+  "design": {
+   "title": "Design",
+   "lead": "setup",
+   "rows": [
+    {
+     "id": "custom",
+     "name": "Custom wrap design",
+     "note": "A one-off design for a car, van or truck, shown on your vehicle and revised until it is right",
+     "from": 1560,
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($975)"
+    },
+    {
+     "id": "setup",
+     "name": "Artwork setup",
+     "note": "Your existing logo or design rebuilt as print files and fitted to the vehicle",
+     "from": 318,
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($199)"
+    },
+    {
+     "id": "hourly",
+     "name": "Design by the hour",
+     "note": "Changes, extra versions and small jobs",
+     "from": 144,
+     "unit": "hour",
+     "source": "DRAFT: the trade printer's published price x 1.6, the same ratio as the owner's 3M price ($90)"
+    },
+    {
+     "id": "brand",
+     "name": "Branding and logo design",
+     "note": "Logo, colours and type, delivered with files for print and web",
+     "from": null,
+     "source": "no published price found"
+    }
+   ]
   }
  }
 }

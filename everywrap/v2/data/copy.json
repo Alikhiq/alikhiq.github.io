@@ -4,9 +4,18 @@
  "how": {
   "h2": "Price first. Then we book.",
   "steps": [
-   ["Send the car", "A photo, or the year, make and model"],
-   ["Get it in writing", "Film, coverage and your exact price"],
-   ["Book the install", "A date set by call or text"]
+   [
+    "Send the car",
+    "A photo, or the year, make and model"
+   ],
+   [
+    "Get it in writing",
+    "Film, coverage and your exact price"
+   ],
+   [
+    "Book the install",
+    "A date set by call or text"
+   ]
   ]
  },
  "final": {
@@ -31,18 +40,49 @@
   "services_p": "Tap a service for the options, real jobs and prices.",
   "prices_h2": "Prices, up front.",
   "prices_p": "Most shops make you call. Here are our starting prices for a coupe or sedan.",
-  "price_notes": ["Full colour change", "Partial front", "Carbon film, full car", "Door logos and lettering"],
+  "price_notes": [
+   "Full colour change",
+   "Partial front",
+   "Carbon film, full car",
+   "Door logos and lettering"
+  ],
   "teaser_p": "Vans, box trucks, buses, food trucks and boats. We design it, print it and install it, and one design carries across every vehicle you run.",
   "faq": [
-   ["How much does it cost to wrap a car in Columbus, Ohio?", "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV. Colour-shift and specialty films start at {$wrap.shift}. Roofs, hoods and chrome delete are priced on their own."],
-   ["How long does a car wrap last?", "Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and hand washing get you the long end of that."],
-   ["Is a wrap cheaper than a paint job?", "For a colour change of the same quality, usually yes. A wrap also comes off, so the factory paint is still there underneath."],
-   ["What window tint is legal in Ohio?", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark."],
-   ["How much is paint protection film?", "A partial front starts at {$ppf.partial}, a full front at {$ppf.front} and full body at {$ppf.full} for a coupe or sedan."],
-   ["Can I see it on my own car first?", "Yes. Upload a photo and pick a finish, and we send your car back in that finish with your price."],
-   ["Do you wrap business vehicles?", "Yes. Vans, box trucks, buses, food trucks and boats, from door lettering at {$fleet.lettering} to full printed wraps. See the commercial page."],
-   ["Where are you?", "We work in the Columbus area by appointment, with customers from Dublin, Hilliard and the rest of central Ohio. Book and we send the details with your price."]
-  ]
+   [
+    "How much does it cost to wrap a car in Columbus, Ohio?",
+    "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV. Colour-shift and specialty films start at {$wrap.shift}. Roofs, hoods and chrome delete are priced on their own."
+   ],
+   [
+    "How long does a car wrap last?",
+    "Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and hand washing get you the long end of that."
+   ],
+   [
+    "Is a wrap cheaper than a paint job?",
+    "For a colour change of the same quality, usually yes. A wrap also comes off, so the factory paint is still there underneath."
+   ],
+   [
+    "What window tint is legal in Ohio?",
+    "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark."
+   ],
+   [
+    "How much is paint protection film?",
+    "A partial front starts at {$ppf.partial}, a full front at {$ppf.front} and full body at {$ppf.full} for a coupe or sedan."
+   ],
+   [
+    "Can I see it on my own car first?",
+    "Yes. Upload a photo and pick a finish, and we send your car back in that finish with your price."
+   ],
+   [
+    "Do you wrap business vehicles?",
+    "Yes. Vans, box trucks, buses, food trucks and boats, from door lettering at {$fleet.lettering} to full printed wraps. See the commercial page."
+   ],
+   [
+    "Where are you?",
+    "We work in the Columbus area by appointment, with customers from Dublin, Hilliard and the rest of central Ohio. Book and we send the details with your price."
+   ]
+  ],
+  "design_h2": "Need it designed or printed?",
+  "design_p": "Custom wrap design, branding and large-format printing on 3M and Avery Dennison film, from {$print.wall} per square foot."
  },
  "commercial": {
   "title": "Fleet Wraps & Commercial Vehicle Graphics in Columbus, Ohio",
@@ -53,7 +93,11 @@
   "motion_sub": "A wrapped vehicle advertises every mile it drives and every hour it is parked. These are jobs we have printed and installed.",
   "line_h2": "One brand on every vehicle.",
   "line_p": "A van, a box truck and a trailer are different shapes. We lay the design out for each one, so the logo, the phone number and the colours read the same across the fleet.",
-  "steps": ["Send the logo and the list of vehicles.", "Approve the design proof and the written price.", "We print, laminate and install, then hand the vehicles back."],
+  "steps": [
+   "Send the logo and the list of vehicles.",
+   "Approve the design proof and the written price.",
+   "We print, laminate and install, then hand the vehicles back."
+  ],
   "price_h2": "Fleet and commercial wrap prices",
   "price_intro": "Starting prices per vehicle. Fleets are quoted together.",
   "factors": [
@@ -64,13 +108,34 @@
   ],
   "work_h2": "Commercial work we have installed",
   "faq": [
-   ["How much does a commercial vehicle wrap cost?", "Door logos and lettering start at {$fleet.lettering}. A partial wrap starts at {$fleet.partial}, a full van wrap at {$fleet.van}, a box truck at {$fleet.box} and a food truck or trailer at {$fleet.foodtruck}."],
-   ["Do you design the graphics?", "Yes. Send the logo and the vehicle list. Design starts at {$fleet.design} and the proof comes back with your price."],
-   ["Can you match one design across different vehicles?", "Yes. The design is laid out per vehicle so the brand reads the same on a van, a box truck and a trailer."],
-   ["How long does a fleet wrap last?", "Printed and laminated wraps are made to last years of daily use. Up to about seven is typical for a vehicle that is washed regularly."],
-   ["How long are the vehicles off the road?", "Installing a wrap on a van or box truck usually takes two to three days. For a fleet we stagger the vehicles so the work keeps moving."],
-   ["Can you wrap a leased van?", "Yes. A wrap comes off without marking sound factory paint, which is why leased fleets are wrapped and not painted."],
-   ["Do you do food trucks, trailers and boats?", "Yes. All three are in our work, including a full colour change and custom design on a food truck in Dublin."]
+   [
+    "How much does a commercial vehicle wrap cost?",
+    "Door logos and lettering start at {$fleet.lettering}. A partial wrap starts at {$fleet.partial}, a full van wrap at {$fleet.van}, a box truck at {$fleet.box} and a food truck or trailer at {$fleet.foodtruck}."
+   ],
+   [
+    "Do you design the graphics?",
+    "Yes. Send the logo and the vehicle list. Setting up artwork you already have starts at {$fleet.design}, and a full custom design at {$design.custom}. The proof comes back with your price."
+   ],
+   [
+    "Can you match one design across different vehicles?",
+    "Yes. The design is laid out per vehicle so the brand reads the same on a van, a box truck and a trailer."
+   ],
+   [
+    "How long does a fleet wrap last?",
+    "Printed and laminated wraps are made to last years of daily use. Up to about seven is typical for a vehicle that is washed regularly."
+   ],
+   [
+    "How long are the vehicles off the road?",
+    "Installing a wrap on a van or box truck usually takes two to three days. For a fleet we stagger the vehicles so the work keeps moving."
+   ],
+   [
+    "Can you wrap a leased van?",
+    "Yes. A wrap comes off without marking sound factory paint, which is why leased fleets are wrapped and not painted."
+   ],
+   [
+    "Do you do food trucks, trailers and boats?",
+    "Yes. All three are in our work, including a full colour change and custom design on a food truck in Dublin."
+   ]
   ]
  },
  "pricing": {
@@ -85,11 +150,26 @@
    "Condition. Chipped paint, old tint and poor resprays need dealing with before new film goes on."
   ],
   "faq": [
-   ["Are these the final prices?", "They are starting prices for vehicles in good condition. Your exact price comes in a written quote, and nothing starts until you agree to it."],
-   ["How much does it cost to wrap a car in Columbus?", "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV."],
-   ["Why do colour-shift and chrome-look wraps cost more?", "The film itself costs more per roll and takes more care to install, so specialty films start at {$wrap.shift}."],
-   ["Is it cheaper to do a wrap, PPF and tint together?", "It saves you time, because the car is off the road once. Ask for all three in one quote and we price them as one job."],
-   ["How do I get an exact price?", "Tap Book now, tell us the car and what you want done, and you get the price in writing by text or call."]
+   [
+    "Are these the final prices?",
+    "They are starting prices for vehicles in good condition. Your exact price comes in a written quote, and nothing starts until you agree to it."
+   ],
+   [
+    "How much does it cost to wrap a car in Columbus?",
+    "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV."
+   ],
+   [
+    "Why do colour-shift and chrome-look wraps cost more?",
+    "The film itself costs more per roll and takes more care to install, so specialty films start at {$wrap.shift}."
+   ],
+   [
+    "Is it cheaper to do a wrap, PPF and tint together?",
+    "It saves you time, because the car is off the road once. Ask for all three in one quote and we price them as one job."
+   ],
+   [
+    "How do I get an exact price?",
+    "Tap Book now, tell us the car and what you want done, and you get the price in writing by text or call."
+   ]
   ]
  },
  "work": {
@@ -98,5 +178,113 @@
   "h1": "Car wrap gallery: real EveryWrap jobs",
   "display": "Proof in the finish.",
   "sub": "Wraps, colour changes and fleet graphics we have installed. Tap any one for the film and the story."
+ },
+ "design": {
+  "title": "Wrap Design & Large-Format Printing | Columbus, OH | EveryWrap",
+  "desc": "Custom wrap design, branding and large-format printing in Columbus, Ohio. Printed 3M wrap film {$print.3m-lam} per sq ft, wall graphics {$print.wall}. Designed, printed and installed.",
+  "h1": "Wrap design and large-format printing in Columbus, Ohio",
+  "display": "Design it. Print it. Wrap it.",
+  "sub": "We draw the design, print it on 3M and Avery Dennison film and install it. Or send your own files and we print them.",
+  "design_h2": "Design",
+  "design_p": "You see the design on your own vehicle before anything is printed.",
+  "services": [
+   {
+    "name": "Branding and logo design",
+    "text": "A logo, colours and type that still read from across a car park. Built to work on a van door, a shop front and a business card.",
+    "img": "dp/brand.webp",
+    "alt": "A designer's desk with logo sketches, vinyl colour swatches and a van layout",
+    "th": "#ff4fa3"
+   },
+   {
+    "name": "Custom car wrap design",
+    "text": "One-off liveries, stripes, camo and printed colour. Drawn to your car's body lines, so nothing lands on a door gap by accident.",
+    "job": "2021-04-07-cnwvghosdur",
+    "th": "#ef5b2a"
+   },
+   {
+    "name": "Commercial van and fleet wraps",
+    "text": "Full advertising wraps for vans, box trucks, trailers and food trucks. Your name, your number and what you do, readable in the three seconds a driver has.",
+    "img": "dp/van.webp",
+    "alt": "A cargo van in a full navy and yellow printed advertising wrap",
+    "th": "#f2c200"
+   },
+   {
+    "name": "Print-ready artwork",
+    "text": "Have a logo but no print files? We rebuild it as clean vector art and fit it to the vehicle, panel by panel.",
+    "img": "dp/rolls.webp",
+    "alt": "Rolls of printed and laminated wrap film on a cutting table",
+    "th": "#27d3ff"
+   }
+  ],
+  "design_price_h2": "Design prices",
+  "design_price_p": "Design is quoted before it starts.",
+  "steps_h2": "How a design job runs",
+  "steps": [
+   [
+    "Brief",
+    "The vehicle, your logo and what it needs to say"
+   ],
+   [
+    "Proof",
+    "The design shown on your exact vehicle"
+   ],
+   [
+    "Print and install",
+    "Printed, laminated and fitted"
+   ]
+  ],
+  "print_h2": "Large-format printing, by the square foot",
+  "print_p": "Send us your files, or have us design it. Pick a product and enter the size to see the price.",
+  "more_h2": "What we print",
+  "why_h2": "Not the cheapest print. On purpose.",
+  "why": [
+   [
+    "The film",
+    "We print on 3M and Avery Dennison cast wrap film. It stretches into recesses and comes off cleanly years later, which cheaper film does not."
+   ],
+   [
+    "The laminate",
+    "A laminated print is sealed under a clear layer, so the ink is protected from fuel, washing and sun."
+   ],
+   [
+    "Printed by installers",
+    "We wrap with what we print. Panels are sized and overlapped to go on a vehicle, not just to come off a printer."
+   ]
+  ],
+  "work_h2": "Designed, printed and installed by us",
+  "faq": [
+   [
+    "How much does wrap printing cost per square foot?",
+    "3M wrap film is {$print.3m-lam} per square foot printed and laminated, or {$print.3m} without laminate. Avery Dennison film is {$print.avery-lam} laminated. Chrome prints are {$print.chrome} and wall graphics {$print.wall}."
+   ],
+   [
+    "How much does a custom wrap design cost?",
+    "A full custom design starts at {$design.custom}. If you already have artwork, setting it up for print starts at {$design.setup}."
+   ],
+   [
+    "How many square feet does it take to wrap a vehicle?",
+    "As a rough guide, a sedan takes 250 to 300 square feet of film, an SUV 300 to 375 and a cargo van 400 to 500, including the overlap and waste. We measure your exact vehicle for the quote."
+   ],
+   [
+    "What files do you need?",
+    "Vector files are best: AI, EPS or PDF with the fonts outlined. For photos, send the largest file you have and we tell you whether it will hold up at full size."
+   ],
+   [
+    "Do I need the print laminated?",
+    "For anything going on a vehicle or outdoors, yes. Print without laminate suits shops that laminate in-house, and short-term or indoor graphics."
+   ],
+   [
+    "Do you install what you print?",
+    "Yes. You can also order print only and install it yourself."
+   ],
+   [
+    "Can you design the wrap for me?",
+    "Yes. We design car wraps, van and fleet wraps and full brand identities, and you approve the design on your own vehicle before we print."
+   ],
+   [
+    "Can you print on chrome?",
+    "Yes. Chrome prints run on mirror-finish film and cost {$print.chrome} per square foot."
+   ]
+  ]
  }
 }
