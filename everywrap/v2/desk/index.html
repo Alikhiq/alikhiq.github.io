@@ -9,9 +9,9 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..900&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <style>
-:root{--bg:#0b0b0c;--card:#141415;--card2:#1b1b1d;--line:rgba(243,237,226,.13);--fg:#f3ede2;--mute:#9a958d;--dim:#6f6b65;--amber:#ef5b2a;--bar:#ef5b2a;--bar-dim:#5a2a18;--good:#4cc38a;--blue:#6aa5ff;--ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Newsreader",Georgia,serif;color-scheme:dark}
+:root{--bg:#0b0b0c;--card:#141415;--card2:#1b1b1d;--line:rgba(243,237,226,.13);--fg:#f3ede2;--mute:#9a958d;--dim:#6f6b65;--amber:#ef5b2a;--bar:#ef5b2a;--bar-dim:#5a2a18;--good:#4cc38a;--blue:#6aa5ff;--ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Archivo","Arial Black",system-ui,sans-serif;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.45 var(--ui);-webkit-font-smoothing:antialiased}
@@ -21,8 +21,8 @@ button{cursor:pointer}
 .wrap{max-width:1080px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
-.brand svg{width:44px;height:auto}
-.brand h1{margin:0;font:500 24px/1 var(--display);letter-spacing:-.01em}
+.brand svg{width:40px;height:40px}
+.brand h1{margin:0;font:800 24px/1 var(--display);letter-spacing:-.01em}
 .brand small{display:block;margin-top:3px;font:400 12px/1 var(--ui);color:var(--mute)}
 .seg{display:inline-flex;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
 .seg button{border:0;background:none;padding:8px 14px;border-radius:999px;font:500 13px/1 var(--ui);color:var(--mute)}
@@ -80,8 +80,8 @@ th{font-weight:500;color:var(--mute)}
 .foot button{border:0;background:none;color:var(--mute);text-decoration:underline;padding:0}
 /* sign in */
 .gate{max-width:420px;margin:14vh auto 0;text-align:center}
-.gate svg{width:92px;height:auto}
-.gate h1{margin:14px 0 6px;font:500 30px/1.1 var(--display)}
+.gate svg{width:72px;height:72px}
+.gate h1{margin:14px 0 6px;font:800 30px/1.1 var(--display)}
 .gate p{margin:0 0 18px;color:var(--mute)}
 .gate form{display:flex;gap:8px}
 .gate input{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
@@ -95,7 +95,7 @@ th{font-weight:500;color:var(--mute)}
 @keyframes up{from{transform:translateY(30px);opacity:0}}
 .sheet header{margin:0 0 4px;align-items:flex-start;flex-wrap:nowrap}
 .sheet header > div{flex:1;min-width:0}
-.sheet h2{margin:0;font:500 30px/1.05 var(--display);letter-spacing:-.01em;overflow-wrap:anywhere}
+.sheet h2{margin:0;font:800 30px/1.05 var(--display);letter-spacing:-.01em;overflow-wrap:anywhere}
 .sheet .when{margin:4px 0 14px;color:var(--mute);font-size:13px}
 .x{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;font-size:20px;line-height:1}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
@@ -123,7 +123,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
 <body>
 <div class="wrap">
   <div class="gate" id="gate" hidden>
-    <svg viewBox="636 700 769 398" aria-hidden="true"><path fill="#f3ede2" d="M 796.084 844.42 C 810.191 843.449 833.731 844.167 848.41 844.17 L 952.267 844.366 C 936.997 873.75 919.122 916.471 903.268 943.958 C 865.562 944.288 801.939 941.66 766.208 946.337 C 720.462 954.65 692.592 963.284 654.574 991.105 C 662.734 961.888 689.353 908.706 709.165 885.942 C 733.723 857.724 759.856 847.065 796.084 844.42 z"/><path fill="#f3ede2" d="M 848.682 710.353 C 862.781 709.033 891.492 709.909 906.778 709.923 L 1018.36 710.045 L 968.26 809.216 C 925.918 808.866 865.638 807.518 824.435 810.055 C 773.771 816.883 744.103 832.571 708.549 868.677 C 713.899 854.733 721.575 841.279 727.556 827.627 C 752.43 770.844 780.367 719.707 848.682 710.353 z"/><path fill="#f3ede2" d="M 1023.4 729.656 C 1026.69 732.928 1041.11 767.15 1044.27 773.867 C 1075.08 839.439 1102.82 906.845 1133.04 972.598 C 1115.26 1009.9 1093.36 1051.09 1074.33 1088.04 C 1069.77 1084.28 976.641 869.515 964.873 842.641 L 1023.4 729.656 z"/><path fill="#f3ede2" d="M 1143.57 706.831 C 1146.42 709.992 1156.87 735.044 1159.69 741.385 C 1194.65 820.021 1231.88 898.354 1265.06 977.723 C 1246.18 1016.13 1227.05 1054.41 1207.66 1092.57 L 1203.26 1083.38 L 1072.72 794.43 C 1087.87 754.375 1108.22 730.683 1143.57 706.831 z"/><path fill="#f3ede2" d="M 1374.85 706.48 C 1382.77 706.386 1391.38 706.706 1399.35 706.843 L 1273.38 961.964 C 1271.01 955.829 1267.54 948.553 1264.8 942.444 C 1251.72 911.526 1236.63 880.124 1223.14 849.093 C 1259.97 777.203 1279.27 709.612 1374.85 706.48 z"/><path fill="#ef5b2a" d="M 750.154 967.092 L 752.731 967.182 C 755.182 977.795 757.31 987.132 769.918 988.468 C 782.43 989.794 795.578 989.327 808.162 989.345 L 881.659 989.372 C 865.661 1021.46 849.315 1053.38 832.621 1085.11 C 816.577 1084.78 799.615 1085.05 783.5 1085.04 C 751.209 1085.16 720.092 1087.59 688.616 1072.71 C 670.893 1066.78 642.282 1026.17 653.214 1009.13 C 665.692 989.686 730.123 972.991 750.154 967.092 z"/></svg>
+    <svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="og139751197856704" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".12" stop-color="#ffb08f"/><stop offset=".42" stop-color="#ef5b2a"/><stop offset="1" stop-color="#4a1404"/></radialGradient></defs><ellipse cx="32" cy="34" rx="28" ry="10" fill="none" stroke="#f3ede2" stroke-width="3" opacity=".5"/><circle cx="32" cy="31" r="19" fill="url(#og139751197856704)"/><path d="M5.400 37.500a28 10 0 0 0 53.200 0" fill="none" stroke="#f3ede2" stroke-width="3" stroke-linecap="round"/></svg>
     <h1>EveryWrap desk</h1>
     <p>Open this page from your private link, or paste your key below.</p>
     <form id="gateForm"><input id="gateKey" type="password" autocomplete="current-password" placeholder="Private key" aria-label="Private key"><button class="btn" type="submit">Open</button></form>
@@ -133,7 +133,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
   <div id="app" hidden>
     <header>
       <div class="brand">
-        <svg viewBox="636 700 769 398" aria-hidden="true"><path fill="#f3ede2" d="M 796.084 844.42 C 810.191 843.449 833.731 844.167 848.41 844.17 L 952.267 844.366 C 936.997 873.75 919.122 916.471 903.268 943.958 C 865.562 944.288 801.939 941.66 766.208 946.337 C 720.462 954.65 692.592 963.284 654.574 991.105 C 662.734 961.888 689.353 908.706 709.165 885.942 C 733.723 857.724 759.856 847.065 796.084 844.42 z"/><path fill="#f3ede2" d="M 848.682 710.353 C 862.781 709.033 891.492 709.909 906.778 709.923 L 1018.36 710.045 L 968.26 809.216 C 925.918 808.866 865.638 807.518 824.435 810.055 C 773.771 816.883 744.103 832.571 708.549 868.677 C 713.899 854.733 721.575 841.279 727.556 827.627 C 752.43 770.844 780.367 719.707 848.682 710.353 z"/><path fill="#f3ede2" d="M 1023.4 729.656 C 1026.69 732.928 1041.11 767.15 1044.27 773.867 C 1075.08 839.439 1102.82 906.845 1133.04 972.598 C 1115.26 1009.9 1093.36 1051.09 1074.33 1088.04 C 1069.77 1084.28 976.641 869.515 964.873 842.641 L 1023.4 729.656 z"/><path fill="#f3ede2" d="M 1143.57 706.831 C 1146.42 709.992 1156.87 735.044 1159.69 741.385 C 1194.65 820.021 1231.88 898.354 1265.06 977.723 C 1246.18 1016.13 1227.05 1054.41 1207.66 1092.57 L 1203.26 1083.38 L 1072.72 794.43 C 1087.87 754.375 1108.22 730.683 1143.57 706.831 z"/><path fill="#f3ede2" d="M 1374.85 706.48 C 1382.77 706.386 1391.38 706.706 1399.35 706.843 L 1273.38 961.964 C 1271.01 955.829 1267.54 948.553 1264.8 942.444 C 1251.72 911.526 1236.63 880.124 1223.14 849.093 C 1259.97 777.203 1279.27 709.612 1374.85 706.48 z"/><path fill="#ef5b2a" d="M 750.154 967.092 L 752.731 967.182 C 755.182 977.795 757.31 987.132 769.918 988.468 C 782.43 989.794 795.578 989.327 808.162 989.345 L 881.659 989.372 C 865.661 1021.46 849.315 1053.38 832.621 1085.11 C 816.577 1084.78 799.615 1085.05 783.5 1085.04 C 751.209 1085.16 720.092 1087.59 688.616 1072.71 C 670.893 1066.78 642.282 1026.17 653.214 1009.13 C 665.692 989.686 730.123 972.991 750.154 967.092 z"/></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="og139751197856704" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".12" stop-color="#ffb08f"/><stop offset=".42" stop-color="#ef5b2a"/><stop offset="1" stop-color="#4a1404"/></radialGradient></defs><ellipse cx="32" cy="34" rx="28" ry="10" fill="none" stroke="#f3ede2" stroke-width="3" opacity=".5"/><circle cx="32" cy="31" r="19" fill="url(#og139751197856704)"/><path d="M5.400 37.500a28 10 0 0 0 53.200 0" fill="none" stroke="#f3ede2" stroke-width="3" stroke-linecap="round"/></svg>
         <div><h1>EveryWrap desk</h1><small id="stamp">Loading</small></div>
       </div>
       <div class="seg" id="range" role="group" aria-label="Time range">

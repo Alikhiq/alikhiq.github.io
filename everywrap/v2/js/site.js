@@ -167,7 +167,7 @@ function playIntro() {
 
 export function initSite() {
   hooks.quote = openQuote; hooks.upload = openUpload; loadMail();
-  $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i style="background:${f[3]}"></i>${f[1]}</button>`).join("");
+  $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i class="sph ${/gloss/i.test(f[1]) ? "gloss" : /matte/i.test(f[1]) ? "matte" : "satin"}" style="--c:${f[3]}"></i>${f[1]}</button>`).join("");
   document.addEventListener("click", (e) => {
     const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote({ svc: q.dataset.quote || "", note: q.dataset.note || "", loc: q.dataset.loc || "" }); }
     if (e.target.closest("[data-upload]")) return openUpload();

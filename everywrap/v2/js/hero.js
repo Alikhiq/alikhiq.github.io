@@ -45,15 +45,46 @@ const bookName = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " PPF" : S.ch === "ti
 const bookPrice = () => (S.ch === "ppf" ? fromPrice("ppf", S.ppf) : S.ch === "tint" ? fromPrice("tint", "carbon") : S.ch === "kits" ? null : fromPrice("wrap", S.finish === "color-shift" ? "shift" : "full"));
 const bookLabel = () => { const p = bookPrice(); return bookName() + (p ? " · from " + money(p) : ""); };
 function renderCopy() {} // the headline is fixed now: it says what we sell
+const kindOf = (f) => (f[0] === "color-shift" ? "shift" : /gloss/i.test(f[1]) ? "gloss" : /matte/i.test(f[1]) ? "matte" : "satin");
+function centre(w, id, smooth) {
+  const b = $(`.ball[data-f="${id}"]`, w); if (!b) return;
+  w.scrollTo({ left: b.offsetLeft + b.offsetWidth / 2 - w.clientWidth / 2, behavior: smooth && !reduce ? "smooth" : "auto" });
+  if (w._shape) requestAnimationFrame(w._shape);
+}
+function wheel(w) {
+  const balls = $$(".ball", w);
+  // swatches shrink, sink and fade the further they sit from the middle
+  w._shape = () => { const c = w.scrollLeft + w.clientWidth / 2; balls.forEach((b) => { const a = Math.min(3, Math.abs((b.offsetLeft + b.offsetWidth / 2 - c) / b.offsetWidth)); b.style.setProperty("--s", (1.3 - a * 0.2).toFixed(3)); b.style.setProperty("--y", (a * a * 2.4).toFixed(1) + "px"); b.style.setProperty("--o", (1 - a * 0.16).toFixed(2)); }); };
+  let t = 0, raf = 0;
+  w.addEventListener("scroll", () => {
+    if (!raf) raf = requestAnimationFrame(() => { raf = 0; w._shape(); });
+    w._busy = true; clearTimeout(t);
+    t = setTimeout(() => {
+      w._busy = false; const c = w.scrollLeft + w.clientWidth / 2; let best = null, bd = 1e9;
+      balls.forEach((b) => { const d = Math.abs(b.offsetLeft + b.offsetWidth / 2 - c); if (d < bd) { bd = d; best = b; } });
+      if (best && best.dataset.f !== S.finish) { ev("finish_pick", best.dataset.f); go({ finish: best.dataset.f }); }
+    }, 150);
+  }, { passive: true });
+  addEventListener("resize", () => { centre(w, S.finish, false); });
+  requestAnimationFrame(() => centre(w, S.finish, false));
+}
 function renderOpts() {
   const o = $("#opts");
-  if (S.ch === "wrap") o.innerHTML = `<div class="dotrow">` + FIN.map((f) => `<button type="button" class="dot" data-f="${f[0]}" aria-label="${f[1]}" aria-pressed="${f[0] === S.finish}" style="background:${f[3]}"></button>`).join("") + `</div><span class="optname"><b>${fin()[1]}</b>${fin()[4] ? `<small>${fin()[4]}</small>` : ""}</span>`;
+  if (S.ch === "wrap") {
+    // A wheel of shaded swatches: swipe it and the one in the middle goes on the car.
+    let w = $(".wheel", o);
+    if (!w) {
+      o.innerHTML = `<div class="wheel" role="listbox" aria-label="Finish">${FIN.map((f) => `<button type="button" class="ball" role="option" data-f="${f[0]}" aria-label="${f[1]}"><i class="sph ${kindOf(f)}" style="--c:${f[3]}"></i></button>`).join("")}</div><span class="optname"></span>`;
+      w = $(".wheel", o); wheel(w);
+    }
+    $$(".ball", w).forEach((b) => b.setAttribute("aria-selected", b.dataset.f === S.finish));
+    $(".optname", o).innerHTML = `<b>${fin()[1]}</b><small>${fin()[4] || "In stock"}</small>`;
+    if (!w._busy) centre(w, S.finish, w._ready);
+    w._ready = true; return;
+  }
   else if (S.ch === "ppf") o.innerHTML = PPF.map((p) => `<button type="button" class="chip" data-p="${p[0]}" aria-pressed="${p[0] === S.ppf}">${p[1]}</button>`).join("");
   else if (S.ch === "tint") o.innerHTML = TINT.map((t) => `<button type="button" class="chip" data-t="${t}" aria-pressed="${t === S.tint}">${t}%</button>`).join("");
   else o.innerHTML = "";
-  // keep the picked swatch in view inside its strip
-  const row = $(".dotrow", o), on = row && $('[aria-pressed="true"]', row);
-  if (on) row.scrollLeft = on.offsetLeft - row.clientWidth / 2 + on.offsetWidth / 2;
 }
 function measure() {
   const cz = $("#carzone").getBoundingClientRect(), cv = $("#stage").getBoundingClientRect();

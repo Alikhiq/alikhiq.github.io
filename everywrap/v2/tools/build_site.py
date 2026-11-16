@@ -64,7 +64,7 @@ def build_id():
 
 # On the live site the Worker serves /v/<id>/... as the same files, so every script a page loads carries the build id.
 VER = ("v/" + build_id() + "/") if LIVE else ""
-FONTS = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,600..900;1,100..125,600..900&family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap"
 CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 CHEV_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>'
@@ -142,25 +142,22 @@ NAV = [("car", "Cars", ""), ("biz", "Business", "commercial"), ("studio", "Desig
 LOGO = J("data/logo.json")
 
 def sprite():
-    """The wordmark and the emblem's outline, defined once per page and reused."""
-    e_, w_ = LOGO["emblem"], LOGO["word"]
+    """The wordmark's shapes, defined once per page and reused."""
+    w_ = LOGO["word"]; x, y, w, h = w_["vb"]
+    paths = "".join(f'<path fill-rule="evenodd" clip-rule="evenodd" d="{d}"/>' for d in w_["letters"])
     return ('<svg class="vh" aria-hidden="true" focusable="false"><defs>'
-            '<clipPath id="ew-clip" clipPathUnits="userSpaceOnUse">' + "".join(f'<path d="{d}"/>' for d in e_["white"] + e_["accent"]) + "</clipPath>"
-            '<linearGradient id="ew-shine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>'
-            f'<symbol id="ew-word" viewBox="{" ".join(map(str, w_["vb"]))}">' + "".join(f'<path fill-rule="evenodd" d="{d}"/>' for d in w_["letters"]) + "</symbol></svg>\n")
+            f'<clipPath id="ew-wclip" clipPathUnits="userSpaceOnUse">{paths}</clipPath>'
+            '<linearGradient id="ew-shine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>'
+            f'<symbol id="ew-word" viewBox="{x} {y} {w} {h}">{paths}</symbol></svg>\n')
 
 def mark(cls="logo-mark", attrs=""):
-    """The EveryWrap emblem: E and W cut from strips of film, the lowest strip in the live glow colour.
-    The strips slide in when the page loads and a band of light crosses the emblem now and then."""
-    e_ = LOGO["emblem"]; x, y, w, h = e_["vb"]
-    return (f'<svg class="{cls}"{attrs} viewBox="{x} {y} {w} {h}" aria-hidden="true">'
-            + "".join(f'<path class="lm-w" style="--n:{n}" d="{d}"/>' for n, d in enumerate(e_["white"]))
-            + "".join(f'<path class="lm-o" d="{d}"/>' for d in e_["accent"])
-            + f'<rect class="lm-s" x="{x - 0.5 * w:.0f}" y="{y}" width="{0.45 * w:.0f}" height="{h}" fill="url(#ew-shine)" clip-path="url(#ew-clip)"/></svg>')
+    """A stand-in icon until the final logo exists: a glossy ball in the live colour with a strip of film orbiting it."""
+    return (f'<span class="orb {cls}"{attrs} aria-hidden="true"><span class="orb-ring back"><i></i></span><i class="orb-b"></i><span class="orb-ring front"><i></i></span></span>')
 
 def wordmark(cls="logo-word"):
-    w, h = LOGO["word"]["vb"][2:]
-    return f'<svg class="{cls}" viewBox="0 0 {w} {h}" aria-hidden="true"><use href="#ew-word" width="{w}" height="{h}"/></svg>'
+    x, y, w, h = LOGO["word"]["vb"]
+    return (f'<svg class="{cls}" viewBox="{x} {y} {w} {h}" aria-hidden="true"><use href="#ew-word" x="{x}" y="{y}" width="{w}" height="{h}"/>'
+            f'<rect class="lw-s" x="{x - 0.3 * w:.0f}" y="{y}" width="{0.26 * w:.0f}" height="{h}" fill="url(#ew-shine)" clip-path="url(#ew-wclip)"/></svg>')
 
 def logo(root, cls=""):
     return ('<a class="logo' + ((" " + cls) if cls else "") + '" href="' + link(root, "") + '" aria-label="EveryWrap home">' + mark() + wordmark() + "</a>")
@@ -1017,8 +1014,7 @@ def extras():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nDisallow: /desk/\nDisallow: /api/\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
-    x, y, w, h = LOGO["emblem"]["vb"]
-    write("favicon.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><g transform="translate(32 32) scale({50 / w:.4f}) translate({-(x + w / 2):.1f} {-(y + h / 2):.1f})">' + "".join(f'<path fill="#f3ede2" d="{d}"/>' for d in LOGO["emblem"]["white"]) + "".join(f'<path fill="#ef5b2a" d="{d}"/>' for d in LOGO["emblem"]["accent"]) + "</g></svg>\n")
+    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><radialGradient id="g" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".12" stop-color="#ffb08f"/><stop offset=".42" stop-color="#ef5b2a"/><stop offset="1" stop-color="#4a1404"/></radialGradient></defs><rect width="64" height="64" rx="14" fill="#0b0b0c"/><ellipse cx="32" cy="34" rx="25" ry="9" fill="none" stroke="#f3ede2" stroke-width="3.500" opacity=".55"/><circle cx="32" cy="31" r="17" fill="url(#g)"/><path d="M8.300 37a25 9 0 0 0 47.400 0" fill="none" stroke="#f3ede2" stroke-width="3.500" stroke-linecap="round"/></svg>\n')
 
 if __name__ == "__main__":
     page_home()

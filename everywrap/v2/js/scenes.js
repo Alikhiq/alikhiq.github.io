@@ -96,7 +96,7 @@ function initPV() {
 /* ---------- the film wall: every finish as a swatch, in two moving rows ---------- */
 function initWall() {
   const el = $("#swall"); if (!el) return;
-  const chip = (f) => `<button type="button" class="swchip" data-f="${f[0]}"><i style="background:${f[3]}"></i><span><b>${esc(f[1])}</b><small>${esc(f[4] || "In stock films")}</small></span></button>`;
+  const chip = (f) => `<button type="button" class="swchip" data-f="${f[0]}"><i class="sph ${f[0] === "color-shift" ? "shift" : /gloss/i.test(f[1]) ? "gloss" : /matte/i.test(f[1]) ? "matte" : "satin"}" style="--c:${f[3]}"></i><span><b>${esc(f[1])}</b><small>${esc(f[4] || "In stock films")}</small></span></button>`;
   const half = Math.ceil(FIN.length / 2), rows = [FIN.slice(0, half), FIN.slice(half)];
   el.innerHTML = rows.map((r, n) => `<div class="swrow${n ? " rev" : ""}"><div>${r.map(chip).join("")}${r.map(chip).join("")}${r.map(chip).join("")}</div></div>`).join("");
   el.addEventListener("click", (e) => { const b = e.target.closest(".swchip"); if (!b || !hooks.heroGo) return; hooks.heroGo({ ch: "wrap", finish: b.dataset.f }); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
