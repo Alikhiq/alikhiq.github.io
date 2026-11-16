@@ -29,13 +29,24 @@ h1,h2,.d{font-family:"Marcellus",serif;font-weight:400}
 #bar{position:absolute;left:0;bottom:0;height:5px;background:var(--red)}
 #chap{position:absolute;left:40px;top:28px;font-size:16px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .ring{position:absolute;border:3px solid var(--gold);border-radius:50%;box-shadow:0 0 0 2000px #0008}
+.vc{font-size:24px!important;box-shadow:0 4px 18px #000a}
 .call{position:absolute;font-size:22px;background:var(--gold);color:#1a1405;padding:3px 12px;font-weight:600;white-space:nowrap}
 svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 .cell{position:absolute;width:86px;height:86px;border:2px solid var(--lapis);display:flex;align-items:center;justify-content:center;font-size:42px;font-family:"Marcellus",serif;background:#16223a}
 .sum{position:absolute;white-space:nowrap;font-size:26px;color:var(--gold);font-weight:600}
 .row{display:flex;align-items:center;gap:18px;font-size:27px;margin-bottom:16px}
 .row b{display:inline-block;width:14px;height:14px;border-radius:50%}
-</style></head><body><div id="stage">
+#bg{position:absolute;inset:0;opacity:0;background:#000;overflow:hidden}
+#bg img{position:absolute;left:0;top:0;width:1280px;height:720px}
+#bgs{position:absolute;inset:0}
+#ail{position:absolute;right:28px;top:24px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;background:#0009;padding:4px 12px;border:1px solid #fff4;opacity:0}
+.cs .img{transform:scale(.5);transform-origin:0 0;left:44px!important;top:64px!important}
+.cs > div.abs:not(.img){left:700px!important;width:540px!important;text-shadow:0 2px 12px #000}
+.cs > svg.abs{left:680px!important}
+.cs .arh{white-space:normal}
+.cs .arh[style*="54px"]{font-size:42px!important}
+.cs #fev{width:540px;height:266px}
+</style></head><body><div id="stage"><div id="bg"><img id="bgi"><div id="bgs"></div></div>
 
 <!-- 1 TITLE -->
 <div class="scene" data-a="0" data-b="18" data-chap="">
@@ -81,7 +92,8 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 4 RED KING -->
-<div class="scene" data-a="80" data-b="114" data-chap="Page 1 · The Red King">
+<div class="scene cs" data-a="80" data-b="114" data-clip="king" data-n="405" data-fx="translate(-150px,70px) scale(1.25)" data-chap="Page 1 · The Red King">
+<div class="call vc" style="left:540px;top:150px" data-at="21" data-out="28.5">a crown: he is a king</div><div class="call vc" style="left:270px;top:345px" data-at="22.5" data-out="28.5">red skin, red robe</div><div class="call vc" style="left:300px;top:520px" data-at="24" data-out="28.5">the sword of Mars</div>
   <div class="img q" style="left:70px;top:80px;width:410px;height:538px"><i style="background-position:0 0;background-size:212% 200%" data-kb="1,1.1"></i>
     <div class="call" style="left:210px;top:230px" data-at="21" data-out="28">red skin, red robe</div>
     <div class="call" style="left:150px;top:420px" data-at="23.5" data-out="28">a sword</div>
@@ -97,7 +109,7 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 5 WEEK WHEEL -->
-<div class="scene" data-a="114" data-b="146" data-chap="Why is he red?">
+<div class="scene" data-a="114" data-b="146" data-clip="king" data-n="405" data-off="34" data-dim="1" data-fx="scale(1.1)" data-chap="Why is he red?">
   <svg id="wheel" class="abs" style="left:90px;top:60px" width="560" height="560" viewBox="-280 -280 560 560"></svg>
   <div class="abs" style="left:720px;top:150px;width:500px">
     <div class="d" style="font-size:46px;line-height:1.12" data-at="0.5">Seven jinn kings share the week</div>
@@ -109,7 +121,8 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 6 KABUS -->
-<div class="scene" data-a="146" data-b="176" data-chap="Page 2 · The Nightmare">
+<div class="scene cs" data-a="146" data-b="176" data-clip="kabus" data-n="358" data-fx="translateX(-110px) scale(-1.18,1.18)" data-chap="Page 2 · The Nightmare">
+<div class="call vc" style="left:300px;top:330px" data-at="20.5" data-out="29">the weight that presses down</div>
   <div class="img q" style="left:70px;top:80px;width:410px;height:538px"><i style="background-position:0 100%;background-size:212% 200%" data-kb="1.12,1"></i></div>
   <div class="abs" style="left:540px;top:95px;width:690px;text-align:right">
     <div class="ar arh" style="font-size:96px" data-at="7" data-fx="rtl">الكابوس</div>
@@ -147,7 +160,8 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 8 FEVER -->
-<div class="scene" data-a="210" data-b="236" data-chap="Page 4 · Fever">
+<div class="scene cs" data-a="210" data-b="236" data-clip="fever" data-n="310" data-fx="translate(-170px,95px) scale(1.28)" data-chap="Page 4 · Fever">
+<div class="call vc" style="left:290px;top:330px" data-at="1" data-out="8">three heads, one body</div>
   <div class="img h" style="left:70px;top:80px;width:378px;height:538px"><i style="background-position:0 0;background-size:212% 200%" data-kb="1,1.1"></i></div>
   <div class="abs" style="left:520px;top:90px;width:710px;text-align:right" data-out="14.5">
     <div class="ar arh" style="font-size:96px" data-at="3.5" data-fx="rtl">الحمّى</div>
@@ -163,7 +177,8 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 9 MOUNTAIN -->
-<div class="scene" data-a="236" data-b="256" data-chap="Page 5 · The Mountain of Fire">
+<div class="scene cs" data-a="236" data-b="256" data-clip="mountain" data-n="298" data-fx="translate(-170px,60px) scale(1.28)" data-chap="Page 5 · The Mountain of Fire">
+<div class="call vc" style="left:290px;top:170px" data-at="9" data-out="14">birds in the fire, unharmed</div>
   <div class="img h" style="left:70px;top:80px;width:378px;height:538px"><i style="background-position:100% 0" data-kb="1,1.12"></i>
     <canvas id="fire" width="378" height="538" class="abs" style="left:0;top:0;mix-blend-mode:screen"></canvas></div>
   <div class="abs" style="left:500px;top:100px;width:730px;text-align:right">
@@ -191,7 +206,7 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
 </div>
 
 <!-- 11 RECAP -->
-<div class="scene" data-a="284" data-b="300" data-chap="What we found">
+<div class="scene" data-a="284" data-b="300" data-clip="mountain" data-n="298" data-off="20" data-dim="1" data-fx="scale(1.1)" data-chap="What we found">
   <div class="abs" style="left:90px;top:96px;width:560px">
     <div class="d" style="font-size:50px;margin-bottom:26px" data-at="0.3">Seven pages</div>
     <div class="row" data-at="1"><b style="background:var(--lapis)"></b>Red King<span style="color:var(--muted)">· firm</span></div>
@@ -206,7 +221,7 @@ svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
   <div class="abs d" style="left:700px;top:520px;width:500px;font-size:27px;text-align:center;color:var(--gold)" data-at="9">A labelled guide to luck, illness and fear</div>
 </div>
 
-<div id="clip" style="position:absolute;inset:0;opacity:0;background:#000"><img id="clipimg" style="width:1280px;height:720px;object-fit:cover;display:block"><div style="position:absolute;right:28px;top:24px;font-size:17px;letter-spacing:.14em;text-transform:uppercase;background:#000a;padding:5px 14px;border:1px solid #fff5">Imagined in live action · AI-generated</div></div>
+<div id="ail">Imagined in live action · AI-generated · slowed down</div>
 <div id="chap"></div>
 <div id="cap"><div id="capt"></div></div><div id="bar"></div>
 </div>
@@ -259,10 +274,9 @@ const PTS=[["forehead",160,50,1],["eyebrow",140,72,-1],["shoulder",80,160,-1],["
 const fire=$("#fire").getContext("2d");
 
 const scenes=[...document.querySelectorAll(".scene")].map(s=>({s,a:+s.dataset.a,b:+s.dataset.b,chap:s.dataset.chap,els:[...s.querySelectorAll("[data-at],[data-out]")],kb:[...s.querySelectorAll("[data-kb]")]}));
-const CLIPS=[["king",95.5],["kabus",161],["fever",219.5],["mountain",245]];
 window.seek=async function(t){
  for(const sc of scenes){const vis=t>=sc.a-0.01&&t<sc.b;const L=t-sc.a;
-  const o=vis?Math.min(ease(L/0.6),sc.b===DUR?1:ease((sc.b-t)/0.5)):0;sc.s.style.opacity=o;sc.s.style.visibility=o>0?"visible":"hidden";if(!vis)continue;
+  const o=vis?Math.min(ease(L/0.6),sc.b===DUR?1:ease((sc.b-t)/0.5)):0;sc.s.style.opacity=o;sc.o=o;sc.s.style.visibility=o>0?"visible":"hidden";if(!vis)continue;
   for(const e of sc.els){const at=e.dataset.at===undefined?-9:+e.dataset.at,out=e.dataset.out===undefined?1e9:+e.dataset.out,p=ease((L-at)/0.8),q=1-ease((L-out)/0.5),fx=e.dataset.fx||"up";
    e.style.opacity=fx==="rtl"?q:p*q;const rot=e.dataset.rot?` rotate(${(+e.dataset.rot)*p}deg)`:"";
    if(fx==="rtl"){e.style.display="inline-block";e.style.clipPath=`inset(-20% 0 -20% ${(1-io((L-at)/1.4))*100}%)`}
@@ -283,9 +297,10 @@ window.seek=async function(t){
   if(sc.a===256){bfig.style.opacity=ease((L-7)/1);bR.style.opacity=bL.style.opacity=ease((L-14)/0.8);PTS.forEach((p,i)=>{const s=L-8.5-i*1.6;p.g.style.opacity=ease(s/0.5);
     const tw=((L*1.1+i*0.37)%1);p.h.setAttribute("r",9+tw*16);p.h.style.opacity=(1-tw)*cl(s)})}
  }
- let co=0;for(const[n,t0]of CLIPS){if(t>=t0&&t<t0+5){co=Math.min(ease((t-t0)/0.35),ease((t0+5-t)/0.35));const f=Math.min(119,Math.floor((t-t0)*24))+1,src="work/clips/"+n+"/"+String(f).padStart(3,"0")+".jpg",im=$("#clipimg");
-   if(im.dataset.s!==src){im.dataset.s=src;im.src=src;try{await im.decode()}catch(e){}}}}
- $("#clip").style.opacity=co;$("#chap").style.visibility=co>0.5?"hidden":"visible";
+ let bo=0;for(const sc of scenes){const d=sc.s.dataset;if(!d.clip||!(sc.o>0))continue;bo=sc.o;const N=+d.n,seg=N/24,u=((t-sc.a+(+d.off||0))/seg)%2,pp=u<1?u:2-u,f=1+Math.round(pp*(N-1)),src="work/slow/"+d.clip+"/"+String(f).padStart(4,"0")+".jpg",im=$("#bgi");
+   im.style.transform=d.fx||"";$("#bgs").style.background=d.dim?"rgba(8,12,20,.8)":"linear-gradient(90deg,rgba(8,12,20,.3) 0%,rgba(8,12,20,.18) 38%,rgba(8,12,20,.86) 58%,rgba(8,12,20,.93) 100%)";
+   if(im.dataset.s!==src){im.dataset.s=src;im.src=src;try{await im.decode()}catch(e){}}}
+ $("#bg").style.opacity=bo;$("#ail").style.opacity=bo;
  $("#bar").style.width=(t/DUR*1280)+"px";
 };
 document.fonts.ready.then(()=>{seek(+(new URLSearchParams(location.search).get("t")||0));window.READY=true});
