@@ -58,6 +58,13 @@ async function submitQuote(e) {
   if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
   rows.push(["Contact", `${name}, ${lead.phone} (${lead.contact})`]);
   $("#qSum").innerHTML = rows.map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("");
+  if (MAIL && !CONFIG.leadEndpoint) {
+    // The live site hands the request to the visitor's email app, addressed to the shop.
+    const body = rows.map((r) => `${r[0]}: ${r[1]}`).join("\n") + `\n\nSent from ${location.origin + location.pathname}`;
+    const href = `mailto:${MAIL.to}?${MAIL.cc ? "cc=" + encodeURIComponent(MAIL.cc) + "&" : ""}subject=${encodeURIComponent("New EveryWrap quote request")}&body=${encodeURIComponent(body)}`;
+    $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team. <a href="${esc(href)}">Open the email again</a>`;
+    step(4); location.href = href; return;
+  }
   let msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
   if (CONFIG.leadEndpoint) {
     const b = $("#qSend"); b.disabled = true; b.textContent = "Sending…";
@@ -68,6 +75,19 @@ async function submitQuote(e) {
   $("#qDone").textContent = msg; step(4);
 }
 function openUpload() { $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
+
+/* ---------- where requests go ---------- */
+// The live deployment answers /lead.json with the addresses requests are emailed to. Previews have none.
+let MAIL = null;
+async function loadMail() {
+  if (!R.dataset.live) return;
+  try {
+    const r = await fetch("/lead.json", { cache: "no-store" }); if (!r.ok) return;
+    const d = await r.json(); if (!d || !d.to) return;
+    MAIL = d;
+    if (d.cc) $$('a[href^="mailto:"]').forEach((a) => { if (!a.href.includes("cc=")) a.href += (a.href.includes("?") ? "&" : "?") + "cc=" + encodeURIComponent(d.cc); });
+  } catch {}
+}
 
 /* ---------- launch intro (home only) ---------- */
 let introT = [];
@@ -96,7 +116,7 @@ function playIntro() {
 }
 
 export function initSite() {
-  hooks.quote = openQuote;
+  hooks.quote = openQuote; loadMail();
   $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i style="background:${f[3]}"></i>${f[1]}</button>`).join("");
   document.addEventListener("click", (e) => {
     const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote, note: q.dataset.note || "" } : {}); }

@@ -94,10 +94,19 @@ Transparent PNG cutouts work too: the engine then draws the studio light and the
 
 ## Hosting
 
-The site runs on Cloudflare, on the account that holds everywrap.com.
+The site is live at https://everywrap.com, on the Cloudflare account that holds the domain.
 
-- The files live in the R2 bucket `everywrap-site`. `deploy/upload.py` sends the public files there after a build.
-- The Worker `everywrap-v2` (`deploy/worker.js`, `deploy/wrangler.jsonc`) serves them, at `new.everywrap.com`.
-- It is the preview build: every response carries a noindex header, and `robots.txt` blocks crawlers.
-- `everywrap.com` and `www.everywrap.com` still point at the older Worker `everywrap-columbus`. Moving them to `everywrap-v2` is the launch step. Before that: confirm the prices, set `leadEndpoint` in `js/config.js`, build with `--live`, and set `PREVIEW` to `"0"`.
+- The files live in the R2 bucket `everywrap-site`. The Worker `everywrap-v2` (`deploy/worker.js`, `deploy/wrangler.jsonc`) serves them.
+- `everywrap.com` is the public address. `www.everywrap.com` redirects to it. `new.everywrap.com` and the workers.dev address serve the same files with a noindex header.
+- The older site is still there as the Worker `everywrap-columbus`, with no domain attached. Pointing the two domains back at it undoes the launch.
 
+To publish a change:
+
+1. `python3 tools/build_site.py --live` (the launch build: indexable, links without `index.html`).
+2. `python3 deploy/upload.py` (needs `CLOUDFLARE_ACCOUNT_ID`).
+3. `python3 tools/build_site.py` again, so the pages kept in the repo stay the preview build.
+4. Only when `deploy/worker.js` changes: `npx wrangler deploy` from `deploy/`.
+
+Booking requests: the form opens the visitor's email app with the request written out, addressed to `LEAD_TO` with a copy to `LEAD_CC`. Both are settings on the Worker (`/lead.json`); the copy address is a Worker secret and is not in the repo. The older site sent requests the same way. `sales@everywrap.com` has no mail records on the domain, so the copy address is the one that receives. Setting `leadEndpoint` in `js/config.js` replaces the email step with a direct post.
+
+Prices: `data/pricing.json` has `"confirmed": true` since the owner approved publishing on 16 Nov 2026. The `source` notes say which numbers are the owner's own and which started from other shops' rates.

@@ -5,6 +5,14 @@ export default {
   async fetch(request, env) {
     if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
     const url = new URL(request.url);
+    if (url.hostname === "www.everywrap.com") { url.hostname = "everywrap.com"; return Response.redirect(url.toString(), 301); }
+    // Only the main domain is for search engines; any other address this Worker answers on is a copy.
+    const copy = url.hostname !== "everywrap.com";
+    // Where the booking form sends requests. The addresses are Worker settings, not files in the repo.
+    if (url.pathname === "/lead.json") {
+      if (!env.LEAD_TO) return new Response("{}", { status: 404, headers: { "content-type": TYPES.json } });
+      return new Response(JSON.stringify({ to: env.LEAD_TO, cc: env.LEAD_CC || "" }), { headers: { "content-type": TYPES.json, "cache-control": "no-store", "x-robots-tag": "noindex" } });
+    }
     let key;
     try { key = decodeURIComponent(url.pathname).replace(/^\/+/, ""); } catch { return new Response("Bad request", { status: 400 }); }
     if (key === "" || key.endsWith("/")) key += "index.html";
@@ -24,7 +32,7 @@ export default {
     h.set("cache-control", ext === "html" ? "public, max-age=0, must-revalidate" : "public, max-age=3600");
     h.set("x-content-type-options", "nosniff");
     h.set("referrer-policy", "strict-origin-when-cross-origin");
-    if (env.PREVIEW === "1") h.set("x-robots-tag", "noindex, nofollow");
+    if (copy) h.set("x-robots-tag", "noindex, nofollow");
     if (!("body" in obj)) return new Response(null, { status: 304, headers: h });
     if (range && obj.range && obj.range.length !== undefined && obj.range.length < obj.size) {
       const start = obj.range.offset || 0;

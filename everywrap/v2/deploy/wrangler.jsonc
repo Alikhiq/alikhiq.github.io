@@ -5,7 +5,7 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "preview_urls": false,
-  // "1" adds a noindex header to every response. Set to "0" only for the launch build.
-  "vars": { "PREVIEW": "1" },
+  // Where the booking form sends requests. The copy address is the secret LEAD_CC, set on the Worker and kept out of the repo.
+  "vars": { "LEAD_TO": "sales@everywrap.com" },
   "r2_buckets": [{ "binding": "SITE", "bucket_name": "everywrap-site" }]
 }

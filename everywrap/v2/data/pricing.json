@@ -1,6 +1,6 @@
 {
- "confirmed": false,
- "status": "DRAFT, except the rows whose source says owner. Other numbers come from what other shops and trade printers publish (November 2026). They are not EveryWrap's own rates until the owner checks every number and sets confirmed to true. The launch build refuses to run while this is false.",
+ "confirmed": true,
+ "status": "Approved for publishing by the owner on 16 Nov 2026, as starting prices. The print rows whose source says owner are the owner's own numbers. Rows whose source says DRAFT, guide, shop or estimate started from what other shops and trade printers publish; the owner approved showing them as they are and can correct any of them here.",
  "currency": "USD",
  "sizes": [
   "Coupe / sedan",

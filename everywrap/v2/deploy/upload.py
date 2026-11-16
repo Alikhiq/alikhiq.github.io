@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Upload the built site to the R2 bucket the Worker serves from.
 
-Run tools/build_site.py first. Needs CLOUDFLARE_ACCOUNT_ID, and CLOUDFLARE_API_TOKEN
+Run tools/build_site.py --live first. Needs CLOUDFLARE_ACCOUNT_ID, and CLOUDFLARE_API_TOKEN
 unless the network already signs requests to the Cloudflare API.
 Only the public files are sent: the generator, the source data and the notes stay here.
 Files removed from the site are not removed from the bucket.

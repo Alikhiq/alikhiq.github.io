@@ -82,7 +82,7 @@ def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(
         crumbs.append({"@type": "ListItem", "position": 2, "name": title.split(" | ")[0], "item": canonical(path)})
     lds = [business(), {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": crumbs}, *extra_ld]
     return f"""<!DOCTYPE html>
-<html lang="en" data-mode="{mode}" data-root="{root}"{f' data-ch="{ch}"' if ch else ''}{' data-lock="1"' if lock else ''}{f' style="--glow:{glow[0]};--glow2:{glow[1]}"' if glow else ''}>
+<html lang="en" data-mode="{mode}" data-root="{root}"{' data-live="1"' if LIVE else ''}{f' data-ch="{ch}"' if ch else ''}{' data-lock="1"' if lock else ''}{f' style="--glow:{glow[0]};--glow2:{glow[1]}"' if glow else ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
