@@ -93,10 +93,21 @@ async function lead(request, env, ctx, url) {
     photo = `leads/${id}.${PHOTO_TYPES[file.type]}`;
     await env.PRIVATE.put(photo, file.stream(), { httpMetadata: { contentType: file.type } });
   }
+  // Up to four files with a proof request: logos and artwork. They are only ever handed back as downloads.
+  const files = [];
+  for (let n = 0; n < 4 && env.PRIVATE; n++) {
+    const f = form.get("file" + n);
+    if (!f || typeof f !== "object" || !f.size || f.size > 15 * 1024 * 1024) continue;
+    const fname = clip(f.name, 80).replace(/[^\w. ()-]+/g, "_") || "file" + n;
+    if (!/\.(png|jpe?g|webp|gif|svg|pdf|ai|eps|heic|tiff?)$/i.test(fname)) continue;
+    const key = `leads/${id}-f${n}`;
+    await env.PRIVATE.put(key, f.stream(), { httpMetadata: { contentType: "application/octet-stream" } });
+    files.push({ k: key, name: fname, size: f.size });
+  }
   const L = { id, name, phone, contact: d.contact === "call" ? "call" : "text", vehicle: clip(d.vehicle, 120), services: clip((d.services || []).join(", "), 200), finish: clip(d.finish, 60), tint: clip(d.tint, 20),
     size: clip(d.size, 40), starts: clip((d.from || []).join(", "), 200), note: clip(d.note, 500), location: clip(d.location, 60), page: clip(d.page, 120), photo, render: /^[a-z0-9]{8,24}$/.test(String(d.render || "")) ? `renders/${d.render}.jpg` : "" };
-  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.location, L.page, photo, L.render, visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
+  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, files, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.location, L.page, photo, L.render, files.length ? JSON.stringify(files) : "", visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
   ctx.waitUntil(Promise.all([
     env.DB.prepare("INSERT INTO events (ts, day, name, path, visitor, device, country, ref, detail) VALUES (?,?,?,?,?,?,?,?,?)").bind(ts, day, "lead_sent", L.page, visitor, device(ua), clip(request.cf && request.cf.country, 2), "", L.services.slice(0, 80)).run().catch(() => {}),
     notify(env, L, url.origin),
@@ -112,6 +123,14 @@ const FINISH = {
   "gloss-black": "gloss black vinyl wrap, deep black with crisp mirror-like reflections",
   "satin-grey": "satin grey vinyl wrap, a flat mid grey with a soft sheen",
   "satin-red": "satin red vinyl wrap, a rich red with a smooth low-sheen finish",
+  "trident-blue": "KPMF Gloss Trident Blue vinyl wrap, a deep royal blue with crisp mirror-like reflections",
+  "sterling-blue": "KPMF Matte Sterling Blue vinyl wrap, a pale metallic grey-blue with a flat matte surface",
+  "interstellar-pink": "KPMF Gloss Interstellar Pink vinyl wrap, a vivid pink with crisp mirror-like reflections",
+  "dynamic-lime": "KPMF Ultra Gloss Dynamic Lime vinyl wrap, a bright lime green with crisp mirror-like reflections",
+  "vector-green": "KPMF Absolute Matte Vector Green vinyl wrap, a muted army green that is completely flat matte",
+  "java-brown": "KPMF Matte Java Brown vinyl wrap, a dark coffee brown with a flat matte surface",
+  "dune": "KPMF Matte Dune Metallic vinyl wrap, a sandy beige metallic with a flat matte surface",
+  "red-black": "KPMF Gloss Red/Black Iridescent vinyl wrap, a deep blood red that falls away to black at the edges, high gloss",
   "color-shift": "iridescent colour-shift (chameleon) vinyl wrap: one continuous pearlescent paint whose hue drifts smoothly between deep purple, blue and teal with the light, with no separate colour blocks or hard edges",
 };
 async function render(request, env, ctx, url) {
@@ -183,7 +202,7 @@ async function desk(request, env, url) {
       q("SELECT device, COUNT(DISTINCT visitor) p FROM events WHERE day >= ? GROUP BY device ORDER BY p DESC", since),
       q("SELECT detail, COUNT(*) c FROM events WHERE day >= ? AND name = 'finish_pick' AND detail != '' GROUP BY detail ORDER BY c DESC LIMIT 5", since),
       q("SELECT day, COUNT(*) c FROM leads WHERE day >= ? GROUP BY day", since),
-      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
+      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, files, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
       q("SELECT COUNT(DISTINCT visitor) v FROM events WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE status = 'new'"),
@@ -206,6 +225,13 @@ async function desk(request, env, url) {
     if (!STATUSES.includes(b.status) || !b.id) return json({ ok: false }, 400);
     await DB.prepare("UPDATE leads SET status = ? WHERE id = ?").bind(b.status, String(b.id)).run();
     return json({ ok: true });
+  }
+  if (path === "/api/desk/file") {
+    const row = await DB.prepare("SELECT files FROM leads WHERE id = ?").bind(url.searchParams.get("id") || "").first();
+    let list = []; try { list = JSON.parse((row && row.files) || "[]"); } catch {}
+    const f = list[+url.searchParams.get("n") || 0], obj = f && env.PRIVATE ? await env.PRIVATE.get(f.k) : null;
+    if (!obj) return new Response("Not found", { status: 404 });
+    return new Response(obj.body, { headers: { "content-type": "application/octet-stream", "content-disposition": `attachment; filename="${f.name.replace(/"/g, "")}"`, "x-content-type-options": "nosniff", "cache-control": "private, no-store", "x-robots-tag": "noindex" } });
   }
   if (path === "/api/desk/photo") {
     const row = await DB.prepare("SELECT photo, render FROM leads WHERE id = ?").bind(url.searchParams.get("id") || "").first();

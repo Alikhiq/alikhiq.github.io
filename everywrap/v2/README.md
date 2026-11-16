@@ -23,7 +23,7 @@ Shared pieces on every page:
 - **Catalogue** (`#services` on the home page): every service in those three groups with its starting price, straight under the hero. The list is `catalog` in `data/copy.json`.
 - **Dock**: Services, Work, Book now and Prices, fixed at the bottom once the hero has scrolled away.
 - **Booking**: three steps. What do you need (grouped, with starting prices), the details that fit that choice (a car and its size, a list of vehicles, or a job description), then contact. The last screen says what happens next.
-- **Logo**: an inline SVG (`mark()` and `logo()` in the generator, `.logo` in the stylesheet). One strip of film that wraps round twice and reads as an E: the first turn in the text colour, the second in the live glow colour, with a glint running along it. The name is set in Newsreader, with Wrap in italic. The favicon uses the same paths.
+- **Logo**: a vector logo kept in `data/logo.json`: the EW emblem cut from strips of film, with the lowest strip in the live glow colour, and a wide EVERYWRAP wordmark. `mark()`, `wordmark()` and `sprite()` in the generator place it; `.logo` in the stylesheet animates it (the strips slide in, a band of light crosses now and then). The favicon and the dashboard use the same paths.
 - **Launch intro** (home page, once per visit, skipped for reduced motion): the mark draws itself, the name rises, then the black sheet lifts off the page while the mark travels to the logo in the top bar. `INTRO` in the generator, `.intro` in the stylesheet, `playIntro()` in `js/site.js`.
 - **Trust badges and film brands**: `trust` and `trust_com` in `data/copy.json`, `suppliers` in `data/site.json`. Brands are named in text; no third-party logos are used.
 - **Voice assistant**: an ElevenLabs agent, started from the hero, the menu and the closing section. Its id is `voice_agent` in `data/site.json`; remove it to hide the buttons. The conversation runs on the page (`js/voice.js`): the button turns into a live orb, and the agent can open the photo panel (`open_photo_upload`) or the booking form (`open_booking_form`) on the visitor's screen. Those two are client tools on the agent, and their names must match the handlers in `js/voice.js`. The ElevenLabs web client is bundled in `js/vendor/elevenlabs-client.js` and only loads on the first tap. If the browser cannot start a session, the button opens the hosted conversation in a new tab. Leaving the page ends the conversation. The agent's prices are written into its prompt and must be updated there when `pricing.json` changes.
@@ -119,6 +119,16 @@ Booking requests: on the live site the form posts to `/api/lead` on the Worker. 
 - **Counting** (`js/track.js`, `/api/event`): page views and a fixed list of named taps, on the live domain only. No cookies. A visitor is a one-way hash of address, browser and the day, so one person counts once a day and cannot be followed across days. Known crawlers are ignored.
 - **Email alerts**: the Worker emails each new request to `NOTIFY_TO` once `RESEND_KEY` (a Resend sending key) and `NOTIFY_FROM` (a sender on a domain verified in Resend) are set on it. Until then requests only appear on the dashboard.
 - **Tables**: `events`, `leads` and `renders`; the statements are in `deploy/schema.sql`.
+
+## Finishes
+
+Thirteen finishes are on the hero car: five of our own plus eight KPMF K75400 colours (names and codes in `FIN` in `js/state.js`). The sedan plates in `assets/sets/sedan/` are 2560 pixels wide, made from 2x upscales of the original renders. The KPMF colours are recoloured from the satin red plate, so they share its light and reflections; they show the colour family, not a measured match to the film. The tunnel uses eight of them (`tunnel()` in the generator), the film wall shows all thirteen, and the photo preview on the Worker has a prompt for each.
+
+## Home page pieces added from the owner's notes
+
+- Floating service pickers on the hero (`.rail`), a hook headline with the search words kept for screen readers, visual trust tiles (`TRUST_VIS`), the three-lane catalogue with small moving pictures of real jobs (`initReels`), the film wall (`initWall`), and a footer with both locations and the Round City button (`roundcity` in `data/copy.json`).
+- **Proof requests** replace the do-it-yourself mockup tool on the commercial and design pages: the visitor adds up to four files and a name, sees a logo on the vehicle at once, and sends a proof request. The files are stored privately with the request and can be downloaded from the dashboard.
+- **Print material viewer** on the design page (`initPV`): a card that tilts with the pointer and shows each product in use, grouped by surface.
 
 ## Promotion and locations
 

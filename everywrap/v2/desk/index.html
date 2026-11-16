@@ -21,7 +21,7 @@ button{cursor:pointer}
 .wrap{max-width:1080px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 header{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
-.brand svg{width:30px;height:30px}
+.brand svg{width:44px;height:auto}
 .brand h1{margin:0;font:500 24px/1 var(--display);letter-spacing:-.01em}
 .brand small{display:block;margin-top:3px;font:400 12px/1 var(--ui);color:var(--mute)}
 .seg{display:inline-flex;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
@@ -80,7 +80,7 @@ th{font-weight:500;color:var(--mute)}
 .foot button{border:0;background:none;color:var(--mute);text-decoration:underline;padding:0}
 /* sign in */
 .gate{max-width:420px;margin:14vh auto 0;text-align:center}
-.gate svg{width:56px;height:56px}
+.gate svg{width:92px;height:auto}
 .gate h1{margin:14px 0 6px;font:500 30px/1.1 var(--display)}
 .gate p{margin:0 0 18px;color:var(--mute)}
 .gate form{display:flex;gap:8px}
@@ -103,6 +103,9 @@ dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 16px;f
 dt{color:var(--mute)}
 dd{margin:0;font-weight:500;overflow-wrap:anywhere}
 .photo{display:block;width:100%;max-height:340px;object-fit:contain;border-radius:12px;border:1px solid var(--line);background:#000;margin:14px 0 0}
+.files{display:grid;gap:8px;margin-top:14px}
+.files a{display:flex;justify-content:space-between;gap:12px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:14px}
+.files a small{color:var(--mute);white-space:nowrap}
 .cap{margin:14px 0 -6px;font-size:12.5px;color:var(--mute)}
 .sheet h3{margin:18px 0 8px;font:500 12.5px/1 var(--ui);color:var(--mute)}
 .sheet .seg{display:grid;grid-template-columns:repeat(4,1fr);width:100%}
@@ -120,7 +123,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
 <body>
 <div class="wrap">
   <div class="gate" id="gate" hidden>
-    <svg viewBox="0 0 64 64" fill="none" stroke-width="9.5" aria-hidden="true"><path stroke="#f3ede2" d="M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"/><path stroke="#ef5b2a" d="M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"/></svg>
+    <svg viewBox="636 700 769 398" aria-hidden="true"><path fill="#f3ede2" d="M 796.084 844.42 C 810.191 843.449 833.731 844.167 848.41 844.17 L 952.267 844.366 C 936.997 873.75 919.122 916.471 903.268 943.958 C 865.562 944.288 801.939 941.66 766.208 946.337 C 720.462 954.65 692.592 963.284 654.574 991.105 C 662.734 961.888 689.353 908.706 709.165 885.942 C 733.723 857.724 759.856 847.065 796.084 844.42 z"/><path fill="#f3ede2" d="M 848.682 710.353 C 862.781 709.033 891.492 709.909 906.778 709.923 L 1018.36 710.045 L 968.26 809.216 C 925.918 808.866 865.638 807.518 824.435 810.055 C 773.771 816.883 744.103 832.571 708.549 868.677 C 713.899 854.733 721.575 841.279 727.556 827.627 C 752.43 770.844 780.367 719.707 848.682 710.353 z"/><path fill="#f3ede2" d="M 1023.4 729.656 C 1026.69 732.928 1041.11 767.15 1044.27 773.867 C 1075.08 839.439 1102.82 906.845 1133.04 972.598 C 1115.26 1009.9 1093.36 1051.09 1074.33 1088.04 C 1069.77 1084.28 976.641 869.515 964.873 842.641 L 1023.4 729.656 z"/><path fill="#f3ede2" d="M 1143.57 706.831 C 1146.42 709.992 1156.87 735.044 1159.69 741.385 C 1194.65 820.021 1231.88 898.354 1265.06 977.723 C 1246.18 1016.13 1227.05 1054.41 1207.66 1092.57 L 1203.26 1083.38 L 1072.72 794.43 C 1087.87 754.375 1108.22 730.683 1143.57 706.831 z"/><path fill="#f3ede2" d="M 1374.85 706.48 C 1382.77 706.386 1391.38 706.706 1399.35 706.843 L 1273.38 961.964 C 1271.01 955.829 1267.54 948.553 1264.8 942.444 C 1251.72 911.526 1236.63 880.124 1223.14 849.093 C 1259.97 777.203 1279.27 709.612 1374.85 706.48 z"/><path fill="#ef5b2a" d="M 750.154 967.092 L 752.731 967.182 C 755.182 977.795 757.31 987.132 769.918 988.468 C 782.43 989.794 795.578 989.327 808.162 989.345 L 881.659 989.372 C 865.661 1021.46 849.315 1053.38 832.621 1085.11 C 816.577 1084.78 799.615 1085.05 783.5 1085.04 C 751.209 1085.16 720.092 1087.59 688.616 1072.71 C 670.893 1066.78 642.282 1026.17 653.214 1009.13 C 665.692 989.686 730.123 972.991 750.154 967.092 z"/></svg>
     <h1>EveryWrap desk</h1>
     <p>Open this page from your private link, or paste your key below.</p>
     <form id="gateForm"><input id="gateKey" type="password" autocomplete="current-password" placeholder="Private key" aria-label="Private key"><button class="btn" type="submit">Open</button></form>
@@ -130,7 +133,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
   <div id="app" hidden>
     <header>
       <div class="brand">
-        <svg viewBox="0 0 64 64" fill="none" stroke-width="9.5" aria-hidden="true"><path stroke="#f3ede2" d="M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"/><path stroke="#ef5b2a" d="M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"/></svg>
+        <svg viewBox="636 700 769 398" aria-hidden="true"><path fill="#f3ede2" d="M 796.084 844.42 C 810.191 843.449 833.731 844.167 848.41 844.17 L 952.267 844.366 C 936.997 873.75 919.122 916.471 903.268 943.958 C 865.562 944.288 801.939 941.66 766.208 946.337 C 720.462 954.65 692.592 963.284 654.574 991.105 C 662.734 961.888 689.353 908.706 709.165 885.942 C 733.723 857.724 759.856 847.065 796.084 844.42 z"/><path fill="#f3ede2" d="M 848.682 710.353 C 862.781 709.033 891.492 709.909 906.778 709.923 L 1018.36 710.045 L 968.26 809.216 C 925.918 808.866 865.638 807.518 824.435 810.055 C 773.771 816.883 744.103 832.571 708.549 868.677 C 713.899 854.733 721.575 841.279 727.556 827.627 C 752.43 770.844 780.367 719.707 848.682 710.353 z"/><path fill="#f3ede2" d="M 1023.4 729.656 C 1026.69 732.928 1041.11 767.15 1044.27 773.867 C 1075.08 839.439 1102.82 906.845 1133.04 972.598 C 1115.26 1009.9 1093.36 1051.09 1074.33 1088.04 C 1069.77 1084.28 976.641 869.515 964.873 842.641 L 1023.4 729.656 z"/><path fill="#f3ede2" d="M 1143.57 706.831 C 1146.42 709.992 1156.87 735.044 1159.69 741.385 C 1194.65 820.021 1231.88 898.354 1265.06 977.723 C 1246.18 1016.13 1227.05 1054.41 1207.66 1092.57 L 1203.26 1083.38 L 1072.72 794.43 C 1087.87 754.375 1108.22 730.683 1143.57 706.831 z"/><path fill="#f3ede2" d="M 1374.85 706.48 C 1382.77 706.386 1391.38 706.706 1399.35 706.843 L 1273.38 961.964 C 1271.01 955.829 1267.54 948.553 1264.8 942.444 C 1251.72 911.526 1236.63 880.124 1223.14 849.093 C 1259.97 777.203 1279.27 709.612 1374.85 706.48 z"/><path fill="#ef5b2a" d="M 750.154 967.092 L 752.731 967.182 C 755.182 977.795 757.31 987.132 769.918 988.468 C 782.43 989.794 795.578 989.327 808.162 989.345 L 881.659 989.372 C 865.661 1021.46 849.315 1053.38 832.621 1085.11 C 816.577 1084.78 799.615 1085.05 783.5 1085.04 C 751.209 1085.16 720.092 1087.59 688.616 1072.71 C 670.893 1066.78 642.282 1026.17 653.214 1009.13 C 665.692 989.686 730.123 972.991 750.154 967.092 z"/></svg>
         <div><h1>EveryWrap desk</h1><small id="stamp">Loading</small></div>
       </div>
       <div class="seg" id="range" role="group" aria-label="Time range">
@@ -193,6 +196,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
     <img class="photo" id="sPhoto" alt="Photo the customer sent" hidden>
     <p class="cap" id="sCap" hidden>The preview they saw on the site (made by AI):</p>
     <img class="photo" id="sRender" alt="The AI preview the customer saw" hidden>
+    <div id="sFiles" hidden></div>
     <h3>Status</h3>
     <div class="seg" id="sStatus" role="group" aria-label="Status"></div>
     <button class="btn ghost copy" type="button" id="sCopy">Copy the summary</button>
@@ -206,7 +210,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
   const num = (n) => (n >= 10000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "K" : Number(n || 0).toLocaleString("en-US"));
   const STATUS = [["new", "New"], ["contacted", "Contacted"], ["booked", "Booked"], ["closed", "Closed"]];
   const PAGE = { "/": "Home", "/vinyl-wrap/": "Vinyl wrap", "/paint-protection-film/": "Paint protection film", "/window-tint/": "Window tint", "/body-kits/": "Body kits", "/commercial/": "Fleet and commercial", "/design-print/": "Design and print", "/pricing/": "Prices", "/work/": "Our work" };
-  const FIN = { "satin-black": "Satin black", "gloss-black": "Gloss black", "satin-grey": "Satin grey", "satin-red": "Satin red", "color-shift": "Colour shift" };
+  const FIN = { "satin-black": "Satin black", "gloss-black": "Gloss black", "satin-grey": "Satin grey", "satin-red": "Satin red", "color-shift": "Colour shift", "trident-blue": "Gloss Trident Blue", "sterling-blue": "Matte Sterling Blue", "interstellar-pink": "Gloss Interstellar Pink", "dynamic-lime": "Ultra Gloss Dynamic Lime", "vector-green": "Absolute Matte Vector Green", "java-brown": "Matte Java Brown", "dune": "Matte Dune Metallic", "red-black": "Gloss Red/Black Iridescent" };
   let days = 7, data = null, filter = "all", timer = 0, openId = "";
 
   const api = (path, body) => fetch("/api/desk/" + path, body ? { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) } : {}).then(async (r) => ({ status: r.status, body: await r.json().catch(() => ({})) }));
@@ -283,6 +287,9 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
     $("#sList").innerHTML = f.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
     const ph = $("#sPhoto"); if (l.photo) { if (!keep || ph.hidden) ph.src = "/api/desk/photo?id=" + encodeURIComponent(l.id); ph.hidden = false; } else { ph.hidden = true; ph.removeAttribute("src"); }
     const rd = $("#sRender"); if (l.render) { if (!keep || rd.hidden) rd.src = "/api/desk/photo?kind=render&id=" + encodeURIComponent(l.id); rd.hidden = false; } else { rd.hidden = true; rd.removeAttribute("src"); } $("#sCap").hidden = !l.render;
+    let fl = []; try { fl = JSON.parse(l.files || "[]"); } catch {}
+    const fb = $("#sFiles"); fb.hidden = !fl.length; fb.className = "files";
+    fb.innerHTML = fl.map((f, n) => `<a href="/api/desk/file?id=${encodeURIComponent(l.id)}&n=${n}" download><span>${esc(f.name)}</span><small>${Math.max(1, Math.round(f.size / 1024))} KB · download</small></a>`).join("");
     $("#sStatus").innerHTML = STATUS.map(([k, label]) => `<button type="button" data-s="${k}" aria-pressed="${l.status === k}">${label}</button>`).join("");
     $("#sCopy").dataset.text = [l.name, ...f.map(([k, v]) => `${k}: ${v}`)].join("\n");
     $("#scrim").hidden = false;

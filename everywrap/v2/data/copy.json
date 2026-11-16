@@ -84,7 +84,12 @@
   "design_h2": "Need it designed or printed?",
   "design_p": "Custom wrap design, branding and large-format printing on 3M and Avery Dennison film, from {$print.wall} per square foot.",
   "hero_h1": "Car wraps, protection film and window tint in Columbus.",
-  "hero_eyebrow": "Vehicle wrap shop"
+  "hero_eyebrow": "Wraps · Protection film · Tint",
+  "hero_hook": [
+   "New colour.",
+   "Same car."
+  ],
+  "sub_hook": "Pick a colour and drag the line. Thirteen finishes to try, then see it on your own car before you book."
  },
  "commercial": {
   "title": "Fleet Wraps & Commercial Vehicle Graphics in Columbus, Ohio",
@@ -416,16 +421,18 @@
   ]
  },
  "mock": {
-  "h2": "Mock up your vehicle",
-  "p": "Pick a vehicle, a layout and your colours, then type your name. Send it to us and we turn it into a real design."
+  "h2": "Send your files. Get a proof.",
+  "p": "You do not have to design anything here. Send your logo and a few words, and our designer lays it out on your exact vehicle. You see a proof, ask for changes, and nothing prints until you approve it.",
+  "svc": "design"
  },
  "mock_fleet": {
-  "h2": "See your brand on a van",
-  "p": "Pick a vehicle, a layout and your colours, then type your business name. Send it to us as a starting point."
+  "h2": "Send your logo. Get a proof.",
+  "p": "No design work on your side. Send your logo and tell us the vehicles. Our designer lays the brand out on each one, you mark up the proof, and nothing prints until you approve it.",
+  "svc": "fleet"
  },
  "catalog": {
-  "h2": "What do you need?",
-  "p": "Everything we do, with starting prices. Pick one.",
+  "h2": "Pick your lane.",
+  "p": "Your car, your business vehicles, or design and print. Every one comes with a starting price.",
   "cats": [
    {
     "id": "car",
@@ -467,7 +474,14 @@
      ]
     ],
     "img": "svc/wrap.webp",
-    "img_alt": "Satin black film going onto a white car"
+    "img_alt": "Satin black film going onto a white car",
+    "reels": [
+     "tag:color",
+     "tag:black",
+     "img:svc/ppf.webp",
+     "img:svc/tint.webp",
+     "img:svc/kits.webp"
+    ]
    },
    {
     "id": "biz",
@@ -509,7 +523,14 @@
      ]
     ],
     "img": "concepts/fleet.webp",
-    "img_alt": "A van, a box truck and a pickup in one matching livery"
+    "img_alt": "A van, a box truck and a pickup in one matching livery",
+    "reels": [
+     "tag:commercial",
+     "tag:commercial",
+     "tag:commercial",
+     "tag:commercial",
+     "img:concepts/fleet.webp"
+    ]
    },
    {
     "id": "studio",
@@ -557,7 +578,15 @@
      ]
     ],
     "img": "dp/printer.webp",
-    "img_alt": "A wide-format printer printing a vehicle wrap"
+    "img_alt": "A wide-format printer printing a vehicle wrap",
+    "reels": [
+     "img:concepts/coupe.webp",
+     "img:dp/brand.webp",
+     "img:dp/rolls.webp",
+     "img:dp/wall.webp",
+     "img:dp/chrome.webp",
+     "img:concepts/elec.webp"
+    ]
    }
   ]
  },
@@ -615,23 +644,19 @@
  "trust": [
   [
    "quote",
-   "Price in writing",
-   "Before any work starts"
+   "Price in writing"
   ],
   [
    "check",
-   "You approve first",
-   "Nothing starts until you say so"
+   "You approve first"
   ],
   [
    "layers",
-   "Named film brands",
-   "3M, Avery Dennison, KPMF"
+   "Named film brands"
   ],
   [
    "scale",
-   "Legal tint",
-   "Fitted to Ohio law"
+   "Tint fitted to the law"
   ]
  ],
  "trust_com": [
@@ -657,8 +682,8 @@
   ]
  ],
  "suppliers": {
-  "h2": "The film we install",
-  "p": "Cast wrap film from the makers installers trust. Ask for a brand or a colour code and we will price it."
+  "h2": "Thirteen on the car. Hundreds in the books.",
+  "p": "Film from 3M, Avery Dennison, KPMF, TeckWrap and Arlon. Tap a swatch to see it on the car. Want a colour that is not here? Give us the maker's code."
  },
  "promo": {
   "eyebrow": "Promotion",
@@ -667,5 +692,30 @@
   "chip": "Promotion · Full wraps from {$wrap.full}",
   "cta": "Book the promotion",
   "note": "Promotion: full wrap from {$wrap.full}"
- }
+ },
+ "roundcity": {
+  "k": "Our developers and partners",
+  "name": "Round City",
+  "p": "Brand, web, systems and operations. The studio that built this site.",
+  "url": "https://roundcity.co",
+  "go": "roundcity.co"
+ },
+ "proof_steps": [
+  [
+   "Send your files",
+   "Logo, photos, a sketch, or just your name."
+  ],
+  [
+   "We draw the proof",
+   "Laid out on your exact vehicle, to scale."
+  ],
+  [
+   "You mark changes",
+   "Tell us what to move. We revise it."
+  ],
+  [
+   "You approve, we print",
+   "Nothing is printed before you say yes."
+  ]
+ ]
 }

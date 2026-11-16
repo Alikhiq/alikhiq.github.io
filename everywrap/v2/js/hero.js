@@ -4,11 +4,17 @@ import { ev } from "./track.js";
 import { R, ROOT, $, $$, reduce, phone, esc, FIN, S, DATA, hooks, fin, theme, fromPrice, money } from "./state.js";
 
 const CHAPTERS = [
-  { id: "wrap", label: "Wrap", sub: "Pick a finish, then drag the line across the car." },
+  { id: "wrap", label: "Wrap", sub: "Pick a colour and drag the line. Thirteen finishes to try, then see it on your own car." },
   { id: "ppf", label: "Protect", head: ["Protection film.", "Done right."], sub: "Clear film over the panels that take the hits. The lit area is what gets covered." },
   { id: "tint", label: "Tint", head: ["Window tint.", "Done right."], sub: "Pick a shade. The number is how much light gets through." },
   { id: "kits", label: "Kits", head: ["Body kits.", "Done right."], sub: "Tell us what you drive. We find the kit that fits, fit it and wrap it." },
 ];
+const RICON = {
+  wrap: '<path d="M4 7h11a4 4 0 010 8H9"/><path d="M9 15H7a3 3 0 000 6h13"/>',
+  ppf: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.500-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  tint: '<rect x="4" y="5" width="16" height="14" rx="3"/><path d="M4 12h16" opacity=".5"/><path d="M4 9h16M4 15h16" opacity=".25"/>',
+  kits: '<path d="M3 15l2-5a3 3 0 012.800-2h8.400a3 3 0 012.800 2l2 5v3H3z"/><circle cx="7.500" cy="16" r="1.500"/><circle cx="16.500" cy="16" r="1.500"/><path d="M2 19h20"/>',
+};
 const PPF = [["partial", "Partial front"], ["front", "Full front"], ["full", "Full body"]];
 const TINT = [70, 35, 20, 5];
 const HINTS = { partial: "Partial front covers the bumper and the leading edge of the hood and fenders.", front: "Full front covers the bumper, the full hood, both fenders and the mirrors.", full: "Full body protects every painted panel." };
@@ -32,7 +38,7 @@ function scene() {
   return { before: factoryOf(v), after: S.finish, seam: true };
 }
 function renderRail() {
-  $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"${c.id === S.ch ? ' class="live"' : ""}>${c.label}</button></li>`).join("");
+  $("#rail").innerHTML = CHAPTERS.map((c) => `<li><button type="button" data-id="${c.id}" aria-current="${c.id === S.ch}"${c.id === S.ch ? ' class="live"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RICON[c.id] || ""}</svg><span>${c.label}</span></button></li>`).join("");
 }
 const PPF_NAME = { partial: "Partial front", front: "Full front", full: "Full body" };
 const bookName = () => (S.ch === "ppf" ? PPF_NAME[S.ppf] + " PPF" : S.ch === "tint" ? S.tint + "% tint" : S.ch === "kits" ? "Body kit, quoted per car" : fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase() + " wrap");
@@ -41,10 +47,13 @@ const bookLabel = () => { const p = bookPrice(); return bookName() + (p ? " · f
 function renderCopy() {} // the headline is fixed now: it says what we sell
 function renderOpts() {
   const o = $("#opts");
-  if (S.ch === "wrap") o.innerHTML = FIN.map((f) => `<button type="button" class="dot" data-f="${f[0]}" aria-label="${f[1]}" aria-pressed="${f[0] === S.finish}" style="background:${f[3]}"></button>`).join("") + `<span class="optname">${fin()[1]}</span>`;
+  if (S.ch === "wrap") o.innerHTML = `<div class="dotrow">` + FIN.map((f) => `<button type="button" class="dot" data-f="${f[0]}" aria-label="${f[1]}" aria-pressed="${f[0] === S.finish}" style="background:${f[3]}"></button>`).join("") + `</div><span class="optname"><b>${fin()[1]}</b>${fin()[4] ? `<small>${fin()[4]}</small>` : ""}</span>`;
   else if (S.ch === "ppf") o.innerHTML = PPF.map((p) => `<button type="button" class="chip" data-p="${p[0]}" aria-pressed="${p[0] === S.ppf}">${p[1]}</button>`).join("");
   else if (S.ch === "tint") o.innerHTML = TINT.map((t) => `<button type="button" class="chip" data-t="${t}" aria-pressed="${t === S.tint}">${t}%</button>`).join("");
   else o.innerHTML = "";
+  // keep the picked swatch in view inside its strip
+  const row = $(".dotrow", o), on = row && $('[aria-pressed="true"]', row);
+  if (on) row.scrollLeft = on.offsetLeft - row.clientWidth / 2 + on.offsetWidth / 2;
 }
 function measure() {
   const cz = $("#carzone").getBoundingClientRect(), cv = $("#stage").getBoundingClientRect();

@@ -44,22 +44,81 @@ class Tunnel {
   }
 }
 
+/* ---------- small moving pictures: real jobs by tag, cross-fading while in view ---------- */
+function initReels() {
+  const els = $$("[data-reel]"); if (!els.length) return;
+  const pools = {};
+  const pool = (tag) => pools[tag] || (pools[tag] = DATA.work.filter((j) => j.tags.includes(tag)).map((j) => ROOT + CONFIG.assets + j.src));
+  const live = new Set();
+  els.forEach((el, n) => {
+    const [kind, v] = el.dataset.reel.split(":"), list = kind === "tag" ? pool(v) : [ROOT + CONFIG.assets + v];
+    if (!list.length) return;
+    el._list = list; el._i = (n * 3) % list.length;
+    el.innerHTML = `<img alt="" loading="lazy" src="${list[el._i]}"><img alt="" loading="lazy">`;
+  });
+  const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? live.add(e.target) : live.delete(e.target))), { rootMargin: "80px" });
+  els.forEach((el) => el._list && el._list.length > 1 && io.observe(el));
+  if (reduce) return;
+  let turn = 0;
+  setInterval(() => {
+    const now = [...live]; if (!now.length || document.hidden) return;
+    const el = now[turn++ % now.length], [a, b] = el.children, on = el.classList.contains("flip") ? b : a, off = on === a ? b : a;
+    el._i = (el._i + 1) % el._list.length; off.src = el._list[el._i];
+    const go = () => el.classList.toggle("flip"); off.complete ? go() : off.addEventListener("load", go, { once: true });
+  }, 900);
+}
+
+/* ---------- print products: a card that tilts with the pointer and shows each material in use ---------- */
+function initPV() {
+  const el = $("#pv"); if (!el) return;
+  const items = JSON.parse($("#pvData").textContent), groups = [...new Set(items.map((x) => x.surface))];
+  $("#pvPick").innerHTML = groups.map((g) => `<div class="pv-group"><span class="legend">${esc(g)}</span><div>${items.filter((x) => x.surface === g).map((x) => `<button type="button" data-id="${x.id}" aria-pressed="false">${esc(x.name)}</button>`).join("")}</div></div>`).join("");
+  const card = $("#pvCard"), img = $("#pvImg"), stage = $(".pv-stage", el);
+  let cur = -1, touched = false;
+  const show = (i) => {
+    if (i === cur) return; cur = i; const x = items[i];
+    card.classList.remove("in"); void card.offsetWidth;
+    img.src = ROOT + CONFIG.assets + x.img; img.alt = x.name;
+    $("#pvSurf").textContent = x.surface; $("#pvName").textContent = x.name; $("#pvNote").textContent = x.note; $("#pvPrice").innerHTML = x.price;
+    card.classList.add("in");
+    $$("#pvPick button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.id === x.id));
+  };
+  $("#pvPick").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; touched = true; ev("calc_use", "viewer", true); show(items.findIndex((x) => x.id === b.dataset.id)); });
+  if (!reduce) {
+    stage.addEventListener("pointermove", (e) => { const r = stage.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      card.classList.add("held"); card.style.setProperty("--ry", (px * 22).toFixed(2) + "deg"); card.style.setProperty("--rx", (-py * 16).toFixed(2) + "deg"); card.style.setProperty("--sx", (30 + px * 80).toFixed(1) + "%"); });
+    stage.addEventListener("pointerleave", () => { card.classList.remove("held"); ["--rx", "--ry", "--sx"].forEach((k) => card.style.removeProperty(k)); });
+    setInterval(() => { const r = el.getBoundingClientRect(); if (touched || document.hidden || r.bottom < 0 || r.top > innerHeight) return; show((cur + 1) % items.length); }, 3600);
+  }
+  show(0);
+}
+
+/* ---------- the film wall: every finish as a swatch, in two moving rows ---------- */
+function initWall() {
+  const el = $("#swall"); if (!el) return;
+  const chip = (f) => `<button type="button" class="swchip" data-f="${f[0]}"><i style="background:${f[3]}"></i><span><b>${esc(f[1])}</b><small>${esc(f[4] || "In stock films")}</small></span></button>`;
+  const half = Math.ceil(FIN.length / 2), rows = [FIN.slice(0, half), FIN.slice(half)];
+  el.innerHTML = rows.map((r, n) => `<div class="swrow${n ? " rev" : ""}"><div>${r.map(chip).join("")}${r.map(chip).join("")}${r.map(chip).join("")}</div></div>`).join("");
+  el.addEventListener("click", (e) => { const b = e.target.closest(".swchip"); if (!b || !hooks.heroGo) return; hooks.heroGo({ ch: "wrap", finish: b.dataset.f }); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+}
+
 /* ---------- "GO SATIN BLACK." : scroll drives the finish ---------- */
 function initTunnel() {
   const sec = $(".tunnel"); if (!sec) return;
   const t = new Tunnel($("canvas", sec)), cars = $$(".tcar img", sec), head = $(".thead", sec), name = $(".tname", sec), count = $(".tcount", sec), ticks = $$(".truler i", sec);
+  const TF = cars.map((im) => FIN.find((f) => f[0] === im.dataset.f)).filter(Boolean), two = (n) => String(n).padStart(2, "0");
   let idx = -1, lastY = scrollY, inside = false;
   const set = (i) => {
-    if (i === idx) return; idx = i; const f = FIN[i];
+    if (i === idx) return; idx = i; const f = TF[i];
     cars.forEach((im) => im.classList.toggle("on", im.dataset.f === f[0]));
-    head.innerHTML = `GO ${esc(f[1].toUpperCase())}.`; name.textContent = f[1].toUpperCase(); count.textContent = `0${i + 1} / 0${FIN.length}`;
+    head.innerHTML = `GO ${esc(f[1].toUpperCase())}.`; name.textContent = f[1].toUpperCase(); count.textContent = `${two(i + 1)} / ${two(TF.length)}`;
     ticks.forEach((el, n) => el.classList.toggle("on", n === i)); t.boost = 1.2;
   };
-  onScroll(() => { const p = progress(sec); t.boost = Math.min(1.6, t.boost + Math.abs(scrollY - lastY) / 700); lastY = scrollY; set(Math.min(FIN.length - 1, Math.floor(p * FIN.length)));
+  onScroll(() => { const p = progress(sec); t.boost = Math.min(1.6, t.boost + Math.abs(scrollY - lastY) / 700); lastY = scrollY; set(Math.min(TF.length - 1, Math.floor(p * TF.length)));
     const r = sec.getBoundingClientRect(), now = r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5;
-    if (now) glowAs(FIN[idx][0]); else if (inside) theme();
+    if (now) glowAs(TF[idx][0]); else if (inside) theme();
     inside = now; });
-  const jump = (d) => { const r = sec.getBoundingClientRect(), span = r.height - innerHeight, i = clamp(idx + d, 0, FIN.length - 1); scrollTo({ top: scrollY + r.top + ((i + 0.5) / FIN.length) * span, behavior: reduce ? "auto" : "smooth" }); };
+  const jump = (d) => { const r = sec.getBoundingClientRect(), span = r.height - innerHeight, i = clamp(idx + d, 0, TF.length - 1); scrollTo({ top: scrollY + r.top + ((i + 0.5) / TF.length) * span, behavior: reduce ? "auto" : "smooth" }); };
   $(".tprev", sec).addEventListener("click", () => jump(-1)); $(".tnext", sec).addEventListener("click", () => jump(1));
 }
 
@@ -150,4 +209,5 @@ function initCalc() {
   $("#calcGo").addEventListener("click", () => { calc(); ev("calc_use"); if (hooks.quote) hooks.quote({ svc: "print", note: `${prod.selectedOptions[0].textContent}: ${w.value} x ${h.value} ft, ${Math.max(1, Math.round(+q.value || 1))} copies, ${$("#calcArea").textContent}, ${$("#calcTotal").textContent}` }); });
 }
 
-export function initScenes() { initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initPrices(); initCalc(); initReveal(); }
+export function initScenes() {
+  initReels(); initWall(); initPV(); initTunnel(); initFleetWord(); initMotion(); initLive(); initBoards(); initPrices(); initCalc(); initReveal(); }

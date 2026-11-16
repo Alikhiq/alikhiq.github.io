@@ -139,19 +139,31 @@ def price_label(ref):
 
 NAV = [("car", "Cars", ""), ("biz", "Business", "commercial"), ("studio", "Design", "design-print")]
 
-MARK_A = "M57 12.5H22.5a9.75 9.75 0 0 0 0 19.5H45"
-MARK_B = "M45 32H22.5a9.75 9.75 0 0 0 0 19.5H57"
+LOGO = J("data/logo.json")
+
+def sprite():
+    """The wordmark and the emblem's outline, defined once per page and reused."""
+    e_, w_ = LOGO["emblem"], LOGO["word"]
+    return ('<svg class="vh" aria-hidden="true" focusable="false"><defs>'
+            '<clipPath id="ew-clip" clipPathUnits="userSpaceOnUse">' + "".join(f'<path d="{d}"/>' for d in e_["white"] + e_["accent"]) + "</clipPath>"
+            '<linearGradient id="ew-shine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>'
+            f'<symbol id="ew-word" viewBox="{" ".join(map(str, w_["vb"]))}">' + "".join(f'<path fill-rule="evenodd" d="{d}"/>' for d in w_["letters"]) + "</symbol></svg>\n")
 
 def mark(cls="logo-mark", attrs=""):
-    """The EveryWrap mark: one strip of film that wraps round twice and reads as an E.
-    The first turn takes the text colour, the second the live glow colour, and a glint runs along it."""
-    return ('<svg class="' + cls + '"' + attrs + ' viewBox="0 0 64 64" fill="none" aria-hidden="true">'
-            '<path class="lm-a" pathLength="100" d="' + MARK_A + '"/><path class="lm-b" pathLength="100" d="' + MARK_B + '"/>'
-            '<path class="lm-g" pathLength="100" d="' + MARK_A + MARK_B[len("M45 32"):] + '"/></svg>')
+    """The EveryWrap emblem: E and W cut from strips of film, the lowest strip in the live glow colour.
+    The strips slide in when the page loads and a band of light crosses the emblem now and then."""
+    e_ = LOGO["emblem"]; x, y, w, h = e_["vb"]
+    return (f'<svg class="{cls}"{attrs} viewBox="{x} {y} {w} {h}" aria-hidden="true">'
+            + "".join(f'<path class="lm-w" style="--n:{n}" d="{d}"/>' for n, d in enumerate(e_["white"]))
+            + "".join(f'<path class="lm-o" d="{d}"/>' for d in e_["accent"])
+            + f'<rect class="lm-s" x="{x - 0.5 * w:.0f}" y="{y}" width="{0.45 * w:.0f}" height="{h}" fill="url(#ew-shine)" clip-path="url(#ew-clip)"/></svg>')
+
+def wordmark(cls="logo-word"):
+    w, h = LOGO["word"]["vb"][2:]
+    return f'<svg class="{cls}" viewBox="0 0 {w} {h}" aria-hidden="true"><use href="#ew-word" width="{w}" height="{h}"/></svg>'
 
 def logo(root, cls=""):
-    return ('<a class="logo' + ((" " + cls) if cls else "") + '" href="' + link(root, "") + '" aria-label="EveryWrap home">'
-            + mark() + '<span class="logo-word" aria-hidden="true">Every<i>Wrap</i></span></a>')
+    return ('<a class="logo' + ((" " + cls) if cls else "") + '" href="' + link(root, "") + '" aria-label="EveryWrap home">' + mark() + wordmark() + "</a>")
 
 def top(root, mode, cat=None):
     cat = ("biz" if mode == "commercial" else "car") if cat is None else cat
@@ -169,7 +181,7 @@ def top(root, mode, cat=None):
     tiles = ('<a class="mtile" href="' + link(root, "work") + '"><img loading="lazy" src="' + root + "assets/" + wj["src"] + '" alt=""><span>Our work</span></a>'
              '<a class="mtile" href="' + link(root, "pricing") + '"><img loading="lazy" src="' + root + 'assets/dp/rolls.webp" alt=""><span>All prices</span></a>'
              '<a class="mtile" href="' + link(root, "design-print") + '#mockup"><img loading="lazy" src="' + root + 'assets/concepts/elec.webp" alt=""><span>Mockup studio</span></a>')
-    return f"""<header class="top">
+    return sprite() + f"""<header class="top">
   {logo(root)}
   <nav class="mode glass" aria-label="What we do">{pill}</nav>
   <button class="menubtn glass" type="button" data-menu aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
@@ -191,17 +203,28 @@ def voice(label="Talk to our assistant"):
     a = SITE.get("voice_agent")
     return ('<a class="trylink voice" data-voice="' + a + '" href="https://elevenlabs.io/app/talk-to?agent_id=' + a + '" target="_blank" rel="noopener">' + MIC + ' <span class="voice-t" data-idle="' + e(label) + '">' + e(label) + "</span></a>") if a else ""
 
+TRUST_VIS = {
+    "quote": '<i class="tv tv-doc" aria-hidden="true"><u></u><u></u><u></u><b>$</b></i>',
+    "check": '<i class="tv tv-tog" aria-hidden="true"><u></u><b></b></i>',
+    "layers": '<i class="tv tv-roll" aria-hidden="true"><span><b>3M</b><b>Avery</b><b>KPMF</b><b>TeckWrap</b><b>Arlon</b><b>3M</b></span></i>',
+    "scale": '<i class="tv tv-vlt" aria-hidden="true"><u></u><b>50%</b></i>',
+    "clock": '<i class="tv tv-tog" aria-hidden="true"><u></u><b></b></i>',
+}
+
 def trust_strip(key="trust"):
-    def ic(k):
-        return svg(TRUST_ICONS.get(k) or ICONS[k])
-    return '<ul class="trust" data-reveal>' + "".join('<li><i class="kicon">' + ic(k) + "</i><b>" + e(a) + "</b><span>" + e(b) + "</span></li>" for k, a, b in COPY[key]) + "</ul>\n"
+    """Four promises, each shown as a small moving picture with a short label."""
+    def vis(k):
+        return TRUST_VIS.get(k) or ('<i class="kicon">' + svg(TRUST_ICONS.get(k) or ICONS[k]) + "</i>")
+    return '<ul class="trust" data-reveal>' + "".join("<li>" + vis(x[0]) + "<b>" + e(x[1]) + "</b>" + (("<span>" + e(x[2]) + "</span>") if len(x) > 2 else "") + "</li>" for x in COPY[key]) + "</ul>\n"
 
 def suppliers():
+    """The film wall: every finish on the car as a moving row of swatches, under the makers' names."""
     c = COPY["suppliers"]
-    badges = "".join('<li><span class="sup-ring" aria-hidden="true"></span><b>' + e(n) + "</b><small>Wrap film</small></li>" for n in SITE["suppliers"])
+    names = "".join("<span>" + e(n) + "</span>" for n in SITE["suppliers"])
     return f"""<section class="band suppliers" aria-labelledby="suph">
   <div class="bandhead" data-reveal><h2 id="suph">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
-  <ul class="supgrid" data-reveal>{badges}</ul>
+  <div class="swmakers" aria-hidden="true"><div>{names}{names}</div></div>
+  <div class="swall" id="swall" role="group" aria-label="Finishes"></div>
 </section>
 """
 
@@ -243,7 +266,7 @@ def promo_band(root):
 </section>
 """
 
-def hero_personal(h1, eyebrow, promo=False):
+def hero_personal(h1, eyebrow, promo=False, hook=None):
     return f"""<section class="hero" id="hero" aria-label="EveryWrap">
   <canvas class="stage" id="stage" aria-hidden="true"></canvas>
   <div class="ui">
@@ -258,8 +281,8 @@ def hero_personal(h1, eyebrow, promo=False):
     <div class="copy glass">
       {promo_chip() if promo else ''}
       <p class="eyebrow">{e(eyebrow)}</p>
-      <h1 class="display long">{e(h1)}</h1>
-      <p class="sub" id="sub">{e(COPY['home']['sub'])}</p>
+      {f'<h1 class="display hook"><span class="vh">{e(h1)} </span><span aria-hidden="true">{e(hook[0])} <i>{e(hook[1])}</i></span></h1>' if hook else f'<h1 class="display long">{e(h1)}</h1>'}
+      <p class="sub" id="sub">{e(COPY['home']['sub_hook'] if hook else COPY['home']['sub'])}</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
       {book('Book now', 'Satin black wrap', ids=True)}
       {voice('Ask by voice')}
@@ -292,7 +315,7 @@ def hero_fleet():
 """
 
 def tunnel(root):
-    cars = "".join(f'<img data-f="{f}" src="{root}assets/cut/sedan/{f}.webp" alt="" width="1300" height="578"{" class=on" if i == 0 else " loading=lazy"}>' for i, f in enumerate(["satin-black", "gloss-black", "satin-grey", "satin-red", "color-shift"]))
+    cars = "".join(f'<img data-f="{f}" src="{root}assets/cut/sedan/{f}.webp" alt="" width="2200" height="979"{" class=on" if i == 0 else " loading=lazy"}>' for i, f in enumerate(["satin-black", "trident-blue", "satin-red", "dynamic-lime", "satin-grey", "interstellar-pink", "gloss-black", "color-shift"]))
     return f"""<section class="tunnel" aria-label="Finishes">
   <div class="tpin">
     <canvas aria-hidden="true"></canvas>
@@ -556,15 +579,27 @@ def final(com=False):
 def footer(root, home=False):
     area = ", ".join(SITE["area"])
     insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
+    rc = COPY["roundcity"]
+    locs = "".join(f'<li><b>{e(x["name"])}</b><a href="{maps(x)}" target="_blank" rel="noopener">{e(x["street"])}<br>{e(x["city"])}, {x["region"]} {x["zip"]}</a><em>{e(x["note"])}</em></li>' for x in SITE.get("locations", []))
     return f"""<footer class="foot">
-  {logo(root, 'big')}
-  <p class="foot-big">{e(SITE['tagline'])}</p>
+  <div class="foot-top">
+    {logo(root, 'big')}
+    <p class="foot-big">{e(SITE['tagline'])}</p>
+    <div class="foot-cta"><button class="btn pri" type="button" data-quote>Book now {ARROW}</button>{voice('Ask by voice')}</div>
+  </div>
+  <ul class="foot-locs">{locs}</ul>
   <div class="foot-grid">
-    <div><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p>{''.join(f'<p class="foot-loc"><b>{e(x["name"])}</b><br><a href="{maps(x)}" target="_blank" rel="noopener">{e(x["street"])}, {e(x["city"])}, {x["region"]} {x["zip"]}</a><br>{e(x["note"])}</p>' for x in SITE.get("locations", []))}</div>
     <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'pricing')}">Pricing</a></li><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
   </div>
+  <a class="rc" href="{rc['url']}" target="_blank" rel="noopener">
+    <i class="rc-m" aria-hidden="true"><span>{(e(rc['name']) + " · ") * 8}</span></i>
+    <span class="rc-k">{e(rc['k'])}</span>
+    <span class="rc-n"><b>{e(rc['name'])}</b><em>{e(rc['p'])}</em></span>
+    <span class="rc-go">{e(rc['go'])} {ARROW}</span>
+  </a>
+  <p class="foot-legal">© 2026 {e(SITE['name'])} · {" · ".join(e(x["name"]) for x in SITE.get("locations", []))}</p>
 </footer>
 """
 
@@ -687,14 +722,14 @@ INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
   <div class="i-sheet"><i class="i-pool"></i><i class="i-streak"></i><i class="i-grain"></i></div>
   <div class="i-lock">
     """ + mark("i-mark", ' id="imark"') + """
-    <p class="i-word"><b style="--n:0">E</b><b style="--n:1">v</b><b style="--n:2">e</b><b style="--n:3">r</b><b style="--n:4">y</b><i><b style="--n:5">W</b><b style="--n:6">r</b><b style="--n:7">a</b><b style="--n:8">p</b></i></p>
+    <div class="i-word">""" + wordmark("i-wordsvg") + """</div>
     <i class="i-rule"></i>
     <p class="i-tag"><span>Wraps</span><span>Protection film</span><span>Tint</span></p>
-    <p class="i-city">""" + SITE["city"] + ", " + SITE["region"] + """</p>
+    <p class="i-city">""" + " · ".join(x["name"] for x in SITE.get("locations", [])) + """</p>
   </div>
   <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
-<script>try{if(sessionStorage.getItem("ew4-intro")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!/[?&]dev=/.test(location.search))document.getElementById("intro").hidden=false}catch(e){}</script>
+<script>try{if(sessionStorage.getItem("ew5-intro")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!/[?&]dev=/.test(location.search))document.getElementById("intro").hidden=false}catch(e){}</script>
 """
 
 def write(path, text):
@@ -711,7 +746,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True, hook=c["hero_hook"]) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -805,26 +840,27 @@ def page_pricing():
     write("pricing/index.html", head(r, "pricing", c["title"], c["desc"], extra_ld=[catalog, faq_ld(c["faq"])]) + body)
 
 def mock_studio(key="mock"):
-    """The live mockup studio. js/mock.js draws the vehicle and fills in the controls."""
+    """A proof request, not a design tool: the visitor sends files and a name, the picture shows the directions
+    we could take on their vehicle. js/mock.js draws the vehicle."""
     c = COPY[key]
+    steps = "".join(f'<li><b>{e(a)}</b><span>{e(b)}</span></li>' for a, b in COPY["proof_steps"])
     return f"""<section class="band" id="mockup" aria-labelledby="mkh">
   <div class="bandhead" data-reveal><h2 id="mkh">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
-  <div class="mock">
-    <div class="mk-view"><div class="mk-stage"></div></div>
+  <div class="mock" data-svc="{c['svc']}">
+    <div class="mk-view"><div class="mk-stage"></div><p class="mk-cap">First directions, drawn live. Your real proof is made by a designer.</p></div>
     <div class="mk-ctl">
       <span class="legend">Vehicle</span>
       <div class="tabs glass mk-vehs" role="group" aria-label="Vehicle"></div>
-      <span class="legend">Layout</span>
-      <div class="mk-arts" role="group" aria-label="Layout"></div>
-      <span class="legend">Colours</span>
-      <div class="mk-row"><div class="mk-pals" role="group" aria-label="Brand colours"></div><div class="mk-bases" role="group" aria-label="Vehicle colour"></div></div>
+      <div class="mk-arts" hidden></div><div class="mk-pals" hidden></div><div class="mk-bases" hidden></div>
+      <label class="mk-drop" for="mkFile{key}"><input id="mkFile{key}" class="mk-file" type="file" multiple accept="image/*,.pdf,.ai,.eps,.svg">
+        <b>Add your logo or artwork</b><span>Up to four files. A logo shows on the vehicle straight away.</span><em class="mk-files"></em></label>
       <div class="mk-fields">
-        <div class="field"><label for="mkName">Business name</label><input id="mkName" type="text" maxlength="26" placeholder="Your name" autocomplete="off"></div>
-        <div class="field"><label for="mkLine">Phone or tagline</label><input id="mkLine" type="text" maxlength="30" placeholder="614 555 0123" autocomplete="off"></div>
+        <div class="field"><label for="mkName{key}">Name on the vehicle</label><input id="mkName{key}" class="mk-name" type="text" maxlength="26" placeholder="Your business name" autocomplete="off"></div>
       </div>
-      <button class="btn pri mk-go" type="button">Send us this mockup</button>
+      <button class="btn pri mk-go" type="button">Request my proof {ARROW}</button>
     </div>
   </div>
+  <ol class="proof" data-reveal>{steps}</ol>
 </section>
 """
 
@@ -834,7 +870,7 @@ def catalog(root):
     tabs = "".join('<button type="button" data-cat="' + x["id"] + '" aria-pressed="' + ("true" if n == 0 else "false") + '"' + (' class="live"' if n == 0 else "") + ">" + e(x["tab"]) + "</button>" for n, x in enumerate(c["cats"]))
     cols = ""
     for x in c["cats"]:
-        rows = "".join('<li><a class="crow" href="' + href(root, t) + '"><span><b>' + e(n) + "</b><small>" + e(d) + "</small></span><em>" + price_label(ref) + "</em>" + ARROW + "</a></li>" for n, d, ref, t in x["items"])
+        rows = "".join('<li><a class="crow" href="' + href(root, t) + '"><i class="cthumb" data-reel="' + x["reels"][k] + '" aria-hidden="true"></i><span><b>' + e(n) + "</b><small>" + e(d) + "</small></span><em>" + price_label(ref) + "</em>" + ARROW + "</a></li>" for k, (n, d, ref, t) in enumerate(x["items"]))
         cols += f"""<div class="ccol" data-cat="{x['id']}" style="--th:{x['th']}">
       <a class="ccol-img" href="{link(root, x['slug'])}" tabindex="-1" aria-hidden="true"><img loading="lazy" src="{root}assets/{x['img']}" alt="" width="1376" height="768"></a>
       <h3><a href="{link(root, x['slug'])}">{e(x['name'])}</a></h3>
@@ -886,6 +922,11 @@ def page_design():
         pic = ('<img loading="lazy" src="' + r + "assets/" + x["img"] + '" alt="' + e(x["name"]) + '" width="1376" height="768">') if x.get("img") else ('<i class="sw sw-' + x["swatch"] + '" aria-hidden="true"></i>')
         return "<li>" + pic + "<b>" + e(x["name"]) + "</b><span>" + e(x["note"]) + "</span></li>"
     tiles = "".join(tile(x) for x in prods)
+    SURF = {"3m-lam": "On vehicles", "3m": "On vehicles", "avery-lam": "On vehicles", "avery": "On vehicles", "chrome": "On vehicles", "reflective": "On vehicles", "fade": "On vehicles", "pattern": "On vehicles", "contour": "On vehicles", "perf": "On windows", "wall": "On walls", "floor": "On floors", "banner": "Signs and stickers", "decals": "Signs and stickers"}
+    pv_items = [{"id": x["id"], "name": x["name"], "note": x["note"], "price": price_label("print." + x["id"]) if x.get("from") is not None else "Quoted to the job", "img": x.get("img") or ("dp/rolls.webp" if "lam" in x["id"] else "dp/printer.webp"), "surface": SURF.get(x["id"], "More")} for x in prods]
+    viewer = ('<div class="pv" id="pv" data-reveal><div class="pv-stage"><div class="pv-card" id="pvCard"><div class="pv-img"><img id="pvImg" alt="" width="1376" height="768"><i class="pv-sheen" aria-hidden="true"></i></div>'
+              '<div class="pv-plate"><small id="pvSurf"></small><b id="pvName"></b><span id="pvNote"></span><em id="pvPrice"></em></div></div></div>'
+              '<div class="pv-pick" id="pvPick"></div><script type="application/json" id="pvData">' + json.dumps(pv_items).replace("</", "<\\/") + "</script></div>")
     jobs = [by[i] for i in ("everywrapny-2-sprinter-commercial-litmode", "2021-04-07-cnwvghosdur", "everywrapny-4-queens-public-library-bus", "2023-07-02-cunmnmqasdd", "2022-07-18-cglbmplvpx3", "614lux-4-wall-mural-install", "2022-08-20-chdssmxrqyy", "2021-04-28-conrpnrjnuq", "2022-03-12-ca_mzkerq_j") if i in by]
     shots = "".join(f'<figure><img loading="lazy" src="{r}assets/{j["src"]}" alt="{e(j["title"] + ", " + j.get("finish", ""))}" width="{j["w"]}" height="{j["h"]}"><figcaption>{e(j["title"])}<span>{e(j.get("finish", ""))}</span></figcaption></figure>' for j in jobs)
     body = top(r, "personal", "studio") + f"""<main>
@@ -930,7 +971,7 @@ def page_design():
 </section>
 <section class="band" aria-labelledby="mph">
   <div class="bandhead" data-reveal><h2 id="mph">{e(c['more_h2'])}</h2></div>
-  <ul class="mats" data-reveal>{tiles}</ul>
+  {viewer}
 </section>
 <section class="band" aria-labelledby="whyh">
   <div class="bandhead" data-reveal><h2 id="whyh">{e(c['why_h2'])}</h2></div>
@@ -976,7 +1017,8 @@ def extras():
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nDisallow: /desk/\nDisallow: /api/\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))
-    write("favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><g fill="none" stroke-width="9.5" transform="translate(32 32) scale(.8) translate(-32.5 -32)"><path stroke="#f3ede2" d="' + MARK_A + '"/><path stroke="#ef5b2a" d="' + MARK_B + '"/></g></svg>\n')
+    x, y, w, h = LOGO["emblem"]["vb"]
+    write("favicon.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0b0c"/><g transform="translate(32 32) scale({50 / w:.4f}) translate({-(x + w / 2):.1f} {-(y + h / 2):.1f})">' + "".join(f'<path fill="#f3ede2" d="{d}"/>' for d in LOGO["emblem"]["white"]) + "".join(f'<path fill="#ef5b2a" d="{d}"/>' for d in LOGO["emblem"]["accent"]) + "</g></svg>\n")
 
 if __name__ == "__main__":
     page_home()

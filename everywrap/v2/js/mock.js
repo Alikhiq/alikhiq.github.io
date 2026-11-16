@@ -31,7 +31,7 @@ function draw(st, thumb = false) {
   const words = thumb ? "" : `<text x="${tx}" y="${ty + th * (st.line ? 0.5 : 0.62)}" font-family="'Barlow Condensed','Arial Narrow',sans-serif" font-style="italic" font-weight="700" font-size="${fs.toFixed(1)}" fill="${fg}" stroke="${bg}" stroke-width="5" paint-order="stroke" style="text-transform:uppercase">${esc(name)}</text>` +
     (st.line ? `<text x="${tx + 2}" y="${ty + th * 0.5 + fs * 0.62}" font-family="'Instrument Sans',system-ui,sans-serif" font-weight="600" font-size="${Math.max(11, fs * 0.36).toFixed(1)}" fill="${fg}" stroke="${bg}" stroke-width="4" paint-order="stroke">${esc(st.line.slice(0, 30))}</text>` : "");
   return `<svg viewBox="0 0 600 260" role="img" aria-label="${esc(`${v.label} mockup, ${NAMES[st.art]} layout`)}"><defs><clipPath id="${id}"><path d="${v.body}"/></clipPath><linearGradient id="${id}f" x1="0" x2="1"><stop offset="0" stop-color="${st.a}"/><stop offset=".8" stop-color="${st.base}"/></linearGradient></defs>` +
-    `<ellipse cx="300" cy="238" rx="270" ry="9" fill="rgba(0,0,0,.3)"/><path d="${v.body}" fill="${st.base}"/><g clip-path="url(#${id})"><g class="mk-layer">${ART[st.art](st.a, st.b, id)}${words}</g></g>` +
+    `<ellipse cx="300" cy="238" rx="270" ry="9" fill="rgba(0,0,0,.3)"/><path d="${v.body}" fill="${st.base}"/><g clip-path="url(#${id})"><g class="mk-layer">${ART[st.art](st.a, st.b, id)}${st.logo && !thumb ? `<rect x="${tx - 8}" y="${ty - 6}" width="${tw + 16}" height="${th + 12}" rx="10" fill="#fff" opacity=".94"/><image href="${st.logo}" x="${tx}" y="${ty}" width="${tw}" height="${th}" preserveAspectRatio="xMidYMid meet"/>` : words}</g></g>` +
     `<path d="${v.body}" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="2.5"/>${v.lines.map((d) => `<path d="${d}" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/>`).join("")}` +
     `${v.glass.map((d) => `<path d="${d}" fill="#1b2230" stroke="rgba(255,255,255,.3)"/>`).join("")}${v.wheels.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="28" fill="#15171b"/><circle cx="${x}" cy="${y}" r="12" fill="#8b9098"/>`).join("")}</svg>`;
 }
@@ -56,17 +56,37 @@ export function initMock() {
       const b = e.target.closest("button"); if (!b) return;
       ev("mock_use", "", true);
       if (b.dataset.veh) st.veh = b.dataset.veh; else if (b.dataset.art) st.art = b.dataset.art; else if (b.dataset.pal) [st.a, st.b] = PAL[+b.dataset.pal]; else if (b.dataset.base) st.base = b.dataset.base;
-      else if (b.classList.contains("mk-go")) { stop(); if (hooks.quote) hooks.quote({ svc: "design", note: `Mockup: ${VEH[st.veh].label}, ${NAMES[st.art]} layout, colours ${st.a} and ${st.b} on a ${BASES.find((x) => x[0] === st.base)[1].toLowerCase()} vehicle${st.name ? `, name "${st.name}"` : ""}${st.line ? `, line "${st.line}"` : ""}` }); return; }
+      else if (b.classList.contains("mk-go")) { if (hooks.quote) hooks.quote({ svc: el.dataset.svc || "design", note: `Proof request: ${VEH[st.veh].label.toLowerCase()}${st.name ? `, name "${st.name}"` : ""}${hooks.files && hooks.files.length ? `, ${hooks.files.length} file${hooks.files.length > 1 ? "s" : ""} attached` : ""}` }); return; }
       else return;
       stop(); render();
     });
-    el.addEventListener("input", (e) => { if (e.target.id === "mkName") st.name = e.target.value; else if (e.target.id === "mkLine") st.line = e.target.value; else return; stop(); stage.innerHTML = draw(st); });
+    el.addEventListener("input", (e) => { if (e.target.classList.contains("mk-name")) st.name = e.target.value; else return; stage.innerHTML = draw(st); });
+    // Files travel with the proof request. A logo is shown on the vehicle at once and lends its two main colours.
+    el.addEventListener("change", (e) => {
+      if (!e.target.classList.contains("mk-file")) return;
+      const files = [...e.target.files].slice(0, 4); hooks.files = files; ev("mock_use", "files", true);
+      $(".mk-files", el).textContent = files.length ? files.map((f) => f.name).join(", ") : "";
+      const pic = files.find((f) => /^image\//.test(f.type)); if (!pic) return;
+      const url = URL.createObjectURL(pic), im = new Image();
+      im.onload = () => {
+        st.logo = url; st.own = true;
+        try {
+          const c = document.createElement("canvas"), n = 48; c.width = c.height = n; const x = c.getContext("2d"); x.drawImage(im, 0, 0, n, n);
+          const d = x.getImageData(0, 0, n, n).data, count = {};
+          for (let i = 0; i < d.length; i += 4) { if (d[i + 3] < 128) continue; const r = d[i] >> 5, g = d[i + 1] >> 5, b2 = d[i + 2] >> 5; if (r > 6 && g > 6 && b2 > 6) continue; const k = (r << 6) | (g << 3) | b2; count[k] = (count[k] || 0) + 1; }
+          const top = Object.entries(count).sort((a, b2) => b2[1] - a[1]).map(([k]) => +k), hex = (k) => "#" + [(k >> 6) & 7, (k >> 3) & 7, k & 7].map((v) => Math.round((v * 255) / 7).toString(16).padStart(2, "0")).join("");
+          if (top.length) { st.a = hex(top[0]); const far = top.find((k) => Math.abs(((k >> 6) & 7) - ((top[0] >> 6) & 7)) + Math.abs(((k >> 3) & 7) - ((top[0] >> 3) & 7)) + Math.abs((k & 7) - (top[0] & 7)) >= 4); st.b = hex(far === undefined ? top[0] ^ 0x1ff : far); }
+        } catch {}
+        render();
+      };
+      im.src = url;
+    });
     render();
     // Until someone touches it, it shows itself off: a new layout and colour pair every few seconds.
     if (!reduce) demo = setInterval(() => {
-      const r = el.getBoundingClientRect(); if (touched || document.hidden || r.bottom < 0 || r.top > innerHeight) return;
+      const r = el.getBoundingClientRect(); if (document.hidden || r.bottom < 0 || r.top > innerHeight) return;
       const keys = Object.keys(ART), i = (keys.indexOf(st.art) + 1) % keys.length, p = PAL[(PAL.findIndex((x) => x[0] === st.a) + 1) % PAL.length];
-      st.art = keys[i]; [st.a, st.b] = p; if (i === 0) { const vk = Object.keys(VEH); st.veh = vk[(vk.indexOf(st.veh) + 1) % vk.length]; }
+      st.art = keys[i]; if (!st.own) [st.a, st.b] = p; if (i === 0 && !touched) { const vk = Object.keys(VEH); st.veh = vk[(vk.indexOf(st.veh) + 1) % vk.length]; }
       render();
     }, 2600);
   });

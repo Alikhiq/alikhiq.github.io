@@ -70,6 +70,7 @@ async function submitQuote(e) {
     try {
       const fd = new FormData(); fd.append("data", JSON.stringify(lead)); fd.append("website", $("#qWeb") ? $("#qWeb").value : "");
       if (photoFile) fd.append("photo", photoFile, photoFile.name || "photo.jpg");
+      (hooks.files || []).slice(0, 4).forEach((f, n) => fd.append("file" + n, f, f.name || "file" + n));
       const r = await fetch(endpoint, { method: "POST", body: fd }); ok = r.ok && (await r.json()).ok === true;
     } catch {}
     b.disabled = false; b.textContent = "Request my price";
@@ -196,7 +197,7 @@ export function initSite() {
   if (intro) {
     $("#iskip").addEventListener("click", () => endIntro(true)); intro.addEventListener("click", (e) => { if (e.target.id !== "iskip") endIntro(false); });
     const rp = $("#replay"); if (rp) rp.addEventListener("click", () => { scrollTo(0, 0); playIntro(); });
-    let seen = false; try { seen = sessionStorage.getItem("ew4-intro") === "1"; sessionStorage.setItem("ew4-intro", "1"); } catch {}
+    let seen = false; try { seen = sessionStorage.getItem("ew5-intro") === "1"; sessionStorage.setItem("ew5-intro", "1"); } catch {}
     if (!seen && !reduce && !new URLSearchParams(location.search).get("dev")) playIntro();
   }
 }
