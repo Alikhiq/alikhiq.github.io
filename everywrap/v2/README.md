@@ -120,6 +120,12 @@ Booking requests: on the live site the form posts to `/api/lead` on the Worker. 
 - **Email alerts**: the Worker emails each new request to `NOTIFY_TO` once `RESEND_KEY` (a Resend sending key) and `NOTIFY_FROM` (a sender on a domain verified in Resend) are set on it. Until then requests only appear on the dashboard.
 - **Tables**: `events`, `leads` and `renders`; the statements are in `deploy/schema.sql`.
 
+## Promotion and locations
+
+- **Promotion**: "Full wraps starting at $2,499" (owner, 16 Nov 2026). The price is the `full` row of the `wrap` group in `data/pricing.json`, so every sentence, table, button and the structured data pick it up. The wording of the chip in the hero and of the band under it is `promo` in `data/copy.json`; `promo_chip()` and `promo_band()` in the generator place them on the home, vinyl wrap and pricing pages. No earlier price, saving or end date is shown anywhere, at the owner's request. To end the promotion, set the price back and remove the `promo=True` and `promo_band(r)` calls.
+- **Locations**: `locations` in `data/site.json`. Columbus, Ohio (5220 Trabue Road, Suite D) and Dearborn Heights, Michigan (4937 Hazel St), both by appointment. They show under "Where we work" on every page, in the footer and in the structured data, and the booking form asks which one suits the visitor. No other business is named at either address.
+- The voice agent's prompt carries the promotion and both addresses and must be edited there when either changes.
+
 ## See it on your car
 
 In the photo panel a visitor adds a photo, picks a finish and gets their own car back in that finish in about two seconds (`paint()` in `js/site.js`, `/api/render` on the Worker).

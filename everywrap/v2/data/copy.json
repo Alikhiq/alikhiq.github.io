@@ -1,6 +1,6 @@
 {
  "price_fine": "Starting prices for vehicles with sound paint and glass. Size, film and condition move the number, so your exact price comes in a written quote before any work starts.",
- "areas_p": "We work in the Columbus area by appointment, and customers bring cars and fleets to us from across central Ohio.",
+ "areas_p": "We work by appointment at two locations: Columbus, Ohio and Dearborn Heights, Michigan. Customers bring cars and fleets to us from across central Ohio and the Detroit area.",
  "how": {
   "h2": "How it works",
   "steps": [
@@ -387,6 +387,7 @@
    "p": "The same brand, laid out again for each shape so it reads the same on all of them."
   },
   "ticker": [
+   "Full wraps from {$wrap.full}",
    "Satin black",
    "Gloss",
    "Matte",
@@ -658,5 +659,13 @@
  "suppliers": {
   "h2": "The film we install",
   "p": "Cast wrap film from the makers installers trust. Ask for a brand or a colour code and we will price it."
+ },
+ "promo": {
+  "eyebrow": "Promotion",
+  "h2": "Full wraps starting at {$wrap.full}.",
+  "p": "A full colour change in gloss, satin or matte film, edges tucked. The starting price is for a coupe or sedan; larger vehicles are priced by size. You get the exact price in writing before any work starts.",
+  "chip": "Promotion · Full wraps from {$wrap.full}",
+  "cta": "Book the promotion",
+  "note": "Promotion: full wrap from {$wrap.full}"
  }
 }

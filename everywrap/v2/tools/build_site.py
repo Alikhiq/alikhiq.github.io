@@ -85,7 +85,9 @@ def ld(obj):
 def business():
     return {"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": SITE["domain"] + "/#business", "name": SITE["name"], "url": SITE["domain"] + "/",
             "email": SITE["email"], "slogan": SITE["tagline"], "image": SITE["domain"] + "/assets/share.jpg",
-            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
+            "address": {"@type": "PostalAddress", "streetAddress": SITE["locations"][0]["street"], "addressLocality": SITE["locations"][0]["city"], "addressRegion": SITE["locations"][0]["region"], "postalCode": SITE["locations"][0]["zip"], "addressCountry": "US"},
+            "location": [{"@type": "Place", "name": f"{SITE['name']} {x['city']}", "address": {"@type": "PostalAddress", "streetAddress": x["street"], "addressLocality": x["city"], "addressRegion": x["region"], "postalCode": x["zip"], "addressCountry": "US"}} for x in SITE["locations"]],
+            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS] + [{"@type": "City", "name": "Dearborn Heights, Michigan"}], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
             "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}
 
 def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(), glow=None):
@@ -214,7 +216,34 @@ def book(label="Book now", sub="", cls="", ids=False):
 def rail():
     return """<nav class="rail" aria-label="Services"><ol class="glass" id="rail"></ol></nav>"""
 
-def hero_personal(h1, eyebrow):
+def maps(loc):
+    q = f"{loc['street']}, {loc['city']}, {loc['region']} {loc['zip']}"
+    return "https://www.google.com/maps/search/?api=1&query=" + q.replace(",", "%2C").replace(" ", "+")
+
+def locations():
+    """The two places EveryWrap works from. Shown wherever the service area is."""
+    cards = "".join(f'''<li class="loc"><b>{e(x['name'])}</b><span>{e(x['street'])}<br>{e(x['city'])}, {x['region']} {x['zip']}</span><em>{e(x['note'])}</em>
+      <p><a href="{maps(x)}" target="_blank" rel="noopener">Directions</a><button type="button" data-quote data-loc="{x['id']}">Book here</button></p></li>''' for x in SITE.get("locations", []))
+    return f'<ul class="locs" data-reveal>{cards}</ul>' if cards else ""
+
+def promo_chip():
+    c = COPY["promo"]
+    return f'<button class="promochip live" type="button" data-quote="wrap" data-note="{e(c["note"])}"><i class="pdot" aria-hidden="true"></i>{e(c["chip"])}</button>'
+
+def promo_band(root):
+    """The current promotion, as one loud band."""
+    c = COPY["promo"]
+    return f"""<section class="band promo" aria-labelledby="promoh">
+  <div class="promo-in live" data-reveal>
+    <p class="eyebrow">{e(c['eyebrow'])}</p>
+    <h2 id="promoh">{e(c['h2'])}</h2>
+    <p>{e(c['p'])}</p>
+    <div class="promo-cta"><button class="btn pri" type="button" data-quote="wrap" data-note="{e(c['note'])}">{e(c['cta'])} {ARROW}</button><button class="trylink" type="button" data-upload>{CAM} See it on your car first</button></div>
+  </div>
+</section>
+"""
+
+def hero_personal(h1, eyebrow, promo=False):
     return f"""<section class="hero" id="hero" aria-label="EveryWrap">
   <canvas class="stage" id="stage" aria-hidden="true"></canvas>
   <div class="ui">
@@ -227,6 +256,7 @@ def hero_personal(h1, eyebrow):
       <span class="seamtag a" id="tagA" aria-hidden="true"></span><span class="seamtag b" id="tagB" aria-hidden="true"></span>
     </div>
     <div class="copy glass">
+      {promo_chip() if promo else ''}
       <p class="eyebrow">{e(eyebrow)}</p>
       <h1 class="display long">{e(h1)}</h1>
       <p class="sub" id="sub">{e(COPY['home']['sub'])}</p>
@@ -442,6 +472,7 @@ def areas(root, current=""):
     others = "".join(f'<li><a href="{link(root, x["slug"])}">{e(x["name"])}</a></li>' for x in SERVICES if x["slug"] != current)
     return f"""<section class="band areas" aria-labelledby="areah">
   <div class="bandhead" data-reveal><h2 id="areah">Where we work</h2><p>{e(COPY['areas_p'])}</p></div>
+  {locations()}
   <ul class="arealist" data-reveal>{''.join(f'<li>{e(a)}</li>' for a in AREAS)}</ul>
   <ul class="crosslinks" data-reveal>{others}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li><li><a href="{link(root, 'pricing')}">All prices</a></li></ul>
 </section>
@@ -529,7 +560,7 @@ def footer(root, home=False):
   {logo(root, 'big')}
   <p class="foot-big">{e(SITE['tagline'])}</p>
   <div class="foot-grid">
-    <div><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p></div>
+    <div><p>{e(SITE['name'])}. Car wraps, paint protection film, window tint and fleet graphics for {e(area)} and the rest of central {SITE['region']}.</p>{''.join(f'<p class="foot-loc"><b>{e(x["name"])}</b><br><a href="{maps(x)}" target="_blank" rel="noopener">{e(x["street"])}, {e(x["city"])}, {x["region"]} {x["zip"]}</a><br>{e(x["note"])}</p>' for x in SITE.get("locations", []))}</div>
     <nav aria-label="Services"><h2>Services</h2><ul>{''.join(f'<li><a href="{link(root, s["slug"])}">{e(s["name"])}</a></li>' for s in SERVICES)}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li></ul></nav>
     <nav aria-label="More"><h2>See</h2><ul><li><a href="{link(root, 'pricing')}">Pricing</a></li><li><a href="{link(root, 'work')}">Our work</a></li>{insta}</ul></nav>
     <div><h2>Talk to us</h2><ul><li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li><li><button type="button" data-quote>Book now</button></li>{'<li><button type="button" id="replay">Replay the intro</button></li>' if home else ''}</ul></div>
@@ -605,6 +636,11 @@ def chrome(root, com=False):
           <label><input type="radio" name="qHow" id="qHowText" value="text" checked>Text me</label>
           <label><input type="radio" name="qHow" id="qHowCall" value="call">Call me</label>
         </div>
+        <span class="legend" id="qLocL">Which location suits you?</span>
+        <div class="picks" role="group" aria-labelledby="qLocL">
+          {"".join(f'<label><input type="radio" name="qLoc" value="{x["id"]}" data-name="{e(x["name"])}">{e(x["name"])}</label>' for x in SITE.get("locations", []))}
+          <label><input type="radio" name="qLoc" value="" data-name="" checked>Either</label>
+        </div>
         <p class="err" id="qErr3" role="alert"></p>
         <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="submit" id="qSend">Request my price</button></div>
       </div>
@@ -675,7 +711,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"]) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -686,7 +722,7 @@ def page_service(s):
   {wall(r, limit=9, tag=s['tag'], filters=False)}
 </section>
 """ if s["tag"] else ""
-    body = top(r, "personal") + "<main>\n" + hero_personal(s["h1"], s["name"]) + f"""<section class="band about" aria-labelledby="abouth">
+    body = top(r, "personal") + "<main>\n" + hero_personal(s["h1"], s["name"], promo=s["price_group"] == "wrap") + (promo_band(r) if s["price_group"] == "wrap" else "") + f"""<section class="band about" aria-labelledby="abouth">
   <div class="about-in" style="--th:{th}">
     <div class="about-vis" data-reveal>{svc_visual(r, s['ch'], s['img_alt'])}</div>
     <h2 id="abouth" data-reveal>{e(s['about_h2'])}</h2>
@@ -749,6 +785,7 @@ def page_pricing():
   {price_table(g)}
 </section>
 """ for name, g, slug, intro, th in groups)
+    blocks = promo_band(r) + blocks
     facts = "".join(f"<li>{e(x)}</li>" for x in c["factors"])
     catalog = {"@context": "https://schema.org", "@type": "OfferCatalog", "name": "EveryWrap prices", "url": canonical("pricing"),
                "itemListElement": [{"@type": "Offer", "name": row["name"], "priceCurrency": "USD", "price": (row["from"][0] if isinstance(row["from"], list) else row["from"]), **({"unitText": row["unit"]} if row.get("unit") else {}), "category": PRICING["groups"][g]["title"]}

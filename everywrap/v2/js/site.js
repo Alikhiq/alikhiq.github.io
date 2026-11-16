@@ -32,6 +32,7 @@ function details() {
 }
 function openQuote(pre = {}) {
   menu(false); ev("book_open", pre.svc || "");
+  if (pre.loc) { const r = $(`#qForm input[name=qLoc][value="${pre.loc}"]`); if (r) r.checked = true; }
   const want = pre.svc || (S.commercial ? "fleet" : S.ch); note = pre.note || "";
   $("#qSvc").innerHTML = GROUPS.map(([g, items]) => `<span class="legend">${g}</span><div class="picks" role="group" aria-label="${g}">` + items.map(([id, label, grp, row]) => { const p = grp ? fromPrice(grp, row, 0) : null; return `<label><input type="checkbox" id="qS_${id}" value="${label}"${id === want ? " checked" : ""}>${label}${p ? `<small>from ${money(p)}</small>` : ""}</label>`; }).join("") + "</div>").join("");
   if (pre.note && (want === "design" || want === "print") && !pre.car) { $("#qCar").value = pre.note; note = ""; }
@@ -54,10 +55,11 @@ async function submitQuote(e) {
   if (digits.length < 10) { $("#qErr3").textContent = "That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
   const com = $("#qSizeF").hidden, size = com ? 0 : +($("#qSizeF input:checked") || { value: 0 }).value, shift = /shift/i.test($("#qFin").value);
   const starts = [["wrap", "Wrap", fromPrice("wrap", shift ? "shift" : "full", size)], ["ppf", "PPF", fromPrice("ppf", S.ppf, size)], ["tint", "Tint", fromPrice("tint", "carbon", size)]].filter(([id, , n]) => n && $("#qS_" + id).checked).map(([, name, n]) => `${name} ${money(n)}`);
-  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname, render: renderId };
+  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname, render: renderId, location: ($("#qForm input[name=qLoc]:checked") || { dataset: { name: "" } }).dataset.name };
   const rows = [["Vehicle", lead.vehicle], ["Service", lead.services.join(", ")]];
   if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]);
   if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
+  if (lead.location) rows.push(["Location", lead.location]);
   rows.push(["Contact", `${name}, ${lead.phone} (${lead.contact})`]);
   $("#qSum").innerHTML = rows.map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("");
   // The live site stores the request (and the photo) and the team sees it on their dashboard.
@@ -166,7 +168,7 @@ export function initSite() {
   hooks.quote = openQuote; hooks.upload = openUpload; loadMail();
   $("#usw").innerHTML = FIN.map((f) => `<button type="button" data-f="${f[0]}" aria-pressed="false"><i style="background:${f[3]}"></i>${f[1]}</button>`).join("");
   document.addEventListener("click", (e) => {
-    const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote(q.dataset.quote ? { svc: q.dataset.quote, note: q.dataset.note || "" } : {}); }
+    const q = e.target.closest("[data-quote]"); if (q) { e.preventDefault(); return openQuote({ svc: q.dataset.quote || "", note: q.dataset.note || "", loc: q.dataset.loc || "" }); }
     if (e.target.closest("[data-upload]")) return openUpload();
     if (e.target.closest("[data-close]") || e.target.classList.contains("scrim")) return closeSheets();
     if (e.target.closest("[data-menu]")) { if ($("#menu").hidden) ev("menu_open"); return menu($("#menu").hidden); }

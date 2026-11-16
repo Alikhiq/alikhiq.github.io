@@ -7,3 +7,4 @@ CREATE TABLE IF NOT EXISTS renders (id TEXT PRIMARY KEY, ts INTEGER NOT NULL, da
 CREATE INDEX IF NOT EXISTS render_day ON renders (day, visitor);
 -- Added after the first version: the AI preview a visitor saw before sending a request.
 -- ALTER TABLE leads ADD COLUMN render TEXT;
+-- ALTER TABLE leads ADD COLUMN location TEXT;

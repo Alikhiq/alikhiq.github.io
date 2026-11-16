@@ -16,11 +16,12 @@
      "name": "Full colour change",
      "note": "Gloss, satin or matte film, edges tucked",
      "from": [
-      2800,
+      2499,
       3400,
       4000
      ],
-     "source": "US guides: small car from $2,500, sedan from $3,000, SUV or truck from $4,000"
+     "source": "owner, 16 Nov 2026: promotion, full wraps starting at $2,499. The SUV and van prices are the earlier approved starting prices.",
+     "promo": true
     },
     {
      "id": "shift",

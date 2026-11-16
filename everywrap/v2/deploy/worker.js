@@ -66,7 +66,7 @@ async function notify(env, lead, origin) {
   const digits = lead.phone.replace(/\D/g, "");
   const html = `<div style="font:16px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#111;max-width:560px">
 <h2 style="margin:0 0 4px">New booking request</h2><p style="margin:0 0 16px;color:#6b6b6b">From the EveryWrap website</p>
-<table style="border-collapse:collapse">${row("Name", lead.name)}${row("Phone", lead.phone + " (prefers a " + lead.contact + ")")}${row("Vehicle", lead.vehicle)}${row("Wants", lead.services)}${row("Finish", lead.finish)}${row("Tint", lead.tint)}${row("Size", lead.size)}${row("Starting from", lead.starts)}${row("Note", lead.note)}${row("Photo", lead.photo ? "Yes, see it in the dashboard" : "")}</table>
+<table style="border-collapse:collapse">${row("Name", lead.name)}${row("Phone", lead.phone + " (prefers a " + lead.contact + ")")}${row("Vehicle", lead.vehicle)}${row("Wants", lead.services)}${row("Finish", lead.finish)}${row("Tint", lead.tint)}${row("Size", lead.size)}${row("Starting from", lead.starts)}${row("Location", lead.location)}${row("Note", lead.note)}${row("Photo", lead.photo ? "Yes, see it in the dashboard" : "")}</table>
 <p style="margin:20px 0"><a href="tel:+1${digits.slice(-10)}" style="background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-right:8px">Call</a><a href="sms:+1${digits.slice(-10)}" style="background:#ef5b2a;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-right:8px">Text</a><a href="${origin}/desk/#r=${lead.id}" style="padding:10px 0;color:#111">Open in the dashboard</a></p></div>`;
   try {
     const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { authorization: "Bearer " + env.RESEND_KEY, "content-type": "application/json" },
@@ -94,9 +94,9 @@ async function lead(request, env, ctx, url) {
     await env.PRIVATE.put(photo, file.stream(), { httpMetadata: { contentType: file.type } });
   }
   const L = { id, name, phone, contact: d.contact === "call" ? "call" : "text", vehicle: clip(d.vehicle, 120), services: clip((d.services || []).join(", "), 200), finish: clip(d.finish, 60), tint: clip(d.tint, 20),
-    size: clip(d.size, 40), starts: clip((d.from || []).join(", "), 200), note: clip(d.note, 500), page: clip(d.page, 120), photo, render: /^[a-z0-9]{8,24}$/.test(String(d.render || "")) ? `renders/${d.render}.jpg` : "" };
-  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, render, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.page, photo, L.render, visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
+    size: clip(d.size, 40), starts: clip((d.from || []).join(", "), 200), note: clip(d.note, 500), location: clip(d.location, 60), page: clip(d.page, 120), photo, render: /^[a-z0-9]{8,24}$/.test(String(d.render || "")) ? `renders/${d.render}.jpg` : "" };
+  await env.DB.prepare("INSERT INTO leads (id, ts, day, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, visitor, device, country, city) VALUES (?,?,?,'new',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+    .bind(id, ts, day, L.name, L.phone, L.contact, L.vehicle, L.services, L.finish, L.tint, L.size, L.starts, L.note, L.location, L.page, photo, L.render, visitor, device(ua), clip(request.cf && request.cf.country, 2), clip(request.cf && request.cf.city, 60)).run();
   ctx.waitUntil(Promise.all([
     env.DB.prepare("INSERT INTO events (ts, day, name, path, visitor, device, country, ref, detail) VALUES (?,?,?,?,?,?,?,?,?)").bind(ts, day, "lead_sent", L.page, visitor, device(ua), clip(request.cf && request.cf.country, 2), "", L.services.slice(0, 80)).run().catch(() => {}),
     notify(env, L, url.origin),
@@ -183,7 +183,7 @@ async function desk(request, env, url) {
       q("SELECT device, COUNT(DISTINCT visitor) p FROM events WHERE day >= ? GROUP BY device ORDER BY p DESC", since),
       q("SELECT detail, COUNT(*) c FROM events WHERE day >= ? AND name = 'finish_pick' AND detail != '' GROUP BY detail ORDER BY c DESC LIMIT 5", since),
       q("SELECT day, COUNT(*) c FROM leads WHERE day >= ? GROUP BY day", since),
-      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, page, photo, render, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
+      q("SELECT id, ts, status, name, phone, contact, vehicle, services, finish, tint, size, starts, note, location, page, photo, render, device, city FROM leads ORDER BY ts DESC LIMIT 200"),
       q("SELECT COUNT(DISTINCT visitor) v FROM events WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE status = 'new'"),

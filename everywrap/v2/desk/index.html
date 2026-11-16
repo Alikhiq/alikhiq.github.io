@@ -279,7 +279,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
     openId = id; const digits = l.phone.replace(/\D/g, "").slice(-10);
     $("#sName").textContent = l.name; $("#sWhen").textContent = `${full(l.ts)} · prefers a ${l.contact}${l.city ? " · " + l.city : ""}`;
     $("#sCall").href = "tel:+1" + digits; $("#sText").href = "sms:+1" + digits;
-    const f = [["Phone", l.phone], ["Vehicle", l.vehicle], ["Wants", l.services], ["Finish", l.finish], ["Tint", l.tint], ["Size", l.size], ["Starting from", l.starts], ["Note", l.note], ["Sent from", PAGE[l.page] || l.page], ["Device", l.device]].filter((x) => x[1]);
+    const f = [["Phone", l.phone], ["Vehicle", l.vehicle], ["Wants", l.services], ["Finish", l.finish], ["Tint", l.tint], ["Size", l.size], ["Starting from", l.starts], ["Location", l.location], ["Note", l.note], ["Sent from", PAGE[l.page] || l.page], ["Device", l.device]].filter((x) => x[1]);
     $("#sList").innerHTML = f.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
     const ph = $("#sPhoto"); if (l.photo) { if (!keep || ph.hidden) ph.src = "/api/desk/photo?id=" + encodeURIComponent(l.id); ph.hidden = false; } else { ph.hidden = true; ph.removeAttribute("src"); }
     const rd = $("#sRender"); if (l.render) { if (!keep || rd.hidden) rd.src = "/api/desk/photo?kind=render&id=" + encodeURIComponent(l.id); rd.hidden = false; } else { rd.hidden = true; rd.removeAttribute("src"); } $("#sCap").hidden = !l.render;

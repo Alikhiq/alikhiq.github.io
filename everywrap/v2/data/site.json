@@ -65,5 +65,25 @@
   "TeckWrap",
   "Arlon"
  ],
- "voice_agent": "agent_4301m7hrhv0gfpjvy4w9jj2xwd46"
+ "voice_agent": "agent_4301m7hrhv0gfpjvy4w9jj2xwd46",
+ "locations": [
+  {
+   "id": "columbus",
+   "name": "Columbus, Ohio",
+   "street": "5220 Trabue Road, Suite D",
+   "city": "Columbus",
+   "region": "OH",
+   "zip": "43228",
+   "note": "By appointment"
+  },
+  {
+   "id": "dearborn",
+   "name": "Dearborn Heights, Michigan",
+   "street": "4937 Hazel St",
+   "city": "Dearborn Heights",
+   "region": "MI",
+   "zip": "48125",
+   "note": "By appointment"
+  }
+ ]
 }
