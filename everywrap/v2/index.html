@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--PAGE-->
+<title>EveryWrap Hero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="EveryWrap, Columbus, Ohio. Vinyl wrap, paint protection film, window tint, body kits and fleet graphics.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<!--/PAGE-->
+</head>
+<body>
+<!--PAGE-->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="ibg" id="ibg"></div>
+  <p class="itag">Real work · EveryWrap archive</p>
+  <div class="icard" id="icard"></div>
+  <p class="iword">EVERYWRAP</p>
+  <button class="iskip" id="iskip" type="button">Skip</button>
+</div>
+
+<main>
+<section class="hero" id="hero" aria-label="EveryWrap">
+  <canvas class="stage" id="stage" aria-hidden="true"></canvas>
+  <div class="softbox" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="mark" href="#hero">EVERYWRAP</a>
+    <div class="mode" role="group" aria-label="Who is this for">
+      <button type="button" id="mPer" aria-pressed="true">Personal</button>
+      <button type="button" id="mCom" aria-pressed="false">Commercial</button>
+    </div>
+  </header>
+
+  <div class="ui">
+    <nav class="rail" aria-label="Services">
+      <button class="step prev" type="button" id="railPrev" aria-label="Previous service">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <ol id="rail"></ol>
+      <button class="step next" type="button" id="railNext" aria-label="Next service">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </nav>
+
+    <div class="carzone" id="carzone">
+      <div class="seamctl" id="seamctl">
+        <label class="vh" for="seam" id="seamLabel">Drag the seam across the car</label>
+        <input type="range" id="seam" min="0" max="1000" step="1" value="500">
+      </div>
+      <div class="fleet" id="fleet" hidden>
+        <figure class="panel p3" id="p3"><img alt=""></figure>
+        <figure class="panel p2" id="p2"><img alt=""></figure>
+        <figure class="panel p1" id="p1"><img class="under" alt=""><img class="over" alt=""><span class="pseam" aria-hidden="true"></span><figcaption id="pcap"></figcaption></figure>
+      </div>
+      <p class="cap" id="cap">Placeholder render</p>
+    </div>
+
+    <div class="copy">
+      <h1 id="h1"><span>Satin black.</span> <span>Done right.</span></h1>
+      <p class="sub" id="sub">Any car, wrapped by hand in Columbus, Ohio.</p>
+      <div class="opts" id="opts" role="group" aria-label="Options"></div>
+      <div class="bodies" id="bodies" role="group" aria-label="Body style"></div>
+    </div>
+
+    <div class="dock">
+      <div class="askwrap">
+        <p class="say" id="say" aria-live="polite" hidden></p>
+        <form class="ask" id="askf" autocomplete="off">
+          <button type="button" id="askCam" aria-label="Upload a photo of your car">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </button>
+          <label class="vh" for="ask" id="askLabel">Tell me your car and what you want</label>
+          <input id="ask" type="text" placeholder="Tell me your car…" enterkeyhint="send">
+          <button type="submit" aria-label="Send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
+      <button class="btn pri" type="button" id="bQuote">Get my price</button>
+    </div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="workh">
+  <div class="bandhead">
+    <h2 id="workh">Proof in the finish.</h2>
+    <p id="workp">Real EveryWrap jobs from our own Instagram. Not renders.</p>
+  </div>
+  <div class="work" id="work" tabindex="0" aria-label="Work gallery"></div>
+</section>
+
+<section class="band tight" aria-labelledby="howh">
+  <div class="bandhead"><h2 id="howh">Price first. Then we talk.</h2></div>
+  <ol class="steps">
+    <li><h3>Tell us the car</h3><p>Year, make and model, or just a photo. Pick the service and the finish.</p></li>
+    <li><h3>See it before you pay</h3><p>We send your own car back in the finish you chose, with the price next to it.</p></li>
+    <li><h3>Get a callback</h3><p>We call or text to confirm fitment, film and a date. You get the quote in writing.</p></li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <span>Preview build. Hero cars are placeholder renders until the final image set is in. The gallery is real EveryWrap work.</span>
+  <button type="button" id="replay">Replay the intro</button>
+</footer>
+</main>
+
+<!-- price sheet -->
+<div class="scrim" id="qScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qTitle">
+    <div class="shead"><h2 id="qTitle">Get my price</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <p class="prog" id="qProg">Step 1 of 3</p>
+    <form id="qForm" novalidate>
+      <div class="qstep show" data-step="1">
+        <div class="field"><label for="qCar" id="qCarL">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
+        <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
+        <p class="err" id="qErr1" role="alert"></p>
+        <div class="srow"><button class="btn pri" type="button" data-next>Next</button></div>
+      </div>
+      <div class="qstep" data-step="2">
+        <span class="legend" id="qSvcL">What do you want done?</span>
+        <div class="picks" id="qSvc" role="group" aria-labelledby="qSvcL"></div>
+        <div class="field" id="qFinF"><label for="qFin">Wrap finish</label>
+          <select id="qFin"><option>Satin black</option><option>Gloss black</option><option>Satin grey</option><option>Satin red</option><option>Color shift</option><option>Not sure yet</option></select></div>
+        <p class="err" id="qErr2" role="alert"></p>
+        <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="button" data-next>Next</button></div>
+      </div>
+      <div class="qstep" data-step="3">
+        <div class="field"><label for="qName">Your name</label><input id="qName" type="text" autocomplete="name"></div>
+        <div class="field"><label for="qPhone">Mobile number</label><input id="qPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="614 555 0123"></div>
+        <span class="legend" id="qHowL">How should we reach you?</span>
+        <div class="picks" role="group" aria-labelledby="qHowL">
+          <label><input type="radio" name="qHow" id="qHowText" value="text" checked>Text me</label>
+          <label><input type="radio" name="qHow" id="qHowCall" value="call">Call me</label>
+        </div>
+        <p class="err" id="qErr3" role="alert"></p>
+        <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="submit" id="qSend">Request my price</button></div>
+      </div>
+      <div class="qstep" data-step="4">
+        <dl class="sum" id="qSum"></dl>
+        <p class="note flag" id="qDone"></p>
+        <div class="srow"><button class="btn pri" type="button" data-close>Done</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- upload sheet -->
+<div class="scrim" id="uScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="uTitle">
+    <div class="shead"><h2 id="uTitle">See it on your car</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <p class="prog">Photo, finish, price</p>
+    <div class="qstep show">
+      <label class="drop" id="drop" for="uFile">
+        <input id="uFile" type="file" accept="image/*">
+        <span id="dropT"><b>Add a photo of your car</b><br>A side or front three-quarter shot in daylight works best.</span>
+      </label>
+      <span class="legend">Finish to try</span>
+      <div class="usw" id="usw" role="group" aria-label="Finish to try"></div>
+      <p class="note">Your photo stays on this device in the preview. On the live site it comes back wrapped in this finish, with your price.</p>
+      <div class="srow"><button class="btn pri" type="button" id="uGo">Continue to my price</button></div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<!--/PAGE-->
+</body>
+</html>
