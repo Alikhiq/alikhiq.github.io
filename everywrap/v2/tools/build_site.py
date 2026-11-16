@@ -182,18 +182,6 @@ def suppliers():
 </section>
 """
 
-def partners(root):
-    c = COPY["partners"]; by = {j["id"]: j for j in WORK}
-    def tile(x):
-        j = by.get(x.get("job", ""))
-        pic = ('<img loading="lazy" src="' + root + "assets/" + j["src"] + '" alt="' + e(j["title"]) + '">') if j else ""
-        return '<li class="' + ("has-pic" if j else "") + '">' + pic + "<div><small>" + e(x["tag"]) + "</small><b>" + e(x["name"]) + "</b></div></li>"
-    return f"""<section class="band partners" aria-labelledby="parh">
-  <div class="bandhead" data-reveal><h2 id="parh">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
-  <ul class="pargrid" data-reveal>{''.join(tile(x) for x in SITE['partners'])}</ul>
-</section>
-"""
-
 def book(label="Book now", sub="", cls="", ids=False):
     """The one call to action: a glass capsule that carries what the visitor picked."""
     return f"""<button class="book live{(' ' + cls) if cls else ''}" type="button" data-quote>
@@ -653,7 +641,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"]) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + partners(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"]) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -716,7 +704,7 @@ def page_commercial():
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
-""" + partners(r) + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
+""" + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
     write("commercial/index.html", head(r, "commercial", c["title"], c["desc"], mode="commercial", extra_ld=[service_ld("Fleet graphics and commercial vehicle wraps", "commercial", c["desc"], "fleet"), faq_ld(c["faq"])]) + body)
 
 def page_pricing():

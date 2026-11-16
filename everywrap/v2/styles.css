@@ -471,7 +471,7 @@ main{counter-reset:sec}
 .ilogo .logo.big .logo-mark{width:48px;height:48px;border-radius:14px}
 .ilogo .logo.big .logo-word{font-size:clamp(34px,7vw,56px)}
 
-/* ---------- trust, suppliers, partners ---------- */
+/* ---------- trust badges and suppliers ---------- */
 .truststrip{padding:18px var(--gr) 0 var(--gl)}
 .trust{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .trust li{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
@@ -483,16 +483,7 @@ main{counter-reset:sec}
 .sup-ring{position:absolute;inset:auto -30% -70% -30%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--glow) 22%,transparent),transparent 62%);pointer-events:none}
 .supgrid b{position:relative;font:italic 800 clamp(22px,2.4vw,34px)/1 var(--cond);text-transform:uppercase;letter-spacing:.01em}
 .supgrid small{position:relative;font:600 10.5px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
-.pargrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.pargrid li{position:relative;display:flex;align-items:flex-end;min-height:150px;padding:18px;border:1px solid var(--line);border-radius:22px;background:var(--card);overflow:hidden}
-.pargrid li.has-pic{color:#fff}
-.pargrid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.pargrid li.has-pic::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(0,0,0,.8))}
-.pargrid div{position:relative;z-index:1}
-.pargrid small{display:block;margin-bottom:6px;font:600 10.5px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--glow)}
-.pargrid b{font:400 clamp(22px,2.2vw,30px)/1.05 var(--display);letter-spacing:-.02em}
-:root[data-mode="commercial"] .pargrid b{font:700 clamp(20px,2vw,26px)/1.1 var(--ui);letter-spacing:-.03em}
-:root[data-mode="commercial"] .pargrid small,:root[data-mode="commercial"] .kicon{color:var(--fg)}
+:root[data-mode="commercial"] .kicon{color:var(--fg)}
 
 /* ---------- generated pictures: products, concepts, categories ---------- */
 .mats img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:18px;margin-bottom:10px;border:1px solid var(--line)}
@@ -745,8 +736,6 @@ main{counter-reset:sec}
   .trust span{font-size:11.5px}
   .supgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .supgrid li:first-child{grid-column:1 / -1}
-  .pargrid{grid-template-columns:1fr;gap:8px}
-  .pargrid li{min-height:120px}
   .mgroups{grid-template-columns:1fr;gap:12px}
   .mgroup ul{grid-template-columns:1fr 1fr;gap:9px 14px}
   .mpic{aspect-ratio:16/5}

@@ -65,20 +65,5 @@
   "TeckWrap",
   "Arlon"
  ],
- "partners": [
-  {
-   "name": "Queens Public Library",
-   "tag": "Fleet graphics",
-   "job": "everywrapny-4-queens-public-library-bus"
-  },
-  {
-   "name": "Immaculate Detailz",
-   "tag": "Detailing"
-  },
-  {
-   "name": "Visionary Signs",
-   "tag": "Signs and print"
-  }
- ],
  "voice_agent": "agent_4301m7hrhv0gfpjvy4w9jj2xwd46"
 }
