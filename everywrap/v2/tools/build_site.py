@@ -154,12 +154,19 @@ def top(root, mode, cat=None):
 <nav class="menu" id="menu" hidden aria-label="Site">
   <div class="mgroups">{groups}</div>
   <div class="mtiles">{tiles}</div>
-  <div class="mfoot">{book('Book now', 'Get your price in writing')}<a href="mailto:{SITE['email']}">{SITE['email']}</a></div>
+  <div class="mfoot">{book('Book now', 'Get your price in writing')}{voice()}<a href="mailto:{SITE['email']}">{SITE['email']}</a></div>
 </nav>
 """
 
 TRUST_ICONS = {"quote": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h5"/>', "check": '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
                "truck": '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>'}
+
+MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>'
+
+def voice(label="Talk to our assistant"):
+    """A link to the voice assistant, if one is set in data/site.json."""
+    a = SITE.get("voice_agent")
+    return ('<a class="trylink voice" href="https://elevenlabs.io/app/talk-to?agent_id=' + a + '" target="_blank" rel="noopener">' + MIC + " " + e(label) + "</a>") if a else ""
 
 def trust_strip(key="trust"):
     def ic(k):
@@ -216,6 +223,7 @@ def hero_personal(h1, eyebrow):
       <p class="sub" id="sub">{e(COPY['home']['sub'])}</p>
       <div class="opts" id="opts" role="group" aria-label="Options"></div>
       {book('Book now', 'Satin black wrap', ids=True)}
+      {voice('Ask by voice')}
     </div>
   </div>
 </section>
@@ -238,6 +246,7 @@ def hero_fleet():
       <h1 class="display long">{e(COPY['commercial']['hero_h1'])}</h1>
       <p class="sub" id="sub">{e(COPY['commercial']['sub'])}</p>
       {book('Book now', 'Fleet graphics')}
+      {voice('Ask by voice')}
     </div>
   </div>
 </section>
@@ -500,7 +509,7 @@ def final(com=False):
     return f"""<section class="final" aria-labelledby="finalh">
   <h2 id="finalh" data-reveal>{e(c['h2'])}</h2>
   <p data-reveal>{e(c['p'])}</p>
-  <div class="final-cta" data-reveal>{book('Book now', c['book'])}<button class="trylink" type="button" data-upload>{CAM} {e(c['photo'])}</button></div>
+  <div class="final-cta" data-reveal>{book('Book now', c['book'])}<button class="trylink" type="button" data-upload>{CAM} {e(c['photo'])}</button>{voice()}</div>
 </section>
 """
 
