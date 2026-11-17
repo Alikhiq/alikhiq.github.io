@@ -3,7 +3,7 @@ const {chromium}=require('playwright');const fs=require('fs');
 const [,,page,out,fpsS='30',a='0',b='0',list,w='1080',h='1920']=process.argv;const fps=+fpsS;
 (async()=>{
  const br=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--disable-background-timer-throttling','--disable-renderer-backgrounding']});
- const p=await br.newPage({viewport:{width:+w,height:+h},deviceScaleFactor:1});
+ const p=await br.newPage({viewport:{width:+w,height:+h},deviceScaleFactor:+(process.env.DSF||1)});
  await p.addInitScript({path:__dirname+'/vclock2.js'});
  p.on('pageerror',e=>console.log('pageerror',e.message));p.on('console',m=>{if(['error','warning'].includes(m.type()))console.log('console',m.text().slice(0,300))});
  await p.goto('http://localhost:8811/'+page,{waitUntil:'load'});

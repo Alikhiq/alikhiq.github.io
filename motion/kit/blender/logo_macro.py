@@ -112,7 +112,7 @@ for fc in (co.animation_data.action.fcurves if co.animation_data else []):
     for kp in fc.keyframe_points: kp.interpolation = 'CONSTANT'
 
 sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = SAMP; sc.cycles.use_denoising = True
-sc.cycles.max_bounces = 8; sc.cycles.glossy_bounces = 6
+sc.cycles.max_bounces = 4; sc.cycles.glossy_bounces = 3; sc.cycles.diffuse_bounces = 1; sc.cycles.transmission_bounces = 1; sc.cycles.adaptive_threshold = 0.03
 sc.render.film_transparent = True; sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGBA'
 sc.render.resolution_x = RX; sc.render.resolution_y = RY; sc.render.fps = 30
 sc.view_settings.view_transform = 'AgX'; sc.view_settings.look = 'AgX - High Contrast'

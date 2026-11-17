@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/__fonts/mtk/mtk.css">
 <style>
 /* Mo Tint brand kit ed.03 (UNIT D). v2 from Ali's timeline notes:
-   1) 3D intro: close-up of a car (their black Model Y tint job) speeding down the dark chrome gold bolt, cinematic crane/zoom out to the straight-on 3D wordmark (obsidian black glass letters, gold chrome bolt), Blender
+   1) 3D intro on an off-white (paper) set: macro close-ups of the 3D wordmark (dark chrome gold bolt, obsidian black glass letters), cut to the straight-on reveal; Blender. Paper -> gold -> bay-black diagonal wipe into the tint story; paper end card.
    2) LIGHT / HEAT / GLARE each get their own effect; a lean, dark German shepherd in aviators drives behind the glass, eyes on the road
    3) film draws down -> dog hidden -> PRIVACY. CONTROLLED.
    4) HEAT STAYS OUT -> the dog, cool in the breeze -> YOU STAY COOL.
@@ -13,12 +13,15 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 .stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(90% 55% at 50% 44%,#15160F 0%,#0A0B09 62%,#070806 100%)}
 #lglow{position:absolute;left:50%;top:860px;width:1400px;height:900px;margin:-450px 0 0 -700px;border-radius:50%;background:radial-gradient(closest-side,rgba(48,51,46,.95),rgba(48,51,46,0));opacity:0}
 .l3d{position:absolute;left:0;width:1080px;height:1920px}
+.ground{position:absolute;inset:0}
+#paperIn,#paperOut{background:var(--paper)}#goldIn,#goldOut{background:var(--gold)}
+#paperOut .word{color:var(--bay)}#paperOut .label{color:var(--steel)}#paperOut #rule{background:var(--bay)}
+#heat,#breeze{position:absolute;left:0;top:0;width:1080px;height:1920px}
 #bloom{position:absolute;left:50%;top:800px;width:1500px;height:1100px;margin:-550px 0 0 -750px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(255,244,218,.55) 0%,rgba(255,232,190,.18) 40%,rgba(255,220,170,0) 100%);opacity:0;mix-blend-mode:screen}
 #rays{position:absolute;left:50%;top:780px;width:2400px;height:2400px;margin:-1200px 0 0 -1200px;opacity:0;mix-blend-mode:screen;
   background:repeating-conic-gradient(from 0deg,rgba(255,246,222,.0) 0deg,rgba(255,246,222,.32) 2.2deg,rgba(255,246,222,0) 5deg,rgba(255,246,222,0) 11deg);
   -webkit-mask-image:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.5) 35%,transparent 72%)}
-#heat{position:absolute;inset:0}
 #win{position:absolute;left:130px;top:520px;width:820px;height:525px;transform-origin:50% 50%}
 #win svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 #dogL{position:absolute;inset:0;background:#141512}
@@ -28,7 +31,6 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 #streaks{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
 .stk{position:absolute;left:-200px;width:1480px;border-radius:50%}
 .hl{position:absolute;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(closest-side,#fff 0%,rgba(225,238,255,.9) 18%,rgba(170,200,255,.25) 45%,rgba(170,200,255,0) 100%)}
-#breeze{position:absolute;inset:0}
 #swatches{position:absolute;left:0;right:0;top:640px;height:420px;perspective:1800px}
 .sw{position:absolute;top:0;width:176px;height:113px;transform-style:preserve-3d}
 .sw svg{width:100%;height:100%;overflow:visible}
@@ -54,7 +56,6 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 </defs></svg>
 <div class="stage">
   <div id="lglow"></div>
-  <img class="l3d" id="logoIn" src="/mtk/intro/0001.png" style="top:0" alt="">
   <div id="bloom"></div><div id="rays"></div>
   <canvas id="heat" width="1080" height="1920"></canvas>
   <div id="win">
@@ -68,7 +69,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
     </defs>
       <g clip-path="url(#gc)"><rect x="0" y="0" width="1000" height="640" fill="url(#glass)"/></g>
     </svg>
-    <div id="dogL"><img id="dogS" src="/mtk/img/dog/e1.png" alt=""><img id="dogV" alt=""><div id="warm"></div><div id="flash"></div></div>
+    <div id="dogL"><img id="dogS" src="/mtk/img/dog/e1_up.png" alt=""><img id="dogV" alt=""><div id="warm"></div><div id="flash"></div></div>
     <svg viewBox="0 0 1000 640">
       <g clip-path="url(#gc)">
         <rect id="filmR" x="0" y="-700" width="1000" height="700" fill="url(#film)"/>
@@ -98,11 +99,15 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
   <div class="label gold" id="lFrom" style="top:600px">Ceramic Grade A · all around · from</div>
   <div id="price">$299</div>
   <div class="fine" id="fPrice" style="top:1180px">Every window except the windshield.<br>Regular-size vehicle; larger vehicles are quoted.</div>
-  <img class="l3d" id="logoEnd" src="/mtk/intro/0150.png" style="top:-230px" alt="">
-  <div id="rule"></div>
-  <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
-  <div class="label gold" id="lUrl" style="top:1300px">motintking.com · Columbus, Ohio</div>
-  <div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+  <div class="vig"></div>
+  <div class="ground" id="goldIn"></div>
+  <div class="ground" id="paperIn"><img class="l3d" id="logoIn" src="/mtk/macro/0001.png" style="top:0" alt=""></div>
+  <div class="ground" id="goldOut"></div>
+  <div class="ground" id="paperOut"><img class="l3d" id="logoEnd" src="/mtk/macro/0150.png" style="top:-250px" alt="">
+    <div id="rule"></div>
+    <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
+    <div class="label" id="lUrl" style="top:1300px">motintking.com · Columbus, Ohio</div></div>
+  <div class="grain" id="grain"></div><div class="black" id="black"></div>
 </div>
 <script src="lib/common.js"></script>
 <script>
@@ -149,15 +154,21 @@ function drawBreeze(t, amt) { const cv = $('#breeze'); bx.clearRect(0, 0, 1080, 
 function fitWords() { $$('.word, #price').forEach((el) => { const fs = parseFloat(getComputedStyle(el).fontSize); const w = [...el.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
   if (w > 960) el.style.fontSize = Math.floor(fs * 960 / w) + 'px'; }); }
 window.__ready = Promise.all([document.fonts.ready, $('#dogS').decode().catch(() => {})]).then(() => { fitWords(); return true; });
-const logoUrl = (f) => `/mtk/intro/${pad(clamp(f, 1, NL), 4)}.png`;
+const logoUrl = (f) => `/mtk/macro/${pad(clamp(f, 1, NL), 4)}.png`;
+// diagonal wipe along the bolt's angle: the ground keeps the part left of a line that sweeps right->left
+const wipe = (el, k, dir) => { const c = dir > 0 ? lerp(2100, -1100, k) : lerp(-1100, 2100, k); const sl = 0.62;
+  const xt = c + 960 * sl, xb = c - 960 * sl;
+  el.style.clipPath = `polygon(0 0, ${xt.toFixed(1)}px 0, ${xb.toFixed(1)}px 1920px, 0 1920px)`;
+  el.style.visibility = (dir > 0 ? k < 0.999 : k > 0.001) ? 'visible' : 'hidden'; };
+const DPR = window.devicePixelRatio || 1;
+[$('#heat'), $('#breeze')].forEach((cv) => { cv.width = 1080 * DPR; cv.height = 1920 * DPR; cv.getContext('2d').setTransform(DPR, 0, 0, DPR, 0, 0); });
 window.seek = async (t) => {
   $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.5))).toFixed(3);
   // 0) 3D logo intro: obsidian glass letters + dark chrome gold bolt, studio light sweep
-  const lin = $('#logoIn'); const lout = E.inCubic(seg(t, 4.9, 5.7));
-  if (t < 5.8) { seqFrame(lin, logoUrl(Math.floor(t * 30) + 1)); }
-  lin.style.opacity = (1 - lout).toFixed(3); lin.style.transform = `scale(${(1 + 0.06 * lout).toFixed(4)})`; lin.style.filter = lout > 0.01 ? `blur(${(lout * 14).toFixed(1)}px)` : 'none';
-  lin.style.visibility = t < 5.8 ? 'visible' : 'hidden';
-  $('#lglow').style.opacity = (E.outCubic(seg(t, 0.2, 1.6)) * (1 - seg(t, 5.0, 5.8))).toFixed(3);
+  const lin = $('#logoIn'); if (t < 5.4) seqFrame(lin, logoUrl(Math.floor(t * 30) + 1));
+  wipe($('#paperIn'), E.inOutCubic ? E.inOutCubic(seg(t, 4.75, 5.35)) : E.inOut(seg(t, 4.75, 5.35)), 1);
+  wipe($('#goldIn'), E.inOut(seg(t, 4.92, 5.55)), 1);
+  $('#lglow').style.opacity = 0;
   // A) the bolt's light becomes a slit, the slit opens into the window
   const line = E.outExpo(seg(t, 5.3, 6.6)); const open = E.inOut(seg(t, 5.9, 7.0));
   const hClip = 6 + open * 640;
@@ -218,8 +229,8 @@ window.seek = async (t) => {
   // price
   fade($('#lFrom'), t, 30.4, 33.8); type(W.price, t, 30.6, 33.8, { st: 0.08, d: 1.1, dy: 160 }); fade($('#fPrice'), t, 31.8, 33.8);
   // end card: the 3D logo settles again under its light sweep
-  const le = $('#logoEnd'); if (t >= 33.9) seqFrame(le, logoUrl(Math.floor((t - 34.0) * 30) + 108)); le.style.visibility = t >= 33.9 ? 'visible' : 'hidden';
-  const lek = E.outCubic(seg(t, 34.0, 34.8)); le.style.opacity = lek.toFixed(3); le.style.filter = lek < 0.99 ? `blur(${((1 - lek) * 12).toFixed(1)}px)` : 'none';
+  wipe($('#goldOut'), E.inOut(seg(t, 33.75, 34.35)), -1); wipe($('#paperOut'), E.inOut(seg(t, 33.9, 34.5)), -1);
+  const le = $('#logoEnd'); if (t >= 33.7) seqFrame(le, logoUrl(Math.floor((t - 34.2) * 30) + 112));
   const rl = E.outExpo(seg(t, 35.8, 36.8)); $('#rule').style.transform = `scaleX(${rl.toFixed(3)})`; $('#rule').style.opacity = rl.toFixed(3);
   type(W.wPhone, t, 36.0, null, { st: 0.03 }); fade($('#lUrl'), t, 36.6, null);
   grainJitter($('#grain'), t); await flushDecodes();
