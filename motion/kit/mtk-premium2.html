@@ -183,7 +183,7 @@ const wipe = (el, k, dir) => { const c = dir > 0 ? lerp(2100, -1100, k) : lerp(-
   el.style.clipPath = `polygon(0 0, ${xt.toFixed(1)}px 0, ${xb.toFixed(1)}px 1920px, 0 1920px)`;
   el.style.visibility = (dir > 0 ? k < 0.999 : k > 0.001) ? 'visible' : 'hidden'; };
 const DPR = window.devicePixelRatio || 1;
-[$('#heat'), $('#breeze')].forEach((cv) => { cv.width = 1080 * DPR; cv.height = 1920 * DPR; cv.getContext('2d').setTransform(DPR, 0, 0, DPR, 0, 0); });
+[$('#heat')].forEach((cv) => { cv.width = 1080 * DPR; cv.height = 1920 * DPR; cv.getContext('2d').setTransform(DPR, 0, 0, DPR, 0, 0); });
 window.seek = async (t) => {
   $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.5))).toFixed(3);
   // 0) 3D logo intro: obsidian glass letters + dark chrome gold bolt, studio light sweep
