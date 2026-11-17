@@ -67,7 +67,7 @@ bpy.ops.mesh.primitive_plane_add(size=1); cp = bpy.context.active_object; cp.nam
 cp.scale = (CL, CH, 1); bpy.ops.object.transform_apply(scale=True)
 cm = bpy.data.materials.new('car'); cm.use_nodes = True; nt = cm.node_tree; nt.nodes.clear(); cm.blend_method = 'BLEND'
 ti = nt.nodes.new('ShaderNodeTexImage'); ti.image = img; ti.extension = 'CLIP'
-em = nt.nodes.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = 1.35
+em = nt.nodes.new('ShaderNodeEmission'); em.inputs['Strength'].default_value = 1.1
 tr = nt.nodes.new('ShaderNodeBsdfTransparent'); mx = nt.nodes.new('ShaderNodeMixShader'); mo = nt.nodes.new('ShaderNodeOutputMaterial')
 fd = nt.nodes.new('ShaderNodeMath'); fd.operation = 'MULTIPLY'; fd.inputs[1].default_value = 1.0
 nt.links.new(ti.outputs['Color'], em.inputs['Color']); nt.links.new(ti.outputs['Alpha'], fd.inputs[0]); nt.links.new(fd.outputs[0], mx.inputs[0])
@@ -91,9 +91,9 @@ EL = math.radians(26); vh = v
 for f in range(1, N + 1):
     u = 1.25 * (f - 1) / NA
     pc = A.lerp(B, u) if u <= 1 else B + (B - A) * (u - 1)
-    D = CL * 2.0
+    D = CL * 1.6
     chase_eye = pc - vh * D * math.cos(EL) + UP * D * math.sin(EL) - d * CL * 0.15
-    chase_tgt = pc + UP * (CH * 0.35) + d * CL * 0.2
+    chase_tgt = pc + UP * (CH * 0.35) - d * CL * 0.04
     # car card: bottom edge on the gold face, leaned back to face the camera
     right = vh.cross(UP).normalized(); n = (chase_eye - pc); n = (n - right * n.dot(right)).normalized(); up_b = n.cross(right)
     Rm = Matrix((right, up_b, n)).transposed()
