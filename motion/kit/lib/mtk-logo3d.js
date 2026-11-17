@@ -37,7 +37,8 @@ export async function createLogo3D() {
     panel(0.4, 12, V(9, -0.5, 4), 0xdfe8ff, 5);     // cool right strip
     if (gold) {
       panel(18, 7, V(0, 9, 3), 0xfff4e2, 2.2);      // overhead softbox
-      panel(22, 14, V(0, 1, 16), 0xfff1dc, 1.1);    // broad front fill
+      panel(26, 8, V(0, 4.6, 16), 0xfff1dc, 2.4);   // front fill, upper half (bright)
+      panel(26, 8, V(0, -3.6, 16), 0xb88a3c, 0.32); // front fill, lower half (dim) -> chrome horizon across the gold face
       panel(40, 20, V(0, -10, 0), 0xf2dcae, 0.9);   // warm floor bounce
     } else {
       panel(18, 7, V(0, 9, 3), 0xfff4e2, 0.9);      // faint overhead: a soft sheen on the black glass
