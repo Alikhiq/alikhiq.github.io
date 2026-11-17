@@ -15,7 +15,10 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 #lglow{position:absolute;left:50%;top:860px;width:1400px;height:900px;margin:-450px 0 0 -700px;border-radius:50%;background:radial-gradient(closest-side,rgba(48,51,46,.95),rgba(48,51,46,0));opacity:0}
 .gl3d{position:absolute;left:0;top:0;width:1080px;height:1920px}
 .ground{position:absolute;inset:0}
-#paperIn,#paperOut{background:var(--paper)}#goldIn,#goldOut{background:var(--gold)}
+#paperIn,#paperOut{background:radial-gradient(85% 55% at 50% 44%,#FAF8F1 0%,#F2EFE5 46%,#E6E1D2 100%)}
+.psweep{position:absolute;left:-600px;top:-200px;width:900px;height:2400px;transform-origin:50% 50%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,253,246,.55) 50%,rgba(255,255,255,0));pointer-events:none}
+.pfloor{position:absolute;left:0;right:0;bottom:0;height:640px;background:linear-gradient(180deg,rgba(214,208,192,0),rgba(214,208,192,.55));pointer-events:none}
+#bgfx{position:absolute;left:0;top:0;width:1080px;height:1920px}#goldIn,#goldOut{background:var(--gold)}
 #paperOut .word{color:var(--bay)}#paperOut .label{color:var(--steel)}#paperOut #rule{background:var(--bay)}
 #heat,#breeze{position:absolute;left:0;top:0;width:1080px;height:1920px}
 #bloom{position:absolute;left:50%;top:800px;width:1500px;height:1100px;margin:-550px 0 0 -750px;border-radius:50%;
@@ -113,9 +116,9 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
   <div class="fine" id="fPrice" style="top:1180px">Every window except the windshield.<br>Regular-size vehicle; larger vehicles are quoted.</div>
   <div class="vig"></div>
   <div class="ground" id="goldIn"></div>
-  <div class="ground" id="paperIn"></div>
+  <div class="ground" id="paperIn"><div class="pfloor"></div><div class="psweep" id="sweepIn"></div></div>
   <div class="ground" id="goldOut"></div>
-  <div class="ground" id="paperOut"><div id="endGL" style="position:absolute;inset:0;transform:translateY(-250px)"></div>
+  <div class="ground" id="paperOut"><div class="pfloor"></div><div class="psweep" id="sweepOut"></div><div id="endGL" style="position:absolute;inset:0;transform:translateY(-250px)"></div>
     <div id="rule"></div>
     <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
     <div id="phLine"></div>
@@ -124,12 +127,14 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 </div>
 <script src="lib/common.js"></script>
 <script src="lib/mtk-type.js"></script>
+<script src="lib/mtk-bg.js"></script>
 <script>window.__glReady = new Promise((r) => (window.__glResolve = r));</script>
 <script type="module">import { createLogo3D } from '/lib/mtk-logo3d.js'; createLogo3D().then((L) => { window.LOGO3D = L; window.__glResolve(true); });</script>
 <script>
 const DUR = 39; window.__DUR = DUR; window.__EVENTS = { cuts: [], hits: [], risers: [], pops: [], end: DUR, dur: DUR };
 const NL = 150, NV = window.__NV || 150; // 3D logo frames, cool-dog video frames
 const chars = (el) => { el.innerHTML = [...el.textContent].map((c) => `<span class="c">${c === ' ' ? '&nbsp;' : c}</span>`).join(''); return $$('.c', el); };
+$('.stage').prepend(window.BGFX.canvas);
 const T = window.MTKT; const W = {}; ['wLight', 'wHeat', 'wGlare', 'wPriv', 'wCtrl', 'wOut', 'wYou', 'wCool', 'wAny', 'wSame'].forEach((id) => (W[id] = T.letters($('#' + id))));
 W.price = T.odometer($('#price')); W.wPhone = T.odometer($('#wPhone'));
 function type(cs, t, a, b, o = {}) { const st = o.st ?? 0.028, d = o.d ?? 0.9, dy = o.dy ?? 70;
@@ -253,6 +258,13 @@ window.seek = async (t) => {
   T.roll(W.wPhone, t, 35.95, null, { st: 0.06, d: 1.0 });
   const pl = E.outExpo(seg(t, 36.9, 37.7)); $('#phLine').style.transform = `scaleX(${pl.toFixed(3)})`; $('#phLine').style.opacity = pl > 0 ? 1 : 0;
   T.typewrite($('#lUrl'), t, 37.1, { d: 1.2 });
+  // environment shader (dark acts) + paper studio light sweeps
+  const ins = (a, b, i = 0.4, o = 0.6) => envl(t, a, b, i, o);
+  BGFX.render(t, { uOn: 1, uLight: ins(6.9, 8.6, 0.25, 0.7), uHeat: ins(8.35, 10.0, 0.35, 0.6), uGlare: ins(9.95, 11.5, 0.2, 0.6),
+    uGold: seg(t, 11.4, 12.8) * (1 - seg(t, 20.6, 21.3)) + 0.45 * ins(25.4, 30.3, 0.8, 0.6), uDark: fk * (1 - coolLift * 0.6),
+    uWall: ins(17.3, 21.0, 0.5, 0.6), uCool: ins(20.9, 25.5, 0.7, 0.6), uPrice: ins(30.2, 34.0, 0.6, 0.5), winY: 1 - (520 + 262) / 1920 });
+  const swp = (el, a, b) => { const k = seg(t, a, b); el.style.transform = `translateX(${lerp(-200, 1500, E.inOutSine(k)).toFixed(1)}px) rotate(18deg)`; el.style.opacity = (Math.sin(Math.PI * k) * 0.9).toFixed(3); };
+  swp($('#sweepIn'), 0.4, 4.6); swp($('#sweepOut'), 34.3, 38.8);
   grainJitter($('#grain'), t); await flushDecodes();
 };
 </script></body></html>
