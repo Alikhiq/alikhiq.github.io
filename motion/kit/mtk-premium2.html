@@ -7,7 +7,7 @@
    2) LIGHT / HEAT / GLARE each get their own effect; a lean, dark German shepherd in aviators drives behind the glass, eyes on the road
    3) film draws down -> dog hidden -> PRIVACY. CONTROLLED.
    4) HEAT STAYS OUT -> the dog, cool in the breeze -> YOU STAY COOL.
-   Copy sources: pricing.ts ($299 Ceramic Grade A all around; any shade same price; genuine heat rejection, no signal interference), business.ts (reduce heat and glare). Silent. */
+   Copy sources: $399 starting price per Ali (2026-11-17, ending request; site pricing.ts still says $299 -> align); services list = business.ts services; any shade same price; genuine heat rejection, no signal interference (pricing.ts); address 5220 Trabue Rd Ste D (business.ts). Map: OpenStreetMap data (ODbL, attributed on screen); Enterprise placement per Ali. SFX mixed separately (lib/mix_mtk_v2.py). */
 :root{--bay:#0A0B09;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--steel:#30332E;--disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);-webkit-font-smoothing:antialiased}
@@ -111,32 +111,41 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
   <div class="word" id="wCool" style="top:1330px;font-size:200px;color:var(--gold)">cool.</div>
   <div class="word" id="wAny" style="top:1180px;font-size:140px">Any shade.</div>
   <div class="word" id="wSame" style="top:1320px;font-size:140px;color:var(--gold)">Same price.</div>
-  <div class="label gold" id="lFrom" style="top:600px">Ceramic Grade A · all around · from</div>
-  <div id="price">$299</div>
-  <div class="fine" id="fPrice" style="top:1180px">Every window except the windshield.<br>Regular-size vehicle; larger vehicles are quoted.</div>
+  <div class="label gold" id="lFrom" style="top:600px">Ceramic window tinting · starting at</div>
+  <div id="price">$399</div>
+  <div class="label" id="lSvc" style="top:1190px;line-height:1.9">Window tint · Vinyl wraps · PPF<br>Ceramic coating · Chrome delete</div>
+  <div class="ground" id="mapWrap" style="visibility:hidden"></div>
+  <div class="word" id="wOpen" style="top:150px;font-size:118px">Open for</div>
+  <div class="word" id="wBooking" style="top:262px;font-size:178px;color:var(--gold)">bookings.</div>
+  <div class="label" id="lCity" style="top:470px">Columbus, Ohio</div>
+  <div class="label" id="lAddr" style="top:1760px">5220 Trabue Rd · Suite D</div>
   <div class="vig"></div>
   <div class="ground" id="goldIn"></div>
   <div class="ground" id="paperIn"><div class="pfloor"></div><div class="psweep" id="sweepIn"></div></div>
   <div class="ground" id="goldOut"></div>
-  <div class="ground" id="paperOut"><div class="pfloor"></div><div class="psweep" id="sweepOut"></div><div id="endGL" style="position:absolute;inset:0;transform:translateY(-250px)"></div>
-    <div id="rule"></div>
-    <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
-    <div id="phLine"></div>
-    <div class="label" id="lUrl" style="top:1312px">motintking.com · Columbus, Ohio</div></div>
+  <div class="ground" id="paperOut"><div class="pfloor"></div><div class="psweep" id="sweepOut"></div><div id="endGL" style="position:absolute;inset:0;transform:translateY(-330px)"></div>
+    <div class="word" id="wBookNow" style="top:880px;font-size:156px">Book now.</div><div id="bookShake"></div>
+    <div id="rule" style="top:1070px"></div>
+    <div class="word" id="wPhone" style="top:1110px;font-size:104px">614-822-0494</div>
+    <div id="phLine" style="top:1232px"></div>
+    <div class="label" id="lUrl" style="top:1262px">motintking.com · Columbus, Ohio</div></div>
   <div class="grain" id="grain"></div><div class="black" id="black"></div>
 </div>
 <script src="lib/common.js"></script>
 <script src="lib/mtk-type.js"></script>
 <script src="lib/mtk-bg.js"></script>
+<script src="lib/mtk-map.js"></script>
 <script>window.__glReady = new Promise((r) => (window.__glResolve = r));</script>
 <script type="module">import { createLogo3D } from '/lib/mtk-logo3d.js'; createLogo3D().then((L) => { window.LOGO3D = L; window.__glResolve(true); });</script>
 <script>
-const DUR = 39; window.__DUR = DUR; window.__EVENTS = { cuts: [], hits: [], risers: [], pops: [], end: DUR, dur: DUR };
+const DUR = 42; window.__DUR = DUR; window.__EVENTS = { cuts: [], hits: [], risers: [], pops: [], end: DUR, dur: DUR };
 const NL = 150, NV = window.__NV || 150; // 3D logo frames, cool-dog video frames
 const chars = (el) => { el.innerHTML = [...el.textContent].map((c) => `<span class="c">${c === ' ' ? '&nbsp;' : c}</span>`).join(''); return $$('.c', el); };
 $('.stage').prepend(window.BGFX.canvas);
 const T = window.MTKT; const W = {}; ['wLight', 'wHeat', 'wGlare', 'wPriv', 'wCtrl', 'wOut', 'wYou', 'wCool', 'wAny', 'wSame'].forEach((id) => (W[id] = T.letters($('#' + id))));
 W.price = T.odometer($('#price')); W.wPhone = T.odometer($('#wPhone'));
+['wOpen', 'wBooking', 'wBookNow'].forEach((id) => (W[id] = T.letters($('#' + id))));
+const MAPC = window.MTKMAP.create(); $('#mapWrap').appendChild(MAPC.cv); MAPC.cv.style.cssText = 'position:absolute;left:0;top:0;width:1080px;height:1920px';
 function type(cs, t, a, b, o = {}) { const st = o.st ?? 0.028, d = o.d ?? 0.9, dy = o.dy ?? 70;
   cs.forEach((c, i) => { const k = E.outExpo(seg(t, a + i * st, a + i * st + d)); const q = b == null ? 0 : E.inOutSine(seg(t, b + i * 0.012, b + i * 0.012 + 0.45));
     c.style.opacity = (k * (1 - q)).toFixed(3); c.style.transform = `translateY(${((1 - k) * dy - q * 30).toFixed(1)}px)`;
@@ -175,7 +184,7 @@ function drawBreeze(t, amt) { const cv = $('#breeze'); bx.clearRect(0, 0, 1080, 
     for (let k = 0; k <= 24; k++) { const x = x0 + (k / 24) * a.len; const y = a.y + Math.sin(x * 0.012 + t * 2.2 + a.ph * 6) * a.amp; k ? bx.lineTo(x, y) : bx.moveTo(x, y); } bx.stroke(); }); }
 function fitWords() { $$('.word, #price').forEach((el) => { const fs = parseFloat(getComputedStyle(el).fontSize); const w = [...el.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
   if (w > 960) el.style.fontSize = Math.floor(fs * 960 / w) + 'px'; }); }
-window.__ready = Promise.all([document.fonts.ready, $('#dogS').decode().catch(() => {}), window.__glReady]).then(() => { fitWords(); return true; });
+window.__ready = Promise.all([document.fonts.ready, $('#dogS').decode().catch(() => {}), window.__glReady, window.MTKMAP.load()]).then(() => { fitWords(); return true; });
 const logoUrl = (f) => `/mtk/macro/${pad(clamp(f, 1, NL), 4)}.png`;
 // diagonal wipe along the bolt's angle: the ground keeps the part left of a line that sweeps right->left
 const wipe = (el, k, dir) => { const c = dir > 0 ? lerp(2100, -1100, k) : lerp(-1100, 2100, k); const sl = 0.62;
@@ -188,7 +197,7 @@ window.seek = async (t) => {
   $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.5))).toFixed(3);
   // 0) 3D logo intro: obsidian glass letters + dark chrome gold bolt, studio light sweep
   const L3 = window.LOGO3D; const home = t < 20 ? $('#paperIn') : $('#endGL'); if (L3.canvas.parentNode !== home) home.appendChild(L3.canvas);
-  if (t < 5.4) L3.intro(t); else if (t >= 33.7) L3.endcard(t - 34.0);
+  if (t < 5.4) L3.intro(t); else if (t >= 37.3) L3.endcard(t - 37.65);
   wipe($('#paperIn'), E.inOutCubic ? E.inOutCubic(seg(t, 4.75, 5.35)) : E.inOut(seg(t, 4.75, 5.35)), 1);
   wipe($('#goldIn'), E.inOut(seg(t, 4.92, 5.55)), 1);
   $('#lglow').style.opacity = 0;
@@ -250,21 +259,30 @@ window.seek = async (t) => {
     d.style.opacity = (k * (1 - q)).toFixed(3); d.style.transform = `translateY(${((1 - k) * 120 - q * 60).toFixed(1)}px) rotateY(${((1 - k) * -40 + 8 * Math.sin((t - a) * 0.6)).toFixed(2)}deg)`; });
   T.anyShade(W.wAny, t, 26.6, 29.8); T.samePrice(W.wSame, t, 27.4, 29.8, $('#wAny'));
   // price
-  T.decode($('#lFrom'), t, 30.3, 33.8, { d: 1.0 }); T.roll(W.price, t, 30.6, 33.8, { st: 0.16, d: 1.3 }); T.fineLines($('#fPrice'), t, 31.9, 33.8);
+  T.decode($('#lFrom'), t, 30.3, 33.6, { d: 1.0 }); T.roll(W.price, t, 30.6, 33.6, { st: 0.16, d: 1.3 }); T.decode($('#lSvc'), t, 31.8, 33.6, { d: 1.3 });
+  // map: OPEN FOR BOOKINGS · Columbus, Ohio; pin on the shop, pull back over the neighbourhood
+  const mw = $('#mapWrap'); const mOn = t > 33.65 && t < 38.0; mw.style.visibility = mOn ? 'visible' : 'hidden';
+  if (mOn) { const ir = E.inOut(seg(t, 33.7, 34.35)); mw.style.clipPath = ir < 1 ? `circle(${(ir * 1250).toFixed(1)}px at 540px 1080px)` : 'none';
+    const zk = E.inOut(seg(t, 34.55, 37.3)); const s0 = 1080 / 190, s1 = 1080 / 3300;
+    const SC = MTKMAP.shopC; const cam = { x: lerp(SC[0], 160, zk), y: lerp(SC[1], 320, zk), s: s0 * Math.pow(s1 / s0, zk), r: -0.32 * (1 - E.outCubic(seg(t, 33.8, 37.0))), sy: 1080 };
+    MTKMAP.render(MAPC, cam, { t, bld: seg(t, 33.8, 34.3), roads: seg(t, 33.85, 34.7), shop: seg(t, 34.0, 34.4), pin: seg(t, 34.15, 34.75),
+      ent: envl(t, 34.7, 36.1, 0.3, 0.5), trabue: envl(t, 35.0, 37.5, 0.4, 0.4), wal: envl(t, 35.1, 37.5, 0.4, 0.4), ups: envl(t, 35.6, 37.5, 0.4, 0.4), mw: envl(t, 36.1, 37.5, 0.4, 0.4) }); }
+  T.rise(W.wOpen, t, 34.0, 37.25, { st: 0.03 }); T.samePrice(W.wBooking, t, 34.25, 37.25, $('#wOpen')); T.decode($('#lCity'), t, 34.7, 37.25, { d: 0.9 }); T.decode($('#lAddr'), t, 35.3, 37.25, { d: 1.1 });
   // end card: the 3D logo settles again under its light sweep
-  wipe($('#goldOut'), E.inOut(seg(t, 33.75, 34.35)), -1); wipe($('#paperOut'), E.inOut(seg(t, 33.9, 34.5)), -1);
+  wipe($('#goldOut'), E.inOut(seg(t, 37.35, 37.95)), -1); wipe($('#paperOut'), E.inOut(seg(t, 37.5, 38.1)), -1);
+  T.samePrice(W.wBookNow, t, 38.25, null, $('#bookShake'));
 
-  const rl = E.outExpo(seg(t, 35.8, 36.8)); $('#rule').style.transform = `scaleX(${rl.toFixed(3)})`; $('#rule').style.opacity = rl.toFixed(3);
-  T.roll(W.wPhone, t, 35.95, null, { st: 0.06, d: 1.0 });
-  const pl = E.outExpo(seg(t, 36.9, 37.7)); $('#phLine').style.transform = `scaleX(${pl.toFixed(3)})`; $('#phLine').style.opacity = pl > 0 ? 1 : 0;
-  T.typewrite($('#lUrl'), t, 37.1, { d: 1.2 });
+  const rl = E.outExpo(seg(t, 38.9, 39.8)); $('#rule').style.transform = `scaleX(${rl.toFixed(3)})`; $('#rule').style.opacity = rl.toFixed(3);
+  T.roll(W.wPhone, t, 39.05, null, { st: 0.06, d: 1.0 });
+  const pl = E.outExpo(seg(t, 40.0, 40.8)); $('#phLine').style.transform = `scaleX(${pl.toFixed(3)})`; $('#phLine').style.opacity = pl > 0 ? 1 : 0;
+  T.typewrite($('#lUrl'), t, 40.2, { d: 1.2 });
   // environment shader (dark acts) + paper studio light sweeps
   const ins = (a, b, i = 0.4, o = 0.6) => envl(t, a, b, i, o);
   BGFX.render(t, { uOn: 1, uLight: ins(6.9, 8.6, 0.25, 0.7), uHeat: ins(8.35, 10.0, 0.35, 0.6), uGlare: ins(9.95, 11.5, 0.2, 0.6),
     uGold: seg(t, 11.4, 12.8) * (1 - seg(t, 20.6, 21.3)) + 0.45 * ins(25.4, 30.3, 0.8, 0.6), uDark: fk * (1 - coolLift * 0.6),
-    uWall: ins(17.3, 21.0, 0.5, 0.6), uCool: ins(20.9, 25.5, 0.7, 0.6), uPrice: ins(30.2, 34.0, 0.6, 0.5), winY: 1 - (520 + 262) / 1920 });
+    uWall: ins(17.3, 21.0, 0.5, 0.6), uCool: ins(20.9, 25.5, 0.7, 0.6), uPrice: ins(30.2, 33.9, 0.6, 0.5), winY: 1 - (520 + 262) / 1920 });
   const swp = (el, a, b) => { const k = seg(t, a, b); el.style.transform = `translateX(${lerp(-200, 1500, E.inOutSine(k)).toFixed(1)}px) rotate(18deg)`; el.style.opacity = (Math.sin(Math.PI * k) * 0.9).toFixed(3); };
-  swp($('#sweepIn'), 0.4, 4.6); swp($('#sweepOut'), 34.3, 38.8);
+  swp($('#sweepIn'), 0.4, 4.6); swp($('#sweepOut'), 37.9, 41.8);
   grainJitter($('#grain'), t); await flushDecodes();
 };
 </script></body></html>
