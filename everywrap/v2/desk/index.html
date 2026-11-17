@@ -232,6 +232,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
     <header><div><h2 id="pName"></h2><p id="pAbout"></p></div><button class="x" type="button" id="pClose" aria-label="Close">×</button></header>
     <video id="pVideo" controls playsinline preload="metadata"></video>
     <div class="acts"><a class="btn" id="pSave4k" download>Save 4K</a><a class="btn alt" id="pSave" download>Save 1080</a></div>
+    <a class="btn ghost" id="pSilent" download hidden>Save 4K without sound</a>
   </div>
 </div>
 
@@ -357,7 +358,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
   async function loadVideos() {
     if (vids) return; const r = await api("videos").catch(() => null); if (!r || !r.body.ok) return;
     vids = r.body.videos || []; $("#vidCard").hidden = !vids.length; if (!vids.length) return;
-    $("#vidSub").textContent = `${vids.length} videos, 2160 × 3840, sound effects only so you can add your own song. Tap one to play it, then save the 4K file.`;
+    $("#vidSub").textContent = `${vids.length} videos, 2160 × 3840. Tap one to play it, then save the 4K file, with light car sounds or with no sound at all for your own song.`;
     $("#vids").innerHTML = vids.map((v, i) => `<button class="vid" type="button" data-i="${i}" aria-label="Play ${esc(v.title)}"><img loading="lazy" src="/api/desk/video?q=poster&id=${encodeURIComponent(v.id)}" alt=""><i></i><span><b>${esc(v.title)}</b><small>${Math.round(v.seconds)} s</small></span></button>`).join("");
   }
   function closePlayer() { const el = $("#pVideo"); el.pause(); el.removeAttribute("src"); el.load(); $("#player").hidden = true; }
@@ -366,6 +367,7 @@ dd{margin:0;font-weight:500;overflow-wrap:anywhere}
     $("#pName").textContent = v.title; $("#pAbout").textContent = v.about;
     $("#pSave4k").href = q + "&q=4k&save=1"; $("#pSave4k").textContent = `Save 4K (${v.mb4k} MB)`;
     $("#pSave").href = q + "&q=1080&save=1"; $("#pSave").textContent = `Save 1080 (${v.mb1080} MB)`;
+    $("#pSilent").hidden = !v.silent; $("#pSilent").href = q + "&q=silent&save=1"; $("#pSilent").textContent = `Save 4K without sound (${v.mb4k} MB)`;
     const el = $("#pVideo"); el.poster = q + "&q=poster"; el.src = q + "&q=1080"; $("#player").hidden = false; el.play().catch(() => {});
   });
   $("#pClose").addEventListener("click", closePlayer);
