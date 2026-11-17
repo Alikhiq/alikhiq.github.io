@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# sfx2.py EVENTS.json OUT_FULL.wav OUT_SFX.wav [music.mp3] [music_gain_db]
-# Motion-synced sound design for rcx.html videos: whoosh on every cut (peak on the cut), riser ending on each price hit,
+# sfx_mtk.py EVENTS.json OUT_FULL.wav OUT_SFX.wav [music] [music_gain_db]  (Mo Tint: impact on the bolt strike)
+# Motion-synced sound design for mtk.html: whoosh on every cut (peak on the cut), riser ending on each price hit,
 # bass impact on each hit, soft pops on list items, glitch into the end card and a shimmer on the logo.
 # Writes a music + SFX mix and an SFX-only mix (for posting with a trending song added in Instagram).
-# Sounds: ElevenLabs sound effects and music generated for Round City (work/snd/).
+# Sounds: the kit's whoosh, riser, impact, pop, shimmer and glitch files (motion/kit/snd/).
 import sys, os, json, subprocess
 import numpy as np
 
