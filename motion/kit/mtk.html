@@ -1,0 +1,151 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mo Tint King: The Bay (40s, 14 bars at 84 BPM)</title>
+<link rel="stylesheet" href="/__fonts/mtk/mtk.css">
+<style>
+/* Mo Tint brand kit ed.03 (UNIT D): bay-black ground, gold as a full-bleed ground, Archivo Black + IBM Plex.
+   Every price, claim and number below is copied from motintking/web/lib (pricing.ts, business.ts). */
+:root{--bay:#0A0B09;--tire:#171914;--steel:#30332E;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--cal:#C63B2F;
+  --boltg:linear-gradient(160deg,#F6CE4A 0%,#FABD44 42%,#F5D24B 100%);
+  --disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);color:var(--paper);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:var(--bay)}
+#root{position:absolute;inset:0;transform-origin:50% 45%}
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden}
+.full{position:absolute;inset:-40px;width:1160px;height:2000px;object-fit:cover}
+.blurbg{position:absolute;inset:-120px;width:1320px;height:2160px;object-fit:cover;filter:blur(46px) brightness(.32) saturate(.8)}
+.shadeT{position:absolute;left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,rgba(10,11,9,.92) 0%,rgba(10,11,9,.55) 45%,rgba(10,11,9,0) 100%)}
+.shadeB{position:absolute;left:0;right:0;bottom:0;height:1000px;background:linear-gradient(0deg,rgba(10,11,9,.95) 0%,rgba(10,11,9,.6) 45%,rgba(10,11,9,0) 100%)}
+.dim{position:absolute;inset:0;background:rgba(10,11,9,.62)}
+.card{position:absolute;left:60px;width:960px;overflow:hidden;border-radius:6px;box-shadow:0 0 0 2px rgba(246,202,75,.55),0 60px 120px -30px rgba(0,0,0,.9);background:var(--tire)}
+.card img{display:block;width:100%;height:100%;object-fit:cover}
+.chip{position:absolute;left:70px;padding:12px 20px 11px;background:var(--gold);color:var(--bay);font-family:var(--mono);font-weight:600;font-size:28px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.h1{position:absolute;left:66px;right:60px;font-family:var(--disp);font-size:124px;line-height:.9;letter-spacing:-.01em;text-transform:uppercase;color:var(--paper)}
+.h1 .w{display:inline-block}
+.band{position:absolute;left:0;right:0;background:var(--gold);color:var(--bay);transform-origin:0 50%}
+.band .lab{position:absolute;left:70px;top:34px;font-family:var(--mono);font-weight:600;font-size:28px;letter-spacing:.16em;text-transform:uppercase}
+.band .pr{position:absolute;left:62px;top:70px;font-family:var(--disp);font-size:170px;line-height:1;letter-spacing:-.02em}
+.fine{position:absolute;left:70px;right:70px;font-family:var(--sans);font-weight:500;font-size:29px;line-height:1.4;color:var(--galv)}
+.mono{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-weight:500;font-size:30px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.stars{position:absolute;left:0;right:0;text-align:center;font-size:92px;letter-spacing:.08em;color:var(--gold)}
+.big{position:absolute;left:0;right:0;text-align:center;font-family:var(--disp);font-size:400px;line-height:1;letter-spacing:-.03em;color:var(--paper)}
+.ctr{position:absolute;left:60px;right:60px;text-align:center;font-family:var(--disp);font-size:96px;line-height:.98;text-transform:uppercase}
+#slash{position:absolute;top:-300px;height:2600px;width:260px;left:0;background:var(--boltg);z-index:40;transform:skewX(-22deg);opacity:0;box-shadow:0 0 80px rgba(246,202,75,.5)}
+#endL{position:absolute;inset:0;z-index:30;opacity:0;background:radial-gradient(70% 45% at 50% 33%,rgba(246,202,75,.13) 0%,rgba(10,11,9,0) 70%),var(--bay)}
+#bolt{position:absolute;left:-90px;top:60px;width:1260px;height:1260px}
+#wm{position:absolute;left:110px;top:1010px;width:860px;height:auto}
+#rule{position:absolute;left:340px;width:400px;top:1350px;height:4px;background:var(--gold);transform-origin:50% 50%}
+#phone{position:absolute;left:0;right:0;top:1395px;text-align:center;font-family:var(--disp);font-size:118px;letter-spacing:-.01em;color:var(--paper)}
+#url{position:absolute;left:0;right:0;top:1545px;text-align:center;font-family:var(--mono);font-weight:600;font-size:36px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.vig{position:absolute;inset:0;z-index:60;pointer-events:none;background:radial-gradient(130% 95% at 50% 45%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%)}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.07;mix-blend-mode:overlay;z-index:61}
+.black{position:absolute;inset:0;background:#000;z-index:95}
+#flash{position:absolute;inset:0;z-index:41;background:radial-gradient(80% 60% at 50% 45%,#fff6dc 0%,rgba(255,240,200,0) 70%);mix-blend-mode:screen;opacity:0}
+</style></head><body>
+<div class="stage">
+  <div id="root"></div>
+  <div id="endL"><img id="bolt"><img id="wm" src="/mtk/motint-wordmark-on-dark.svg"><div id="rule"></div><div id="phone">614-822-0494</div><div id="url">motintking.com</div></div>
+  <div id="slash"></div><div id="flash"></div>
+  <div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const BAR = 60 / 84 * 4; // 2.857 s; every scene is a whole number of bars so cuts land on the beat
+const IMG = (n) => `/mtk/img/${n}.jpg`;
+const root = $('#root');
+const mk = (p, cls, html, css) => { const d = document.createElement('div'); d.className = cls; if (html != null) d.innerHTML = html; if (css) Object.assign(d.style, css); p.appendChild(d); return d; };
+const im = (p, cls, src, css) => { const i = document.createElement('img'); i.className = cls; i.src = src; if (css) Object.assign(i.style, css); p.appendChild(i); return i; };
+const IN = { dy: 40, blur: 10 };
+const W = (el) => splitWords(el);
+
+// one scene = a photo (full-bleed or framed card) + a gold chip + an Archivo headline, optional gold price band
+function scene(o) {
+  const L = mk(root, 'sc'); const bars = o.bars || 1, dur = bars * BAR;
+  let photo, card;
+  if (o.card) { im(L, 'blurbg', IMG(o.img)); card = mk(L, 'card', null, { top: o.cardTop + 'px', height: o.cardH + 'px' }); photo = im(card, '', IMG(o.img), { objectPosition: o.pos || '50% 50%' }); }
+  else { photo = im(L, 'full', IMG(o.img), { objectPosition: o.pos || '50% 50%' }); mk(L, 'shadeT'); if (o.band || o.shadeB) mk(L, 'shadeB'); }
+  if (o.dim) mk(L, 'dim');
+  const chip = o.chip ? mk(L, 'chip', o.chip, { top: (o.chipTop || 250) + 'px' }) : null;
+  const h = o.h1 ? W(mk(L, 'h1', o.h1, { top: (o.h1Top || 330) + 'px', fontSize: (o.h1Size || 124) + 'px' })) : null;
+  let band = null, bandIn = [];
+  if (o.band) { band = mk(L, 'band', `<div class="lab">${o.band[0]}</div><div class="pr">${o.band[1]}</div>`, { top: (o.bandTop || 1150) + 'px', height: '270px' }); bandIn = [$('.lab', band), $('.pr', band)]; }
+  const fine = o.fine ? W(mk(L, 'fine', o.fine, { top: ((o.bandTop || 1150) + 300) + 'px' })) : null;
+  const extra = o.build ? o.build(L) : null;
+  const bandAt = o.bandAt ?? 1.0;
+  return { L, dur, pops: chip ? [0.12] : [], hits: band ? [bandAt + 0.18] : (o.hits || []), riser: band ? bandAt + 0.18 : o.riser,
+    draw(t) {
+      const kb = seg(t, 0, dur + 0.4);
+      const z = o.card ? 1 + 0.04 * kb : 1.03 + 0.07 * kb;
+      (o.card ? photo : photo).style.transform = `scale(${z.toFixed(4)}) translate3d(${((o.pan || 0) * kb).toFixed(1)}px,0,0)`;
+      if (card) { const k = E.outQuart(seg(t, 0, 0.6)); setEl(card, { op: k, y: (1 - k) * 90, s: 0.94 + 0.06 * k }); }
+      if (chip) { const k = E.outQuart(seg(t, 0.08, 0.5)); chip.style.opacity = k.toFixed(3); chip.style.clipPath = `inset(0 ${((1 - k) * 100).toFixed(1)}% 0 0)`; }
+      if (h) animWords(h, t, 0.2, 0.09, 0.55, null, IN);
+      if (band) { const k = E.outExpo(seg(t, bandAt, bandAt + 0.45)); band.style.transform = `scaleX(${k.toFixed(4)})`;
+        const p = E.outQuart(seg(t, bandAt + 0.15, bandAt + 0.6)); bandIn.forEach((e, i) => setEl(e, { op: p, x: (1 - p) * -60 * (i + 1) })); }
+      if (fine) animWords(fine, t, bandAt + 0.5, 0.025, 0.5, null, { dy: 14, blur: 4 });
+      if (extra) extra(t);
+    } };
+}
+
+const S = [
+  scene({ img: 'shop-red-model-y-bay-open', pos: '22% 50%', chip: 'Columbus, Ohio', h1: 'One bay.<br>Every film.', h1Size: 132, shadeB: true,
+    build(L) { const m = W(mk(L, 'mono', 'Tint · PPF · Wrap · Chrome · Calipers · Fleet', { top: '1420px', fontSize: '27px', letterSpacing: '.16em' }));
+      return (t) => animWords(m, t, 1.0, 0.05, 0.5, null, { dy: 12, blur: 4 }); } }),
+  scene({ img: 'tint-install-c-class', pos: '40% 50%', chip: 'Window tint', h1: 'Ceramic<br>film.', band: ['Ceramic Grade A · all around · from', '$299'],
+    fine: 'Every window except the windshield. Starting price for a regular-size vehicle; larger vehicles are quoted.' }),
+  scene({ img: 'ppf-audi-r8-shopfront', pos: '30% 50%', chip: 'Paint protection film', h1: '3M Series<br>100.', band: ['Front-end PPF · from', '$1,899'],
+    fine: 'Hood, both full front fenders, front bumper and side mirrors.' }),
+  scene({ img: 'wrap-c-class-army-green', card: true, cardTop: 540, cardH: 940, pos: '45% 50%', chip: 'Color-change wrap', h1: 'Any color.', h1Size: 120 }),
+  scene({ img: 'chrome-delete-escalade-snow', card: true, cardTop: 540, cardH: 940, pos: '40% 50%', chip: 'Chrome delete', h1: 'Blacked out.', h1Size: 116 }),
+  scene({ img: 'calipers-ferrari-wheel-off', card: true, cardTop: 540, cardH: 1000, pos: '50% 45%', chip: 'Rims &amp; calipers', h1: 'Painted.', h1Size: 124 }),
+  scene({ img: 'rims-black-wheel-flat', pos: '50% 50%', chip: 'Rim refinishing', h1: 'Gloss<br>black.' }),
+  scene({ img: 'fleet-catering-van', card: true, cardTop: 560, cardH: 900, pos: '38% 50%', chip: 'Fleet graphics', h1: 'Vans. Trucks.<br>Fleets.', h1Size: 104 }),
+  scene({ img: 'bay-pink-accord-hex', card: true, cardTop: 560, cardH: 1000, pos: '50% 30%', chip: 'The bay', h1: 'Installed<br>indoors.', h1Size: 112, chipTop: 210, h1Top: 280 }),
+  scene({ img: 'shop-door-trackhawk', bars: 2, pos: '50% 50%', dim: true, hits: [0.95], riser: 0.95,
+    build(L) { const st = mk(L, 'stars', '★★★★★', { top: '520px' }); const big = mk(L, 'big', '0.0', { top: '640px' });
+      const m = W(mk(L, 'mono', '352 Google reviews', { top: '1080px', fontSize: '38px' }));
+      const f = W(mk(L, 'mono', 'Mo Tint · Google Business Profile', { top: '1150px', fontSize: '24px', color: 'var(--galv)', letterSpacing: '.18em' }));
+      return (t) => { const k = E.outCubic(seg(t, 0.3, 1.25)); big.textContent = (4.7 * k).toFixed(1); setEl(big, { op: seg(t, 0.2, 0.5), s: 0.9 + 0.1 * E.outQuart(seg(t, 0.3, 1.0)) });
+        [...st.textContent].length; st.style.clipPath = `inset(0 ${((1 - E.outQuart(seg(t, 1.1, 1.8))) * 100).toFixed(1)}% 0 0)`;
+        animWords(m, t, 1.3, 0.08, 0.55, null, { dy: 16, blur: 5 }); animWords(f, t, 1.7, 0.05, 0.5, null, { dy: 10, blur: 4 }); }; } }),
+  scene({ img: 'projects-two-cybertrucks', pos: '50% 50%', dim: true,
+    build(L) { const a = W(mk(L, 'ctr', 'Mon–Sat<br>10 to 6', { top: '640px', fontSize: '128px' }));
+      const b = W(mk(L, 'mono', '5220 Trabue Rd · Suite D · Columbus', { top: '1010px', fontSize: '30px', color: 'var(--paper)' }));
+      return (t) => { animWords(a, t, 0.15, 0.08, 0.55, null, IN); animWords(b, t, 0.7, 0.04, 0.5, null, { dy: 14, blur: 4 }); }; } }),
+];
+let T = 0; S.forEach((s) => { s.a = T; T += s.dur; });
+const END = T, ENDDUR = 2 * BAR; window.__DUR = END + ENDDUR; // 12 bars of scenes + 2-bar end card = 40.0 s
+const CUTS = S.slice(1).map((s) => s.a).concat([END]);
+const HITS = [].concat(...S.map((s) => (s.hits || []).map((h) => s.a + h)));
+window.__EVENTS = { cuts: CUTS, hits: HITS, risers: [].concat(...S.map((s) => s.riser != null ? [s.a + s.riser] : [])),
+  pops: [].concat(...S.map((s) => (s.pops || []).map((p) => s.a + p))), end: END, dur: END + ENDDUR };
+
+const NB = 72; const bolt = $('#bolt'), wm = $('#wm'), rule = $('#rule'), ph = W($('#phone')), url = W($('#url'));
+window.__ready = Promise.all([document.fonts.ready]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.35))).toFixed(3);
+  S.forEach((s, i) => { const lt = t - s.a; const vis = lt > -0.25 && lt < s.dur + 0.25;
+    const o = (i === 0 ? 1 : E.inOutSine(seg(lt, -0.12, 0.08))) * (1 - E.inOutSine(seg(lt, s.dur - 0.08, s.dur + 0.12)));
+    s.L.style.opacity = o.toFixed(3); s.L.style.visibility = vis ? 'visible' : 'hidden'; if (vis) s.draw(Math.max(0, lt)); });
+  // end card: bar 1 = the 3D bolt strike (Blender, from the brand-kit vector), bar 2 = wordmark + phone
+  const te = t - END; const eo = E.inOutSine(seg(te, -0.12, 0.08)); $('#endL').style.opacity = eo.toFixed(3);
+  if (te > -0.2) {
+    seqFrame(bolt, `/mtk/bolt/${pad(clamp(Math.floor(Math.max(0, te) * 30) + 1, 1, NB), 4)}.png`);
+    const up = E.inOut(seg(te, BAR - 0.35, BAR + 0.25)); setEl(bolt, { y: -230 * up, s: 1 - 0.38 * up });
+    const w = E.outQuart(seg(te, BAR - 0.05, BAR + 0.4)); setEl(wm, { op: w, s: 1.25 - 0.25 * w, blur: (1 - w) * 12, y: -90 });
+    const r = E.outQuart(seg(te, BAR + 0.35, BAR + 0.85)); rule.style.transform = `scaleX(${r.toFixed(3)})`; rule.style.opacity = r.toFixed(3); rule.style.top = (1350 - 90) + 'px';
+    animWords(ph, te, BAR + 0.55, 0.1, 0.5, null, { dy: 30, blur: 8 }); animWords(url, te, BAR + 0.95, 0.06, 0.5, null, { dy: 14, blur: 4 });
+    $('#phone').style.top = (1395 - 90) + 'px'; $('#url').style.top = (1545 - 90) + 'px';
+  }
+  // gold bolt-slash across every cut, whip-zoom, and a shake on each price hit
+  let amt = 0, dir = 1, sl = null; CUTS.forEach((c) => { const d = t - c; if (Math.abs(d) < 0.26) { const a = 1 - Math.abs(d) / 0.26; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } if (Math.abs(d) < 0.2) sl = d; });
+  amt = E.inOutSine(amt);
+  const slash = $('#slash'); if (sl !== null) { const p = (sl + 0.2) / 0.4; slash.style.opacity = '1'; slash.style.transform = `translateX(${(-500 + p * 2100).toFixed(1)}px) skewX(-22deg)`; } else slash.style.opacity = '0';
+  let sx = 0, sy = 0; HITS.concat([END + 0.87]).forEach((h) => { const d = t - h; if (d >= 0 && d < 0.4) { const k = Math.pow(1 - d / 0.4, 2); sx += Math.sin(d * 95) * 12 * k; sy += Math.cos(d * 80) * 9 * k; } });
+  root.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.08 * amt).toFixed(4)}) rotate(${(dir * 1.2 * amt).toFixed(3)}deg)`;
+  root.style.filter = amt > 0.01 ? `blur(${(amt * 8).toFixed(2)}px)` : 'none';
+  $('#endL').style.transform = te > 0 && te < 0.4 ? `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px)` : 'none';
+  const fl = Math.max(0, ...CUTS.map((c) => 1 - Math.abs(t - c) / 0.14)); $('#flash').style.opacity = (fl * 0.28).toFixed(3);
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
