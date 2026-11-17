@@ -18,6 +18,7 @@ const [,,page,out,fpsS='30',a='0',b='0',list,w='1080',h='1920']=process.argv;con
  const T=Date.now();let i=0;
  for(const f of frames){
    const file=`${out}/${String(f.n).padStart(5,'0')}.jpg`;
+   if(process.env.RESUME&&fs.existsSync(file)&&fs.statSync(file).size>1000){i++;continue;}
    await p.evaluate(async t=>{await window.seek(t);window.__tick(t*1000);if(window.after)await window.after(t);},f.t);
    await p.screenshot({path:file,type:'jpeg',quality:94});
    i++; if(i%15==0)console.log(i,'/',frames.length,((Date.now()-T)/i/1000).toFixed(2)+'s/f');
