@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 288">
+<path id="glass_M" fill="#FFFFFF" d="M9 93 H43.6 L75.5 136.5 L107.6 93 H142.6 V221.5 H108 V153.5 L75.3 189.5 L44.1 153.5 V221.5 H9 Z"/>
+<g transform="translate(10.5 0)"><path id="glass_O" fill="#FFFFFF" fill-rule="evenodd" d="M208.9 91.5 C248.9 91.5 268.8 114.4 268.8 157.25 C268.8 200.1 248.9 223 208.9 223 C168.9 223 149 200.1 149 157.25 C149 114.4 168.9 91.5 208.9 91.5 Z M208.4 121.3 C193 121.3 185.4 132.9 185.4 157.25 C185.4 181.6 193 193.2 208.4 193.2 C223.8 193.2 231.4 181.6 231.4 157.25 C231.4 132.9 223.8 121.3 208.4 121.3 Z"/></g>
+<g transform="translate(11.3 0)"><path id="glass_T1" fill="#FFFFFF" d="M313 93 H426.8 V127 H390.8 V221.5 H350 V127 H313 Z"/></g>
+<g transform="translate(12.1 0)"><path id="glass_I" fill="#FFFFFF" d="M442 93 H483.8 V221.5 H442 Z"/></g>
+<g transform="translate(-0.8 0)"><path id="glass_T2" fill="#FFFFFF" d="M675 93 H788.8 V127 H752.8 V221.5 H712 V127 H675 Z"/></g>
+<path id="glass_bolt" fill="#FFFFFF" d="M654.20 229.80 L652.50 94.20 L632.90 71.00 L630.90 160.00 L505.70 23.00 Z"/>
+<path id="gold_bolt" fill="#F6CA4B" d="M515.90 62.00 L516.70 195.50 L538.20 220.80 L539.20 131.80 L665.50 269.80 Z"/>
+</svg>
