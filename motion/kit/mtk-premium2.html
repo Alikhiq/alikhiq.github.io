@@ -1,0 +1,227 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mo Tint: Controlled v2 (premium tint motion graphic, 39s, silent)</title>
+<link rel="stylesheet" href="/__fonts/mtk/mtk.css">
+<style>
+/* Mo Tint brand kit ed.03 (UNIT D). v2 from Ali's timeline notes:
+   1) 3D intro: dark chrome gold bolt + obsidian black glass letters (Blender, from the 2-part wordmark)
+   2) LIGHT / HEAT / GLARE each get their own effect; a German shepherd in sunglasses drives behind the glass
+   3) film draws down -> dog hidden -> PRIVACY. CONTROLLED.
+   4) HEAT STAYS OUT -> the dog, cool in the breeze -> YOU STAY COOL.
+   Copy sources: pricing.ts ($299 Ceramic Grade A all around; any shade same price; genuine heat rejection, no signal interference), business.ts (reduce heat and glare). Silent. */
+:root{--bay:#0A0B09;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--steel:#30332E;--disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(90% 55% at 50% 44%,#15160F 0%,#0A0B09 62%,#070806 100%)}
+#lglow{position:absolute;left:50%;top:860px;width:1400px;height:900px;margin:-450px 0 0 -700px;border-radius:50%;background:radial-gradient(closest-side,rgba(48,51,46,.95),rgba(48,51,46,0));opacity:0}
+.l3d{position:absolute;left:0;width:1080px;height:1080px}
+#bloom{position:absolute;left:50%;top:800px;width:1500px;height:1100px;margin:-550px 0 0 -750px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,244,218,.55) 0%,rgba(255,232,190,.18) 40%,rgba(255,220,170,0) 100%);opacity:0;mix-blend-mode:screen}
+#rays{position:absolute;left:50%;top:780px;width:2400px;height:2400px;margin:-1200px 0 0 -1200px;opacity:0;mix-blend-mode:screen;
+  background:repeating-conic-gradient(from 0deg,rgba(255,246,222,.0) 0deg,rgba(255,246,222,.32) 2.2deg,rgba(255,246,222,0) 5deg,rgba(255,246,222,0) 11deg);
+  -webkit-mask-image:radial-gradient(closest-side,#000 8%,rgba(0,0,0,.5) 35%,transparent 72%)}
+#heat{position:absolute;inset:0}
+#win{position:absolute;left:130px;top:520px;width:820px;height:525px;transform-origin:50% 50%}
+#win svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#dogL{position:absolute;inset:0;background:#141512}
+#dogL img{position:absolute;left:-250px;top:22px;width:1100px;height:619px;object-fit:cover}
+#flash{position:absolute;inset:0;background:#FFF8E8;opacity:0}
+#warm{position:absolute;inset:0;background:linear-gradient(0deg,rgba(214,92,40,.55),rgba(246,150,60,.15) 60%,rgba(246,150,60,0));opacity:0;mix-blend-mode:screen}
+#streaks{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
+.stk{position:absolute;left:-200px;width:1480px;border-radius:50%}
+.hl{position:absolute;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(closest-side,#fff 0%,rgba(225,238,255,.9) 18%,rgba(170,200,255,.25) 45%,rgba(170,200,255,0) 100%)}
+#breeze{position:absolute;inset:0}
+#swatches{position:absolute;left:0;right:0;top:640px;height:420px;perspective:1800px}
+.sw{position:absolute;top:0;width:176px;height:113px;transform-style:preserve-3d}
+.sw svg{width:100%;height:100%;overflow:visible}
+.sw b{position:absolute;left:0;right:0;top:136px;text-align:center;font-family:var(--mono);font-weight:600;font-size:26px;letter-spacing:.12em;color:var(--galv)}
+.word{position:absolute;left:0;right:0;text-align:center;font-family:var(--disp);font-size:150px;line-height:.92;letter-spacing:-.02em;color:var(--paper);text-transform:uppercase;white-space:nowrap}
+.word .c{display:inline-block}
+.label{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-weight:600;font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:var(--galv)}
+.label.gold{color:var(--gold)}
+.fine{position:absolute;left:150px;right:150px;text-align:center;font-family:var(--sans);font-weight:400;font-size:28px;line-height:1.45;color:rgba(200,201,193,.8)}
+#vlt{position:absolute;left:0;right:0;top:1110px;text-align:center;font-family:var(--mono);font-weight:600;font-size:30px;letter-spacing:.3em;color:var(--gold)}
+#price{position:absolute;left:0;right:0;top:720px;text-align:center;white-space:nowrap;font-family:var(--disp);font-size:380px;line-height:1;letter-spacing:-.04em;color:var(--gold)}
+#price .c{display:inline-block}
+#rule{position:absolute;left:390px;width:300px;top:1110px;height:3px;background:var(--gold);transform-origin:50% 50%}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.05;mix-blend-mode:overlay}
+.black{position:absolute;inset:0;background:#000}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="shimmer" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.004 0.03" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs></svg>
+<div class="stage">
+  <div id="lglow"></div>
+  <img class="l3d" id="logoIn" src="/mtk/logo3d/0001.png" style="top:320px" alt="">
+  <div id="bloom"></div><div id="rays"></div>
+  <canvas id="heat" width="1080" height="1920"></canvas>
+  <div id="win">
+    <svg viewBox="0 0 1000 640"><defs>
+      <path id="gp" d="M70 600 L930 600 L930 112 Q930 52 870 52 L392 52 Q338 52 304 88 L84 520 Q70 548 70 576 Z"/>
+      <clipPath id="gc"><use href="#gp"/></clipPath>
+      <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF2"/><stop offset=".55" stop-color="#F3EEE2"/><stop offset="1" stop-color="#E2DCCD"/></linearGradient>
+      <linearGradient id="film" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0C0B"/><stop offset=".7" stop-color="#161815"/><stop offset="1" stop-color="#1C1E1A"/></linearGradient>
+      <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6CE4A" stop-opacity="0"/><stop offset=".15" stop-color="#FABD44"/><stop offset=".85" stop-color="#F5D24B"/><stop offset="1" stop-color="#F6CE4A" stop-opacity="0"/></linearGradient>
+    </defs>
+      <g clip-path="url(#gc)"><rect x="0" y="0" width="1000" height="640" fill="url(#glass)"/></g>
+    </svg>
+    <div id="dogL"><img id="dogS" src="/mtk/img/dog/d2.png" alt=""><img id="dogV" alt=""><div id="warm"></div><div id="flash"></div></div>
+    <svg viewBox="0 0 1000 640">
+      <g clip-path="url(#gc)">
+        <rect id="filmR" x="0" y="-700" width="1000" height="700" fill="url(#film)"/>
+        <rect id="sheenR" x="-400" y="0" width="260" height="640" fill="url(#sheen)" transform="skewX(-18)"/>
+        <rect id="squeegee" x="0" y="-8" width="1000" height="6" fill="url(#edge)"/>
+      </g>
+      <use id="frame" href="#gp" fill="none" stroke="rgba(242,239,229,.35)" stroke-width="2"/>
+    </svg>
+  </div>
+  <div id="streaks"></div>
+  <canvas id="breeze" width="1080" height="1920"></canvas>
+  <div id="swatches"></div>
+  <div class="label" id="lTop" style="top:300px">Mo Tint · Window tint</div>
+  <div class="word" id="wLight" style="top:1230px">Light.</div>
+  <div class="word" id="wHeat" style="top:1230px">Heat.</div>
+  <div class="word" id="wGlare" style="top:1230px">Glare.</div>
+  <div class="word" id="wPriv" style="top:1230px">Privacy.</div>
+  <div class="word" id="wCtrl" style="top:1230px;color:var(--gold)">Controlled.</div>
+  <div class="label" id="lCer" style="top:1400px">Ceramic window film</div>
+  <div id="vlt">VLT 70%</div>
+  <div class="word" id="wOut" style="top:1230px;font-size:132px">Heat stays out.</div>
+  <div class="label" id="lOut" style="top:1390px;line-height:1.7">Genuine heat rejection<br>No signal interference</div>
+  <div class="word" id="wYou" style="top:1200px;font-size:132px">You stay</div>
+  <div class="word" id="wCool" style="top:1330px;font-size:200px;color:var(--gold)">cool.</div>
+  <div class="word" id="wAny" style="top:1180px;font-size:140px">Any shade.</div>
+  <div class="word" id="wSame" style="top:1320px;font-size:140px;color:var(--gold)">Same price.</div>
+  <div class="label gold" id="lFrom" style="top:600px">Ceramic Grade A · all around · from</div>
+  <div id="price">$299</div>
+  <div class="fine" id="fPrice" style="top:1180px">Every window except the windshield.<br>Regular-size vehicle; larger vehicles are quoted.</div>
+  <img class="l3d" id="logoEnd" src="/mtk/logo3d/0001.png" style="top:150px" alt="">
+  <div id="rule"></div>
+  <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
+  <div class="label gold" id="lUrl" style="top:1300px">motintking.com · Columbus, Ohio</div>
+  <div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const DUR = 39; window.__DUR = DUR; window.__EVENTS = { cuts: [], hits: [], risers: [], pops: [], end: DUR, dur: DUR };
+const NL = 150, NV = window.__NV || 150; // 3D logo frames, cool-dog video frames
+const chars = (el) => { el.innerHTML = [...el.textContent].map((c) => `<span class="c">${c === ' ' ? '&nbsp;' : c}</span>`).join(''); return $$('.c', el); };
+const W = {}; ['wLight', 'wHeat', 'wGlare', 'wPriv', 'wCtrl', 'wOut', 'wYou', 'wCool', 'wAny', 'wSame', 'wPhone', 'price'].forEach((id) => (W[id] = chars($('#' + id))));
+function type(cs, t, a, b, o = {}) { const st = o.st ?? 0.028, d = o.d ?? 0.9, dy = o.dy ?? 70;
+  cs.forEach((c, i) => { const k = E.outExpo(seg(t, a + i * st, a + i * st + d)); const q = b == null ? 0 : E.inOutSine(seg(t, b + i * 0.012, b + i * 0.012 + 0.45));
+    c.style.opacity = (k * (1 - q)).toFixed(3); c.style.transform = `translateY(${((1 - k) * dy - q * 30).toFixed(1)}px)`;
+    const bl = (1 - k) * 16 + q * 10; c.style.filter = bl > 0.1 ? `blur(${bl.toFixed(1)}px)` : 'none'; }); }
+const fade = (el, t, a, b, d = 0.6) => { const k = E.outCubic(seg(t, a, a + d)) * (b == null ? 1 : 1 - E.inOutSine(seg(t, b, b + 0.45))); el.style.opacity = k.toFixed(3); return k; };
+const envl = (t, a, b, i = 0.25, o = 0.45) => seg(t, a, a + i) * (1 - seg(t, b - o, b)); // attack/release envelope
+// dog layer clipped to the window glass (viewBox -> 0.82 px)
+const GP = 'M70 600 L930 600 L930 112 Q930 52 870 52 L392 52 Q338 52 304 88 L84 520 Q70 548 70 576 Z'.replace(/[\d.]+/g, (n) => (+n * 0.82).toFixed(2));
+$('#dogL').style.clipPath = `path('${GP}')`;
+const win = $('#win'), filmR = $('#filmR'), sq = $('#squeegee'), sheen = $('#sheenR'), frame = $('#frame');
+// ---- swatches
+const SH = [70, 50, 35, 20, 5]; const swBox = $('#swatches');
+const SW = SH.map((v, i) => { const d = document.createElement('div'); d.className = 'sw'; d.style.left = (66 + i * 196) + 'px';
+  d.innerHTML = `<svg viewBox="0 0 1000 640"><use href="#gp" fill="url(#glass)"/><use href="#gp" fill="#0D0E0C" fill-opacity="${(0.97 * (1 - v / 100)).toFixed(3)}"/><use href="#gp" fill="none" stroke="rgba(242,239,229,.35)" stroke-width="6"/></svg><b>${String(v).padStart(2, '0')}%</b>`;
+  swBox.appendChild(d); return d; });
+// ---- glare: anamorphic headlight streaks (two lamps + long horizontal flares)
+const stBox = $('#streaks'); const GL = [{ x: 330, y: 905 }, { x: 760, y: 925 }];
+const HL = GL.map(() => { const d = document.createElement('div'); d.className = 'hl'; stBox.appendChild(d); return d; });
+const STK = [[905, 10, 'rgba(200,222,255,.95)', 0], [925, 7, 'rgba(255,255,255,.95)', 0], [880, 3, 'rgba(150,190,255,.7)', 0], [952, 4, 'rgba(150,190,255,.6)', 0], [840, 2, 'rgba(246,202,75,.5)', 1]]
+  .map(([y, h, c, g]) => { const d = document.createElement('div'); d.className = 'stk'; d.style.top = (y - h / 2) + 'px'; d.style.height = h + 'px';
+    d.style.background = `linear-gradient(90deg,rgba(0,0,0,0),${c} 50%,rgba(0,0,0,0))`; d.style.filter = `blur(${g ? 3 : 1.5}px)`; stBox.appendChild(d); return d; });
+// ---- heat streaks (canvas)
+const hx = $('#heat').getContext('2d'); const R = rng(7); const STREAK = Array.from({ length: 34 }, () => ({ ph: R(), sp: 0.55 + R() * 0.5, len: 120 + R() * 160, w: 2 + R() * 3 }));
+const edgeX = (y) => { const vy = (y - 520) / 0.82; let vx = vy >= 520 ? 84 : 84 + (520 - vy) * (304 - 84) / (520 - 88); return 130 + vx * 0.82 + 6; };
+function drawHeat(t, amt, pass) { const cv = $('#heat'); hx.clearRect(0, 0, 1080, 1920); cv.style.visibility = amt > 0.003 ? 'visible' : 'hidden'; if (amt <= 0.003) return; hx.lineCap = 'round';
+  STREAK.forEach((s, i) => { const y = 600 + (i / STREAK.length) * 390 + (s.ph - 0.5) * 8; const ex = pass ? 1300 : edgeX(y); const p = (t * s.sp * 0.9 + s.ph) % 1; const x = -200 + p * (ex + 260);
+    const xh = Math.min(x, ex); const tail = Math.max(-200, xh - s.len);
+    const g = hx.createLinearGradient(tail, 0, xh, 0); g.addColorStop(0, 'rgba(198,59,47,0)'); g.addColorStop(1, `rgba(250,150,70,${(0.9 * amt).toFixed(3)})`);
+    hx.strokeStyle = g; hx.lineWidth = s.w; hx.beginPath(); hx.moveTo(tail, y); hx.lineTo(xh, y); hx.stroke();
+    if (!pass && p > 0.82) { const f = 1 - seg(p, 0.82, 1); hx.fillStyle = `rgba(255,196,120,${(0.75 * f * amt).toFixed(3)})`; hx.beginPath(); hx.arc(ex, y, 3 + 9 * f, 0, 7); hx.fill(); } }); }
+// ---- breeze: soft cool air lines drifting across the cab
+const bx = $('#breeze').getContext('2d'); const RB = rng(31); const AIR = Array.from({ length: 12 }, () => ({ y: 580 + RB() * 420, ph: RB(), sp: 0.3 + RB() * 0.25, len: 220 + RB() * 260, amp: 8 + RB() * 14, w: 2 + RB() * 2.5 }));
+function drawBreeze(t, amt) { const cv = $('#breeze'); bx.clearRect(0, 0, 1080, 1920); cv.style.visibility = amt > 0.003 ? 'visible' : 'hidden'; if (amt <= 0.003) return; bx.lineCap = 'round'; bx.filter = 'blur(2px)';
+  AIR.forEach((a) => { const p = (t * a.sp + a.ph) % 1; const x0 = 1180 - p * 1500; const al = Math.sin(Math.PI * p) * 0.2 * amt;
+    bx.strokeStyle = `rgba(226,236,240,${al.toFixed(3)})`; bx.lineWidth = a.w; bx.beginPath();
+    for (let k = 0; k <= 24; k++) { const x = x0 + (k / 24) * a.len; const y = a.y + Math.sin(x * 0.012 + t * 2.2 + a.ph * 6) * a.amp; k ? bx.lineTo(x, y) : bx.moveTo(x, y); } bx.stroke(); }); }
+function fitWords() { $$('.word, #price').forEach((el) => { const fs = parseFloat(getComputedStyle(el).fontSize); const w = [...el.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
+  if (w > 960) el.style.fontSize = Math.floor(fs * 960 / w) + 'px'; }); }
+window.__ready = Promise.all([document.fonts.ready, $('#dogS').decode().catch(() => {})]).then(() => { fitWords(); return true; });
+const logoUrl = (f) => `/mtk/logo3d/${pad(clamp(f, 1, NL), 4)}.png`;
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.5))).toFixed(3);
+  // 0) 3D logo intro: obsidian glass letters + dark chrome gold bolt, studio light sweep
+  const lin = $('#logoIn'); const lout = E.inCubic(seg(t, 4.9, 5.7));
+  if (t < 5.8) { seqFrame(lin, logoUrl(Math.floor(t * 30) + 1)); }
+  lin.style.opacity = (1 - lout).toFixed(3); lin.style.transform = `scale(${(1 + 0.12 * lout).toFixed(4)})`; lin.style.filter = lout > 0.01 ? `blur(${(lout * 14).toFixed(1)}px)` : 'none';
+  lin.style.visibility = t < 5.8 ? 'visible' : 'hidden';
+  $('#lglow').style.opacity = (E.outCubic(seg(t, 0.2, 1.6)) * (1 - seg(t, 5.0, 5.8))).toFixed(3);
+  // A) the bolt's light becomes a slit, the slit opens into the window
+  const line = E.outExpo(seg(t, 5.3, 6.6)); const open = E.inOut(seg(t, 5.9, 7.0));
+  const hClip = 6 + open * 640;
+  win.style.clipPath = `inset(${((640 - hClip) / 2 / 640 * 100).toFixed(2)}% ${((1 - line) * 50).toFixed(2)}% ${((640 - hClip) / 2 / 640 * 100).toFixed(2)}% ${((1 - line) * 50).toFixed(2)}%)`;
+  win.style.visibility = t < 5.25 || t > 26.3 ? 'hidden' : 'visible';
+  frame.style.opacity = (0.3 + 0.7 * open).toFixed(3);
+  const toSw = E.inOut(seg(t, 25.2, 26.4)); const winOut = E.inOut(seg(t, 25.4, 26.2));
+  const coolPush = E.inOut(seg(t, 21.0, 22.2)) * (1 - toSw);
+  const settle = 1 + 0.035 * seg(t, 7.0, 25.2) + 0.1 * coolPush;
+  win.style.transform = `scale(${(settle * (1 - 0.7 * toSw)).toFixed(4)}) translateY(${(-40 * seg(t, 7.0, 25.2)).toFixed(1)}px)`;
+  win.style.opacity = (1 - winOut).toFixed(3);
+  // film 11.5 -> 14.0 (70% -> 5% VLT); for the cool beat the cab is shown lighter so the driver reads
+  const fk = E.inOut(seg(t, 11.5, 14.0)); filmR.setAttribute('y', (-700 + 700 * fk).toFixed(1)); sq.setAttribute('y', (-8 + 646 * fk).toFixed(1));
+  sq.style.opacity = (seg(t, 11.4, 11.7) * (1 - seg(t, 13.9, 14.3))).toFixed(3);
+  const vlt = Math.round(lerp(70, 5, fk)); $('#vlt').textContent = `VLT ${String(vlt).padStart(2, '0')}%`; fade($('#vlt'), t, 11.6, 15.2, 0.5);
+  const coolLift = E.inOut(seg(t, 20.9, 21.8));
+  filmR.setAttribute('fill-opacity', ((0.97 * (1 - vlt / 100) / 0.95) * (1 - 0.55 * coolLift)).toFixed(3));
+  // dog: still -> breeze video for the cool beat
+  const dv = $('#dogV'); const vk = seg(t, 20.9, 21.5);
+  if (t >= 20.8 && t < 26.4) seqFrame(dv, `/mtk/img/dogcool/${pad(clamp(Math.floor((t - 20.9) * 30) + 1, 1, NV), 4)}.jpg`);
+  dv.style.opacity = vk.toFixed(3); dv.style.visibility = t >= 20.8 && t < 26.4 ? 'visible' : 'hidden';
+  // LIGHT: bloom burst (flash + rays + blown glass)
+  const lb = envl(t, 6.95, 8.4, 0.12, 1.0); const lpk = Math.exp(-Math.max(0, t - 7.0) * 3.2) * seg(t, 6.95, 7.05);
+  $('#flash').style.opacity = (0.85 * lpk).toFixed(3);
+  $('#rays').style.opacity = (0.9 * lb).toFixed(3); $('#rays').style.transform = `rotate(${(t * 4).toFixed(2)}deg) scale(${(0.9 + 0.2 * lb).toFixed(3)})`;
+  // HEAT: shimmer distortion + warm air + heat passing straight through clear glass
+  const hs = envl(t, 8.4, 9.95, 0.3, 0.5);
+  $('#turb').setAttribute('baseFrequency', `${(0.004 + 0.0015 * Math.sin(t * 2.1)).toFixed(5)} ${(0.03 + 0.008 * Math.sin(t * 3.3 + 1)).toFixed(5)}`);
+  $('#disp').setAttribute('scale', (26 * hs).toFixed(2));
+  $('#dogS').style.filter = hs > 0.01 ? 'url(#shimmer)' : (lb > 0.01 ? `brightness(${(1 + 0.9 * lb).toFixed(3)}) saturate(${(1 - 0.4 * lb).toFixed(3)})` : 'none');
+  $('#warm').style.opacity = (0.9 * hs).toFixed(3);
+  // GLARE: anamorphic headlights
+  const gk = envl(t, 10.0, 11.45, 0.18, 0.5); const flick = 0.9 + 0.1 * Math.sin(t * 37) * Math.sin(t * 11);
+  stBox.style.opacity = (gk * flick).toFixed(3); stBox.style.visibility = gk > 0.003 ? 'visible' : 'hidden';
+  GL.forEach((g, i) => { HL[i].style.left = (g.x + (t - 10) * 22).toFixed(1) + 'px'; HL[i].style.top = g.y + 'px'; HL[i].style.transform = `scale(${(0.7 + 0.5 * gk).toFixed(3)})`; });
+  STK.forEach((s, i) => { s.style.transform = `scaleX(${(0.4 + 0.6 * gk).toFixed(3)}) translateX(${((t - 10) * 30 * (i % 2 ? -1 : 1)).toFixed(1)}px)`; });
+  if (gk > 0.01 && hs < 0.01) $('#dogS').style.filter = `contrast(${(1 - 0.35 * gk).toFixed(3)}) brightness(${(1 + 0.5 * gk).toFixed(3)})`;
+  // sheen passes
+  const sh = [[14.1, 15.8], [17.7, 19.4]].reduce((v, [a, b]) => (t >= a && t <= b ? (t - a) / (b - a) : v), -1);
+  sheen.setAttribute('x', (sh < 0 ? -500 : -400 + sh * 1700).toFixed(1));
+  // bloom follows the light let through
+  const light = open * (1 - fk * 0.88) + 0.35 * coolLift * (1 - toSw);
+  $('#bloom').style.opacity = (Math.min(1, light + 0.6 * lb) * (1 - winOut) * (0.9 + 0.1 * Math.sin(t * 1.3))).toFixed(3);
+  // heat: passes through at HEAT., stops at the film at HEAT STAYS OUT.
+  const heatThru = envl(t, 8.5, 9.95, 0.3, 0.5); const heatOut = seg(t, 17.3, 18.0) * (1 - seg(t, 20.5, 21.1));
+  if (heatThru > 0.003) drawHeat(t, heatThru * 0.8, true); else drawHeat(t, heatOut, false);
+  drawBreeze(t, seg(t, 21.2, 22.0) * (1 - seg(t, 24.8, 25.4)));
+  // words
+  fade($('#lTop'), t, 5.6, 33.2, 0.8);
+  type(W.wLight, t, 7.0, 8.3); type(W.wHeat, t, 8.5, 9.8); type(W.wGlare, t, 10.0, 11.3);
+  type(W.wPriv, t, 14.0, 15.4); type(W.wCtrl, t, 15.6, 17.3); fade($('#lCer'), t, 16.1, 17.3);
+  type(W.wOut, t, 17.6, 20.8, { st: 0.022 }); fade($('#lOut'), t, 18.3, 20.8);
+  type(W.wYou, t, 21.8, 25.0); type(W.wCool, t, 22.4, 25.0, { st: 0.06, d: 1.1, dy: 120 });
+  // swatches
+  SW.forEach((d, i) => { const a = 25.8 + i * 0.12; const k = E.outExpo(seg(t, a, a + 1.0)); const q = E.inOutSine(seg(t, 29.8 + i * 0.05, 30.4 + i * 0.05));
+    d.style.opacity = (k * (1 - q)).toFixed(3); d.style.transform = `translateY(${((1 - k) * 120 - q * 60).toFixed(1)}px) rotateY(${((1 - k) * -40 + 8 * Math.sin((t - a) * 0.6)).toFixed(2)}deg)`; });
+  type(W.wAny, t, 26.6, 29.8); type(W.wSame, t, 27.4, 29.8);
+  // price
+  fade($('#lFrom'), t, 30.4, 33.8); type(W.price, t, 30.6, 33.8, { st: 0.08, d: 1.1, dy: 160 }); fade($('#fPrice'), t, 31.8, 33.8);
+  // end card: the 3D logo settles again under its light sweep
+  const le = $('#logoEnd'); if (t >= 33.9) seqFrame(le, logoUrl(Math.floor((t - 34.0) * 30) + 31)); le.style.visibility = t >= 33.9 ? 'visible' : 'hidden';
+  const lek = E.outCubic(seg(t, 34.0, 34.8)); le.style.opacity = lek.toFixed(3); le.style.filter = lek < 0.99 ? `blur(${((1 - lek) * 12).toFixed(1)}px)` : 'none';
+  const rl = E.outExpo(seg(t, 35.8, 36.8)); $('#rule').style.transform = `scaleX(${rl.toFixed(3)})`; $('#rule').style.opacity = rl.toFixed(3);
+  type(W.wPhone, t, 36.0, null, { st: 0.03 }); fade($('#lUrl'), t, 36.6, null);
+  grainJitter($('#grain'), t); await flushDecodes();
+};
+</script></body></html>
