@@ -1,0 +1,4 @@
+
+# 4K video masters exceed GitHub's 100 MB file limit; delivered directly / via Drive instead
+videos/**/*-4k.mp4
+!videos/motintking/mtk-tint-controlled-v2-4k.mp4
