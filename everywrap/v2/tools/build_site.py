@@ -804,18 +804,18 @@ def chrome(root, com=False):
 </html>
 """
 
-INTRO = """<div class="intro" id="intro" hidden aria-hidden="true">
-  <div class="i-sheet"><i class="i-pool"></i><i class="i-streak"></i><i class="i-grain"></i></div>
-  <div class="i-lock">
-    """ + mark("i-mark", ' id="imark"') + """
-    <div class="i-word">""" + wordmark("i-wordsvg") + """</div>
-    <i class="i-rule"></i>
-    <p class="i-tag"><span>Wraps</span><span>Protection film</span><span>Tint</span></p>
-    <p class="i-city">""" + " · ".join(x["name"] for x in SITE.get("locations", [])) + """</p>
+# The opening card: the page is fully drawn underneath from the first frame; a blurred glass card sits on top,
+# fades in, holds, and clears by 1.6s. CSS runs the whole timeline. The inline script only skips it after the
+# first visit this session (and with ?dev) and lets a tap, scroll or key end it early.
+BCARD = """<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem("ew-bcard")==="1"||/[?&]dev=/.test(location.search)){d.classList.add("bc-off");return}sessionStorage.setItem("ew-bcard","1")}catch(e){}var y=scrollY,n=["pointerdown","wheel","touchmove","keydown","scroll"],f=function(e){if(e&&e.type==="scroll"&&Math.abs(scrollY-y)<8)return;d.classList.add("bc-done");n.forEach(function(k){removeEventListener(k,f,true)})};n.forEach(function(k){addEventListener(k,f,{capture:true,passive:true})});setTimeout(f,1700)})()</script>
+<div class="bcard" id="bcard" aria-hidden="true">
+  <div class="bc-in">
+    """ + mark("bc-mark") + """
+    <p class="bc-l1">Built with Claude</p>
+    <i class="bc-rule"></i>
+    <p class="bc-l2">Designed with Claude Fable</p>
   </div>
-  <button class="iskip" id="iskip" type="button">Skip</button>
 </div>
-<script>try{if(sessionStorage.getItem("ew5-intro")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!/[?&]dev=/.test(location.search))document.getElementById("intro").hidden=false}catch(e){}</script>
 """
 
 def write(path, text):
@@ -832,7 +832,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True, hook=c["hero_hook"]) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + team(r) + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = BCARD + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True, hook=c["hero_hook"]) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + team(r) + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):

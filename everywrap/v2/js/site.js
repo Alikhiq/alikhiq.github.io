@@ -1,6 +1,5 @@
 import { CONFIG } from "./config.js";
 import { R, ROOT, $, $$, reduce, esc, FIN, S, DATA, hooks, fin, onScroll, fromPrice, money } from "./state.js";
-import { heroSweep } from "./hero.js";
 import { ev } from "./track.js";
 
 /* ---------- sheets ---------- */
@@ -150,32 +149,7 @@ function drawPics() {
   $("#qPics").disabled = pics.length >= 4;
 }
 
-/* ---------- launch intro (home only) ---------- */
-let introT = [];
 let photoFile = null, photoUrl = "", renderId = "", renderUrl = "", painting = false;
-function closeIntro() {
-  const el = $("#intro"), m = $("#imark");
-  el.hidden = true; el.classList.remove("play", "out"); m.style.transform = ""; document.documentElement.classList.remove("intro-on");
-}
-function endIntro(fast) {
-  const el = $("#intro"); introT.forEach(clearTimeout); introT = [];
-  if (!el || el.hidden || el.classList.contains("out")) return;
-  heroSweep();
-  if (fast || reduce) return closeIntro();
-  // The big mark travels to the logo in the top bar while the sheet lifts off the page.
-  const m = $("#imark"), to = $(".top .logo-mark"), a = m.getBoundingClientRect(), b = to ? to.getBoundingClientRect() : null;
-  if (b && b.width) m.style.transform = `translate(${b.left - a.left}px,${b.top - a.top}px) scale(${b.width / a.width})`;
-  el.classList.add("out");
-  introT.push(setTimeout(closeIntro, 1060));
-}
-function playIntro() {
-  const el = $("#intro");
-  if (!el) return;
-  introT.forEach(clearTimeout); introT = [];
-  el.classList.remove("play", "out"); $("#imark").style.transform = ""; el.hidden = false; document.documentElement.classList.add("intro-on");
-  void el.offsetWidth; el.classList.add("play");
-  introT.push(setTimeout(() => endIntro(false), 2750));
-}
 
 export function initSite() {
   hooks.quote = openQuote; hooks.upload = openUpload; loadMail();
@@ -228,15 +202,19 @@ export function initSite() {
   // The catalogue tabs on phones.
   document.addEventListener("click", (e) => { const b = e.target.closest(".ctabs button"); if (!b) return; const box = b.closest(".catalog"); $(".ccols", box).dataset.cat = b.dataset.cat; $$(".ctabs button", box).forEach((x) => { x.setAttribute("aria-pressed", x === b); x.classList.toggle("live", x === b); }); });
   $("#qSizeF").addEventListener("change", (e) => { S.size = +e.target.value; if (hooks.relabel) hooks.relabel(); });
-  document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; const i = $("#intro"); if (i && !i.hidden) endIntro(true); else { closeSheets(); menu(false); } });
+  document.addEventListener("keydown", (e) => { if (e.key !== "Escape") return; closeSheets(); menu(false); });
   // The floating capsule shows once the hero is gone, and steps aside for the closing one.
   const bar = $("#stickybar"), hero = $("#hero"), end = $(".final");
   if (bar) onScroll(() => bar.classList.toggle("show", (hero ? hero.getBoundingClientRect().bottom < 80 : scrollY > 160) && !(end && end.getBoundingClientRect().top < innerHeight - 140)));
-  const intro = $("#intro");
-  if (intro) {
-    $("#iskip").addEventListener("click", () => endIntro(true)); intro.addEventListener("click", (e) => { if (e.target.id !== "iskip") endIntro(false); });
-    const rp = $("#replay"); if (rp) rp.addEventListener("click", () => { scrollTo(0, 0); playIntro(); });
-    let seen = false; try { seen = sessionStorage.getItem("ew5-intro") === "1"; sessionStorage.setItem("ew5-intro", "1"); } catch {}
-    if (!seen && !reduce && !new URLSearchParams(location.search).get("dev")) playIntro();
-  }
+  // "Replay the intro" in the footer: a fresh copy of the card restarts its CSS timeline; a tap or scroll ends it early.
+  const rp = $("#replay");
+  if (rp) rp.addEventListener("click", () => {
+    const c = $("#bcard"); if (!c || reduce) return;
+    scrollTo({ top: 0, behavior: "instant" });
+    const d = document.documentElement, n = c.cloneNode(true); d.classList.remove("bc-off", "bc-done"); c.replaceWith(n);
+    const ev = ["pointerdown", "wheel", "touchmove", "keydown", "scroll"], f = (e) => { if (e && e.type === "scroll" && scrollY > 8) return; d.classList.add("bc-done"); ev.forEach((k) => removeEventListener(k, f, true)); };
+    setTimeout(() => ev.forEach((k) => addEventListener(k, f, { capture: true, passive: true })), 120);
+    setTimeout(f, 1700);
+  });
+
 }
