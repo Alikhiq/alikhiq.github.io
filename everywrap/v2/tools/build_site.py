@@ -64,7 +64,7 @@ def build_id():
 
 # On the live site the Worker serves /v/<id>/... as the same files, so every script a page loads carries the build id.
 VER = ("v/" + build_id() + "/") if LIVE else ""
-FONTS = "https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,600..900;1,100..125,600..900&family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,600..900;1,100..125,600..900&family=Barlow+Condensed:ital,wght@0,800;1,700&family=Instrument+Sans:wght@400;500;600;700&display=swap"
 CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 CHEV_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>'
@@ -386,9 +386,9 @@ def tunnel(root):
       <button class="tprev" type="button" aria-label="Previous finish">{CHEV_L}</button>
       <span class="tname">SATIN BLACK</span>
       <button class="tnext" type="button" aria-label="Next finish">{CHEV_R}</button>
-      <span class="tcount">01 / 05</span>
+      <span class="tcount">01 / 08</span>
     </div>
-    <div class="truler" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    <div class="truler" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 """
