@@ -299,6 +299,13 @@ def team(root):
         return f"<li class='tp tp-{side}' tabindex='0'{shot}>{face(root, x, 'tp-face')}<div><b>{e(x['team'])}</b><span>Runs and installs at {e(x['name'])}</span><p>{links}<button type='button' data-quote data-loc='{x['id']}'>Book with {e(x['team'])}</button></p></div></li>"
     pins = "".join(f'<span class="pin pin-{s}" aria-hidden="true"><b>{e(x["team"])}</b>{e(x["city"])}</span>' for x, s in zip(people, ("l", "r")) if x)
     cards = "".join(card(x, s) for x, s in zip(people, ("l", "r")) if x)
+    LD = SITE.get("commercial_lead")
+    if LD and os.path.exists(os.path.join(ROOT, "assets/team/ali.webp")):
+        n = LD["name"].split()[0].lower(); ig = LD.get("instagram", "")
+        links = (f'<a href="tel:{tel(LD)}">{phone_txt(LD)}</a>' if tel(LD) else "") + (f'<a href="{e(ig)}" target="_blank" rel="noopener">Instagram</a>' if ig else "")
+        cards += (f"<li class='tp tp-lead' tabindex='0' data-shot='{root}assets/team/{n}.webp?v=2' data-alt='{e(LD['name'])}, EveryWrap design and commercial lead'>"
+                  f"<img class='tp-face' src='{root}assets/team/{n}-face.webp?v=2' alt='' width='320' height='320' loading='lazy'><div><b>{e(LD['name'])}</b>"
+                  f"<span>{e(LD['role'])}: fleet, business, design and print, for both shops</span><p>{links}<button type='button' data-quote='fleet'>Send {e(LD['name'])} your job</button></p></div></li>")
     badges = "".join(f"<li><b>{e(a)}</b><span>{e(c)}</span></li>" for a, c in COPY["team"]["badges"])
     c = COPY["team"]
     return f"""<section class="band team" aria-labelledby="teamh">
