@@ -5,7 +5,7 @@ Finished files are in `videos/npc/`:
 - `npc-trailer-reel-9x16.mp4`: a 23 s Reel cut like a game trailer (letterboxed clips, title cards, name captions, impact sounds on the cuts)
 
 ## How it's built
-- `art/`: 12 photoreal stills from Nano Banana Pro on kie.ai (prompts in `gen2.py`). Ali's four shots use `me_hero` as the face reference so he's the same person in each.
+- `art/`: 12 photoreal stills (prompts in `gen2.py`). From now on, regenerate them with Google AI Studio: `python3 gen_gemini.py [names]`. Put a real photo at `ref/ali.jpg` to use Ali's real face. Ali's four shots use `me_hero` as the face reference so he's the same person in each.
 - `clips/`: 5 s image-to-video clips (Kling 2.6 on kie.ai) of me_hero, me_night, ew_hero, ew_phone, rc_hero and rc_aerial
 - `npc.html` + `chars.json`: the slide engine. Edit the text in `chars.json`, then run `node render.js stills`.
 - `overlay.js`: renders the transparent HUD layers and Reel cards into `overlays/`
