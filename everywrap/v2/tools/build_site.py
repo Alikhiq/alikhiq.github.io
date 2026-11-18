@@ -815,17 +815,21 @@ def bomb_word(word, w, line):
     return f'<span class="bw" style="--w:{w}">' + "".join(out) + "</span>"
 
 
-# The opening card: the page is fully drawn underneath from the first frame; a blurred glass card sits on top,
-# fades in, holds, and clears by 1.6s. CSS runs the whole timeline. The inline script only skips it after the
+# The opening card: the page is fully drawn underneath from the first frame; a blurred glass card sits on top
+# and runs a short kinetic-type sequence that clears by 2.0s. CSS runs the whole timeline. The inline script only skips it after the
 # first visit this session (and with ?dev) and lets a tap, scroll or key end it early.
-BCARD = """<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem("ew-bcard")==="1"||/[?&]dev=/.test(location.search)){d.classList.add("bc-off");return}sessionStorage.setItem("ew-bcard","1")}catch(e){}var y=scrollY,n=["pointerdown","wheel","touchmove","keydown","scroll"],f=function(e){if(e&&e.type==="scroll"&&Math.abs(scrollY-y)<8)return;d.classList.add("bc-done");n.forEach(function(k){removeEventListener(k,f,true)})};n.forEach(function(k){addEventListener(k,f,{capture:true,passive:true})});setTimeout(function(){n.forEach(function(k){removeEventListener(k,f,true)})},1700)})()</script>
+BCARD = """<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem("ew-bcard")==="1"||/[?&]dev=/.test(location.search)){d.classList.add("bc-off");return}sessionStorage.setItem("ew-bcard","1")}catch(e){}var y=scrollY,n=["pointerdown","wheel","touchmove","keydown","scroll"],f=function(e){if(e&&e.type==="scroll"&&Math.abs(scrollY-y)<8)return;d.classList.add("bc-done");n.forEach(function(k){removeEventListener(k,f,true)})};n.forEach(function(k){addEventListener(k,f,{capture:true,passive:true})});setTimeout(function(){n.forEach(function(k){removeEventListener(k,f,true)})},2100)})()</script>
 <div class="bcard" id="bcard" aria-hidden="true">
-  <div class="bc-a">""" + "".join(bomb_word(x, i, 0) for i, x in enumerate(["BUILT", "WITH", "CLAUDE"])) + """</div>
-  <div class="bc-b">
+  <div class="bg bc-a"><p class="bc-big">""" + bomb_word("COLUMBUS", 0, 0) + """<span class="bdot bw" style="--w:1">·</span>""" + bomb_word("MICHIGAN", 2, 0) + """</p></div>
+  <div class="bg bc-b">
     """ + mark("bc-mark") + """
-    <p class="bc-k">""" + "".join(bomb_word(x, i, 1) for i, x in enumerate(["DESIGNED", "WITH"])) + """</p>
-    <p class="bc-big">""" + "".join(bomb_word(x, i + 2, 2) for i, x in enumerate(["CLAUDE", "FABLE"])) + """</p>
+    <p class="bc-big">""" + bomb_word("EVERYWRAP", 0, 1) + """</p>
     <i class="bc-rule"></i>
+    <p class="bc-k">""" + "".join(bomb_word(x, i + 1, 1) for i, x in enumerate(["AUTOMOTIVE", "RESTYLE", "&", "COMMERCIAL", "WORK"])) + """</p>
+  </div>
+  <div class="bg bc-c">
+    <p class="bc-big">""" + bomb_word("WRAP", 0, 2) + """<span class="bdot bw" style="--w:1">·</span>""" + bomb_word("TINT", 2, 2) + """<span class="bdot bw" style="--w:3">·</span>""" + bomb_word("PPF", 4, 2) + """</p>
+    <p class="bc-k">""" + "".join(bomb_word(x, i + 3, 2) for i, x in enumerate(["ARCHITECTURAL", "&", "COMMERCIAL", "GRAPHICS"])) + """</p>
   </div>
 </div>
 """
