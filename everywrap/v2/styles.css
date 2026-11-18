@@ -1224,3 +1224,11 @@ html.intro-on{overflow:hidden}
 .loc{position:relative}
 .loc-face{position:absolute;top:18px;right:18px;width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--card),0 0 0 3px var(--line)}
 .loc:has(.loc-face)>b{display:block;padding-right:64px}
+
+/* the solo portrait that replaces the duo while a person's card is hovered or tapped */
+.team-solo{opacity:0;transition:opacity .45s ease;transform:translateZ(26px)}
+.team-card.solo .team-solo{opacity:1}
+.team-card.solo .pin{opacity:0}
+.pin{transition:opacity .3s ease}
+.tp[data-shot]{cursor:pointer;transition:border-color .25s ease,transform .25s ease}
+.tp[data-shot].on{border-color:var(--glow);transform:translateX(4px)}

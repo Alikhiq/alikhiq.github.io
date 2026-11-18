@@ -204,7 +204,20 @@ export function initSite() {
   $("#qSvc").addEventListener("change", details);
   // The team card tilts in 3D: with the pointer on a computer, with the scroll on a phone.
   $$("[data-tilt]").forEach((st) => {
-    const card = $(".team-card", st); if (!card || reduce) return;
+    const card = $(".team-card", st); if (!card) return;
+    // Hover, focus or tap a person's card: the photo becomes their solo portrait. Leave it and the pair comes back.
+    const sec = st.closest(".team"), solo = document.createElement("img");
+    solo.className = "team-solo"; solo.alt = ""; solo.decoding = "async"; solo.width = 928; solo.height = 1152; card.insertBefore(solo, $(".team-glare", card));
+    let held = null;
+    const show = (li) => { if (!li || !li.dataset.shot) return; $$(".tp", sec).forEach((x) => x.classList.toggle("on", x === li)); solo.src = li.dataset.shot; solo.alt = li.dataset.alt || ""; card.classList.add("solo"); };
+    const back = () => { if (held) return; $$(".tp", sec).forEach((x) => x.classList.remove("on")); card.classList.remove("solo"); };
+    $$(".tp[data-shot]", sec).forEach((li) => {
+      li.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(li); });
+      li.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") back(); });
+      li.addEventListener("focus", () => show(li)); li.addEventListener("blur", back);
+      li.addEventListener("click", (e) => { if (e.target.closest("a,button")) return; held = held === li ? null : li; if (held) show(li); else back(); });
+    });
+    if (reduce) return;
     let rx = 0, ry = 0, gx = 30, raf = 0;
     const draw = () => { raf = 0; card.style.setProperty("--rx", rx.toFixed(2) + "deg"); card.style.setProperty("--ry", ry.toFixed(2) + "deg"); card.style.setProperty("--gx", gx.toFixed(1) + "%"); };
     const ask = () => { if (!raf) raf = requestAnimationFrame(draw); };

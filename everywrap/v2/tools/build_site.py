@@ -278,7 +278,9 @@ def team(root):
     people = [L.get("dearborn"), L.get("columbus")]  # left to right, as they stand in the photo
     def card(x, side):
         links = (f'<a href="tel:{tel(x)}">{phone_txt(x)}</a><a href="sms:{tel(x)}">Text</a>' if tel(x) else "") + (f'<a href="{e(x["instagram"])}" target="_blank" rel="noopener">Instagram</a>' if x.get("instagram") else "")
-        return f"<li class='tp tp-{side}'>{face(root, x, 'tp-face')}<div><b>{e(x['team'])}</b><span>Runs and installs at {e(x['name'])}</span><p>{links}<button type='button' data-quote data-loc='{x['id']}'>Book with {e(x['team'])}</button></p></div></li>"
+        n = x["team"].split()[0].lower()
+        shot = f" data-shot='{root}assets/team/{n}.webp' data-alt='{e(x['team'])} of EveryWrap in a black EveryWrap polo in the wrap studio'" if os.path.exists(os.path.join(ROOT, f"assets/team/{n}.webp")) else ""
+        return f"<li class='tp tp-{side}' tabindex='0'{shot}>{face(root, x, 'tp-face')}<div><b>{e(x['team'])}</b><span>Runs and installs at {e(x['name'])}</span><p>{links}<button type='button' data-quote data-loc='{x['id']}'>Book with {e(x['team'])}</button></p></div></li>"
     pins = "".join(f'<span class="pin pin-{s}" aria-hidden="true"><b>{e(x["team"])}</b>{e(x["city"])}</span>' for x, s in zip(people, ("l", "r")) if x)
     cards = "".join(card(x, s) for x, s in zip(people, ("l", "r")) if x)
     badges = "".join(f"<li><b>{e(a)}</b><span>{e(c)}</span></li>" for a, c in COPY["team"]["badges"])
