@@ -74,7 +74,10 @@
    "city": "Columbus",
    "region": "OH",
    "zip": "43228",
-   "note": "By appointment"
+   "note": "By appointment",
+   "team": "Karrar",
+   "phone": "",
+   "reviews": ""
   },
   {
    "id": "dearborn",
@@ -83,7 +86,10 @@
    "city": "Dearborn Heights",
    "region": "MI",
    "zip": "48125",
-   "note": "By appointment"
+   "note": "By appointment",
+   "team": "Zain",
+   "phone": "",
+   "reviews": ""
   }
  ]
 }

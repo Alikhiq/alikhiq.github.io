@@ -4,7 +4,7 @@ import { heroSweep } from "./hero.js";
 import { ev } from "./track.js";
 
 /* ---------- sheets ---------- */
-let lastFocus = null, qStep = 1, photo = false, note = "";
+let lastFocus = null, qStep = 1, photo = false, note = "", pics = [];
 function openSheet(id) { lastFocus = document.activeElement; const s = $(id); s.hidden = false; const f = s.querySelector("input:not([type=file]),button.btn"); if (f) setTimeout(() => f.focus(), 60); }
 function closeSheets() { $$(".scrim").forEach((s) => (s.hidden = true)); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 function step(n) {
@@ -45,7 +45,7 @@ function openQuote(pre = {}) {
 }
 function next() {
   if (qStep === 1) { if (!picked().length) { $("#qErr1").textContent = "Pick at least one thing you need."; return; } $("#qErr1").textContent = ""; details(); step(2); }
-  else if (qStep === 2) { if (!$("#qCar").value.trim() && !photo) { $("#qErr2").textContent = $("#qSizeF").hidden ? "Tell us a little about the job so we can price it." : "Add the year, make and model so we can price the right vehicle."; $("#qCar").focus(); return; } $("#qErr2").textContent = ""; step(3); }
+  else if (qStep === 2) { if (!$("#qCar").value.trim() && !photo && !pics.length) { $("#qErr2").textContent = $("#qSizeF").hidden ? "Tell us a little about the job so we can price it." : "Add the year, make and model so we can price the right vehicle."; $("#qCar").focus(); return; } $("#qErr2").textContent = ""; step(3); }
 }
 async function submitQuote(e) {
   e.preventDefault();
@@ -55,9 +55,9 @@ async function submitQuote(e) {
   if (digits.length < 10) { $("#qErr3").textContent = "That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
   const com = $("#qSizeF").hidden, size = com ? 0 : +($("#qSizeF input:checked") || { value: 0 }).value, shift = /shift/i.test($("#qFin").value);
   const starts = [["wrap", "Wrap", fromPrice("wrap", shift ? "shift" : "full", size)], ["ppf", "PPF", fromPrice("ppf", S.ppf, size)], ["tint", "Tint", fromPrice("tint", "carbon", size)]].filter(([id, , n]) => n && $("#qS_" + id).checked).map(([, name, n]) => `${name} ${money(n)}`);
-  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname, render: renderId, location: ($("#qForm input[name=qLoc]:checked") || { dataset: { name: "" } }).dataset.name };
+  const lead = { size: com ? "" : DATA.pricing ? DATA.pricing.sizes[size] : "", from: starts, vehicle: $("#qCar").value.trim() || "From photo", photos: pics.length, services: picked(), finish: $("#qS_wrap").checked ? $("#qFin").value : null, tint: $("#qS_tint").checked ? S.tint + "%" : null, note, name, phone: $("#qPhone").value.trim(), contact: $("#qHowCall").checked ? "call" : "text", page: location.pathname, render: renderId, location: ($("#qForm input[name=qLoc]:checked") || { dataset: { name: "" } }).dataset.name };
   const rows = [["Vehicle", lead.vehicle], ["Service", lead.services.join(", ")]];
-  if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]);
+  if (lead.finish) rows.push(["Finish", lead.finish]); if (lead.tint) rows.push(["Tint", lead.tint]); if (note) rows.push(["Note", note]); if (pics.length || photoFile) rows.push(["Photos", String(pics.length + (photoFile ? 1 : 0))]);
   if (lead.size) rows.push(["Size", lead.size]); if (lead.from.length) rows.push(["Starting from", lead.from.join(", ")]);
   if (lead.location) rows.push(["Location", lead.location]);
   rows.push(["Contact", `${name}, ${lead.phone} (${lead.contact})`]);
@@ -69,12 +69,14 @@ async function submitQuote(e) {
     let ok = false;
     try {
       const fd = new FormData(); fd.append("data", JSON.stringify(lead)); fd.append("website", $("#qWeb") ? $("#qWeb").value : "");
-      if (photoFile) fd.append("photo", photoFile, photoFile.name || "photo.jpg");
-      (hooks.files || []).slice(0, 4).forEach((f, n) => fd.append("file" + n, f, f.name || "file" + n));
+      // The first photo is the main one; the rest travel as attachments (four at most in all).
+      const imgs = photoFile ? [photoFile, ...pics] : [...pics], main = imgs.shift();
+      if (main) fd.append("photo", main, main.name || "photo.jpg");
+      [...imgs, ...(hooks.files || [])].slice(0, 4).forEach((f, n) => fd.append("file" + n, f, f.name || "file" + n + ".jpg"));
       const r = await fetch(endpoint, { method: "POST", body: fd }); ok = r.ok && (await r.json()).ok === true;
     } catch {}
     b.disabled = false; b.textContent = "Request my price";
-    if (ok) { $("#qDone").textContent = `Sent. We'll ${lead.contact} you at ${lead.phone} with your price in writing.${photoFile ? " Your photo went with it." : ""}`; step(4); return; }
+    if (ok) { $("#qDone").textContent = `Sent. We'll ${lead.contact} you at ${lead.phone} with your price in writing.${photoFile || pics.length ? " Your photos went with it." : ""}`; pics = []; drawPics(); step(4); return; }
     ev("lead_fail");
     if (!MAIL) { $("#qErr3").textContent = "That didn't go through. Check your connection and try again."; return; }
   }
@@ -82,7 +84,7 @@ async function submitQuote(e) {
     // If the request could not be stored, hand it to the visitor's email app instead.
     const body = rows.map((r) => `${r[0]}: ${r[1]}`).join("\n") + `\n\nSent from ${location.origin + location.pathname}`;
     const href = `mailto:${MAIL.to}?${MAIL.cc ? "cc=" + encodeURIComponent(MAIL.cc) + "&" : ""}subject=${encodeURIComponent("New EveryWrap quote request")}&body=${encodeURIComponent(body)}`;
-    $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team.${photo ? " Attach your photo to that email before you send it." : ""} <a href="${esc(href)}">Open the email again</a>`;
+    $("#qDone").innerHTML = `Your email app should open with this request ready. Press send and it reaches the EveryWrap team.${photo || pics.length ? " Attach your photos to that email before you send it." : ""} <a href="${esc(href)}">Open the email again</a>`;
     step(4); location.href = href; return;
   }
   const msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
@@ -138,6 +140,16 @@ async function loadMail() {
   } catch {}
 }
 
+// Photos added in the booking form itself (up to four), shown as small thumbnails that can be removed.
+function drawPics() {
+  const box = $("#qThumbs"); if (!box) return;
+  box.innerHTML = ""; pics.forEach((f, n) => { const d = document.createElement("span"); const im = new Image(); im.alt = "Photo " + (n + 1); im.src = URL.createObjectURL(f);
+    const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Remove photo " + (n + 1)); x.addEventListener("click", () => { pics.splice(n, 1); drawPics(); });
+    d.append(im, x); box.appendChild(d); });
+  $("#qPicsT").textContent = pics.length ? (pics.length < 4 ? "+ Add another photo" : "4 photos added") : "+ Add photos of the car or the job";
+  $("#qPics").disabled = pics.length >= 4;
+}
+
 /* ---------- launch intro (home only) ---------- */
 let introT = [];
 let photoFile = null, photoUrl = "", renderId = "", renderUrl = "", painting = false;
@@ -187,6 +199,7 @@ export function initSite() {
   hold.addEventListener("pointerdown", (e) => { e.preventDefault(); peek(true); }); ["pointerup", "pointerleave", "pointercancel"].forEach((n) => hold.addEventListener(n, () => peek(false)));
   hold.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") peek(true); }); hold.addEventListener("keyup", () => peek(false));
   $("#qForm").addEventListener("submit", submitQuote);
+  $("#qPics").addEventListener("change", function () { pics = [...pics, ...[...(this.files || [])].filter((f) => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name))].slice(0, 4); this.value = ""; drawPics(); if (pics.length) ev("photo_added", "booking"); });
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });
   $("#qSvc").addEventListener("change", details);
   // The catalogue tabs on phones.

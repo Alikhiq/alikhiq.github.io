@@ -86,7 +86,7 @@ def business():
     return {"@context": "https://schema.org", "@type": "AutomotiveBusiness", "@id": SITE["domain"] + "/#business", "name": SITE["name"], "url": SITE["domain"] + "/",
             "email": SITE["email"], "slogan": SITE["tagline"], "image": SITE["domain"] + "/assets/share.jpg",
             "address": {"@type": "PostalAddress", "streetAddress": SITE["locations"][0]["street"], "addressLocality": SITE["locations"][0]["city"], "addressRegion": SITE["locations"][0]["region"], "postalCode": SITE["locations"][0]["zip"], "addressCountry": "US"},
-            "location": [{"@type": "Place", "name": f"{SITE['name']} {x['city']}", "address": {"@type": "PostalAddress", "streetAddress": x["street"], "addressLocality": x["city"], "addressRegion": x["region"], "postalCode": x["zip"], "addressCountry": "US"}} for x in SITE["locations"]],
+            "location": [{"@type": "Place", "name": f"{SITE['name']} {x['city']}", "address": {"@type": "PostalAddress", "streetAddress": x["street"], "addressLocality": x["city"], "addressRegion": x["region"], "postalCode": x["zip"], "addressCountry": "US"}, **({"telephone": tel(x)} if tel(x) else {}), **({"hasMap": x["reviews"]} if x.get("reviews") else {})} for x in SITE["locations"]],
             "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS] + [{"@type": "City", "name": "Dearborn Heights, Michigan"}], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
             "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}
 
@@ -198,7 +198,7 @@ MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 def voice(label="Talk to our assistant"):
     """A link to the voice assistant, if one is set in data/site.json."""
     a = SITE.get("voice_agent")
-    return ('<a class="trylink voice" data-voice="' + a + '" href="https://elevenlabs.io/app/talk-to?agent_id=' + a + '" target="_blank" rel="noopener">' + MIC + ' <span class="voice-t" data-idle="' + e(label) + '">' + e(label) + "</span></a>") if a else ""
+    return ('<a class="trylink voice" data-voice="' + a + '" href="#chat" role="button">' + MIC + ' <span class="voice-t" data-idle="' + e(label) + '">' + e(label) + "</span></a>") if a else ""
 
 TRUST_VIS = {
     "quote": '<i class="tv tv-doc" aria-hidden="true"><u></u><u></u><u></u><b>$</b></i>',
@@ -240,10 +240,25 @@ def maps(loc):
     q = f"{loc['street']}, {loc['city']}, {loc['region']} {loc['zip']}"
     return "https://www.google.com/maps/search/?api=1&query=" + q.replace(",", "%2C").replace(" ", "+")
 
+def tel(loc):
+    d = re.sub(r"\D", "", loc.get("phone", ""))[-10:]
+    return f"+1{d}" if len(d) == 10 else ""
+
+def phone_txt(loc):
+    d = tel(loc)[2:]
+    return f"({d[:3]}) {d[3:6]}-{d[6:]}" if d else ""
+
+def loc_extra(x):
+    """Who runs the location, their number, and the Google reviews link when it is live."""
+    who = f'<span class="loc-team">Run and installed by {e(x["team"])}</span>' if x.get("team") else ""
+    ph = f'<a class="loc-tel" href="tel:{tel(x)}">{phone_txt(x)}</a>' if tel(x) else ""
+    rv = f'<a class="loc-rev" href="{e(x["reviews"])}" target="_blank" rel="noopener"><span aria-hidden="true">★★★★★</span> Google reviews</a>' if x.get("reviews") else ""
+    return who + ph + rv
+
 def locations():
     """The two places EveryWrap works from. Shown wherever the service area is."""
-    cards = "".join(f'''<li class="loc"><b>{e(x['name'])}</b><span>{e(x['street'])}<br>{e(x['city'])}, {x['region']} {x['zip']}</span><em>{e(x['note'])}</em>
-      <p><a href="{maps(x)}" target="_blank" rel="noopener">Directions</a><button type="button" data-quote data-loc="{x['id']}">Book here</button></p></li>''' for x in SITE.get("locations", []))
+    cards = "".join(f'''<li class="loc"><b>{e(x['name'])}</b><span>{e(x['street'])}<br>{e(x['city'])}, {x['region']} {x['zip']}</span><em>{e(x['note'])}</em>{loc_extra(x)}
+      <p>{f'<a href="sms:{tel(x)}">Text {e(x["team"])}</a>' if tel(x) else ''}<a href="{maps(x)}" target="_blank" rel="noopener">Directions</a><button type="button" data-quote data-loc="{x['id']}">Book here</button></p></li>''' for x in SITE.get("locations", []))
     return f'<ul class="locs" data-reveal>{cards}</ul>' if cards else ""
 
 def promo_chip():
@@ -577,7 +592,7 @@ def footer(root, home=False):
     area = ", ".join(SITE["area"])
     insta = "".join(f'<li><a href="{u}" rel="noopener">@{h}</a></li>' for h, u in SITE["instagram"])
     rc = COPY["roundcity"]
-    locs = "".join(f'<li><b>{e(x["name"])}</b><a href="{maps(x)}" target="_blank" rel="noopener">{e(x["street"])}<br>{e(x["city"])}, {x["region"]} {x["zip"]}</a><em>{e(x["note"])}</em></li>' for x in SITE.get("locations", []))
+    locs = "".join(f'<li><b>{e(x["name"])}</b><a href="{maps(x)}" target="_blank" rel="noopener">{e(x["street"])}<br>{e(x["city"])}, {x["region"]} {x["zip"]}</a><em>{e(x["note"])}</em>{loc_extra(x)}</li>' for x in SITE.get("locations", []))
     return f"""<footer class="foot">
   <div class="foot-top">
     {logo(root, 'big')}
@@ -655,6 +670,9 @@ def chrome(root, com=False):
           <div class="picks" role="group" aria-labelledby="qSizeL">{''.join(f'<label><input type="radio" name="qSize" value="{i}"{" checked" if i == 0 else ""}>{e(x)}</label>' for i, x in enumerate(PRICING["sizes"]))}</div></div>
         <div class="field" id="qFinF"><label for="qFin">Wrap finish</label>
           <select id="qFin"><option>Satin black</option><option>Gloss black</option><option>Satin grey</option><option>Satin red</option><option>Color shift</option><option>Not sure yet</option></select></div>
+        <div class="field"><span class="legend" id="qPicsL">Photos <small>(optional, up to 4)</small></span>
+          <label class="qpics" for="qPics"><input id="qPics" type="file" accept="image/*" multiple aria-labelledby="qPicsL"><span id="qPicsT">+ Add photos of the car or the job</span></label>
+          <div class="qthumbs" id="qThumbs"></div></div>
         <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
         <p class="note" id="qNote" hidden></p>
         <p class="err" id="qErr2" role="alert"></p>
@@ -670,7 +688,7 @@ def chrome(root, com=False):
         </div>
         <span class="legend" id="qLocL">Which location suits you?</span>
         <div class="picks" role="group" aria-labelledby="qLocL">
-          {"".join(f'<label><input type="radio" name="qLoc" value="{x["id"]}" data-name="{e(x["name"])}">{e(x["name"])}</label>' for x in SITE.get("locations", []))}
+          {"".join(f'<label><input type="radio" name="qLoc" value="{x["id"]}" data-name="{e(x["name"])}">{e(x["name"])}{f'<small>with {e(x["team"])}</small>' if x.get("team") else ""}</label>' for x in SITE.get("locations", []))}
           <label><input type="radio" name="qLoc" value="" data-name="" checked>Either</label>
         </div>
         <p class="err" id="qErr3" role="alert"></p>

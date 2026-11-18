@@ -1,6 +1,7 @@
 // Ask by voice. The conversation runs on the page: the button turns into a live orb,
 // and the assistant can open the photo panel or the booking form while it talks.
-// If the browser cannot start it (no microphone, blocked, old browser), the link opens as before.
+// If voice cannot start (no microphone, permission refused, blocked network), the same assistant opens as a typed chat
+// on the page. Nobody is sent to another website.
 import { ROOT, $, $$, hooks, reduce } from "./state.js";
 import { ev } from "./track.js";
 
@@ -104,9 +105,57 @@ async function start(btn) {
     if (me !== run) return;
     busy = false; convo = null; hide();
     console.warn("Voice could not start on the page:", err && err.message ? err.message : err);
-    // Fall back to the hosted conversation in a new tab.
-    if (btn.href) window.open(btn.href, "_blank", "noopener");
+    // Carry on in writing, on this page.
+    const denied = err && /denied|notallowed|permission/i.test(String(err.name || "") + String(err.message || ""));
+    openChat(btn.dataset.voice, denied ? "Your microphone is off, so let's type instead." : "Voice didn't connect on this device, so let's type instead.");
   }
+}
+
+/* ---------- typed chat with the same assistant ---------- */
+let chat = null, chatC = null, chatBusy = false, chatAgent = "";
+function chatUI() {
+  if (chat) return chat;
+  chat = document.createElement("div"); chat.className = "scrim"; chat.id = "cScrim"; chat.hidden = true;
+  chat.innerHTML = '<div class="sheet chat" role="dialog" aria-modal="true" aria-labelledby="cTitle"><div class="shead"><h2 id="cTitle">Chat with EveryWrap</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>' +
+    '<div class="clog" id="cLog" aria-live="polite"></div><form class="cform" id="cForm"><input id="cIn" type="text" autocomplete="off" placeholder="Type your message" aria-label="Your message" maxlength="500"><button class="btn pri" type="submit">Send</button></form></div>';
+  document.body.appendChild(chat);
+  $("#cForm", chat).addEventListener("submit", (e) => { e.preventDefault(); const i = $("#cIn", chat), m = i.value.trim(); if (!m) return; i.value = ""; say("you", m); send(m); });
+  return chat;
+}
+function say(who, text) {
+  const log = $("#cLog", chatUI()), p = document.createElement("p"); p.className = "cm " + who; p.textContent = text; log.appendChild(p); log.scrollTop = log.scrollHeight; return p;
+}
+let typing = null;
+function dots(on) { if (on && !typing) typing = say("ai typing", "…"); else if (!on && typing) { typing.remove(); typing = null; } }
+async function connectText() {
+  if (chatC || chatBusy) return chatC;
+  chatBusy = true; dots(true);
+  try {
+    sdk = sdk || (await import(new URL(ROOT + "js/vendor/elevenlabs-client.js", location.href).href));
+    chatC = await sdk.Conversation.startSession({
+      agentId: chatAgent, connectionType: "websocket", textOnly: true, overrides: { conversation: { textOnly: true } }, clientTools: tools,
+      onMessage: ({ source, message }) => { if (source === "ai" && message) { dots(false); say("ai", message); } },
+      onDisconnect: () => { chatC = null; dots(false); },
+      onError: (m) => console.warn("Chat:", m),
+    });
+    ev("voice_live", "text");
+  } catch (err) {
+    console.warn("Chat could not start:", err && err.message ? err.message : err); dots(false);
+    say("ai", "The chat can't connect right now. Tap Book now and we'll text you back with a price.");
+  } finally { chatBusy = false; }
+  return chatC;
+}
+async function send(m) {
+  const c = chatC || (await connectText()); if (!c) return;
+  dots(true); try { c.sendUserMessage(m); } catch { dots(false); }
+}
+export function openChat(agentId, why) {
+  chatAgent = agentId || chatAgent; const el = chatUI();
+  document.querySelectorAll(".scrim").forEach((s) => { if (s !== el) s.hidden = true; });
+  el.hidden = false;
+  if (why && !$("#cLog", el).childElementCount) say("sys", why);
+  if (!chatC) connectText();
+  setTimeout(() => $("#cIn", el).focus(), 80);
 }
 
 export function initVoice() {
@@ -114,5 +163,5 @@ export function initVoice() {
     const b = e.target.closest("[data-voice]"); if (!b) return;
     e.preventDefault(); start(b);
   });
-  addEventListener("pagehide", () => { if (convo) { try { convo.endSession(); } catch {} } });
+  addEventListener("pagehide", () => { [convo, chatC].forEach((c) => { if (c) { try { c.endSession(); } catch {} } }); });
 }
