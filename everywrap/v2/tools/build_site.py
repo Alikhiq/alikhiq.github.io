@@ -259,9 +259,51 @@ def loc_extra(x):
     ig = f'<a class="loc-ig" href="{e(ig)}" target="_blank" rel="noopener">@{e(ig.rstrip("/").rsplit("/", 1)[-1])}</a>' if ig else ""
     return who + ph + ig + rv
 
-def locations():
+def face(root, x, cls="face"):
+    """The installer's round photo, when one exists for that location."""
+    n = (x.get("team") or "").split()[0].lower() if x.get("team") else ""
+    f = f"assets/team/{n}-face.webp"
+    return f'<img class="{cls}" src="{root}{f}" alt="" width="320" height="320" loading="lazy">' if n and os.path.exists(os.path.join(ROOT, f)) else ""
+
+def crew(root):
+    """A compact line: who installs, where, with a tap to text them."""
+    chips = "".join(f'<a class="crew-chip" href="{("sms:" + tel(x)) if tel(x) else "#"}"{"" if tel(x) else " data-quote data-loc=" + chr(34) + x["id"] + chr(34)}>{face(root, x)}<span><b>{e(x["team"])}</b>{e(x["city"])}, {x["region"]}</span></a>' for x in SITE.get("locations", []) if x.get("team"))
+    return f'<div class="crew" data-reveal><span class="crew-l">Installed by</span>{chips}</div>' if chips else ""
+
+def team(root):
+    """The people who do the work, in a card that tilts in 3D with the pointer or the scroll."""
+    if not os.path.exists(os.path.join(ROOT, "assets/team/duo-1200.webp")):
+        return ""
+    L = {x["id"]: x for x in SITE.get("locations", [])}
+    people = [L.get("dearborn"), L.get("columbus")]  # left to right, as they stand in the photo
+    def card(x, side):
+        links = (f'<a href="tel:{tel(x)}">{phone_txt(x)}</a><a href="sms:{tel(x)}">Text</a>' if tel(x) else "") + (f'<a href="{e(x["instagram"])}" target="_blank" rel="noopener">Instagram</a>' if x.get("instagram") else "")
+        return f"<li class='tp tp-{side}'>{face(root, x, 'tp-face')}<div><b>{e(x['team'])}</b><span>Runs and installs at {e(x['name'])}</span><p>{links}<button type='button' data-quote data-loc='{x['id']}'>Book with {e(x['team'])}</button></p></div></li>"
+    pins = "".join(f'<span class="pin pin-{s}" aria-hidden="true"><b>{e(x["team"])}</b>{e(x["city"])}</span>' for x, s in zip(people, ("l", "r")) if x)
+    cards = "".join(card(x, s) for x, s in zip(people, ("l", "r")) if x)
+    badges = "".join(f"<li><b>{e(a)}</b><span>{e(c)}</span></li>" for a, c in COPY["team"]["badges"])
+    c = COPY["team"]
+    return f"""<section class="band team" aria-labelledby="teamh">
+  <div class="bandhead" data-reveal><h2 id="teamh">{e(c['h2'])}</h2><p>{e(c['p'])}</p></div>
+  <div class="team-in">
+    <div class="team-stage" data-tilt data-reveal>
+      <figure class="team-card">
+        <img class="team-bg" src="{root}assets/team/duo-1200.webp" alt="" aria-hidden="true" width="1200" height="1490" loading="lazy">
+        <img class="team-img" src="{root}assets/team/duo-1200.webp" srcset="{root}assets/team/duo-1200.webp 1200w, {root}assets/team/duo-2000.webp 2000w" sizes="(max-width: 760px) 88vw, 520px" alt="{e(c['alt'])}" width="1200" height="1490" loading="lazy">
+        <i class="team-glare" aria-hidden="true"></i>{pins}
+      </figure>
+    </div>
+    <div class="team-side">
+      <ul class="team-people" data-reveal>{cards}</ul>
+      <ul class="tbadges" data-reveal>{badges}</ul>
+    </div>
+  </div>
+</section>
+"""
+
+def locations(root=""):
     """The two places EveryWrap works from. Shown wherever the service area is."""
-    cards = "".join(f'''<li class="loc"><b>{e(x['name'])}</b><span>{e(x['street'])}<br>{e(x['city'])}, {x['region']} {x['zip']}</span><em>{e(x['note'])}</em>{loc_extra(x)}
+    cards = "".join(f'''<li class="loc">{face(root, x, "loc-face")}<b>{e(x['name'])}</b><span>{e(x['street'])}<br>{e(x['city'])}, {x['region']} {x['zip']}</span><em>{e(x['note'])}</em>{loc_extra(x)}
       <p>{f'<a href="sms:{tel(x)}">Text {e(x["team"])}</a>' if tel(x) else ''}<a href="{maps(x)}" target="_blank" rel="noopener">Directions</a><button type="button" data-quote data-loc="{x['id']}">Book here</button></p></li>''' for x in SITE.get("locations", []))
     return f'<ul class="locs" data-reveal>{cards}</ul>' if cards else ""
 
@@ -511,7 +553,7 @@ def areas(root, current=""):
     others = "".join(f'<li><a href="{link(root, x["slug"])}">{e(x["name"])}</a></li>' for x in SERVICES if x["slug"] != current)
     return f"""<section class="band areas" aria-labelledby="areah">
   <div class="bandhead" data-reveal><h2 id="areah">Where we work</h2><p>{e(COPY['areas_p'])}</p></div>
-  {locations()}
+  {locations(root)}
   <ul class="arealist" data-reveal>{''.join(f'<li>{e(a)}</li>' for a in AREAS)}</ul>
   <ul class="crosslinks" data-reveal>{others}<li><a href="{link(root, 'commercial')}">Fleet and commercial</a></li><li><a href="{link(root, 'design-print')}">Design and print</a></li><li><a href="{link(root, 'pricing')}">All prices</a></li></ul>
 </section>
@@ -765,7 +807,7 @@ def service_ld(name, slug, desc, group):
 
 def page_home():
     r, c = "", COPY["home"]
-    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True, hook=c["hero_hook"]) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
+    body = INTRO + top(r, "personal") + "<main>\n" + hero_personal(c["hero_h1"], c["hero_eyebrow"], promo=True, hook=c["hero_hook"]) + promo_band(r) + '<div class="truststrip">' + trust_strip() + "</div>" + catalog(r) + how() + team(r) + suppliers() + tunnel(r) + ticker(COPY["explain"]["ticker"]) + services_band(r) + explain_layers("home") + work_band(r) + fleet_teaser(r) + design_teaser(r) + faq(c["faq"]) + areas(r) + final() + "</main>\n" + footer(r, home=True) + chrome(r)
     write("index.html", head(r, "", c["title"], c["desc"], extra_ld=[faq_ld(c["faq"])]) + body)
 
 def page_service(s):
@@ -781,6 +823,7 @@ def page_service(s):
     <div class="about-vis" data-reveal>{svc_visual(r, s['ch'], s['img_alt'])}</div>
     <h2 id="abouth" data-reveal>{e(s['about_h2'])}</h2>
     <p class="lead" data-reveal>{e(s['lead'])}</p>
+    {crew(r)}
     <dl class="points">{pts}</dl>
   </div>
 </section>
@@ -828,7 +871,7 @@ def page_commercial():
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
-""" + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
+""" + team(r) + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
     write("commercial/index.html", head(r, "commercial", c["title"], c["desc"], mode="commercial", extra_ld=[service_ld("Fleet graphics and commercial vehicle wraps", "commercial", c["desc"], "fleet"), faq_ld(c["faq"])]) + body)
 
 def page_pricing():

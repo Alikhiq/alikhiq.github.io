@@ -202,6 +202,16 @@ export function initSite() {
   $("#qPics").addEventListener("change", function () { pics = [...pics, ...[...(this.files || [])].filter((f) => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name))].slice(0, 4); this.value = ""; drawPics(); if (pics.length) ev("photo_added", "booking"); });
   $("#qForm").addEventListener("click", (e) => { if (e.target.closest("[data-next]")) next(); else if (e.target.closest("[data-back]")) step(qStep - 1); });
   $("#qSvc").addEventListener("change", details);
+  // The team card tilts in 3D: with the pointer on a computer, with the scroll on a phone.
+  $$("[data-tilt]").forEach((st) => {
+    const card = $(".team-card", st); if (!card || reduce) return;
+    let rx = 0, ry = 0, gx = 30, raf = 0;
+    const draw = () => { raf = 0; card.style.setProperty("--rx", rx.toFixed(2) + "deg"); card.style.setProperty("--ry", ry.toFixed(2) + "deg"); card.style.setProperty("--gx", gx.toFixed(1) + "%"); };
+    const ask = () => { if (!raf) raf = requestAnimationFrame(draw); };
+    st.addEventListener("pointermove", (e) => { if (e.pointerType !== "mouse") return; const b = st.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height; ry = (x - .5) * 16; rx = -(y - .5) * 11; gx = x * 100; ask(); });
+    st.addEventListener("pointerleave", () => { rx = ry = 0; gx = 30; ask(); });
+    if (matchMedia("(hover: none)").matches) onScroll(() => { const b = st.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight) return; const p = (b.top + b.height / 2) / innerHeight - .5; rx = p * 14; ry = Math.sin(p * 2.6) * 7; gx = 50 - p * 60; ask(); });
+  });
   // The catalogue tabs on phones.
   document.addEventListener("click", (e) => { const b = e.target.closest(".ctabs button"); if (!b) return; const box = b.closest(".catalog"); $(".ccols", box).dataset.cat = b.dataset.cat; $$(".ctabs button", box).forEach((x) => { x.setAttribute("aria-pressed", x === b); x.classList.toggle("live", x === b); }); });
   $("#qSizeF").addEventListener("change", (e) => { S.size = +e.target.value; if (hooks.relabel) hooks.relabel(); });

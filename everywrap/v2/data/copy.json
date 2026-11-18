@@ -717,5 +717,24 @@
    "You approve, we print",
    "Nothing is printed before you say yes."
   ]
- ]
+ ],
+ "team": {
+  "h2": "The people who wrap your car.",
+  "p": "Two shops, two installers. The person you text about your car is the person who wraps it.",
+  "alt": "Zain and Karrar of EveryWrap in black EveryWrap polos, standing in the wrap studio in front of a black sports car and a wall of vinyl film rolls.",
+  "badges": [
+   [
+    "Text the installer",
+    "No call centre. Your messages go straight to the person doing the work."
+   ],
+   [
+    "Two shops",
+    "Columbus, Ohio and Dearborn Heights, Michigan, both by appointment."
+   ],
+   [
+    "Price in writing",
+    "You get the number by text before anything starts."
+   ]
+  ]
+ }
 }
