@@ -8,7 +8,7 @@ Reads data/site.json, data/services.json, data/work.json and assets/manifest.jso
 Writes index.html, one folder per service, commercial/, work/, sitemap.xml,
 robots.txt, site.webmanifest and favicon.svg. Edit the data, not the output.
 """
-import html, json, os, re, sys
+import html, json, math, os, re, sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 LIVE = "--live" in sys.argv
@@ -804,16 +804,28 @@ def chrome(root, com=False):
 </html>
 """
 
+def bomb_word(word, w, line):
+    """One word for the opening card: the word slams in as a unit, then each letter blasts outward on its own path."""
+    out = []
+    for i, ch in enumerate(word):
+        k = (w * 7 + i * 13 + line * 29) % 360
+        ang = math.radians(k * 1.618 * 57.3 % 360)
+        dist = 150 + (k * 37) % 170
+        out.append(f'<span style="--dx:{round(math.cos(ang) * dist)}px;--dy:{round(math.sin(ang) * dist * .8)}px;--r:{(k * 11) % 160 - 80}deg">{html.escape(ch)}</span>')
+    return f'<span class="bw" style="--w:{w}">' + "".join(out) + "</span>"
+
+
 # The opening card: the page is fully drawn underneath from the first frame; a blurred glass card sits on top,
 # fades in, holds, and clears by 1.6s. CSS runs the whole timeline. The inline script only skips it after the
 # first visit this session (and with ?dev) and lets a tap, scroll or key end it early.
-BCARD = """<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem("ew-bcard")==="1"||/[?&]dev=/.test(location.search)){d.classList.add("bc-off");return}sessionStorage.setItem("ew-bcard","1")}catch(e){}var y=scrollY,n=["pointerdown","wheel","touchmove","keydown","scroll"],f=function(e){if(e&&e.type==="scroll"&&Math.abs(scrollY-y)<8)return;d.classList.add("bc-done");n.forEach(function(k){removeEventListener(k,f,true)})};n.forEach(function(k){addEventListener(k,f,{capture:true,passive:true})});setTimeout(f,1700)})()</script>
+BCARD = """<script>(function(){var d=document.documentElement;try{if(sessionStorage.getItem("ew-bcard")==="1"||/[?&]dev=/.test(location.search)){d.classList.add("bc-off");return}sessionStorage.setItem("ew-bcard","1")}catch(e){}var y=scrollY,n=["pointerdown","wheel","touchmove","keydown","scroll"],f=function(e){if(e&&e.type==="scroll"&&Math.abs(scrollY-y)<8)return;d.classList.add("bc-done");n.forEach(function(k){removeEventListener(k,f,true)})};n.forEach(function(k){addEventListener(k,f,{capture:true,passive:true})});setTimeout(function(){n.forEach(function(k){removeEventListener(k,f,true)})},1700)})()</script>
 <div class="bcard" id="bcard" aria-hidden="true">
-  <div class="bc-in">
+  <div class="bc-a">""" + "".join(bomb_word(x, i, 0) for i, x in enumerate(["BUILT", "WITH", "CLAUDE"])) + """</div>
+  <div class="bc-b">
     """ + mark("bc-mark") + """
-    <p class="bc-l1">Built with Claude</p>
+    <p class="bc-k">""" + "".join(bomb_word(x, i, 1) for i, x in enumerate(["DESIGNED", "WITH"])) + """</p>
+    <p class="bc-big">""" + "".join(bomb_word(x, i + 2, 2) for i, x in enumerate(["CLAUDE", "FABLE"])) + """</p>
     <i class="bc-rule"></i>
-    <p class="bc-l2">Designed with Claude Fable</p>
   </div>
 </div>
 """

@@ -214,7 +214,7 @@ export function initSite() {
     const d = document.documentElement, n = c.cloneNode(true); d.classList.remove("bc-off", "bc-done"); c.replaceWith(n);
     const ev = ["pointerdown", "wheel", "touchmove", "keydown", "scroll"], f = (e) => { if (e && e.type === "scroll" && scrollY > 8) return; d.classList.add("bc-done"); ev.forEach((k) => removeEventListener(k, f, true)); };
     setTimeout(() => ev.forEach((k) => addEventListener(k, f, { capture: true, passive: true })), 120);
-    setTimeout(f, 1700);
+    setTimeout(() => ev.forEach((k) => removeEventListener(k, f, true)), 1700);
   });
 
 }
