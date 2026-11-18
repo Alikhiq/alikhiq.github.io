@@ -78,7 +78,7 @@
       const y = (1 - k) * -60 + Math.sin(t * 1.7 + i * 0.8) * 7 * sway, r = Math.sin(t * 1.3 + i * 1.1) * 2.2 * sway, x = Math.sin(t * 1.1 + i) * 4 * sway;
       c.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${r.toFixed(2)}deg)`; c.style.opacity = (k * (1 - q)).toFixed(3);
       const sh = Math.max(0, Math.sin(t * 2.4 - i * 0.9)) ** 6; c.style.filter = `brightness(${(1 + 0.45 * sh).toFixed(2)})${(1 - k) > 0.02 ? ` blur(${((1 - k) * 12).toFixed(1)}px)` : ''}${q > 0.01 ? ` blur(${(q * 8).toFixed(1)}px)` : ''}`;
-      c.style.textShadow = `0 0 ${(24 * sh).toFixed(1)}px rgba(214,236,255,${(0.6 * sh).toFixed(2)})`; }); }
+      c.style.textShadow = c.parentNode.dataset.chrome ? 'none' : `0 0 ${(24 * sh).toFixed(1)}px rgba(214,236,255,${(0.6 * sh).toFixed(2)})`; }); }
 
   // ANY SHADE. : a wave of tint runs through the letters (70 -> 05 VLT), then they clear
   function anyShade(cs, t, a, b) { rise(cs, t, a, b, { st: 0.03 });
@@ -105,4 +105,37 @@
     [...el.querySelectorAll('.ln')].forEach((l, i) => { const k = E.outExpo(C((t - a - i * 0.18) / 0.8)); const q = exitK(t, b, 0); l.style.opacity = (k * (1 - q)).toFixed(3); l.style.transform = `translateY(${((1 - k) * 18).toFixed(1)}px)`; l.style.display = 'inline-block'; }); el.style.opacity = 1; }
 
   window.MTKT = { letters, decode, light, heat, glare, rise, privacy, controlled, staysOut, cool, anyShade, samePrice, odometer, roll, typewrite, fineLines };
+})();
+
+// ---- premium finish: chrome lettering with a travelling specular sweep, bevel + depth shadows, star glints
+(function () {
+  const GRAD = {
+    gold: 'linear-gradient(180deg,#FFF7D6 0%,#FFE28C 20%,#F6CA4B 40%,#B9821A 54%,#E9B83A 64%,#FFE7A2 84%,#FFF6DA 100%)',
+    silver: 'linear-gradient(180deg,#FFFFFF 0%,#F4F1E8 34%,#AEB0A8 52%,#E6E4DB 66%,#FFFFFF 100%)',
+    obsidian: 'linear-gradient(180deg,#45473F 0%,#141512 38%,#000000 54%,#22241F 70%,#4A4C44 100%)' };
+  const SHADOW = {
+    gold: 'drop-shadow(0 4px 0 rgba(122,82,8,.85)) drop-shadow(0 16px 26px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(246,190,60,.22))',
+    silver: 'drop-shadow(0 3px 0 rgba(90,92,86,.8)) drop-shadow(0 14px 24px rgba(0,0,0,.6))',
+    obsidian: 'drop-shadow(0 3px 0 rgba(160,158,148,.45)) drop-shadow(0 18px 22px rgba(60,52,30,.35))' };
+  const SHEEN = (a) => `linear-gradient(100deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,${a}) 50%,rgba(255,255,255,0) 62%,rgba(255,255,255,0) 100%)`;
+  // apply to a word (or odometer) element: every glyph carrier gets the chrome fill
+  function chrome(el, kind) {
+    el.dataset.chrome = kind; el.style.filter = SHADOW[kind];
+    const glyphs = [...el.querySelectorAll('.c, .odo .strip span')];
+    glyphs.forEach((c) => { c.style.backgroundImage = `${SHEEN(kind === 'obsidian' ? 0.55 : 0.95)}, ${GRAD[kind]}`;
+      c.style.backgroundRepeat = 'no-repeat'; c.style.backgroundSize = '520px 100%, 100% 100%';
+      c.style.webkitBackgroundClip = 'text'; c.style.backgroundClip = 'text'; c.style.color = 'transparent'; c.style.webkitTextFillColor = 'transparent'; });
+    el._glyphs = glyphs; el._off = null;
+  }
+  // a sweep travels across the whole word (letters offset by their own x so it reads as one beam)
+  function sweep(el, t, a, d = 0.9) {
+    if (!el._glyphs) return; if (!el._off) { const r0 = el.getBoundingClientRect().left; el._off = el._glyphs.map((c) => c.getBoundingClientRect().left - r0); }
+    const w = el.getBoundingClientRect().width || 1000; const k = (t - a) / d;
+    const x = k < 0 || k > 1 ? -2000 : -520 + (w + 1040) * (k * k * (3 - 2 * k));
+    el._glyphs.forEach((c, i) => { c.style.backgroundPosition = `${(x - el._off[i] - 260).toFixed(1)}px 0, 0 0`; });
+  }
+  // four-point star glint
+  function glint(g, t, a, d = 0.55) { const k = (t - a) / d; if (k <= 0 || k >= 1) { g.style.opacity = 0; return; }
+    const s = Math.sin(Math.PI * k); g.style.opacity = s.toFixed(3); g.style.transform = `translate(-50%,-50%) scale(${(0.3 + s * 0.9).toFixed(3)}) rotate(${(k * 90).toFixed(1)}deg)`; }
+  Object.assign(window.MTKT, { chrome, sweep, glint });
 })();

@@ -6,7 +6,7 @@ usage: mix_mtk_v2.py <sfx_dir> <out.wav>"""
 import subprocess, sys
 import numpy as np
 
-SR, DUR = 48000, 39.0
+SR, DUR = 48000, 42.0
 SFX, OUT = sys.argv[1], sys.argv[2]
 
 def load(name):
@@ -41,7 +41,7 @@ def place(name, t, db=0.0, anchor='start', trim=None, fin=0.0, fout=0.0, start=0
 place('drone_2', 0.0, -13, trim=6.2, fin=0.8, fout=1.2)
 place('drone_1', 5.2, -19, trim=15.0, fin=1.2, fout=2.5)
 place('drone_2', 18.5, -20, trim=16.0, fin=2.0, fout=2.5)
-place('drone_1', 33.6, -18, trim=5.4, fin=0.6, fout=1.6)
+place('drone_1', 33.5, -19, trim=8.5, fin=0.8, fout=2.0)
 # ---- 0-5.6 intro: chrome glint down the bolt, glass hum on the obsidian, riser -> impact on the reveal, wipe
 place('chrome_1', 0.15, -5, fout=0.6)
 place('glass_1', 1.45, -11, trim=1.7, fin=0.15, fout=0.5)
@@ -69,12 +69,19 @@ for i in range(5): place('tick_2', 25.80 + i * 0.12, -11)  # swatches land
 place('whoosh_1', 26.55, -13)                          # ANY SHADE.
 place('slam_2', 27.70, -3, anchor='peak')               # SAME PRICE.
 place('slot_1', 30.55, -6, fout=0.4)                    # $299 odometer
-place('whoosh_2', 33.70, -4)                           # wipe to the end card
-place('chrome_1', 34.35, -7, fout=0.8)                  # light sweep across the paper set
-place('slot_2', 35.95, -6, trim=1.4, fout=0.3)          # phone digits roll
-place('whoosh_1', 36.90, -17)                          # underline traces
-place('typing_1', 37.10, -11, trim=1.3, fout=0.2)       # URL typed
-place('chime_1', 38.15, -15, fout=0.7)                  # button
+# ---- ending: OPEN FOR BOOKINGS map -> BOOK NOW end card
+place('whoosh_1', 33.68, -10)                          # iris into the map
+place('pin_1', 34.58, -3, anchor='peak')                # pin lands on the shop
+place('slam_2', 34.55, -9, anchor='peak')               # BOOKINGS. lands
+place('pull_1', 34.60, -7, fin=0.2, fout=0.8)           # camera pulls back over the neighbourhood
+for tt in (34.72, 35.02, 35.12, 35.62, 36.12): place('tick_1', tt, -16)  # landmark tags
+place('whoosh_2', 37.35, -4)                           # wipe to the end card
+place('chrome_1', 37.95, -8, fout=0.8)                  # light sweep across the paper set
+place('slam_2', 38.55, -3, anchor='peak')               # BOOK NOW.
+place('slot_2', 39.05, -6, trim=1.4, fout=0.3)          # phone digits roll
+place('whoosh_1', 40.00, -17)                          # underline traces
+place('typing_1', 40.20, -11, trim=1.3, fout=0.2)       # URL typed
+place('chime_1', 41.25, -14, fout=0.6)                  # button
 
 mix = bus[:int(SR * DUR)]
 fade = int(0.5 * SR); mix[-fade:] *= np.linspace(1, 0, fade)[:, None]

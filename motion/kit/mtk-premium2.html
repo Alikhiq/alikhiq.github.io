@@ -56,6 +56,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
 #privSq{left:80px;right:80px}#ctrlRule{left:150px;right:150px;top:1386px;height:4px;transform-origin:50% 50%}
 #glStreak{position:absolute;top:1170px;width:1400px;height:260px;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(50% 9% at 50% 50%,rgba(255,255,255,.95),rgba(200,222,255,.5) 40%,rgba(150,190,255,0) 100%)}
 #phLine{position:absolute;left:190px;right:190px;top:1282px;height:4px;background:var(--bay);transform-origin:0 50%}
+.glint{position:absolute;width:150px;height:150px;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(circle,rgba(255,255,255,1) 0,rgba(255,250,230,.55) 9%,rgba(255,240,200,0) 32%),linear-gradient(90deg,rgba(255,255,255,0) 0,rgba(255,255,255,.95) 49%,rgba(255,255,255,.95) 51%,rgba(255,255,255,0) 100%) center/100% 3px no-repeat,linear-gradient(0deg,rgba(255,255,255,0) 0,rgba(255,255,255,.95) 49%,rgba(255,255,255,.95) 51%,rgba(255,255,255,0) 100%) center/3px 100% no-repeat}
 .cur{display:inline-block;width:.62em;height:1.05em;margin-left:.12em;vertical-align:-.18em;background:currentColor}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
 .grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.05;mix-blend-mode:overlay}
@@ -119,12 +120,13 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--b
   <div class="word" id="wBooking" style="top:262px;font-size:178px;color:var(--gold)">bookings.</div>
   <div class="label" id="lCity" style="top:470px">Columbus, Ohio</div>
   <div class="label" id="lAddr" style="top:1760px">5220 Trabue Rd · Suite D</div>
+  <div class="glint" id="gl1"></div><div class="glint" id="gl2"></div><div class="glint" id="gl3"></div><div class="glint" id="gl4"></div>
   <div class="vig"></div>
   <div class="ground" id="goldIn"></div>
   <div class="ground" id="paperIn"><div class="pfloor"></div><div class="psweep" id="sweepIn"></div></div>
   <div class="ground" id="goldOut"></div>
   <div class="ground" id="paperOut"><div class="pfloor"></div><div class="psweep" id="sweepOut"></div><div id="endGL" style="position:absolute;inset:0;transform:translateY(-330px)"></div>
-    <div class="word" id="wBookNow" style="top:880px;font-size:156px">Book now.</div><div id="bookShake"></div>
+    <div class="word" id="wBookNow" style="top:880px;font-size:156px">Book now.</div><div id="bookShake"></div><div class="glint" id="gl5" style="mix-blend-mode:normal"></div>
     <div id="rule" style="top:1070px"></div>
     <div class="word" id="wPhone" style="top:1110px;font-size:104px">614-822-0494</div>
     <div id="phLine" style="top:1232px"></div>
@@ -145,6 +147,7 @@ $('.stage').prepend(window.BGFX.canvas);
 const T = window.MTKT; const W = {}; ['wLight', 'wHeat', 'wGlare', 'wPriv', 'wCtrl', 'wOut', 'wYou', 'wCool', 'wAny', 'wSame'].forEach((id) => (W[id] = T.letters($('#' + id))));
 W.price = T.odometer($('#price')); W.wPhone = T.odometer($('#wPhone'));
 ['wOpen', 'wBooking', 'wBookNow'].forEach((id) => (W[id] = T.letters($('#' + id))));
+[['wPriv','silver'],['wCtrl','gold'],['wYou','silver'],['wCool','gold'],['wSame','gold'],['price','gold'],['wOpen','silver'],['wBooking','gold'],['wBookNow','obsidian'],['wPhone','obsidian']].forEach(([id, k]) => T.chrome($('#' + id), k));
 const MAPC = window.MTKMAP.create(); $('#mapWrap').appendChild(MAPC.cv); MAPC.cv.style.cssText = 'position:absolute;left:0;top:0;width:1080px;height:1920px';
 function type(cs, t, a, b, o = {}) { const st = o.st ?? 0.028, d = o.d ?? 0.9, dy = o.dy ?? 70;
   cs.forEach((c, i) => { const k = E.outExpo(seg(t, a + i * st, a + i * st + d)); const q = b == null ? 0 : E.inOutSine(seg(t, b + i * 0.012, b + i * 0.012 + 0.45));
@@ -283,6 +286,12 @@ window.seek = async (t) => {
     uWall: ins(17.3, 21.0, 0.5, 0.6), uCool: ins(20.9, 25.5, 0.7, 0.6), uPrice: ins(30.2, 33.9, 0.6, 0.5), winY: 1 - (520 + 262) / 1920 });
   const swp = (el, a, b) => { const k = seg(t, a, b); el.style.transform = `translateX(${lerp(-200, 1500, E.inOutSine(k)).toFixed(1)}px) rotate(18deg)`; el.style.opacity = (Math.sin(Math.PI * k) * 0.9).toFixed(3); };
   swp($('#sweepIn'), 0.4, 4.6); swp($('#sweepOut'), 37.9, 41.8);
+  // premium finish: light sweeps after each word lands, star glints on the money lines
+  [['wPriv', 14.55], ['wCtrl', 16.15], ['wYou', 22.35], ['wCool', 23.3], ['wSame', 28.0], ['price', 32.05], ['wOpen', 34.75], ['wBooking', 34.9], ['wBookNow', 38.85], ['wPhone', 40.35]].forEach(([id, a]) => T.sweep($('#' + id), t, a));
+  T.sweep($('#price'), t, 33.0);
+  const gp = (el, fx, fy) => { const r = $(el).getBoundingClientRect(); return [r.left + r.width * fx, r.top + r.height * fy]; };
+  const G = [['#gl1', '#price', 0.86, 0.22, 32.25], ['#gl2', '#price', 0.2, 0.3, 32.6], ['#gl3', '#wBooking', 0.93, 0.25, 35.25], ['#gl4', '#wSame', 0.9, 0.2, 28.35], ['#gl5', '#wBookNow', 0.95, 0.22, 39.1]];
+  G.forEach(([g, el, fx, fy, a]) => { const gg = $(g); if (t > a - 0.05 && t < a + 0.6) { const [x, y] = gp(el, fx, fy); gg.style.left = x + 'px'; gg.style.top = y + 'px'; } T.glint(gg, t, a); });
   grainJitter($('#grain'), t); await flushDecodes();
 };
 </script></body></html>
