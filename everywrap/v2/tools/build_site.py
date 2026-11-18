@@ -87,7 +87,7 @@ def business():
             "email": SITE["email"], "slogan": SITE["tagline"], "image": SITE["domain"] + "/assets/share.jpg",
             "address": {"@type": "PostalAddress", "streetAddress": SITE["locations"][0]["street"], "addressLocality": SITE["locations"][0]["city"], "addressRegion": SITE["locations"][0]["region"], "postalCode": SITE["locations"][0]["zip"], "addressCountry": "US"},
             "location": [{"@type": "Place", "name": f"{SITE['name']} {x['city']}", "address": {"@type": "PostalAddress", "streetAddress": x["street"], "addressLocality": x["city"], "addressRegion": x["region"], "postalCode": x["zip"], "addressCountry": "US"}, **({"telephone": tel(x)} if tel(x) else {}), **({"hasMap": x["reviews"]} if x.get("reviews") else {})} for x in SITE["locations"]],
-            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS] + [{"@type": "City", "name": "Dearborn Heights, Michigan"}], "sameAs": [u for _, u in SITE["instagram"]], "priceRange": "$$",
+            "areaServed": [{"@type": "City", "name": f"{c}, {SITE['region']}"} for c in AREAS] + [{"@type": "City", "name": "Dearborn Heights, Michigan"}], "sameAs": [u for _, u in SITE["instagram"]] + [x["reviews"] for x in SITE["locations"] if x.get("reviews")], "priceRange": "$$",
             "knowsAbout": ["Vinyl vehicle wraps", "Paint protection film", "Window tint", "Body kits", "Fleet graphics"]}
 
 def head(root, path, title, desc, mode="personal", ch="", lock=False, extra_ld=(), glow=None):
@@ -237,6 +237,8 @@ def rail():
     return """<nav class="rail" aria-label="Services"><ol class="glass" id="rail"></ol></nav>"""
 
 def maps(loc):
+    if loc.get("reviews"):  # the Google listing itself, so Directions lands on the business
+        return loc["reviews"]
     q = f"{loc['street']}, {loc['city']}, {loc['region']} {loc['zip']}"
     return "https://www.google.com/maps/search/?api=1&query=" + q.replace(",", "%2C").replace(" ", "+")
 
@@ -252,7 +254,7 @@ def loc_extra(x):
     """Who runs the location, their number, and the Google reviews link when it is live."""
     who = f'<span class="loc-team">Run and installed by {e(x["team"])}</span>' if x.get("team") else ""
     ph = f'<a class="loc-tel" href="tel:{tel(x)}">{phone_txt(x)}</a>' if tel(x) else ""
-    rv = f'<a class="loc-rev" href="{e(x["reviews"])}" target="_blank" rel="noopener"><span aria-hidden="true">★★★★★</span> Google reviews</a>' if x.get("reviews") else ""
+    rv = f'<a class="loc-rev" href="{e(x["reviews"])}" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our Google reviews</a>' if x.get("reviews") else ""
     return who + ph + rv
 
 def locations():
