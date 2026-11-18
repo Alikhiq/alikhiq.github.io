@@ -1181,3 +1181,5 @@ html.intro-on{overflow:hidden}
 .cm.typing{letter-spacing:3px;animation:micpulse 1.2s ease-in-out infinite}
 .cform{display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--line)}
 .cform input{flex:1;min-width:0;font:500 16px/1.2 var(--ui);padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.loc-ig{display:inline-block;font:600 13px/1.2 var(--ui);color:var(--fg);text-decoration:none;opacity:.85}
+.loc-ig:hover,.loc-tel:hover,.loc-rev:hover{text-decoration:underline}

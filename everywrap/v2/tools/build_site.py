@@ -255,7 +255,9 @@ def loc_extra(x):
     who = f'<span class="loc-team">Run and installed by {e(x["team"])}</span>' if x.get("team") else ""
     ph = f'<a class="loc-tel" href="tel:{tel(x)}">{phone_txt(x)}</a>' if tel(x) else ""
     rv = f'<a class="loc-rev" href="{e(x["reviews"])}" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our Google reviews</a>' if x.get("reviews") else ""
-    return who + ph + rv
+    ig = x.get("instagram", "")
+    ig = f'<a class="loc-ig" href="{e(ig)}" target="_blank" rel="noopener">@{e(ig.rstrip("/").rsplit("/", 1)[-1])}</a>' if ig else ""
+    return who + ph + ig + rv
 
 def locations():
     """The two places EveryWrap works from. Shown wherever the service area is."""
