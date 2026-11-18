@@ -34,7 +34,7 @@ function openQuote(pre = {}) {
   menu(false); ev("book_open", pre.svc || "");
   if (pre.loc) { const r = $(`#qForm input[name=qLoc][value="${pre.loc}"]`); if (r) r.checked = true; }
   const want = pre.svc || (S.commercial ? "fleet" : S.ch); note = pre.note || "";
-  $("#qSvc").innerHTML = GROUPS.map(([g, items]) => `<span class="legend">${g}</span><div class="picks" role="group" aria-label="${g}">` + items.map(([id, label, grp, row]) => { const p = grp ? fromPrice(grp, row, 0) : null; return `<label><input type="checkbox" id="qS_${id}" value="${label}"${id === want ? " checked" : ""}>${label}${p ? `<small>from ${money(p)}</small>` : ""}</label>`; }).join("") + "</div>").join("");
+  $("#qSvc").innerHTML = GROUPS.map(([g, items]) => `<span class="legend">${g}${g === "For your car" ? "" : "<em class='who'> · designed and quoted by Ali</em>"}</span><div class="picks" role="group" aria-label="${g}">` + items.map(([id, label, grp, row]) => { const p = grp ? fromPrice(grp, row, 0) : null; return `<label><input type="checkbox" id="qS_${id}" value="${label}"${id === want ? " checked" : ""}>${label}${p ? `<small>from ${money(p)}</small>` : ""}</label>`; }).join("") + "</div>").join("");
   if (pre.note && (want === "design" || want === "print") && !pre.car) { $("#qCar").value = pre.note; note = ""; }
   if (pre.car) $("#qCar").value = pre.car;
   $("#qFin").value = fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase();
@@ -207,7 +207,7 @@ export function initSite() {
     const card = $(".team-card", st); if (!card) return;
     // Hover, focus or tap a person's card: the photo becomes their solo portrait. Leave it and the pair comes back.
     const sec = st.closest(".team"), solo = document.createElement("img");
-    solo.className = "team-solo"; solo.alt = ""; solo.decoding = "async"; solo.width = 928; solo.height = 1152; card.insertBefore(solo, $(".team-glare", card));
+    solo.className = "team-solo"; solo.alt = ""; solo.decoding = "async"; solo.width = 1200; solo.height = 1500; card.insertBefore(solo, $(".team-glare", card));
     let held = null;
     const show = (li) => { if (!li || !li.dataset.shot) return; $$(".tp", sec).forEach((x) => x.classList.toggle("on", x === li)); solo.src = li.dataset.shot; solo.alt = li.dataset.alt || ""; card.classList.add("solo"); };
     const back = () => { if (held) return; $$(".tp", sec).forEach((x) => x.classList.remove("on")); card.classList.remove("solo"); };

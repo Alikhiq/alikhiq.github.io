@@ -263,12 +263,28 @@ def face(root, x, cls="face"):
     """The installer's round photo, when one exists for that location."""
     n = (x.get("team") or "").split()[0].lower() if x.get("team") else ""
     f = f"assets/team/{n}-face.webp"
-    return f'<img class="{cls}" src="{root}{f}" alt="" width="320" height="320" loading="lazy">' if n and os.path.exists(os.path.join(ROOT, f)) else ""
+    return f'<img class="{cls}" src="{root}{f}?v=2" alt="" width="320" height="320" loading="lazy">' if n and os.path.exists(os.path.join(ROOT, f)) else ""
 
 def crew(root):
     """A compact line: who installs, where, with a tap to text them."""
     chips = "".join(f'<a class="crew-chip" href="{("sms:" + tel(x)) if tel(x) else "#"}"{"" if tel(x) else " data-quote data-loc=" + chr(34) + x["id"] + chr(34)}>{face(root, x)}<span><b>{e(x["team"])}</b>{e(x["city"])}, {x["region"]}</span></a>' for x in SITE.get("locations", []) if x.get("team"))
     return f'<div class="crew" data-reveal><span class="crew-l">Installed by</span>{chips}</div>' if chips else ""
+
+def lead_card(root, svc="fleet"):
+    """The person who designs and sells commercial and design work, on the business and design pages."""
+    L = SITE.get("commercial_lead")
+    if not L:
+        return ""
+    n = L["name"].split()[0].lower()
+    pic = f"assets/team/{n}-face.webp"
+    av = f'<img class="lead-face" src="{root}{pic}?v=2" alt="" width="320" height="320" loading="lazy">' if os.path.exists(os.path.join(ROOT, pic)) else f'<span class="lead-face mono" aria-hidden="true">{e(L["name"][0])}</span>'
+    ig = L.get("instagram", "")
+    links = (f'<a href="tel:{tel(L)}">{phone_txt(L)}</a>' if tel(L) else "") + (f'<a href="{e(ig)}" target="_blank" rel="noopener">@{e(ig.rstrip("/").rsplit("/", 1)[-1])}</a>' if ig else "")
+    return f"""<section class="band leadband" aria-labelledby="leadh">
+  <div class="lead" data-reveal>{av}<div class="lead-t"><span class="lead-k">Your designer and fleet contact</span><h2 id="leadh">{e(L['name'])}, {e(L['role'])}</h2><p>{e(L['does'])}</p>
+    <p class="lead-a">{links}<button class="btn pri" type="button" data-quote="{svc}">Send {e(L['name'])} your job</button></p></div></div>
+</section>
+"""
 
 def team(root):
     """The people who do the work, in a card that tilts in 3D with the pointer or the scroll."""
@@ -279,7 +295,7 @@ def team(root):
     def card(x, side):
         links = (f'<a href="tel:{tel(x)}">{phone_txt(x)}</a><a href="sms:{tel(x)}">Text</a>' if tel(x) else "") + (f'<a href="{e(x["instagram"])}" target="_blank" rel="noopener">Instagram</a>' if x.get("instagram") else "")
         n = x["team"].split()[0].lower()
-        shot = f" data-shot='{root}assets/team/{n}.webp' data-alt='{e(x['team'])} of EveryWrap in a black EveryWrap polo in the wrap studio'" if os.path.exists(os.path.join(ROOT, f"assets/team/{n}.webp")) else ""
+        shot = f" data-shot='{root}assets/team/{n}.webp?v=2' data-alt='{e(x['team'])} of EveryWrap in a black EveryWrap polo in the wrap studio'" if os.path.exists(os.path.join(ROOT, f"assets/team/{n}.webp")) else ""
         return f"<li class='tp tp-{side}' tabindex='0'{shot}>{face(root, x, 'tp-face')}<div><b>{e(x['team'])}</b><span>Runs and installs at {e(x['name'])}</span><p>{links}<button type='button' data-quote data-loc='{x['id']}'>Book with {e(x['team'])}</button></p></div></li>"
     pins = "".join(f'<span class="pin pin-{s}" aria-hidden="true"><b>{e(x["team"])}</b>{e(x["city"])}</span>' for x, s in zip(people, ("l", "r")) if x)
     cards = "".join(card(x, s) for x, s in zip(people, ("l", "r")) if x)
@@ -290,8 +306,8 @@ def team(root):
   <div class="team-in">
     <div class="team-stage" data-tilt data-reveal>
       <figure class="team-card">
-        <img class="team-bg" src="{root}assets/team/duo-1200.webp" alt="" aria-hidden="true" width="1200" height="1490" loading="lazy">
-        <img class="team-img" src="{root}assets/team/duo-1200.webp" srcset="{root}assets/team/duo-1200.webp 1200w, {root}assets/team/duo-2000.webp 2000w" sizes="(max-width: 760px) 88vw, 520px" alt="{e(c['alt'])}" width="1200" height="1490" loading="lazy">
+        <img class="team-bg" src="{root}assets/team/duo-1200.webp?v=2" alt="" aria-hidden="true" width="1200" height="1490" loading="lazy">
+        <img class="team-img" src="{root}assets/team/duo-1200.webp?v=2" srcset="{root}assets/team/duo-1200.webp?v=2 1200w, {root}assets/team/duo-2000.webp?v=2 2000w" sizes="(max-width: 760px) 88vw, 520px" alt="{e(c['alt'])}" width="1200" height="1490" loading="lazy">
         <i class="team-glare" aria-hidden="true"></i>{pins}
       </figure>
     </div>
@@ -873,7 +889,7 @@ def page_commercial():
   <div class="bandhead" data-reveal><h2 id="cwh">{e(c['work_h2'])}</h2></div>
   {wall(r, tag='commercial', filters=False, more=False)}
 </section>
-""" + team(r) + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
+""" + lead_card(r, "fleet") + team(r) + faq(c["faq"], "Fleet wrap questions") + areas(r) + final(com=True) + "</main>\n" + footer(r) + chrome(r, com=True)
     write("commercial/index.html", head(r, "commercial", c["title"], c["desc"], mode="commercial", extra_ld=[service_ld("Fleet graphics and commercial vehicle wraps", "commercial", c["desc"], "fleet"), faq_ld(c["faq"])]) + body)
 
 def page_pricing():
@@ -1045,7 +1061,7 @@ def page_design():
   <div class="bandhead" data-reveal><h2 id="dwh">{e(c['work_h2'])}</h2></div>
   <div class="strip" data-reveal>{shots}</div>
 </section>
-""" + faq(c["faq"], "Design and print questions") + areas(r) + f"""<section class="final" aria-labelledby="finalh">
+""" + lead_card(r, "design") + faq(c["faq"], "Design and print questions") + areas(r) + f"""<section class="final" aria-labelledby="finalh">
   <h2 id="finalh" data-reveal>Send the idea. Or send the files.</h2>
   <p data-reveal>Tell us what you need designed or printed. You get the price in writing, and nothing is printed until you approve the proof.</p>
   <div class="final-cta" data-reveal><button class="book live" type="button" data-quote="design"><i class="book-dot" aria-hidden="true"></i><span class="book-t"><b>Start a design</b><small>Or order a print</small></span><span class="book-go" aria-hidden="true">{ARROW}</span></button></div>
