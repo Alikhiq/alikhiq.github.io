@@ -58,8 +58,8 @@
     // labels
     g.textBaseline = 'middle';
     const chip = (x, y, text, al, o = {}) => { if (al <= 0.01) return; g.save(); g.globalAlpha = al; g.font = `600 ${o.fs || 24}px "IBM Plex Mono", monospace`;
-      const sp = o.fs ? 0 : 3; const tw = g.measureText(text).width + sp * text.length; const bx = x + (o.dx ?? 24), by = y + (o.dy ?? -40);
-      g.strokeStyle = o.gold ? 'rgba(246,202,75,.9)' : 'rgba(200,201,193,.7)'; g.lineWidth = 2; g.beginPath(); g.moveTo(x, y); g.lineTo(bx, by + 20); g.stroke();
+      const sp = o.fs ? 0 : 3; const tw = g.measureText(text).width + sp * text.length; const bx = o.left ? Math.max(28, x - (tw + 32) - o.left) : x + (o.dx ?? 24), by = y + (o.dy ?? -40);
+      g.strokeStyle = o.gold ? 'rgba(246,202,75,.9)' : 'rgba(200,201,193,.7)'; g.lineWidth = 2; g.beginPath(); g.moveTo(x, y); g.lineTo(o.left ? bx + tw + 32 : bx, by + 20); g.stroke();
       g.fillStyle = o.gold ? '#F6CA4B' : 'rgba(10,11,9,.88)'; g.fillRect(bx, by, tw + 32, 40); g.fillStyle = o.gold ? '#F6CA4B' : '#C8C9C1'; g.fillRect(bx, by, 5, 40);
       g.fillStyle = o.gold ? '#0A0B09' : '#F2EFE5'; let cx = bx + 18; for (const ch of text) { g.fillText(ch, cx, by + 21); cx += g.measureText(ch).width + sp; }
       g.fillStyle = o.gold ? '#0A0B09' : '#C8C9C1'; g.beginPath(); g.arc(x, y, 5, 0, 7); g.fill(); g.restore(); };
@@ -71,7 +71,7 @@
     const P = D.poi; const at = (k) => tx(P[k][0], P[k][1]);
     if (P.enterprise) { const [x, y] = at('enterprise'); chip(x, y, 'ENTERPRISE', a.ent, { dx: -250, dy: 50 }); }
     road('TRABUE RD', a.trabue);
-    if (P.walmart) { const [x, y] = at('walmart'); chip(x, y, 'WALMART SUPERCENTER', a.wal, { dx: 30, dy: -100 }); }
+    if (P.walmart) { const [x, y] = at('walmart'); chip(x, y, 'WALMART SUPERCENTER', a.wal, { left: 30, dy: -100 }); }
     if (P.ups) { const [x, y] = at('ups'); chip(x, y, 'UPS COLUMBUS HUB', a.ups, { dx: -330, dy: 60 }); }
     road('I-70', a.mw); road('I-270', a.mw); road('HILLIARD-ROME RD', a.mw * 0.8);
     if (a.pin > 0.6) chip(px, py - 70, 'MO TINT', C((a.pin - 0.6) / 0.3), { gold: true, dx: 40, dy: -120, fs: 30 });
