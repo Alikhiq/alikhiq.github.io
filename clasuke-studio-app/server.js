@@ -51,9 +51,11 @@ async function compressed(file, st, enc) {
   return buf;
 }
 
+/** Writes a complete response. Returns true so callers can `return send(...)` as "handled". */
 function send(res, status, headers, body) {
   res.writeHead(status, { ...SECURITY, ...headers });
   res.end(body);
+  return true;
 }
 
 /** Maps a URL path to a file inside dist/, or null when it tries to leave it. */
