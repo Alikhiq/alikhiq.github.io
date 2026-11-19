@@ -62,7 +62,12 @@ h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-
 }
 .titlebar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
 .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
-.titlebar .name { margin-left: 8px; font-size: 13px; color: var(--muted); }
+.titlebar .name { margin-left: 8px; font-size: 13px; color: var(--muted); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lang {
+  margin-left: auto; appearance: none; cursor: pointer; border: 1px solid var(--line); background: var(--panel);
+  color: var(--text); font: 500 12px var(--mono); padding: 4px 10px; border-radius: 999px; flex: none;
+}
+.lang:hover { border-color: var(--muted); }
 .app-body { display: grid; grid-template-columns: 84px minmax(0, 1fr); min-height: 520px; }
 .rail { border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; padding: 12px 8px; }
 .rail button {
@@ -181,26 +186,29 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
 
   <div class="hero">
     <h1>Every sound gets a <span class="c1">color</span> and a <span class="c3">shape</span>.</h1>
-    <p>A music studio for his PC where you watch the song instead of reading menus. Press play: drums, bass, keys and voice each flow as their own river. Tap a river to mute it, tap the ring to change the beat, or drop in one of his own songs.</p>
+    <p>A music studio for his PC where you watch the song instead of reading menus. Press play: drums, bass, keys and voice each flow as their own river. Tap a river to mute it, tap the ring to change the beat, or drop in one of his own songs. Hit ES in the window to see it in Spanish.</p>
   </div>
 
   <!-- ================= APP WINDOW ================= -->
   <div class="app" id="app">
-    <div class="titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="name">Tidepool — Untitled idea</span></div>
+    <div class="titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="name" data-es="Tidepool — Idea sin título">Tidepool — Untitled idea</span>
+      <button class="lang" id="lang" type="button" aria-label="Cambiar a español">ES</button></div>
     <div class="app-body">
       <nav class="rail" aria-label="Modes">
         <button type="button" aria-current="true" data-go="studio" id="rail-studio">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8c3-3 6 3 10 0s7 3 10 0M3 13c3-3 6 3 10 0s7 3 10 0M3 18c3-3 6 3 10 0s7 3 10 0"/></svg>Studio</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8c3-3 6 3 10 0s7 3 10 0M3 13c3-3 6 3 10 0s7 3 10 0M3 18c3-3 6 3 10 0s7 3 10 0"/></svg><span data-es="Estudio">Studio</span></button>
         <button type="button" data-go="make" id="rail-make">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="10" r="5"/><circle cx="17" cy="10" r="5"/><circle cx="13" cy="17" r="5"/></svg>Make</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="10" r="5"/><circle cx="17" cy="10" r="5"/><circle cx="13" cy="17" r="5"/></svg><span data-es="Crear">Make</span></button>
         <button type="button" data-go="split" id="rail-split">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13h6M9 13c4 0 5-7 14-7M9 13c4 0 5 7 14 7M9 13h14"/></svg>Split</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13h6M9 13c4 0 5-7 14-7M9 13c4 0 5 7 14 7M9 13h14"/></svg><span data-es="Separar">Split</span></button>
         <button type="button" data-go="voice" id="rail-voice">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="8" height="13" rx="4"/><path d="M5 12a8 8 0 0 0 16 0M13 20v3"/></svg>Voice</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="8" height="13" rx="4"/><path d="M5 12a8 8 0 0 0 16 0M13 20v3"/></svg><span data-es="Voz">Voice</span></button>
         <button type="button" data-go="notes" id="rail-notes">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h7M8 12h9M14 18h8M4 22h5"/></svg>Notes</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h7M8 12h9M14 18h8M4 22h5"/></svg><span data-es="Notas">Notes</span></button>
         <button type="button" data-go="finish" id="rail-finish">
-          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V14M10 21V9M15 21V5M20 21V11"/></svg>Finish</button>
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V14M10 21V9M15 21V5M20 21V11"/></svg><span data-es="Master">Finish</span></button>
+        <button type="button" data-go="live" id="rail-live">
+          <svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="20" height="14" rx="3"/><circle cx="13" cy="13" r="3"/></svg><span data-es="En vivo">Live</span></button>
       </nav>
 
       <div class="main">
@@ -209,10 +217,10 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
             <svg id="play-icon" viewBox="0 0 18 18"><path d="M4 2l12 7-12 7z" fill="currentColor"/></svg>
           </button>
           <label class="chip" for="tempo">BPM <input id="tempo" type="range" min="70" max="160" value="96"><span class="tabnum" id="tempo-val">96</span></label>
-          <span class="chip"><span id="key-chip">A minor</span></span>
+          <span class="chip"><span id="key-chip" data-es="La menor">A minor</span></span>
           <label class="drop" for="file" id="drop-label">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 11V2M4 6l4-4 4 4M2 11v3h12v-3"/></svg>
-            Drop one of his songs
+            <span data-es="Suelta una canción">Drop one of his songs</span>
           </label>
           <input id="file" type="file" accept="audio/*" hidden>
         </div>
@@ -226,19 +234,19 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
           <div class="status" id="status">Sample loop, made live in the browser. Press play.</div>
           <div class="dials">
             <div class="dial">
-              <span class="eyebrow">Beat ring</span>
+              <span class="eyebrow" data-es="Anillo de ritmo">Beat ring</span>
               <svg id="ring" viewBox="0 0 220 220" role="group" aria-label="16-step beat ring. Inner ring kick, middle snare, outer hats."></svg>
-              <span class="hint">Tap dots to change the beat</span>
+              <span class="hint" data-es="Toca los puntos para cambiar el ritmo">Tap dots to change the beat</span>
             </div>
             <div class="dial">
-              <span class="eyebrow">Key wheel</span>
+              <span class="eyebrow" data-es="Rueda de tonos">Key wheel</span>
               <svg id="wheel" viewBox="0 0 220 220" aria-label="Circle of fifths with the song's key lit up"></svg>
-              <span class="hint">Lit notes fit the song. Brightest is the chord playing now.</span>
+              <span class="hint" data-es="Las notas encendidas van con la canción. La más brillante es el acorde que suena.">Lit notes fit the song. Brightest is the chord playing now.</span>
             </div>
             <div class="dial">
-              <span class="eyebrow">Sound bloom</span>
+              <span class="eyebrow" data-es="Flor de sonido">Sound bloom</span>
               <canvas id="bloom" aria-label="Radial frequency display"></canvas>
-              <span class="hint">Lows on top, highs at the bottom. Longer means louder.</span>
+              <span class="hint" data-es="Graves arriba, agudos abajo. Más largo, más fuerte.">Lows on top, highs at the bottom. Longer means louder.</span>
             </div>
           </div>
         </div>
@@ -250,7 +258,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
   <section id="modes">
     <div class="sec-head">
       <span class="eyebrow">What he can do in it</span>
-      <h2>Five tools, each one a picture first</h2>
+      <h2>Six tools, each one a picture first</h2>
       <p>Each mode is built on an open-source project that runs on his own PC. No uploads, no credits, no waiting in a queue.</p>
     </div>
     <div class="modes">
@@ -284,6 +292,12 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
         <p>Pick a song he loves as the target. His track gets matched to its loudness and tone, and both show side by side so he can see how close they are.</p>
         <div class="engine"><span>Matchering</span><span>reference mastering</span></div>
       </article>
+      <article class="mode" id="mode-live">
+        <canvas data-art="live"></canvas>
+        <h3><svg viewBox="0 0 26 26" fill="none" stroke="var(--drums)" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="20" height="14" rx="3"/><circle cx="13" cy="13" r="3"/></svg>Live</h3>
+        <p>He already streams on Kick. One switch sends the rivers and bloom to OBS as an overlay, so chat watches the beat take shape. His own tracks become stream music and intro stingers, instead of other people's songs.</p>
+        <div class="engine"><span>OBS browser source</span><span>tracks from Make</span></div>
+      </article>
     </div>
   </section>
 
@@ -305,6 +319,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
           <tr><td>Melody to MIDI</td><td class="before">Play it back in by ear, note by note</td><td class="after">One tap from a hum or stem to MIDI blocks</td></tr>
           <tr><td>Vocals</td><td class="before">Needs a singer or a booked session</td><td class="after">His own trained voice model for demos</td></tr>
           <tr><td>Mastering</td><td class="before">Paid online service per track</td><td class="after">Match to a reference track, free and offline</td></tr>
+          <tr><td>Music on stream</td><td class="before">Other people's songs can get streams, VODs or clips flagged</td><td class="after">His own tracks as stream music, with the rivers as a live overlay</td></tr>
         </tbody>
       </table>
     </div>
@@ -318,7 +333,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
       <p>He gets a Windows installer. The look above is web code, so this page's visuals carry straight into the real app.</p>
     </div>
     <div class="stack">
-      <div class="layer"><b>Shell</b><div><p class="what">Tauri 2 desktop app with a small .exe or .msi installer</p><p>The screen he sees. Rivers, ring, wheel and bloom are drawn with canvas, like this page.</p></div></div>
+      <div class="layer"><b>Shell</b><div><p class="what">Tauri 2 desktop app with a small .exe or .msi installer, in Spanish and English</p><p>The screen he sees. Rivers, ring, wheel and bloom are drawn with canvas, like this page. The same view serves a local page that OBS can add as a browser source.</p></div></div>
       <div class="layer"><b>Engines</b><div><p class="what">A Python helper bundled with the app that runs the models</p><p>ACE-Step, Demucs, Applio, Basic Pitch and Matchering. Models download once on first launch, then everything works offline.</p></div></div>
       <div class="layer"><b>His files</b><div><p class="what">One project folder per song</p><p>Stems, MIDI and masters export as plain WAV and MIDI files that open in FL Studio, Ableton or whatever he uses.</p></div></div>
       <div class="layer"><b>His PC</b><div><p class="what">Needs a graphics card for generation and voice</p><p>Splitting, notes and mastering run on most PCs. Song generation and voice training are the heavy parts, so we check his specs before promising speed.</p></div></div>
@@ -350,11 +365,11 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
       <div class="ask"><b>Where does he make beats now?</b><span>FL Studio, Ableton, BandLab, a phone app? Exports should drop straight into it.</span></div>
       <div class="ask"><b>Which AI tools does he use, and for what?</b><span>Suno, Udio, stem sites, voice tools. We replace those first.</span></div>
       <div class="ask"><b>What part does he hate doing?</b><span>That becomes the first button on the home screen.</span></div>
-      <div class="ask"><b>Does he sing or rap on his tracks?</b><span>Decides how much of the app goes to the Voice mode.</span></div>
+      <div class="ask"><b>Does he sing, and would he make music live on Kick?</b><span>Decides how much goes to the Voice and Live modes.</span></div>
       <div class="ask"><b>What's in his PC?</b><span>Windows version and graphics card model. This sets which models we ship.</span></div>
       <div class="ask"><b>Two or three of his songs</b><span>To load into this demo and tune the colors and visuals around his sound.</span></div>
     </div>
-    <p class="note">About the Instagram check: his profile is public, but without a login Instagram only shows the summary, so I couldn't open his 8 posts from here. Screenshots or post links from him would let us tune this concept to what he actually makes.</p>
+    <p class="note">What his public pages show: his Kick channel streams casual Just Chatting in Spanish, with no saved videos or music streams yet. On Instagram, only the profile summary is visible without a login, so his 8 posts weren't checked. Screenshots or links to his music from him would let us tune this concept to what he actually makes.</p>
   </section>
 
   <footer class="sources">
@@ -374,12 +389,14 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
 (() => {
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const STEMS = [
-    { id: 'drums', name: 'Drums', color: css('--drums') },
-    { id: 'bass',  name: 'Bass',  color: css('--bass') },
-    { id: 'keys',  name: 'Keys',  color: css('--keys') },
-    { id: 'vox',   name: 'Voice', color: css('--vox') },
+    { id: 'drums', name: 'Drums', es: 'Batería', color: css('--drums') },
+    { id: 'bass',  name: 'Bass',  es: 'Bajo',    color: css('--bass') },
+    { id: 'keys',  name: 'Keys',  es: 'Teclas',  color: css('--keys') },
+    { id: 'vox',   name: 'Voice', es: 'Voz',     color: css('--vox') },
   ];
-  const BAND_NAMES = ['Lows', 'Low mids', 'High mids', 'Air'];
+  const BAND_NAMES = { en: ['Lows', 'Low mids', 'High mids', 'Air'], es: ['Graves', 'Medios graves', 'Medios agudos', 'Aire'] };
+  let lang = 'en';
+  let statusMsg = { en: 'Sample loop, made live in the browser. Press play.', es: 'Loop de ejemplo, hecho en vivo en el navegador. Dale play.' };
   const COL = { line: css('--line'), muted: css('--muted'), text: css('--text'), ink: css('--ink'), panel2: css('--panel-2') };
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -507,11 +524,11 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
   function startDemo() {
     initAudio(); ctx.resume();
     stopFile();
-    mode = 'demo'; setLaneNames(STEMS.map(s => s.name));
+    mode = 'demo'; setLaneNames();
     step = 0; nextTime = ctx.currentTime + 0.06; stepQueue.length = 0;
     timer = setInterval(scheduler, 25); scheduler();
     playing = true; setPlayIcon();
-    setStatus('Sample loop, made live in the browser. Tap a river to mute it.');
+    setStatus('Sample loop, made live in the browser. Tap a river to mute it.', 'Loop de ejemplo, hecho en vivo en el navegador. Toca un río para silenciarlo.');
   }
   function stopAll() {
     if (timer) { clearInterval(timer); timer = null; }
@@ -526,7 +543,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
     initAudio(); ctx.resume();
     if (timer) { clearInterval(timer); timer = null; }
     stopFile();
-    mode = 'file'; setLaneNames(BAND_NAMES);
+    mode = 'file'; setLaneNames();
     const src = ctx.createBufferSource(); src.buffer = fileBuffer; src.loop = true;
     const bands = [
       [['lowpass', 160]],
@@ -549,7 +566,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
     document.getElementById('play-icon').innerHTML = playing
       ? '<rect x="3" y="2" width="4" height="14" rx="1" fill="currentColor"/><rect x="11" y="2" width="4" height="14" rx="1" fill="currentColor"/>'
       : '<path d="M4 2l12 7-12 7z" fill="currentColor"/>';
-    playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    playBtn.setAttribute('aria-label', lang === 'es' ? (playing ? 'Pausa' : 'Reproducir') : (playing ? 'Pause' : 'Play'));
   }
   playBtn.addEventListener('click', () => {
     if (playing) { stopAll(); return; }
@@ -559,24 +576,26 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
   tempo.addEventListener('input', () => { bpm = +tempo.value; document.getElementById('tempo-val').textContent = bpm; });
 
   const statusEl = document.getElementById('status');
-  function setStatus(t) { statusEl.textContent = t; }
+  function setStatus(en, es) { statusMsg = { en, es: es || en }; statusEl.textContent = statusMsg[lang]; }
 
   const fileInput = document.getElementById('file');
   async function loadFile(file) {
     if (!file) return;
     initAudio();
-    setStatus('Reading ' + file.name + '…');
+    setStatus('Reading ' + file.name + '…', 'Leyendo ' + file.name + '…');
     try {
       const buf = await file.arrayBuffer();
       fileBuffer = await ctx.decodeAudioData(buf);
       const est = estimateBpm(fileBuffer);
-      document.getElementById('key-chip').textContent = file.name.replace(/\.[^.]+$/, '').slice(0, 24);
+      const chip = document.getElementById('key-chip');
+      chip.removeAttribute('data-es'); chip.textContent = file.name.replace(/\.[^.]+$/, '').slice(0, 24);
       if (est) { bpm = est; tempo.value = Math.max(70, Math.min(160, est)); document.getElementById('tempo-val').textContent = est; }
       seedFromBuffer(fileBuffer);
       playFile();
-      setStatus('Playing ' + file.name + (est ? ' · about ' + est + ' BPM' : '') + '. In this preview the rivers are frequency bands. The app splits into real drums, bass, vocals and other with Demucs.');
+      setStatus('Playing ' + file.name + (est ? ' · about ' + est + ' BPM' : '') + '. In this preview the rivers are frequency bands. The app splits into real drums, bass, vocals and other with Demucs.',
+        'Sonando ' + file.name + (est ? ' · unos ' + est + ' BPM' : '') + '. En esta vista previa los ríos son bandas de frecuencia. La app separa batería, bajo, voz y lo demás de verdad con Demucs.');
     } catch (e) {
-      setStatus('That file could not be read as audio. Try an MP3, WAV or M4A.');
+      setStatus('That file could not be read as audio. Try an MP3, WAV or M4A.', 'Ese archivo no se pudo leer como audio. Prueba con MP3, WAV o M4A.');
     }
   }
   fileInput.addEventListener('change', () => loadFile(fileInput.files[0]));
@@ -604,7 +623,8 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
 
   // ---------- lanes / river ----------
   const lanesEl = document.getElementById('lanes');
-  function setLaneNames(names) {
+  function setLaneNames() {
+    const names = mode === 'file' ? BAND_NAMES[lang] : STEMS.map(s => lang === 'es' ? s.es : s.name);
     lanesEl.innerHTML = '';
     STEMS.forEach((s, k) => {
       const d = document.createElement('div');
@@ -613,7 +633,7 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
       lanesEl.appendChild(d);
     });
   }
-  setLaneNames(STEMS.map(s => s.name));
+  setLaneNames();
 
   const river = document.getElementById('river');
   const rctx = river.getContext('2d');
@@ -763,6 +783,19 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
   const chordText = el('text', { x: 110, y: 108, 'text-anchor': 'middle', fill: COL.text, 'font-family': 'Bricolage Grotesque, sans-serif', 'font-size': 22, 'font-weight': 700 });
   const keyText = el('text', { x: 110, y: 127, 'text-anchor': 'middle', fill: COL.muted, 'font-family': 'Figtree, sans-serif', 'font-size': 11 });
   keyText.textContent = 'A minor'; wheel.appendChild(chordText); wheel.appendChild(keyText);
+
+  // ---------- language toggle (the app UI only; the pitch around it stays English) ----------
+  const langBtn = document.getElementById('lang');
+  document.querySelectorAll('[data-es]').forEach(e => { e.dataset.en = e.textContent; });
+  function applyLang() {
+    document.querySelectorAll('[data-es]').forEach(e => { e.textContent = lang === 'es' ? e.dataset.es : e.dataset.en; });
+    keyText.textContent = lang === 'es' ? 'La menor' : 'A minor';
+    statusEl.textContent = statusMsg[lang];
+    setLaneNames(); setPlayIcon();
+    langBtn.textContent = lang === 'es' ? 'EN' : 'ES';
+    langBtn.setAttribute('aria-label', lang === 'es' ? 'Switch to English' : 'Cambiar a español');
+  }
+  langBtn.addEventListener('click', () => { lang = lang === 'es' ? 'en' : 'es'; applyLang(); });
   function paintWheel() {
     const c = CHORDS[curChord];
     segs.forEach(({ path, t, pc }) => {
@@ -903,6 +936,18 @@ td.after::before { content: ""; display: inline-block; width: 8px; height: 8px; 
       g.fillStyle = STEMS[3].color; g.fillRect(mx, 10 + (h - 20) * 0.22, 12, (h - 20) * 0.78);
       g.fillStyle = COL.text; g.globalAlpha = 0.6; g.fillRect(mx + 16, 10 + (h - 20) * 0.2, 12, (h - 20) * 0.8); g.globalAlpha = 1;
       g.fillStyle = COL.muted; g.font = '500 10px JetBrains Mono, monospace'; g.fillText('-9 LUFS', mx - 52, 18);
+    },
+    live(g, w, h) {
+      // a stream frame: camera box, chat column, rivers overlaid along the bottom
+      g.strokeStyle = COL.line; g.lineWidth = 1.5; g.strokeRect(8.5, 8.5, w - 17, h - 17);
+      g.fillStyle = COL.panel2; g.fillRect(14, 14, w * 0.26, h * 0.42);
+      g.fillStyle = COL.muted; g.beginPath(); g.arc(14 + w * 0.13, 14 + h * 0.17, 9, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.ellipse(14 + w * 0.13, 14 + h * 0.36, 16, 9, 0, Math.PI, 0); g.fill();
+      const cx = w - w * 0.24;
+      for (let i = 0; i < 5; i++) { g.fillStyle = COL.panel2; g.fillRect(cx, 16 + i * 14, w * 0.24 - 16 - (i % 2) * 18, 8); }
+      STEMS.forEach((s, k) => wave(g, 16, cx - 12, h - 18 - k * 9, 7, k * 1.9, s.color, 0.85, true));
+      g.fillStyle = STEMS[0].color; g.beginPath(); g.roundRect ? g.roundRect(w * 0.3, 16, 40, 16, 4) : g.rect(w * 0.3, 16, 40, 16); g.fill();
+      g.fillStyle = COL.ink; g.font = '700 10px Figtree, sans-serif'; g.fillText('LIVE', w * 0.3 + 8, 28);
     },
   };
   function drawArt() {
