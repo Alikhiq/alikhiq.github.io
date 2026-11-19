@@ -110,6 +110,15 @@ section{padding-block:72px}
 .addon .ap{font-family:var(--serif);font-size:22px;color:var(--gold);white-space:nowrap;font-variant-numeric:tabular-nums}
 .fine{font-size:13.5px;color:var(--muted);margin-top:18px;max-width:80ch}
 
+.grow{background:var(--surface);border-block:1px solid var(--line)}
+.grow .tier{background:var(--bg)}
+.films{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;counter-reset:f}
+.films li{counter-increment:f;display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center;padding-block:12px;border-top:1px solid var(--line);min-width:0}
+.films img,.films .pin{width:88px;height:88px;border-radius:12px;object-fit:cover}
+.films .pin{display:grid;place-items:center;background:var(--lapis);color:var(--gold-soft);font-family:var(--serif);font-size:20px}
+.films b{display:block;font-family:var(--serif);font-weight:600;font-size:19px}
+.films b::before{content:"Film " counter(f) " · ";font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.films p{font-size:15px;color:var(--muted)}
 /* concept */
 .concept .wrap{display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center}
 .concept-copy{display:grid;gap:20px;min-width:0}
@@ -191,6 +200,7 @@ section{padding-block:72px}
   .strip{grid-template-columns:repeat(3,1fr)}
   .steps{grid-template-columns:1fr 1fr;gap:0 20px}
   .why{grid-template-columns:1fr}
+  .films{grid-template-columns:1fr}
   .concept .phone{order:2}
 }
 @media (max-width:560px){
@@ -222,13 +232,13 @@ section{padding-block:72px}
   <div class="wrap">
     <div class="hero-copy">
       <p class="eyebrow">For Paradise International Food Market</p>
-      <h1>The food is ready.<br><em>Now the website should be too.</em></h1>
+      <h1>The food is ready.<br><em>Now let Columbus see it.</em></h1>
       <p class="ar ar-line">كل اللي بتحبوه بتلاقوه في Paradise… وهلّق على الإنترنت كمان.</p>
-      <p class="lede">The butcher counter, the stone-oven bread, the grill, the kunafa and a 40-dish catering menu deserve a website that shows them, in English and Arabic, with your hours, your phone number and an easy way to order catering.</p>
+      <p class="lede">The butcher counter, the stone-oven bread, the grill, the kunafa and a 40-dish catering menu deserve a brand, a website and a feed that show them every day, in English and Arabic, with an easy way to order.</p>
       <p class="for">Prepared for <b>Paradise International Food Market</b>, 5891 Karric Square Dr, Dublin, OH 43016<br>by <b>Ali Al-Khafaji, Round City</b>, a neighbor two minutes away</p>
       <div class="pill-row">
-        <span class="pill"><b>$2,499</b> Market Website</span>
-        <span class="pill"><b>$4,999</b> Market + Catering System</span>
+        <span class="pill"><b>$2,650</b> Brand + Website</span>
+        <span class="pill"><b>$589/mo</b> Content Engine</span>
       </div>
     </div>
     <figure class="hero-pic">
@@ -279,71 +289,133 @@ section{padding-block:72px}
         <p class="shot-cap">paradisefoodmarkets.com/shop, November 19, 2026.</p>
       </div>
     </div>
-    <p class="fair">None of this is unusual for a store that opened five months ago, and all of it can be fixed. Every item above is covered in the package below.</p>
+    <p class="fair">None of this is unusual for a store that opened five months ago, and all of it can be fixed. Every item above is covered in the packages below.</p>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Build once</p>
+      <h2>A brand and a website that work together</h2>
+      <p class="lede">One-time project fees for the scope written below. Operations is added on top of the website package.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier-top">
+          <div><h3>Brand + Website</h3><p class="who">Look the same everywhere, and get found</p></div>
+        </div>
+        <p class="price">$2,650<small>one time</small></p>
+        <ul class="inc">
+          <li>Brand refresh: logo cleanup, colors and fonts, so the store, the website and every post look like one brand</li>
+          <li>A new website in English and Arabic with a cleaner design, real product photos and enhanced images</li>
+          <li>Replaces the current 24,750-product shop, so nobody can order something you don't carry</li>
+          <li>Butcher, bakery, kitchen, sweets, catering and grocery sections, plus your full catering menu and a request form</li>
+          <li>Google Maps: your Google and Apple Maps listings fixed, plus review automation that asks happy customers for a Google review and helps you reply to every review in English or Arabic</li>
+          <li>Social linking: Instagram, TikTok, Facebook, YouTube, Snapchat and Google, all connected to the site. New accounts are created where you don't have one</li>
+          <li>A content hub: one place to post, and your products auto-post daily to every platform at once</li>
+        </ul>
+        <div class="meta">
+          <div><b>2–3 weeks</b>after the store walkthrough</div>
+          <div><b>1 round</b>of changes</div>
+          <div><b>EN + AR</b>both languages included</div>
+        </div>
+      </article>
+
+      <article class="tier rec">
+        <div class="tier-top">
+          <div><h3>Website + Operations</h3><p class="who">Online orders, delivery and catering in one system</p></div>
+          <span class="tag">Full system</span>
+        </div>
+        <p class="price">+$5,400<small>on top of the website</small></p>
+        <p class="who">$8,050 total with Brand + Website</p>
+        <ul class="inc">
+          <li class="plus">Everything in Brand + Website</li>
+          <li>Starts with a walkthrough of each department, to map how orders, catering and stock move today before anything is built</li>
+          <li>Online ordering on your own site for pickup and local delivery, including groceries, the way DoorDash works but under your name</li>
+          <li>Orders from the delivery apps you use, such as DoorDash, Uber Eats and Grubhub, brought into one order screen where each platform allows it</li>
+          <li>A checkout upgrade: product photos, a clean catalog, your real prices and a better shopping experience on phones</li>
+          <li>Catering tracked from request to deposit to event day</li>
+          <li>Each department gets its own order queue: butcher, bakery, kitchen, sweets and grocery</li>
+          <li>An owner dashboard, staff logins, training and written instructions in English and Arabic</li>
+        </ul>
+        <div class="meta">
+          <div><b>4–6 weeks</b>after the walkthrough</div>
+          <div><b>2 rounds</b>of changes</div>
+          <div><b>1 session</b>of staff training</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="grow">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Grow every month</p>
+      <h2>Content that keeps coming. You just approve it.</h2>
+      <p class="lede">We take your products and turn them into videos, carousels, designed images and ads. You approve what you like from your phone, and the hub posts it.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier-top">
+          <div><h3>Content Engine</h3><p class="who">Daily posting, without the daily work</p></div>
+        </div>
+        <p class="price">$589<small>per month</small></p>
+        <ul class="inc">
+          <li>Automated content every month: product videos, carousels, designed images and ads in several styles, ready for you to approve</li>
+          <li>Approved posts go out on schedule to every connected platform</li>
+          <li>Daily product auto-posting from the content hub</li>
+          <li>1 master video a month, filmed in person at the store</li>
+          <li>New social accounts set up for you if you need them</li>
+          <li>Local SEO on your website and across the web, so you show up for searches like "halal butcher near me," included at no extra cost</li>
+        </ul>
+        <div class="meta">
+          <div><b>1</b>master video a month</div>
+          <div><b>Daily</b>product posts</div>
+          <div><b>Included</b>local SEO</div>
+        </div>
+      </article>
+
+      <article class="tier rec">
+        <div class="tier-top">
+          <div><h3>Master Media</h3><p class="who">The full film series, plus a steady stream of video</p></div>
+          <span class="tag">Most reach</span>
+        </div>
+        <p class="price">$1,299<small>per month</small></p>
+        <ul class="inc">
+          <li class="plus">Everything in Content Engine</li>
+          <li>7 master films shot in person, one for each part of the store (see the series below)</li>
+          <li>15 videos a month, produced with the newest AI video and editing tools from your products and footage</li>
+          <li>Short cuts of every master film for Reels, TikTok and Shorts</li>
+        </ul>
+        <div class="meta">
+          <div><b>7</b>master films</div>
+          <div><b>15</b>videos a month</div>
+          <div><b>Included</b>local SEO</div>
+        </div>
+      </article>
+    </div>
+    <p class="fine">Prices in USD. Domain, hosting, delivery-app fees, payment processing and paid ad spend are separate where they apply. You approve every post before it goes out.</p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">The package</p>
-      <h2>Two fixed prices. You choose the one that fits.</h2>
-      <p class="lede">Each price is a one-time project fee for the scope written below. The larger package includes everything in the smaller one.</p>
+      <p class="eyebrow">The master film series</p>
+      <h2>Seven films. One for every reason to visit.</h2>
+      <p class="lede">Filmed in person at the store and at a real catering event. Each film becomes the anchor for a month of posts.</p>
     </div>
-    <div class="tiers">
-      <article class="tier">
-        <div class="tier-top">
-          <div><h3>Market Website</h3><p class="who">A real home for the store online</p></div>
-        </div>
-        <p class="price">$2,499<small>one time</small></p>
-        <ul class="inc">
-          <li>A custom website in English and Arabic, with proper right-to-left layout</li>
-          <li>Sections for the butcher, bakery, kitchen, sweets and catering, using photos from your reels</li>
-          <li>Your full catering menu online, up to 50 items, with prices or "price on request"</li>
-          <li>A catering request form: date, guest count and dishes, sent straight to your phone and email</li>
-          <li>Hours, address, map directions, tap-to-call, Instagram and TikTok</li>
-          <li>Replaces the current 24,750-product shop, so nobody can order something you don't carry</li>
-          <li>Google Business Profile and Apple Maps cleanup: hours, photos, categories, the "Opening Soon" label</li>
-          <li>Launch checks on phone and desktop, website files, account access and a walkthrough</li>
-        </ul>
-        <div class="meta">
-          <div><b>7–10 days</b>after we get your menu prices</div>
-          <div><b>1 round</b>of changes</div>
-          <div><b>$49/mo</b>optional support</div>
-        </div>
-      </article>
-
-      <article class="tier rec">
-        <div class="tier-top">
-          <div><h3>Market + Catering System</h3><p class="who">The website, plus tools your team runs from a phone</p></div>
-          <span class="tag">Recommended</span>
-        </div>
-        <p class="price">$4,999<small>one time</small></p>
-        <ul class="inc">
-          <li class="plus">Everything in Market Website</li>
-          <li>A private owner dashboard: post today's dishes in under a minute, so "Mansaf, maqluba, grape leaves" is on the site and not only on Instagram</li>
-          <li>Update hours, holiday closures, specials and catering prices yourself, in English and Arabic</li>
-          <li>A catering inbox: every request tracked from new to confirmed to done, with event date, guest count and deposit status, plus a spreadsheet download</li>
-          <li>Separate staff logins, so the kitchen can update dishes without the owner's password</li>
-          <li>New QR codes for the counter, the catering menu and bags, pointing to the catering page instead of Instagram</li>
-          <li>Two rounds of changes, login checks, one training session and written instructions in English and Arabic</li>
-        </ul>
-        <div class="meta">
-          <div><b>3–4 weeks</b>after we get your materials</div>
-          <div><b>2 rounds</b>of changes</div>
-          <div><b>$149/mo</b>optional support</div>
-        </div>
-      </article>
-    </div>
-
-    <div class="addons">
-      <h3>Add when you're ready</h3>
-      <div class="addon"><div><b>Content sprint from your footage</b><p>One content plan, six hooks or scripts, four edited vertical videos and six graphics for one campaign, such as catering season or Ramadan. Some of your reels are horizontal clips inside a vertical frame, so most of the phone screen is black. The sprint recuts your footage to fill the screen.</p></div><span class="ap">$1,750</span></div>
-      <div class="addon"><div><b>Bilingual AI phone line</b><p>Answers hours, location and catering questions in English and Arabic, takes catering details and hands the call to a person when needed.</p></div><span class="ap">Quote</span></div>
-      <div class="addon"><div><b>Online pickup orders</b><p>Order grill plates, shawarma or kunafa ahead for pickup, connected to how you take payment today.</p></div><span class="ap">Quote</span></div>
-      <div class="addon"><div><b>Print</b><p>A reprinted catering menu with prices and the new QR code, counter signs and flyers.</p></div><span class="ap">Quote</span></div>
-    </div>
-    <p class="fine">Domain, hosting above the support plan's allowance, paid outside services and taxes are separate where they apply. You provide menu prices, catering details and any logo files; photos can come from your existing reels and posts. Support is optional: the finished site works without it. Prices in USD.</p>
+    <ol class="films">
+      <li><img src="img/mansaf.jpg" alt="" loading="lazy"><div><b>Catering</b><p>How the food is made, then served at a real event.</p></div></li>
+      <li><span class="pin" aria-hidden="true">5891</span><div><b>Finding Paradise</b><p>The drive in and the storefront, so first-time visitors recognize the location, which is easy to miss.</p></div></li>
+      <li><img src="img/grill.jpg" alt="" loading="lazy"><div><b>The kitchen menu</b><p>Grill, shawarma and today's dishes from the restaurant inside.</p></div></li>
+      <li><img src="img/nests.jpg" alt="" loading="lazy"><div><b>Products and offers</b><p>What's new, what's on sale and what's worth the trip this week.</p></div></li>
+      <li><img src="img/kunafa.jpg" alt="" loading="lazy"><div><b>Sweets</b><p>Kunafa cut fresh, warbat, baklava and cakes.</p></div></li>
+      <li><img src="img/butcher.jpg" alt="" loading="lazy"><div><b>Fresh halal meat</b><p>The butcher counter and the cuts people come for.</p></div></li>
+      <li><img src="img/produce.jpg" alt="" loading="lazy"><div><b>Groceries</b><p>Produce, pantry, gifts and the imports you can't find elsewhere.</p></div></li>
+    </ol>
   </div>
 </section>
 
@@ -361,8 +433,8 @@ section{padding-block:72px}
       </div>
       <div class="notes">
         <div><span>a</span><p>Call and Catering are always one tap away. They are the two things a hungry customer is looking for.</p></div>
-        <div><span>b</span><p>"Today's dishes" comes from the owner dashboard, so it changes daily without anyone touching code.</p></div>
-        <div><span>c</span><p>The catering card opens the request form, and every request lands in the catering inbox.</p></div>
+        <div><span>b</span><p>"Today's dishes" comes from the content hub, the same post that goes out to Instagram, TikTok and Facebook.</p></div>
+        <div><span>c</span><p>The catering card opens the request form. With Operations, every request is tracked through to event day.</p></div>
       </div>
     </div>
     <div class="phone" aria-label="Concept homepage preview">
@@ -401,10 +473,10 @@ section{padding-block:72px}
       <h2>From yes to live</h2>
     </div>
     <div class="steps">
-      <div class="step"><span class="n">1</span><span class="w">Day 1</span><h3>Sit down at the store</h3><p>Thirty minutes at the counter. We go over the catering menu, prices, hours and what you want people to find first.</p></div>
-      <div class="step"><span class="n">2</span><span class="w">Week 1</span><h3>Design and write</h3><p>I pull the best photos from your reels, write both languages and send you a preview link on your phone.</p></div>
-      <div class="step"><span class="n">3</span><span class="w">Review</span><h3>Your changes</h3><p>You send one list of changes. I make them and test every page on phone and desktop.</p></div>
-      <div class="step"><span class="n">4</span><span class="w">Launch</span><h3>Go live</h3><p>The new site replaces the old one at the same address. Google and Apple Maps are updated, and you get the keys.</p></div>
+      <div class="step"><span class="n">1</span><span class="w">Day 1</span><h3>Walk the store</h3><p>I walk each department with you: how orders, catering and posting work today, and what you want people to find first.</p></div>
+      <div class="step"><span class="n">2</span><span class="w">Weeks 1–3</span><h3>Brand and website</h3><p>The brand refresh and the new site in both languages, with a preview link on your phone and one round of changes.</p></div>
+      <div class="step"><span class="n">3</span><span class="w">Launch</span><h3>Connect everything</h3><p>The site goes live at the same address. Google and Apple Maps, review automation, every social account and the content hub are connected.</p></div>
+      <div class="step"><span class="n">4</span><span class="w">Every month</span><h3>Film and post</h3><p>I film at the store, the content arrives for your approval, and the hub posts it on schedule.</p></div>
     </div>
   </div>
 </section>
@@ -428,7 +500,7 @@ section{padding-block:72px}
 <section class="close">
   <div class="wrap">
     <p class="eyebrow">Next step</p>
-    <h2>Let's get Paradise online properly.</h2>
+    <h2>Let's put Paradise on every screen in Columbus.</h2>
     <p class="ar">نتشرف نشتغل معكم. خلّينا نقعد ربع ساعة بالمحل ونبلّش.</p>
     <div class="contact">
       <span><small>Ali Al-Khafaji</small><b>Founder, Round City</b></span>
@@ -436,7 +508,7 @@ section{padding-block:72px}
       <span><small>Email</small><b>ali@roundcity.co</b></span>
       <span><small>Web</small><b>roundcity.co</b></span>
     </div>
-    <p class="fine">This proposal is valid for 30 days from November 19, 2026. Work starts once the scope is confirmed in writing and your menu prices and materials are in hand.</p>
+    <p class="fine">This proposal is valid for 30 days from November 19, 2026. Work starts once the scope is confirmed in writing. Operations scope is finalized after the store walkthrough.</p>
   </div>
 </section>
 
