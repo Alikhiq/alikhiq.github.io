@@ -441,6 +441,7 @@
     form.classList.add('is-sending'); next.textContent = 'Sending…';
     try {
       await rpc('submit_susu_booking_request', payload());
+      if (window.gtag) gtag('event', 'generate_lead', { method: 'booking_form' });
       $('.bdone__title', form).textContent = 'Request sent';
       $('.bdone__text', form).textContent = "I'll text you to confirm the time, the location and the price. Your appointment isn't booked until I confirm it with you.";
       go(5, 1);
