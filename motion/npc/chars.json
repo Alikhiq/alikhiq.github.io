@@ -1,0 +1,241 @@
+{
+ "me": {
+  "id": "me",
+  "a": "#ff4b2b",
+  "b": "#ffc547",
+  "hook": "If I was an<br>NPC in GTA 6",
+  "hookSize": 118,
+  "cls": "ALI · THE ARCHITECT",
+  "heroStars": 5,
+  "cash": "59 SITES LIVE",
+  "cashPre": "",
+  "cashN": 59,
+  "cashSuf": " SITES LIVE",
+  "name": "ALI",
+  "cardCls": "THE ARCHITECT · FOUNDER, ROUND CITY",
+  "stats": [
+   [
+    "CODE",
+    99
+   ],
+   [
+    "DESIGN",
+    95
+   ],
+   [
+    "SLEEP",
+    12
+   ],
+   [
+    "COFFEE",
+    100,
+    "∞"
+   ]
+  ],
+  "ability": [
+   "BAGHDAD → COLUMBUS",
+   "Fast travel unlocked. The sky is still red sometimes. Now it's just the sunset."
+  ],
+  "loc": "COLUMBUS, OH",
+  "bandPos": "center 28%",
+  "wanted": [
+   "59 SITES LIVE",
+   "Built for local businesses across Columbus. Some of them straight from my phone."
+  ],
+  "wantedSize": 150,
+  "talk": [
+   "ALI",
+   "You want it live by Friday? Bet."
+  ],
+  "phoneLabel": "IN-GAME PHONE",
+  "phoneCap": "Every NPC needs a website. I build them.",
+  "doneTitle": "MAIN CHARACTER",
+  "doneSub": "UNLOCKED",
+  "doneSize": 120,
+  "cta": [
+   "Websites, software & automation for local businesses. Built with Ali.",
+   "Which of my clients should get their own mission next? 👇"
+  ],
+  "phone": "<img src=\"art/rc_site.jpg\" style=\"width:100%;display:block\">",
+  "art": {
+   "hero": "me_hero",
+   "card": "me_card",
+   "talk": "me_night",
+   "social": "me_phone",
+   "wanted": "me_night",
+   "done": "me_hero"
+  },
+  "slides": [
+   "hero",
+   "card",
+   "talk",
+   "social",
+   "phone",
+   "wanted",
+   "done"
+  ],
+  "social": [
+   "@614lux",
+   "shipped a client's whole site from the driver seat 😂 #614 #smallbusiness",
+   "59.4K",
+   "1,204"
+  ],
+  "socialLabel": "TRENDING IN 614",
+  "socialCap": "Office? Never heard of her."
+ },
+ "rc": {
+  "id": "rc",
+  "a": "#2557e8",
+  "b": "#f2c14e",
+  "hook": "If my business was<br>a location in GTA 6",
+  "hookSize": 100,
+  "cls": "ROUND CITY · SAFEHOUSE UNLOCKED",
+  "heroStars": 5,
+  "cash": "$1,499+",
+  "cashPre": "$",
+  "cashN": 1499,
+  "cashSuf": "+",
+  "cardLabel": "LOCATION UNLOCKED",
+  "name": "ROUND CITY",
+  "stats": [
+   [
+    "FOOD TRUCK KIT",
+    33,
+    "$1,499"
+   ],
+   [
+    "CONTENT SPRINT",
+    39,
+    "$1,750"
+   ],
+   [
+    "WEBSITE",
+    78,
+    "$3,500"
+   ],
+   [
+    "BRAND SYSTEM",
+    100,
+    "$4,500"
+   ]
+  ],
+  "abilityLabel": "SAFEHOUSE PERK",
+  "ability": [
+   "PRICES ARE PUBLIC",
+   "No “contact us for a quote.” You know what you pay before you call."
+  ],
+  "loc": "COLUMBUS, OH",
+  "wanted": [
+   "Wanted by every<br>small business",
+   "Websites, brand and custom software for Columbus businesses."
+  ],
+  "wantedSize": 118,
+  "wantedSubTop": 980,
+  "talk": [
+   "CUSTOMER NPC",
+   "Wait… you built this whole thing from your phone?"
+  ],
+  "phoneLabel": "SAFEHOUSE TERMINAL",
+  "phoneCap": "roundcity.co: open 24/7, no loading screen.",
+  "cta": [
+   "Your business could be the next location on the map.",
+   "DM “MISSION” to start yours 👇"
+  ],
+  "cardCls": "SOFTWARE + AUTOMATION · BUILT WITH ALI",
+  "phone": "<img src=\"art/rc_site.jpg\" style=\"width:100%;display:block\">",
+  "art": {
+   "hero": "rc_hero",
+   "card": "rc_inside",
+   "talk": "rc_inside",
+   "wanted": "rc_aerial",
+   "done": "rc_hero"
+  },
+  "slides": [
+   "hero",
+   "card",
+   "talk",
+   "phone",
+   "wanted",
+   "done"
+  ],
+  "bandPos": "center 55%"
+ },
+ "ew": {
+  "id": "ew",
+  "a": "#19c8ff",
+  "b": "#ff2fa8",
+  "hook": "If my clients were<br>NPC<span style=\"text-transform:none\">s</span> in GTA 6",
+  "hookSize": 104,
+  "cls": "EVERYWRAP · THE WRAP KING",
+  "heroStars": 5,
+  "name": "THE WRAP KING",
+  "stats": [
+   [
+    "PATIENCE",
+    100
+   ],
+   [
+    "HEAT GUN",
+    98
+   ],
+   [
+    "CHROME ADDICTION",
+    99
+   ],
+   [
+    "BUBBLES LEFT",
+    0,
+    "0"
+   ]
+  ],
+  "ability": [
+   "RESPRAY",
+   "New color in one visit. No paint shop. Original paint stays protected underneath."
+  ],
+  "loc": "COLUMBUS, OH",
+  "wanted": [
+   "Wanted by every<br>car in 614",
+   "Matte. Satin. Gloss. Chrome. Pick a color, keep your paint."
+  ],
+  "wantedSize": 118,
+  "wantedSubTop": 980,
+  "talk": [
+   "CUSTOMER NPC",
+   "Bro… is that the same car??"
+  ],
+  "phoneLabel": "INCOMING TEXT",
+  "phoneCap": "Every wrap ends with this text.",
+  "cta": [
+   "Proud to build for Everywrap. Round City: websites, brand & software.",
+   "Which client should get a mission next? 👇"
+  ],
+  "cardCls": "EVERYWRAP · VEHICLE WRAPS",
+  "phone": "<div class=\"msgs\"><div style=\"position:absolute;left:0;right:0;top:0;height:100px;background:#1b1b20;display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;font-weight:700;font-size:28px\">Customer 🚗</div><div class=\"msg\">yo can you wrap my car matte black?</div><div class=\"msg me\">satin or gloss?</div><div class=\"msg\">…chrome.</div><div class=\"msg me\">say less 🔥</div><div class=\"msg\" style=\"color:#9a9aa5;background:none;align-self:center;font-size:24px\">3 days later</div><div class=\"msg\">BRO IT LOOKS BRAND NEW 😭😭</div><div class=\"msg\">everyone at the gas station asked about it</div></div>",
+  "art": {
+   "hero": "ew_hero",
+   "card": "ew_hero",
+   "talk": "ew_shop",
+   "social": "ew_phone",
+   "wanted": "ew_action",
+   "done": "ew_hero"
+  },
+  "slides": [
+   "hero",
+   "card",
+   "talk",
+   "social",
+   "phone",
+   "wanted",
+   "done"
+  ],
+  "bandPos": "center 18%",
+  "social": [
+   "@chromed_out614",
+   "THEY WRAPPED MY WHOLE CAR IN CHROME 😭😭 @everywrap",
+   "212K",
+   "8,931"
+  ],
+  "socialLabel": "TRENDING IN 614",
+  "socialCap": "Every Everywrap customer, day one."
+ }
+}
