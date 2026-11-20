@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paradise Everywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Five 1600x2000 pages. Paradise brand concept: palm green, saffron, cream, pomegranate. */
+:root{
+  --green:#1F4A38; --green-2:#163828; --green-3:#2C6049; --saffron:#D9A441; --saffron-2:#F0C877;
+  --cream:#F7F0E3; --cream-2:#EFE4D0; --pom:#B23A2E; --ink:#1A1A17; --mute:#6B655A; --line:#DCCFB8;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif; --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ar:"Amiri","Noto Naskh Arabic","Geeza Pro",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#24221E}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;padding:40px 0}
+img{display:block}
+.deck{width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:40px;transform-origin:top left}
+.page{position:relative;width:1600px;height:2000px;overflow:hidden;background:var(--cream);padding:96px 110px 0;display:flex;flex-direction:column}
+.page.dark{background:var(--green);color:var(--cream)}
+.ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate}
+.eyebrow{font-size:20px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--saffron)}
+.page:not(.dark) .eyebrow{color:var(--pom)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.02;letter-spacing:-.01em}
+h1{font-size:132px}
+h2{font-size:96px}
+h3{font-size:34px;line-height:1.15}
+.lead{font-size:28px;line-height:1.45;color:var(--mute);max-width:1000px}
+.dark .lead{color:rgba(247,240,227,.78)}
+.foot{position:absolute;left:110px;right:110px;bottom:44px;display:flex;justify-content:space-between;font-size:18px;color:var(--mute);border-top:1px solid var(--line);padding-top:18px}
+.dark .foot{color:rgba(247,240,227,.6);border-color:rgba(247,240,227,.18)}
+.chip{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:10px 20px;font-weight:700;font-size:20px}
+.tag{font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:6px 12px}
+.tag.live{background:var(--saffron);color:var(--green-2)}
+.tag.new{background:rgba(247,240,227,.12);color:var(--cream);border:1px solid rgba(247,240,227,.3)}
+.goal{background:var(--pom);color:#fff}
+
+/* ---------- Logo ---------- */
+.logo{display:flex;align-items:center;gap:30px}
+.logo svg{flex:none}
+.wm{display:flex;flex-direction:column;gap:10px}
+.wm b{font-family:var(--serif);font-weight:600;font-size:96px;letter-spacing:.14em;line-height:.9}
+.wm i{font-style:normal;font-size:19px;font-weight:700;letter-spacing:.42em}
+.wm .ar{font-size:34px;line-height:1}
+
+/* ---------- Page 1 ---------- */
+.p1-top{display:grid;grid-template-columns:1fr 520px;gap:60px;align-items:end;margin-top:40px}
+.p1-top h1 em{font-style:italic;color:var(--saffron)}
+.p1-top .ar-line{font-size:46px;color:var(--saffron-2);margin-top:22px}
+.brand-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:70px}
+.panel-d{background:var(--green-2);border-radius:28px;padding:34px}
+.panel-d h4{font-size:18px;letter-spacing:.2em;text-transform:uppercase;color:var(--saffron);margin-bottom:22px}
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.sw{border-radius:16px;height:150px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;font-size:16px;font-weight:700;line-height:1.25}
+.sw small{display:block;font-weight:400;opacity:.8;font-size:14px}
+.type-spec{display:grid;grid-template-columns:1fr auto;gap:10px 24px;align-items:baseline}
+.type-spec .big{font-family:var(--serif);font-size:84px;line-height:1}
+.type-spec .arb{font-family:var(--ar);font-size:64px;direction:rtl;line-height:1.1}
+.type-spec p{font-size:18px;color:rgba(247,240,227,.7)}
+.board{margin-top:40px;display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:330px 330px;gap:22px}
+.mock{border-radius:24px;overflow:hidden;position:relative;background:var(--cream-2);display:grid;place-items:center}
+.mock .lbl{position:absolute;left:18px;bottom:14px;font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.store{grid-row:1/3;background:linear-gradient(#22344a 0%,#3d4f6b 45%,#c98b55 100%);place-items:end center}
+.store .bldg{width:88%;height:62%;background:#E9E1D3;border-radius:6px 6px 0 0;position:relative;box-shadow:0 -20px 60px rgba(0,0,0,.25)}
+.store .fascia{position:absolute;left:0;right:0;top:0;height:30%;background:var(--green);display:flex;align-items:center;justify-content:center;gap:16px;box-shadow:0 8px 0 var(--green-2)}
+.store .fascia span{font-family:var(--serif);font-weight:600;color:var(--saffron-2);font-size:46px;letter-spacing:.16em;text-shadow:0 0 18px rgba(240,200,119,.75)}
+.store .win{position:absolute;bottom:0;height:56%;width:40%;background:linear-gradient(#fff6dd,#f1d79c);border:6px solid #2a2a26;border-bottom:0}
+.store .win.l{left:5%} .store .win.r{right:5%}
+.store .win::after{content:"";position:absolute;left:8%;right:8%;bottom:10%;height:30%;background:repeating-linear-gradient(90deg,#d9822b 0 18px,#7fa443 18px 36px,#c9392b 36px 54px,#e6b33a 54px 72px);border-radius:6px;opacity:.85}
+.store .door{position:absolute;bottom:0;left:47%;width:6%;height:50%;background:#2a2a26}
+.store .lbl{color:rgba(255,255,255,.85)}
+.bag{width:190px;height:240px;background:linear-gradient(135deg,#c79a63,#ad7f4a);border-radius:8px 8px 14px 14px;position:relative;display:grid;place-items:center;box-shadow:12px 18px 30px rgba(0,0,0,.18)}
+.bag::before{content:"";position:absolute;top:-46px;left:50%;width:84px;height:70px;margin-left:-42px;border:9px solid #8a6136;border-bottom:0;border-radius:50px 50px 0 0}
+.box{width:250px;height:150px;background:#fff;border-radius:10px;box-shadow:12px 18px 30px rgba(0,0,0,.15);position:relative;display:grid;place-items:center}
+.box::after{content:"";position:absolute;inset:auto 0 46% 0;height:10px;background:var(--saffron)}
+.box .seal{width:86px;height:86px;border-radius:50%;background:var(--saffron);display:grid;place-items:center;position:relative;z-index:1;box-shadow:0 0 0 6px #fff}
+.dbag{width:230px;height:190px;background:var(--green);border-radius:20px;position:relative;display:grid;place-items:center;box-shadow:12px 18px 30px rgba(0,0,0,.2)}
+.dbag::before{content:"";position:absolute;top:0;left:0;right:0;height:26px;background:var(--green-2);border-radius:20px 20px 0 0}
+.apron{width:170px;height:240px;background:var(--green-3);clip-path:polygon(28% 0,72% 0,72% 14%,100% 30%,92% 100%,8% 100%,0 30%,28% 14%);display:grid;place-items:center}
+.card{width:210px;height:140px;background:var(--green);border-radius:12px;padding:20px;color:var(--cream);box-shadow:12px 18px 30px rgba(0,0,0,.2);display:flex;flex-direction:column;justify-content:space-between}
+.card b{font-family:var(--serif);font-size:24px;letter-spacing:.12em}
+.card small{font-size:13px;opacity:.8;line-height:1.5}
+.mini-mark{font-family:var(--serif);font-weight:600;letter-spacing:.14em;color:var(--cream);font-size:22px;text-align:center;line-height:1.1}
+.mini-mark small{display:block;font-family:var(--sans);font-size:8px;letter-spacing:.3em;margin-top:4px}
+.strip{margin-top:auto;margin-bottom:120px;display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--saffron);border-bottom:2px solid var(--saffron)}
+.strip div{padding:28px 18px;font-family:var(--serif);font-size:30px;text-align:center;border-left:1px solid rgba(217,164,65,.35)}
+.strip div:first-child{border-left:0}
+.strip small{display:block;font-family:var(--sans);font-size:16px;color:rgba(247,240,227,.65);margin-top:6px}
+
+/* ---------- Page 2 ---------- */
+.p2-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.devices{position:relative;height:690px;margin-top:56px}
+.laptop{position:absolute;left:0;top:0;width:1060px}
+.laptop .scr{border:18px solid #1d1d1b;border-bottom-width:26px;border-radius:22px 22px 0 0;height:640px;background:#fbf6ee;overflow:hidden;position:relative}
+.laptop .base{height:28px;background:linear-gradient(#cfcac0,#a8a39a);border-radius:0 0 26px 26px;margin:0 -50px}
+.site-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid #eadcc6;background:#fff}
+.site-nav .nm{font-family:var(--serif);font-weight:600;letter-spacing:.14em;font-size:24px;color:var(--green)}
+.site-nav nav{display:flex;gap:22px;font-size:16px;font-weight:500}
+.site-nav nav b{background:var(--green);color:#fff;border-radius:999px;padding:6px 14px}
+.site-hero{position:relative;height:330px}
+.site-hero img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.site-hero > div{position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,30,22,.88) 0%,rgba(18,30,22,.35) 60%,transparent);padding:44px 40px;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.site-hero h5{font-family:var(--serif);font-weight:600;font-size:50px;line-height:1.02;max-width:520px}
+.site-hero .btns{display:flex;gap:12px;align-items:flex-start}
+.btn{border-radius:999px;padding:12px 20px;font-weight:700;font-size:16px}
+.btn.g{background:var(--saffron);color:var(--green-2)} .btn.w{background:#fff;color:var(--green)}
+.site-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:18px 28px}
+.site-cats div{height:150px;border-radius:12px;overflow:hidden;position:relative}
+.site-cats img{width:100%;height:100%;object-fit:cover}
+.site-cats span{position:absolute;left:10px;bottom:8px;color:#fff;font-weight:700;font-size:15px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.phone{position:absolute;background:#141412;border-radius:44px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.phone .in{width:100%;height:100%;border-radius:34px;overflow:hidden;background:#fbf6ee;position:relative}
+.p2-phone{right:0;top:70px;width:300px;height:610px}
+.ph-hero{height:250px;position:relative}
+.ph-hero img{width:100%;height:100%;object-fit:cover}
+.ph-hero h6{position:absolute;left:16px;right:16px;bottom:14px;color:#fff;font-family:var(--serif);font-size:24px;line-height:1.05;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.ph-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 10px}
+.ph-bar b{font-family:var(--serif);letter-spacing:.14em;color:var(--green);font-size:18px}
+.ph-bar span{background:var(--green);color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:5px 10px}
+.today{margin:12px;background:#fff;border:1px solid #eadcc6;border-radius:14px;padding:12px}
+.today small{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--pom)}
+.today p{font-family:var(--serif);font-size:16px;margin-top:4px}
+.ph-btns{display:grid;gap:8px;margin:0 12px}
+.ph-btns div{text-align:center;border-radius:12px;padding:12px;font-weight:700;font-size:14px}
+.p2-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.compare figure{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.compare img{width:100%;height:190px;object-fit:cover;object-position:top}
+.compare figcaption{padding:12px 14px;font-size:17px;line-height:1.35}
+.compare figcaption b{display:block;font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.bad b{color:var(--pom)} .good b{color:var(--green)}
+.newmini{height:190px;background:var(--green);display:grid;grid-template-rows:42% 58%}
+.newmini .h{background:url(../img/ouzi.jpg) center 40%/cover;position:relative}
+.newmini .h::after{content:"PARADISE";position:absolute;left:12px;top:10px;font-family:var(--serif);letter-spacing:.14em;color:#fff;font-weight:600}
+.newmini .t{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px}
+.newmini .t i{border-radius:6px;background:center/cover}
+.serp{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;position:relative}
+.serp .q{display:flex;align-items:center;gap:12px;border:1px solid #d9d3c7;border-radius:999px;padding:12px 20px;font-size:19px}
+.serp .q::before{content:"";width:18px;height:18px;border:3px solid #8a857b;border-radius:50%;flex:none}
+.map{margin-top:16px;height:150px;border-radius:14px;background:#e9eef0;position:relative;overflow:hidden;background-image:linear-gradient(90deg,transparent 48%,#fff 48% 52%,transparent 52%),linear-gradient(0deg,transparent 30%,#fff 30% 34%,transparent 34%),linear-gradient(35deg,transparent 60%,#f6e6b0 60% 63%,transparent 63%)}
+.pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#9aa3a6}
+.pin.p{background:var(--pom);width:44px;height:44px;box-shadow:0 0 0 8px rgba(178,58,46,.18)}
+.res{margin-top:14px;display:grid;gap:10px}
+.res div{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;font-size:18px}
+.res .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#ece7dd;font-weight:700}
+.res .top .n{background:var(--pom);color:#fff}
+.res .top b{color:var(--green)}
+.stars{color:var(--saffron);letter-spacing:2px}
+.res .dim{color:#a39d92}
+.serp .goal{position:absolute;right:20px;top:-16px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:12px 26px;margin-top:6px}
+.checks div{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:20px;line-height:1.35}
+.checks div::before{content:"✓";width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;margin-top:1px}
+.timeline{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+.timeline::before{content:"";position:absolute;left:24px;right:24px;top:23px;height:4px;background:linear-gradient(90deg,var(--green),var(--saffron),var(--pom))}
+.timeline div{position:relative;padding-top:66px;padding-right:24px}
+.timeline div::before{content:"";position:absolute;left:0;top:0;width:50px;height:50px;border-radius:50%;background:var(--cream);border:6px solid var(--green)}
+.timeline div:nth-child(2)::before{border-color:var(--saffron)} .timeline div:nth-child(3)::before{border-color:var(--pom);background:var(--pom)}
+.timeline b{display:block;font-size:16px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.timeline p{font-family:var(--serif);font-size:30px;line-height:1.15;margin-top:6px}
+.timeline small{display:block;font-size:17px;color:var(--mute);margin-top:6px;line-height:1.4}
+
+/* ---------- Hubs (pages 3, 4) ---------- */
+.hub{position:relative;height:880px;margin-top:40px}
+.hub svg.lines{position:absolute;inset:0;width:100%;height:100%}
+.hub .core{position:absolute;left:50%;top:50%;width:330px;height:330px;margin:-165px 0 0 -165px;border-radius:50%;background:var(--green);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;box-shadow:0 0 0 22px rgba(31,74,56,.12),0 0 0 44px rgba(31,74,56,.06)}
+.hub .core b{font-family:var(--serif);font-size:40px;line-height:1.05}
+.hub .core small{font-size:18px;opacity:.8;margin-top:10px;line-height:1.35}
+.node{position:absolute;width:300px;margin-left:-150px;margin-top:-62px;min-height:124px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 22px;box-shadow:0 14px 30px rgba(31,74,56,.08)}
+.node b{font-family:var(--serif);font-size:30px;line-height:1.1;display:block}
+.node small{display:block;font-size:16px;color:var(--mute);margin-top:6px;line-height:1.35}
+.node.own{background:var(--saffron);border-color:var(--saffron)}
+.node.own small{color:var(--green-2)}
+.dark .hub .core{background:var(--saffron);color:var(--green-2);box-shadow:0 0 0 22px rgba(217,164,65,.14),0 0 0 44px rgba(217,164,65,.06)}
+.dark .node{background:var(--green-2);border-color:rgba(247,240,227,.16);box-shadow:none}
+.dark .node small{color:rgba(247,240,227,.7)}
+.node .tag{position:absolute;right:16px;top:-14px}
+.p3-bottom{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;margin-top:10px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:32px}
+.panel h3{margin-bottom:18px}
+.dscene{border-radius:26px;background:linear-gradient(160deg,#f3d9a8,#e3b57a 55%,#b9844f);position:relative;overflow:hidden;min-height:440px}
+.dscene .door{position:absolute;right:40px;top:40px;bottom:0;width:190px;background:#5a3d2a;border-radius:8px 8px 0 0;box-shadow:inset 0 0 0 14px #6d4b34}
+.dscene .door::after{content:"";position:absolute;left:24px;top:50%;width:14px;height:14px;border-radius:50%;background:var(--saffron)}
+.dscene .dbag{position:absolute;left:60px;bottom:40px;width:250px;height:210px}
+.dscene .phone{left:300px;top:40px;width:220px;height:400px;padding:10px;border-radius:34px}
+.track{padding:16px}
+.track .map{height:150px;margin:0 0 12px}
+.track b{font-family:var(--serif);font-size:20px;display:block}
+.track small{font-size:13px;color:var(--mute)}
+.track .bar{height:8px;border-radius:8px;background:#eadcc6;margin-top:12px;overflow:hidden}
+.track .bar i{display:block;height:100%;width:72%;background:var(--green)}
+.track .st{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:6px}
+.fine{font-size:16px;color:var(--mute);margin-top:16px;line-height:1.45}
+.dark .fine{color:rgba(247,240,227,.6)}
+
+/* ---------- Page 4 ---------- */
+.p4-row{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:20px}
+.flow{display:grid;gap:16px}
+.flow div{display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:center;background:var(--green-2);border-radius:20px;padding:14px 22px}
+.flow .n{width:64px;height:64px;border-radius:50%;background:var(--saffron);color:var(--green-2);display:grid;place-items:center;font-family:var(--serif);font-size:32px;font-weight:700}
+.flow p{font-size:22px;line-height:1.35}
+.flow p b{display:block;font-family:var(--serif);font-size:28px;font-weight:600}
+.phones{position:relative;height:470px}
+.phones .phone{width:220px;height:440px;padding:10px;border-radius:38px;background:#0d0d0c}
+.phones .phone .in{border-radius:30px;background:#000}
+.phones .phone img{width:100%;height:100%;object-fit:cover}
+.phones .ov{position:absolute;inset:auto 0 0 0;padding:40px 16px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;font-size:14px}
+.phones .ov b{display:block;font-size:15px}
+.phones .ov .pb{height:4px;background:rgba(255,255,255,.3);border-radius:4px;margin-top:10px}
+.phones .ov .pb i{display:block;height:100%;width:60%;background:#fff;border-radius:4px}
+.phones .heart{position:absolute;right:14px;bottom:110px;width:34px;height:34px;color:#fff;font-size:28px;text-align:center}
+.films{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:18px}
+.films div{display:grid;gap:10px}
+.films .th{height:150px;border-radius:16px;overflow:hidden;background:var(--green-2);display:grid;place-items:center}
+.films .th img{width:100%;height:100%;object-fit:cover}
+.films .th .addr{font-family:var(--serif);color:var(--saffron);font-size:30px;text-align:center;line-height:1.1}
+.films p{font-size:18px;line-height:1.3}
+.films p b{display:block;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron);margin-bottom:2px}
+
+/* ---------- Page 5 ---------- */
+.sys{display:grid;grid-template-columns:330px 1fr 330px;gap:30px;align-items:center;margin-top:40px;position:relative}
+.col{display:grid;gap:10px}
+.col h4,.p5h{font-size:16px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.pill{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:19px;font-weight:500;display:flex;justify-content:space-between;align-items:center}
+.pill i{font-style:normal;font-size:13px;color:var(--mute)}
+.col.out .pill{background:var(--green);color:var(--cream);border-color:var(--green)}
+.col.out .pill i{color:rgba(247,240,227,.7)}
+.center{display:flex;flex-direction:column;align-items:center;gap:22px}
+.hubbox{width:100%;background:var(--green);color:var(--cream);border-radius:28px;padding:30px;text-align:center;position:relative}
+.hubbox b{font-family:var(--serif);font-size:44px;line-height:1.05;display:block}
+.hubbox small{font-size:18px;opacity:.8;display:block;margin-top:8px}
+.tablet{width:100%;background:#151513;border-radius:30px;padding:16px}
+.tablet .in{background:#f6f2ea;border-radius:18px;padding:14px;height:300px;display:flex;flex-direction:column;gap:10px}
+.tablet .tt{display:flex;justify-content:space-between;font-weight:700;font-size:15px}
+.tablet .tt span{color:var(--green);font-family:var(--serif);font-size:18px}
+.cols6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex:1}
+.cols6 div{background:#ebe4d6;border-radius:8px;padding:6px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.cols6 h5{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--green)}
+.oc{background:#fff;border-radius:6px;padding:5px;font-size:10px;line-height:1.25}
+.oc em{font-style:normal;display:inline-block;font-size:8.5px;font-weight:700;border-radius:4px;padding:1px 4px;margin-top:3px;background:#e7efe9;color:var(--green)}
+.oc em.d{background:#fbecd0;color:#8a5a12} .oc em.c{background:#f6dcd8;color:var(--pom)} .oc em.p{background:#e4e8f3;color:#3b4d7a}
+.pos{width:100%;border:2px dashed var(--saffron);border-radius:22px;padding:18px 20px;text-align:center}
+.pos p{font-size:18px;font-weight:700;color:var(--green)}
+.pos .tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.pos .tiles span{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-weight:700;font-size:17px}
+.pos small{display:block;font-size:15px;color:var(--mute);margin-top:10px}
+.arrows{position:absolute;inset:0;pointer-events:none}
+.invest{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.inv{border-radius:24px;padding:26px 28px;background:#fff;border:1px solid var(--line)}
+.inv.hl{background:var(--green);color:var(--cream);border-color:var(--green)}
+.inv .k{font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pom)}
+.inv.hl .k{color:var(--saffron)}
+.inv .row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin-top:12px}
+.inv h3{font-size:32px}
+.inv .pr{font-family:var(--serif);font-weight:700;font-size:48px;color:var(--green);white-space:nowrap}
+.inv.hl .pr{color:var(--saffron)}
+.inv .pr small{font-family:var(--sans);font-size:16px;font-weight:500;margin-left:4px;opacity:.8}
+.inv p{font-size:17px;line-height:1.4;color:var(--mute);margin-top:8px}
+.inv.hl p{color:rgba(247,240,227,.78)}
+.close5{margin-top:36px;display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.close5 h2{font-size:64px;max-width:900px}
+.close5 .ar{font-size:40px;color:var(--pom);margin-top:12px}
+.contact{text-align:right;font-size:20px;line-height:1.6}
+.contact b{font-family:var(--serif);font-size:28px;display:block}
+@media print{
+  html,body{background:none;padding:0}
+  .deck{gap:0;transform:none!important;width:1600px}
+  .page{break-after:page}
+  @page{size:1600px 2000px;margin:0}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="emblem" viewBox="0 0 200 200">
+      <path d="M30 140a70 70 0 0 1 140 0Z" fill="currentColor" opacity=".9"/>
+      <path d="M20 140h160" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M20 156h160M44 170h112" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+      <g fill="none" stroke="var(--palm, #163828)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M104 140c-2-30 2-58 12-84"/>
+        <path d="M116 56c-16-16-40-18-58-8"/>
+        <path d="M116 56c-12-6-34 4-44 22"/>
+        <path d="M116 56c4-20 22-30 42-28"/>
+        <path d="M116 56c14-6 34 2 44 18"/>
+        <path d="M116 56c2 14-4 30-16 40"/>
+        <path d="M116 56c12 8 18 26 16 40"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="deck" id="deck">
+
+<!-- ================= PAGE 1 ================= -->
+<section class="page dark">
+  <p class="eyebrow">A plan for Paradise International Food Market</p>
+  <div class="p1-top">
+    <div>
+      <h1>Paradise,<br><em>everywhere.</em></h1>
+      <p class="ar ar-line">كل اللي بتحبوه بتلاقوه في Paradise… بكل مكان.</p>
+      <p class="lead" style="margin-top:26px">One brand, one website, every delivery app and every social channel, run from one system. Built by Round City, two minutes from your store.</p>
+    </div>
+    <div class="logo" style="flex-direction:column;align-items:flex-start;gap:18px">
+      <svg width="220" height="220" style="color:var(--saffron);--palm:var(--cream)" aria-hidden="true"><use href="#emblem"/></svg>
+      <div class="wm"><b>PARADISE</b><i>INTERNATIONAL FOOD MARKET</i><span class="ar" style="color:var(--saffron-2)">أسواق الفردوس العالمية</span></div>
+    </div>
+  </div>
+
+  <div class="brand-row">
+    <div class="panel-d">
+      <h4>Palette</h4>
+      <div class="swatches">
+        <div class="sw" style="background:var(--green);border:1px solid rgba(247,240,227,.25)">Palm green<small>#1F4A38</small></div>
+        <div class="sw" style="background:var(--saffron);color:var(--green-2)">Saffron<small>#D9A441</small></div>
+        <div class="sw" style="background:var(--cream);color:var(--ink)">Cream<small>#F7F0E3</small></div>
+        <div class="sw" style="background:var(--pom)">Pomegranate<small>#B23A2E</small></div>
+        <div class="sw" style="background:var(--ink)">Ink<small>#1A1A17</small></div>
+      </div>
+    </div>
+    <div class="panel-d">
+      <h4>Type</h4>
+      <div class="type-spec">
+        <span class="big">Aa Fresh</span><span class="arb">طازة</span>
+        <p>Fraunces for headlines · DM Sans for menus and prices</p><p style="text-align:right">Amiri for Arabic</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="board" data-ai-slot="brand_board">
+    <div class="mock store" data-ai-slot="storefront">
+      <div class="bldg">
+        <div class="fascia"><svg width="64" height="64" style="color:var(--saffron-2);--palm:var(--cream)"><use href="#emblem"/></svg><span>PARADISE</span></div>
+        <div class="win l"></div><div class="door"></div><div class="win r"></div>
+      </div>
+      <span class="lbl">Storefront sign</span>
+    </div>
+    <div class="mock"><div class="bag"><div style="text-align:center;color:#3f2a14"><svg width="80" height="80" style="color:#3f2a14;--palm:#3f2a14"><use href="#emblem"/></svg><div style="font-family:var(--serif);font-weight:600;letter-spacing:.14em;font-size:22px">PARADISE</div></div></div><span class="lbl">Shopping bag</span></div>
+    <div class="mock"><div class="box"><div class="seal"><svg width="60" height="60" style="color:#fff;--palm:var(--green-2)"><use href="#emblem"/></svg></div></div><span class="lbl">Kunafa box</span></div>
+    <div class="mock"><div class="dbag"><div class="mini-mark"><svg width="58" height="58" style="color:var(--saffron);--palm:var(--cream);display:block;margin:0 auto 6px"><use href="#emblem"/></svg>PARADISE<small>DELIVERY</small></div></div><span class="lbl">Delivery bag</span></div>
+    <div class="mock" style="grid-template-columns:1fr 1fr;gap:10px;padding:0 20px"><div class="apron"><div class="mini-mark" style="font-size:16px">PARADISE</div></div><div class="card"><b>PARADISE</b><small>5891 Karric Square Dr<br>Dublin, OH · (614) 376-0538</small></div><span class="lbl">Apron + card</span></div>
+  </div>
+
+  <div class="strip">
+    <div>Brand<small>One look everywhere</small></div>
+    <div>Website<small>Bilingual, built to rank</small></div>
+    <div>Delivery<small>Every app + your own</small></div>
+    <div>Social<small>Posting every day</small></div>
+    <div>One system<small>Every order, one screen</small></div>
+  </div>
+  <div class="foot"><span>Prepared by Round City · roundcity.co · (614) 618-4644 · Brand concept by Round City</span><span>1 / 5</span></div>
+</section>
+
+<!-- ================= PAGE 2 ================= -->
+<section class="page">
+  <div class="p2-head">
+    <div>
+      <p class="eyebrow">The website + Google</p>
+      <h2 style="margin-top:16px">A website that sells,<br>and gets found.</h2>
+    </div>
+    <p class="lead" style="max-width:520px;font-size:24px">English and Arabic, every department, online ordering, and catering in two taps. Built for local search from day one.</p>
+  </div>
+
+  <div class="devices" data-ai-slot="web_devices">
+    <div class="laptop">
+      <div class="scr">
+        <div class="site-nav"><span class="nm">PARADISE</span><nav><span>Butcher</span><span>Bakery</span><span>Kitchen</span><span>Sweets</span><span>Catering</span><b>Order</b></nav></div>
+        <div class="site-hero"><img src="../img/ouzi.jpg" alt=""><div><h5>Fresh from our kitchen, every day.</h5><div class="btns"><span class="btn g">Order for delivery</span><span class="btn w">Request catering</span></div></div></div>
+        <div class="site-cats">
+          <div><img src="../img/butcher.jpg" alt=""><span>Halal butcher</span></div>
+          <div><img src="../img/bread.jpg" alt=""><span>Bakery</span></div>
+          <div><img src="../img/grill.jpg" alt=""><span>Kitchen</span></div>
+          <div><img src="../img/kunafa.jpg" alt=""><span>Sweets</span></div>
+        </div>
+      </div>
+      <div class="base"></div>
+    </div>
+    <div class="phone p2-phone"><div class="in">
+      <div class="ph-bar"><b>PARADISE</b><span class="ar" style="font-size:13px">عربي</span></div>
+      <div class="ph-hero"><img src="../img/mansaf.jpg" alt=""><h6>Catering for every gathering</h6></div>
+      <div class="today"><small>TODAY'S DISHES</small><p>Mansaf · Maqluba · Grape leaves</p></div>
+      <div class="ph-btns"><div style="background:var(--saffron);color:var(--green-2)">Order for delivery</div><div style="background:var(--green);color:#fff">Request catering</div></div>
+    </div></div>
+  </div>
+
+  <div class="p2-grid">
+    <div>
+      <p class="p5h">Today vs new</p>
+      <div class="compare">
+        <figure class="bad"><img src="../img/today-shop.jpg" alt="The current shop page"><figcaption><b>Today</b>24,750 auto-imported products, placeholder prices, no address or hours</figcaption></figure>
+        <figure class="good"><div class="newmini"><div class="h"></div><div class="t"><i style="background-image:url(../img/butcher.jpg)"></i><i style="background-image:url(../img/bread.jpg)"></i><i style="background-image:url(../img/nests.jpg)"></i></div></div><figcaption><b>New</b>Real departments, real prices, hours, map and one-tap ordering</figcaption></figure>
+      </div>
+      <p class="p5h" style="margin-top:30px">Built for Google</p>
+      <div class="checks">
+        <div>Local SEO on the site and across the web</div>
+        <div>Google + Apple Maps listings fixed</div>
+        <div>Structured data for store, menu and hours</div>
+        <div>Fast pages on phones</div>
+        <div>English and Arabic pages</div>
+        <div>Review automation, with replies in English or Arabic</div>
+      </div>
+    </div>
+    <div>
+      <div class="serp">
+        <span class="tag goal">Goal</span>
+        <div class="q">halal butcher Dublin OH</div>
+        <div class="map"><span class="pin" style="left:22%;top:58%"></span><span class="pin" style="left:70%;top:30%"></span><span class="pin p" style="left:46%;top:34%"></span></div>
+        <div class="res">
+          <div class="top"><span class="n">1</span><span><b>Paradise International Food Market</b><br><span style="font-size:15px;color:var(--mute)">Halal butcher · Bakery · Catering · Open until 10 PM</span></span><span class="stars">★★★★★</span></div>
+          <div><span class="n">2</span><span class="dim">Another market</span><span class="dim">★★★★</span></div>
+          <div><span class="n">3</span><span class="dim">Another market</span><span class="dim">★★★★</span></div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div><b>Month 0</b><p>Launch</p><small>New site live, listings fixed, reviews start</small></div>
+        <div><b>Month 1</b><p>Indexed</p><small>Pages in Google, reviews coming in every week</small></div>
+        <div><b>Months 2–3</b><p>Top 3 target</p><small>"halal butcher Dublin", "kunafa Columbus", "Middle Eastern grocery near me"</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Prepared by Round City · roundcity.co · (614) 618-4644 · Rankings are a target, not a guarantee.</span><span>2 / 5</span></div>
+</section>
+
+<!-- ================= PAGE 3 ================= -->
+<section class="page">
+  <p class="eyebrow">Sell everywhere</p>
+  <h2 style="margin-top:16px">Every delivery app.<br>Plus your own.</h2>
+  <p class="lead" style="margin-top:20px">Your products live in one catalog. We push them to each app with listings that meet its rules, and to your own local delivery for everything in the store, groceries included.</p>
+
+  <div class="hub" id="hub3">
+    <svg class="lines" aria-hidden="true"></svg>
+    <div class="core"><b>Paradise catalog</b><small>One source of truth for products, photos and prices</small></div>
+    <div class="node own" style="left:50%;top:9%"><b>Paradise Delivery</b><small>Your own local delivery, groceries included. Your drivers or DoorDash Drive / Uber Direct</small></div>
+    <div class="node" style="left:16%;top:22%"><b>DoorDash</b><small>Restaurant menu + grocery</small></div>
+    <div class="node" style="left:84%;top:22%"><b>Uber Eats</b><small>Restaurant menu + grocery</small></div>
+    <div class="node" style="left:11%;top:58%"><b>Postmates</b><small>Runs on Uber Eats, so one listing covers both</small></div>
+    <div class="node" style="left:89%;top:58%"><b>Grubhub</b><small>Kitchen menu and sweets</small></div>
+    <div class="node" style="left:27%;top:89%"><b>Instacart</b><small>The full grocery aisle</small></div>
+    <div class="node" style="left:73%;top:89%"><b>ezCater</b><small>Catering for offices and events</small></div>
+  </div>
+
+  <div class="p3-bottom">
+    <div class="panel">
+      <h3>Compliant listings, on every app</h3>
+      <div class="checks" style="grid-template-columns:1fr 1fr">
+        <div>A real photo for every product</div>
+        <div>Accurate names and descriptions</div>
+        <div>Prices and stock kept in sync</div>
+        <div>Meat sold by weight</div>
+        <div>Halal certification shown</div>
+        <div>Allergens noted</div>
+        <div>Each app's category and photo rules met</div>
+        <div>Restricted items kept off apps that don't allow them</div>
+      </div>
+      <p class="fine">Platform availability, fees and approval are set by each platform.</p>
+    </div>
+    <div class="dscene" data-ai-slot="delivery">
+      <div class="door"></div>
+      <div class="dbag"><div class="mini-mark"><svg width="64" height="64" style="color:var(--saffron);--palm:var(--cream);display:block;margin:0 auto 6px"><use href="#emblem"/></svg>PARADISE<small>DELIVERY</small></div></div>
+      <div class="phone"><div class="in"><div class="track">
+        <div class="map"><span class="pin p" style="left:60%;top:30%;width:30px;height:30px"></span></div>
+        <b>Paradise · Out for delivery</b><small>Groceries, kofta plate, kunafa · 12 min away</small>
+        <div class="bar"><i></i></div><div class="st"><span>Packed</span><span>On the way</span><span>Delivered</span></div>
+      </div></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Prepared by Round City · roundcity.co · (614) 618-4644</span><span>3 / 5</span></div>
+</section>
+
+<!-- ================= PAGE 4 ================= -->
+<section class="page dark">
+  <p class="eyebrow">Post everywhere</p>
+  <h2 style="margin-top:16px">One content hub.<br>Every channel, every day.</h2>
+
+  <div class="hub" id="hub4" style="height:640px;margin-top:30px">
+    <svg class="lines" aria-hidden="true"></svg>
+    <div class="core" style="width:290px;height:290px;margin:-145px 0 0 -145px"><b>Content hub</b><small>Approve once, post everywhere</small></div>
+    <div class="node" style="left:16%;top:14%"><span class="tag live">Active now</span><b>Instagram</b><small>@paradisemarket5891</small></div>
+    <div class="node" style="left:50%;top:9%"><span class="tag live">Active now</span><b>TikTok</b><small>@paradise.intl.mar</small></div>
+    <div class="node" style="left:84%;top:14%"><span class="tag new">We set up + link</span><b>Facebook</b><small>Page, reels and events</small></div>
+    <div class="node" style="left:10%;top:52%"><span class="tag new">We set up + link</span><b>YouTube Shorts</b><small>Every reel, searchable</small></div>
+    <div class="node" style="left:90%;top:52%"><span class="tag new">We set up + link</span><b>Snapchat</b><small>Stories and local reach</small></div>
+    <div class="node" style="left:20%;top:90%"><span class="tag new">We set up + link</span><b>Google posts</b><small>Offers on your Maps listing</small></div>
+    <div class="node" style="left:50%;top:94%"><span class="tag new">We set up + link</span><b>WhatsApp Channel</b><small>Popular with Arabic-speaking customers</small></div>
+    <div class="node" style="left:80%;top:90%"><span class="tag new">We set up + link</span><b>Pinterest</b><small>Catering and sweets ideas</small></div>
+  </div>
+
+  <div class="p4-row" style="margin-top:56px">
+    <div class="flow">
+      <div><span class="n">1</span><p><b>We create</b>We film at the store and turn your products into videos, carousels, designs and ads</p></div>
+      <div><span class="n">2</span><p><b>You approve</b>From your phone, in seconds</p></div>
+      <div><span class="n">3</span><p><b>The hub posts</b>Every day, to every channel</p></div>
+      <div><span class="n">4</span><p><b>One inbox</b>Reviews, comments and messages come back to one place</p></div>
+    </div>
+    <div class="phones" data-ai-slot="social_phones">
+      <div class="phone" style="left:0;top:30px;transform:rotate(-6deg)"><div class="in"><img src="../img/kunafa.jpg" alt=""><span class="heart">♥</span><div class="ov"><b>paradise.market</b>Kunafa, cut fresh<div class="pb"><i></i></div></div></div></div>
+      <div class="phone" style="left:230px;top:0;z-index:2"><div class="in"><img src="../img/grill.jpg" alt=""><span class="heart">♥</span><div class="ov"><b>paradise.market</b>Kofta off the grill<div class="pb"><i style="width:35%"></i></div></div></div></div>
+      <div class="phone" style="left:460px;top:30px;transform:rotate(6deg)"><div class="in"><img src="../img/butcher.jpg" alt=""><span class="heart">♥</span><div class="ov"><b>paradise.market</b>Today at the butcher<div class="pb"><i style="width:80%"></i></div></div></div></div>
+    </div>
+  </div>
+
+  <p class="eyebrow" style="margin-top:30px">The master film series</p>
+  <div class="films">
+    <div><div class="th"><img src="../img/mansaf.jpg" alt=""></div><p><b>Film 1</b>Catering at a real event</p></div>
+    <div><div class="th"><span class="addr">5891<br>Karric Sq</span></div><p><b>Film 2</b>Finding Paradise</p></div>
+    <div><div class="th"><img src="../img/grill.jpg" alt=""></div><p><b>Film 3</b>The kitchen menu</p></div>
+    <div><div class="th"><img src="../img/nests.jpg" alt=""></div><p><b>Film 4</b>Products and offers</p></div>
+    <div><div class="th"><img src="../img/kunafa.jpg" alt=""></div><p><b>Film 5</b>Sweets</p></div>
+    <div><div class="th"><img src="../img/butcher.jpg" alt=""></div><p><b>Film 6</b>Fresh halal meat</p></div>
+    <div><div class="th"><img src="../img/produce.jpg" alt=""></div><p><b>Film 7</b>Groceries</p></div>
+  </div>
+  <div class="foot"><span>Prepared by Round City · roundcity.co · (614) 618-4644</span><span>4 / 5</span></div>
+</section>
+
+<!-- ================= PAGE 5 ================= -->
+<section class="page">
+  <p class="eyebrow">One system</p>
+  <h2 style="margin-top:16px">Every order, one screen.</h2>
+  <p class="lead" style="margin-top:20px">Our software sits behind the store. Orders from every channel land in the right department, and it connects to the point-of-sale you already use.</p>
+
+  <div class="sys" id="sys">
+    <svg class="arrows" aria-hidden="true"></svg>
+    <div class="col in" id="ins">
+      <h4>Orders come in</h4>
+      <div class="pill">Website<i>pickup + delivery</i></div>
+      <div class="pill">Paradise Delivery<i>local</i></div>
+      <div class="pill">DoorDash</div>
+      <div class="pill">Uber Eats / Postmates</div>
+      <div class="pill">Grubhub</div>
+      <div class="pill">Instacart</div>
+      <div class="pill">ezCater</div>
+      <div class="pill">Phone + catering requests</div>
+    </div>
+    <div class="center">
+      <div class="hubbox" id="hubbox"><b>Round City order hub</b><small>Our software, built around your store</small></div>
+      <div class="tablet" data-ai-slot="system_ops"><div class="in">
+        <div class="tt"><span>Paradise Orders</span><small>Today · 46 open</small></div>
+        <div class="cols6">
+          <div><h5>Butcher</h5><p class="oc">2 lb lamb shoulder<br><em>Website</em></p><p class="oc">Ground beef 3 lb<br><em class="d">Delivery app</em></p></div>
+          <div><h5>Bakery</h5><p class="oc">40 pita, 2 bags<br><em class="p">Phone</em></p><p class="oc">Zaatar manoushe x6<br><em>Website</em></p></div>
+          <div><h5>Kitchen</h5><p class="oc">Kofta plate x2<br><em class="d">Delivery app</em></p><p class="oc">Shawarma wrap<br><em class="d">Delivery app</em></p></div>
+          <div><h5>Sweets</h5><p class="oc">Kunafa tray<br><em>Website</em></p><p class="oc">Baklava 2 lb<br><em class="d">Delivery app</em></p></div>
+          <div><h5>Grocery</h5><p class="oc">Weekly basket, 18 items<br><em>Website</em></p><p class="oc">Rice 10 lb + tahini<br><em class="d">Delivery app</em></p></div>
+          <div><h5>Catering</h5><p class="oc">Mansaf for 40, Sat<br><em class="c">Catering</em></p><p class="oc">Office lunch, Tue<br><em class="c">Catering</em></p></div>
+        </div>
+      </div></div>
+      <div class="pos">
+        <p>Connects to the point-of-sale you already use</p>
+        <div class="tiles"><span>Toast</span><span>Square</span><span>Clover</span><span>Shopify POS</span><span>or your grocery POS</span></div>
+        <small>We'll confirm which one you use at the store walkthrough, then connect to it.</small>
+      </div>
+    </div>
+    <div class="col out" id="outs">
+      <h4>Everything flows out</h4>
+      <div class="pill">Butcher screen</div>
+      <div class="pill">Bakery screen</div>
+      <div class="pill">Kitchen screen</div>
+      <div class="pill">Sweets screen</div>
+      <div class="pill">Grocery picking</div>
+      <div class="pill">Catering calendar</div>
+      <div class="pill">Owner dashboard</div>
+      <div class="pill">Google reviews + posts</div>
+    </div>
+  </div>
+
+  <div class="invest">
+    <div class="inv">
+      <p class="k">Build once</p>
+      <div class="row"><h3>Brand + Website</h3><span class="pr">$2,650</span></div>
+      <p>Brand refresh, bilingual website, Google + Apple Maps fixed, review automation, social linking, content hub with daily auto-posting.</p>
+      <div class="row" style="margin-top:20px"><h3>Operations</h3><span class="pr">+$5,400</span></div>
+      <p>Online ordering and local delivery including groceries, delivery-app orders in one screen, checkout upgrade, catering tracking, department queues, POS connection. $8,050 total with Brand + Website.</p>
+    </div>
+    <div class="inv hl">
+      <p class="k">Grow every month</p>
+      <div class="row"><h3>Content Engine</h3><span class="pr">$589<small>/mo</small></span></div>
+      <p>Automated videos, carousels, designs and ads you approve, daily posting, 1 master video a month filmed in person, accounts set up, local SEO included.</p>
+      <div class="row" style="margin-top:20px"><h3>Master Media</h3><span class="pr">$1,299<small>/mo</small></span></div>
+      <p>Everything in Content Engine, plus the 7 master films and 15 videos a month.</p>
+    </div>
+  </div>
+  <p class="fine">Prices in USD. Domain, hosting, delivery-platform fees, payment processing and ad spend are separate. Proposal valid 30 days from November 19, 2026.</p>
+
+  <div class="close5">
+    <div><h2>Let's put Paradise on every screen in Columbus.</h2><p class="ar">خلّينا نحط Paradise على كل شاشة بكولومبس.</p></div>
+    <div class="contact"><b>Ali Al-Khafaji</b>Founder, Round City<br>(614) 618-4644<br>ali@roundcity.co · roundcity.co</div>
+  </div>
+  <div class="foot"><span>Prepared by Round City · roundcity.co · (614) 618-4644</span><span>5 / 5</span></div>
+</section>
+</main>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function rel(el, box){var r=el.getBoundingClientRect(),b=box.getBoundingClientRect(),s=b.width/box.offsetWidth;return{x:(r.left-b.left)/s,y:(r.top-b.top)/s,w:r.width/s,h:r.height/s};}
+  function line(svg,x1,y1,x2,y2,color,dash){var l=document.createElementNS(NS,'line');l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);l.setAttribute('stroke',color);l.setAttribute('stroke-width','3');if(dash)l.setAttribute('stroke-dasharray','2 10');l.setAttribute('stroke-linecap','round');svg.appendChild(l);}
+  function hub(id,color){var box=document.getElementById(id);if(!box)return;var svg=box.querySelector('svg.lines');svg.innerHTML='';var c=rel(box.querySelector('.core'),box);var cx=c.x+c.w/2,cy=c.y+c.h/2;
+    box.querySelectorAll('.node').forEach(function(n){var r=rel(n,box);line(svg,cx,cy,r.x+r.w/2,r.y+r.h/2,color,true);});}
+  function sys(){var box=document.getElementById('sys');var svg=box.querySelector('svg.arrows');svg.innerHTML='';svg.setAttribute('width',box.offsetWidth);svg.setAttribute('height',box.offsetHeight);
+    var h=rel(document.getElementById('hubbox'),box);
+    box.querySelectorAll('#ins .pill').forEach(function(p){var r=rel(p,box);line(svg,r.x+r.w,r.y+r.h/2,h.x,h.y+h.h/2,'#D9A441',false);});
+    box.querySelectorAll('#outs .pill').forEach(function(p){var r=rel(p,box);line(svg,h.x+h.w,h.y+h.h/2,r.x,r.y+r.h/2,'#1F4A38',false);});}
+  function fit(){var d=document.getElementById('deck');var s=Math.min(1,(window.innerWidth-24)/1600);d.style.transform=s<1?'scale('+s+')':'';d.style.marginLeft=s<1?'12px':'auto';d.style.marginBottom=s<1?(-(d.offsetHeight*(1-s)))+'px':'';}
+  function draw(){hub('hub3','#C9B48F');hub('hub4','rgba(217,164,65,.55)');sys();}
+  window.addEventListener('resize',function(){fit();});
+  fit();
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){draw();});
+  window.addEventListener('load',draw);
+})();
+</script>
+</body>
+</html>
