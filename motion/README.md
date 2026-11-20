@@ -57,3 +57,12 @@ node lib/cap.js anatomy.html work/anatomy 30 0 24 && lib/final.sh work/anatomy r
 
 ### Beauty and the beat
 Shots, cuts, sweeps and the booking ticks are placed in **beats** (`window.BEATS = {bpm, offset}`), so changing the tempo re-times everything. The portrait's eye blink is the `blink` attribute of `<muse-story>` (seconds); the engine closes the eyes when `(U - 2.6) % blink` is about 0.09 s, where U is portrait-local time. `plans/beauty-body.js` sets `blink` to 4 beats and phases `_t0` so the eyes are fully closed exactly on beats 14, 18, 22 and 26. `lib/beatnotes.py BPM OFFSET` prints the beat sheet. No music is embedded: the master is silent.
+
+## Mark to mark (logo film)
+`kit/marks.html`: the Round City seal (from roundcity.co/mark.svg) hands over to the Susu Ink & Glow gold logo, which turns into the three.js crystal wordmark, with a hook line animated over each. 18.5 s, 1080x1920. The words are in `HOOKS` and the scene times in `T` at the top of the script.
+```
+node lib/logoshot.js work/frames/logo 0 10.3
+node lib/cap.js marks.html work/marks 30 0 18.5 && lib/final.sh work/marks round-city-marks
+python3 lib/sfx2.py work/marks-ev.json work/marks-full.wav work/marks-sfx.wav   # events = window.EVENTS in marks.html
+```
+Outputs: `videos/round-city-marks.mp4` (silent) and `videos/round-city-marks-sfx.mp4` (sound effects only).
