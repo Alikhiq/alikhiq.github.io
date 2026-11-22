@@ -40,6 +40,7 @@ function openQuote(pre = {}) {
   $("#qFin").value = fin()[1].charAt(0) + fin()[1].slice(1).toLowerCase();
   const sz = $(`#qSizeF input[value="${S.size}"]`); if (sz) sz.checked = true;
   $("#qPhoto").hidden = !photo; $("#qNote").hidden = !note; $("#qNote").textContent = note;
+  const qp = $("#qPay"); if (qp) { qp.hidden = true; qp.innerHTML = ""; }
   $$("#qForm .err").forEach((e) => (e.textContent = ""));
   details(); closeSheets(); openSheet("#qScrim"); step(1);
 }
@@ -66,17 +67,18 @@ async function submitQuote(e) {
   const endpoint = CONFIG.leadEndpoint || (R.dataset.live ? "/api/lead" : "");
   if (endpoint) {
     const b = $("#qSend"); b.disabled = true; b.textContent = "Sending…";
-    let ok = false;
+    let ok = false, id = "";
     try {
       const fd = new FormData(); fd.append("data", JSON.stringify(lead)); fd.append("website", $("#qWeb") ? $("#qWeb").value : "");
       // The first photo is the main one; the rest travel as attachments (four at most in all).
       const imgs = photoFile ? [photoFile, ...pics] : [...pics], main = imgs.shift();
       if (main) fd.append("photo", main, main.name || "photo.jpg");
       [...imgs, ...(hooks.files || [])].slice(0, 4).forEach((f, n) => fd.append("file" + n, f, f.name || "file" + n + ".jpg"));
-      const r = await fetch(endpoint, { method: "POST", body: fd }); ok = r.ok && (await r.json()).ok === true;
+      const r = await fetch(endpoint, { method: "POST", body: fd }), d = r.ok ? await r.json().catch(() => ({})) : {};
+      ok = d.ok === true; id = typeof d.id === "string" ? d.id : "";
     } catch {}
     b.disabled = false; b.textContent = "Request my price";
-    if (ok) { $("#qDone").textContent = `Sent. We'll ${lead.contact} you at ${lead.phone} with your price in writing.${photoFile || pics.length ? " Your photos went with it." : ""}`; pics = []; drawPics(); step(4); return; }
+    if (ok) { $("#qDone").textContent = `Sent. We'll ${lead.contact} you at ${lead.phone} with your price in writing.${photoFile || pics.length ? " Your photos went with it." : ""}`; payOffer(ids(), id); pics = []; drawPics(); step(4); return; }
     ev("lead_fail");
     if (!MAIL) { $("#qErr3").textContent = "That didn't go through. Check your connection and try again."; return; }
   }
@@ -89,6 +91,20 @@ async function submitQuote(e) {
   }
   const msg = "This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team.";
   $("#qDone").textContent = msg; step(4);
+}
+// Once a request is stored, offer the deposit for what was picked (the largest one when several were picked).
+// It is a Stripe payment link; the request id rides along as client_reference_id, so the payment lands on this request in the desk.
+function payOffer(svc, id) {
+  const box = $("#qPay"); if (!box) return;
+  box.hidden = true; box.innerHTML = "";
+  let P = {}; try { P = JSON.parse(box.dataset.payset || "{}"); } catch {}
+  const links = P.links || {}, keys = [...new Set(svc.map((s) => (P.service || {})[s]).filter((k) => links[k] && links[k].amount))];
+  const key = keys.sort((a, b) => links[b].amount - links[a].amount)[0];
+  if (!key || !/^[\w-]{6,40}$/.test(id)) return;
+  const x = links[key], amt = money(x.amount), href = x.url + (x.url.includes("?") ? "&" : "?") + "client_reference_id=" + encodeURIComponent(id);
+  box.innerHTML = `<span class="legend">Lock in your spot</span><p>Pay the ${esc(amt)} ${esc(x.what)} now. It comes off your final price. Or wait for your price and pay later.</p>`
+    + `<a class="btn pri" href="${esc(href)}" target="_blank" rel="noopener" data-pay="${esc(key)}">Pay ${esc(amt)} now</a><small>Secure checkout by Stripe: cards, Apple Pay, Google Pay and more.</small>`;
+  box.hidden = false;
 }
 function openUpload() { ev("photo_open"); uState(); $$("#usw button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.f === S.finish)); closeSheets(); openSheet("#uScrim"); }
 

@@ -24,7 +24,8 @@ export function initTrack() {
   ev("view");
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a[href]"); if (!a) return;
-    if (a.href.startsWith("mailto:")) ev("mail_click");
+    if (a.dataset.pay) ev("pay_click", a.dataset.pay);
+    else if (a.href.startsWith("mailto:")) ev("mail_click");
     else if (/instagram\.com/.test(a.href)) ev("social_click");
   });
 }

@@ -9,3 +9,8 @@ CREATE INDEX IF NOT EXISTS render_day ON renders (day, visitor);
 -- ALTER TABLE leads ADD COLUMN render TEXT;
 -- ALTER TABLE leads ADD COLUMN location TEXT;
 -- ALTER TABLE leads ADD COLUMN files TEXT;
+-- Online payments from the site's Stripe payment links, written by /api/stripe.
+CREATE TABLE IF NOT EXISTS payments (id TEXT PRIMARY KEY, ts INTEGER NOT NULL, day TEXT NOT NULL, lead TEXT, kind TEXT, amount INTEGER NOT NULL DEFAULT 0, currency TEXT, status TEXT NOT NULL, name TEXT, email TEXT, phone TEXT, job TEXT, pi TEXT, refunded INTEGER NOT NULL DEFAULT 0, updated INTEGER);
+CREATE INDEX IF NOT EXISTS pay_lead ON payments (lead);
+CREATE INDEX IF NOT EXISTS pay_pi ON payments (pi);
+CREATE INDEX IF NOT EXISTS pay_day ON payments (day);

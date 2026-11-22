@@ -13,6 +13,7 @@
   //   LEAD_CC         copy address for the email fallback
   //   NOTIFY_TO       comma-separated addresses for new-request emails
   //   RESEND_KEY      Resend sending key; with NOTIFY_FROM it switches the emails on
+  //   STRIPE_WEBHOOK_SECRET  signing secret of the Stripe webhook that calls /api/stripe when a pay link is paid
   "vars": { "LEAD_TO": "sales@everywrap.com" },
   "r2_buckets": [
     { "binding": "SITE", "bucket_name": "everywrap-site" },

@@ -60,9 +60,15 @@ const tools = {
     if (!hooks.quote) return "The booking form is not available. Ask the visitor to tap Book now on the page.";
     const svc = SERVICES.includes(p.service) ? p.service : "";
     hooks.quote({ svc, car: (p.vehicle || "").slice(0, 80), note: (p.note || "").slice(0, 160) });
-    return "The booking form is open on the visitor's screen with the service picked. They fill in the vehicle, their name and mobile number, then press the last button to send it.";
+    return "The booking form is open on the visitor's screen with the service picked. They fill in the vehicle, their name and mobile number, then press the last button to send it." + payNote();
   },
 };
+// What the form offers once a request is sent, read from the page so the amounts always match the site.
+function payNote() {
+  let P = {}; try { P = JSON.parse(($("#qPay") || { dataset: {} }).dataset.payset || "{}"); } catch {}
+  const list = Object.values(P.links || {}).filter((x) => x.amount).map((x) => `$${x.amount} ${x.what} (${x.label})`);
+  return list.length ? ` Once it is sent, the form offers an optional deposit through Stripe so they can lock in a date: ${list.join(", ")}. The deposit comes off the final price. It is optional; they can also wait for their written price and pay later.` : "";
+}
 
 // One connection attempt. `live` goes false when the attempt is dropped, so its late events are ignored.
 function attempt(agentId, type, me) {

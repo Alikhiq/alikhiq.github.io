@@ -4,7 +4,7 @@
 // 3. Serves the data behind the private dashboard at /desk/.
 const TYPES = { html: "text/html; charset=utf-8", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", json: "application/json; charset=utf-8", svg: "image/svg+xml", webp: "image/webp", jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png", mp4: "video/mp4", xml: "application/xml; charset=utf-8", txt: "text/plain; charset=utf-8", webmanifest: "application/manifest+json", ico: "image/x-icon" };
 const MAIN = "everywrap.com";
-const EVENTS = new Set(["view", "book_open", "book_step2", "book_step3", "lead_sent", "lead_fail", "voice_start", "voice_live", "photo_open", "photo_added", "finish_pick", "service_pick", "menu_open", "work_open", "calc_use", "mock_use", "mail_click", "social_click"]);
+const EVENTS = new Set(["view", "book_open", "book_step2", "book_step3", "lead_sent", "lead_fail", "voice_start", "voice_live", "photo_open", "photo_added", "finish_pick", "service_pick", "menu_open", "work_open", "calc_use", "mock_use", "mail_click", "social_click", "pay_click"]);
 const BOT = /bot|crawl|spider|slurp|headless|lighthouse|preview|monitor|curl|wget|python|scrapy|facebookexternalhit|whatsapp|pingdom|gtmetrix|scan|fetch\b/i;
 const STATUSES = ["new", "contacted", "booked", "closed"];
 const PHOTO_TYPES = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/heic": "heic", "image/heif": "heif" };
@@ -115,6 +115,62 @@ async function lead(request, env, ctx, url) {
   return json({ ok: true, id });
 }
 
+/* ---------- online payments: Stripe tells the site when a payment link is paid ---------- */
+// The site's pay buttons are Stripe payment links (data/site.json, "pay"). Stripe calls /api/stripe with each event,
+// signed with the endpoint's secret (STRIPE_WEBHOOK_SECRET, a Worker secret). Anything unsigned, stale or altered is refused.
+// A payment that carries a request id (client_reference_id) lands on that request, which moves to "booked".
+const PAY_KINDS = { "deposit-250": "Booking deposit", "deposit-50": "Tint deposit", "design-300": "Design start", "print-100": "Print deposit", quote: "Quote payment" };
+async function stripeSigned(env, sig, body) {
+  const t = (/(?:^|,)\s*t=(\d+)/.exec(sig) || [])[1], v1 = [...sig.matchAll(/(?:^|,)\s*v1=([0-9a-f]{64})/g)].map((m) => m[1]);
+  if (!t || !v1.length || Math.abs(Date.now() / 1000 - +t) > 300) return false;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.STRIPE_WEBHOOK_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const want = hex(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(t + "." + body)));
+  return v1.some((s) => same(s, want));
+}
+async function notifyPaid(env, p, origin) {
+  if (!env.RESEND_KEY || !env.NOTIFY_FROM || !env.NOTIFY_TO) return;
+  const html = `<div style="font:16px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#111;max-width:560px"><h2 style="margin:0 0 4px">Paid online: $${(p.amount / 100).toFixed(2)}</h2>
+<p style="margin:0 0 16px;color:#6b6b6b">${esc(PAY_KINDS[p.kind] || "Payment")} from ${esc(p.name || "a customer")}${p.phone ? " · " + esc(p.phone) : ""}${p.job ? " · " + esc(p.job) : ""}</p>
+<p><a href="${origin}/desk/${p.lead ? "#r=" + p.lead : ""}" style="background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">Open the dashboard</a></p></div>`;
+  try {
+    const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { authorization: "Bearer " + env.RESEND_KEY, "content-type": "application/json" },
+      body: JSON.stringify({ from: env.NOTIFY_FROM, to: env.NOTIFY_TO.split(",").map((s) => s.trim()).filter(Boolean), subject: `Paid $${(p.amount / 100).toFixed(2)}: ${p.name || "EveryWrap"} · ${PAY_KINDS[p.kind] || "Payment"}`, html }) });
+    if (!r.ok) console.error("notifyPaid", r.status, (await r.text()).slice(0, 200));
+  } catch (e) { console.error("notifyPaid", e.message); }
+}
+async function stripe(request, env, ctx, url) {
+  if (!env.STRIPE_WEBHOOK_SECRET || !env.DB) return json({ ok: false, error: "not set up" }, 503);
+  const body = await request.text();
+  if (body.length > 512 * 1024 || !(await stripeSigned(env, request.headers.get("stripe-signature") || "", body))) return json({ ok: false }, 400);
+  let evt; try { evt = JSON.parse(body); } catch { return json({ ok: false }, 400); }
+  const o = (evt && evt.data && evt.data.object) || {}, type = String(evt.type || ""), now = Date.now();
+  if (type === "checkout.session.completed" || type === "checkout.session.async_payment_succeeded" || type === "checkout.session.async_payment_failed") {
+    if (o.mode && o.mode !== "payment") return json({ ok: true });
+    const cd = o.customer_details || {}, ci = o.collected_information || {}, job = (o.custom_fields || []).find((f) => f && f.key === "job");
+    const who = [ci.individual_name || cd.name || "", ci.business_name || cd.business_name || ""].filter(Boolean).join(", ");
+    const status = type.endsWith("failed") ? "failed" : type.endsWith("succeeded") || o.payment_status === "paid" || o.payment_status === "no_payment_required" ? "paid" : "processing";
+    const ref = String(o.client_reference_id || ""), ts = o.created ? o.created * 1000 : now;
+    const P = { id: clip(o.id, 80), lead: /^[a-z0-9]{6,40}$/.test(ref) ? ref : "", kind: clip(o.metadata && o.metadata.kind, 30), amount: Math.max(0, Math.round(+o.amount_total || 0)), currency: clip(o.currency, 3), status,
+      name: clip(who, 80), email: clip(cd.email, 120), phone: clip(cd.phone, 30), job: clip(job && job.text && job.text.value, 160), pi: clip(typeof o.payment_intent === "string" ? o.payment_intent : (o.payment_intent && o.payment_intent.id) || "", 80) };
+    if (!P.id) return json({ ok: false }, 400);
+    // A late "processing" never overwrites a payment that already settled, failed or was refunded.
+    await env.DB.prepare(`INSERT INTO payments (id, ts, day, lead, kind, amount, currency, status, name, email, phone, job, pi, updated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      ON CONFLICT(id) DO UPDATE SET status = CASE WHEN payments.status IN ('paid','failed','refunded','part refunded') AND excluded.status = 'processing' THEN payments.status WHEN payments.status IN ('refunded','part refunded') THEN payments.status ELSE excluded.status END, updated = excluded.updated`)
+      .bind(P.id, ts, dayOf(ts), P.lead, P.kind, P.amount, P.currency, P.status, P.name, P.email, P.phone, P.job, P.pi, now).run();
+    if (P.status === "paid") {
+      if (P.lead) await env.DB.prepare("UPDATE leads SET status = 'booked' WHERE id = ? AND status IN ('new','contacted')").bind(P.lead).run();
+      ctx.waitUntil(notifyPaid(env, P, url.origin));
+    }
+    return json({ ok: true });
+  }
+  if (type === "charge.refunded" && o.payment_intent) {
+    const pi = typeof o.payment_intent === "string" ? o.payment_intent : o.payment_intent.id;
+    await env.DB.prepare("UPDATE payments SET status = ?, refunded = ?, updated = ? WHERE pi = ?").bind(o.refunded ? "refunded" : "part refunded", Math.max(0, Math.round(+o.amount_refunded || 0)), now, clip(pi, 80)).run();
+    return json({ ok: true });
+  }
+  return json({ ok: true });
+}
+
 /* ---------- "see it on your car": an AI preview of the visitor's photo in a finish ---------- */
 const RENDER_MODEL = "@cf/black-forest-labs/flux-2-klein-9b";
 const RENDER_PER_VISITOR = 4, RENDER_PER_DAY = 150;
@@ -207,17 +263,22 @@ async function desk(request, env, url) {
       q("SELECT COUNT(*) c FROM leads WHERE day >= ? AND day < ?", prev, since),
       q("SELECT COUNT(*) c FROM leads WHERE status = 'new'"),
     ]);
+    // Online payments (Stripe). Kept apart so the rest of the dashboard still loads if the table is missing.
+    const [payments, paidNow] = await Promise.all([
+      q("SELECT id, ts, lead, kind, amount, currency, status, name, phone, email, job, refunded FROM payments ORDER BY ts DESC LIMIT 200").catch(() => []),
+      q("SELECT COALESCE(SUM(amount - refunded), 0) s, COUNT(*) c FROM payments WHERE day >= ? AND status IN ('paid','part refunded')", since).catch(() => [{ s: 0, c: 0 }]),
+    ]);
     const by = Object.fromEntries(names.map((r) => [r.name, r]));
     const pd = Object.fromEntries(perDay.map((r) => [r.day, r])), ld = Object.fromEntries(leadDays.map((r) => [r.day, r.c]));
     const people = (n) => (by[n] ? by[n].p : 0), times = (n) => (by[n] ? by[n].c : 0);
     const requests = leadDays.reduce((a, r) => a + r.c, 0);
     return json({ ok: true, days, since,
-      totals: { visitors: perDay.reduce((a, r) => a + r.v, 0), views: perDay.reduce((a, r) => a + r.pv, 0), requests, fresh: fresh[0] ? fresh[0].c : 0, before: { visitors: before[0] ? before[0].v : 0, requests: beforeLeads[0] ? beforeLeads[0].c : 0 } },
+      totals: { visitors: perDay.reduce((a, r) => a + r.v, 0), views: perDay.reduce((a, r) => a + r.pv, 0), requests, fresh: fresh[0] ? fresh[0].c : 0, paid: paidNow[0] ? paidNow[0].s : 0, payments: paidNow[0] ? paidNow[0].c : 0, before: { visitors: before[0] ? before[0].v : 0, requests: beforeLeads[0] ? beforeLeads[0].c : 0 } },
       series: list.map((d) => ({ day: d, visitors: pd[d] ? pd[d].v : 0, views: pd[d] ? pd[d].pv : 0, requests: ld[d] || 0 })),
       funnel: [["Visited the site", perDay.reduce((a, r) => a + r.v, 0)], ["Opened Book now", people("book_open")], ["Filled in the vehicle", people("book_step3")], ["Sent a request", requests]],
       taps: [["Opened Book now", people("book_open"), times("book_open")], ["Started a voice chat", people("voice_start"), times("voice_start")], ["Opened the photo panel", people("photo_open"), times("photo_open")], ["Previewed their car in a finish", people("render"), times("render")], ["Tried a finish on the car", people("finish_pick"), times("finish_pick")],
-        ["Switched service", people("service_pick"), times("service_pick")], ["Opened a job photo", people("work_open"), times("work_open")], ["Used the print calculator", people("calc_use"), times("calc_use")], ["Used the mockup studio", people("mock_use"), times("mock_use")], ["Tapped an email link", people("mail_click"), times("mail_click")], ["Tapped Instagram", people("social_click"), times("social_click")]],
-      pages, refs, devices, finishes, leads });
+        ["Switched service", people("service_pick"), times("service_pick")], ["Opened a job photo", people("work_open"), times("work_open")], ["Used the print calculator", people("calc_use"), times("calc_use")], ["Used the mockup studio", people("mock_use"), times("mock_use")], ["Tapped an email link", people("mail_click"), times("mail_click")], ["Tapped Instagram", people("social_click"), times("social_click")], ["Tapped a pay button", people("pay_click"), times("pay_click")]],
+      pages, refs, devices, finishes, leads, payments });
   }
   if (path === "/api/desk/lead" && request.method === "POST") {
     if (!sameSite(request)) return json({ ok: false }, 403);
@@ -311,7 +372,37 @@ async function site(request, env, url) {
   return new Response(request.method === "HEAD" ? null : obj.body, { headers: h });
 }
 
+/* ---------- deploy the site files from GitHub, no computer needed ---------- */
+// Off unless the Worker has a SYNC setting and a cron trigger. SYNC is {"sha", "base", "files": [{"path", "sha256"}]}:
+// on the next run the Worker fetches each file from that commit of the public repo, checks its SHA-256, and only when
+// every file matches does it write them all to the site bucket (pages last). The report lands at _sync/<sha>.json in
+// the private bucket; once it says "done", remove the cron trigger and the SYNC setting.
+const SYNC_RAW = "https://raw.githubusercontent.com/Alikhiq/alikhiq.github.io/";
+async function syncFromGit(env) {
+  let m; try { m = JSON.parse(env.SYNC || "{}"); } catch { return; }
+  if (!/^[0-9a-f]{40}$/.test(m.sha || "") || !Array.isArray(m.files) || !m.files.length || !env.SITE || !env.PRIVATE) return;
+  const mark = `_sync/${m.sha}.json`;
+  if (await env.PRIVATE.head(mark)) return;
+  const got = [], bad = [];
+  for (const f of m.files) {
+    if (!/^[\w./-]{1,160}$/.test(f.path || "") || f.path.includes("..") || !/^[0-9a-f]{64}$/.test(f.sha256 || "")) { bad.push([String(f.path), "bad entry"]); continue; }
+    try {
+      const r = await fetch(SYNC_RAW + m.sha + "/" + (m.base || "") + f.path);
+      if (!r.ok) { bad.push([f.path, "http " + r.status]); continue; }
+      const buf = await r.arrayBuffer();
+      if (hex(await crypto.subtle.digest("SHA-256", buf)) !== f.sha256) { bad.push([f.path, "hash mismatch"]); continue; }
+      got.push([f.path, buf]);
+    } catch (e) { bad.push([f.path, String((e && e.message) || e).slice(0, 80)]); }
+  }
+  const report = { sha: m.sha, at: new Date().toISOString(), files: m.files.length, bad };
+  if (bad.length) { await env.PRIVATE.put("_sync/last-failure.json", JSON.stringify(report)); return; }
+  got.sort((a, b) => /\.html$/.test(a[0]) - /\.html$/.test(b[0]));
+  for (const [path, buf] of got) await env.SITE.put(path, buf, { httpMetadata: { contentType: TYPES[path.split(".").pop().toLowerCase()] || "application/octet-stream" } });
+  await env.PRIVATE.put(mark, JSON.stringify({ ...report, done: true, written: got.map((g) => g[0]) }));
+}
+
 export default {
+  async scheduled(event, env, ctx) { ctx.waitUntil(syncFromGit(env)); },
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.hostname === "www.everywrap.com") { url.hostname = MAIN; return Response.redirect(url.toString(), 301); }
@@ -319,6 +410,7 @@ export default {
       if (url.pathname === "/api/event" && request.method === "POST") return await event(request, env, ctx, url);
       if (url.pathname === "/api/lead" && request.method === "POST") return await lead(request, env, ctx, url);
       if (url.pathname === "/api/render" && request.method === "POST") return await render(request, env, ctx, url);
+      if (url.pathname === "/api/stripe" && request.method === "POST") return await stripe(request, env, ctx, url);
       if (url.pathname.startsWith("/api/desk/")) return await desk(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ ok: false }, 404);
     } catch (e) {

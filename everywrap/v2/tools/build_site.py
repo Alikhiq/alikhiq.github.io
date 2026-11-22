@@ -15,6 +15,9 @@ LIVE = "--live" in sys.argv
 J = lambda p: json.load(open(os.path.join(ROOT, p)))
 SITE, SERVICES, WORK, PRICING, COPY = J("data/site.json"), J("data/services.json"), J("data/work.json"), J("data/pricing.json"), J("data/copy.json")
 e = html.escape
+# Online payments: Stripe payment links, one per deposit, plus "pay your quote" (see "pay" in data/site.json).
+PAY = SITE.get("pay") or {"links": {}, "service": {}}
+PAY_PUBLIC = {"links": {k: {"amount": v["amount"], "url": v["url"], "what": v["what"], "label": v["label"]} for k, v in PAY["links"].items()}, "service": PAY["service"]}
 if LIVE and not PRICING.get("confirmed"):
     sys.exit('data/pricing.json is still a draft. Check every number with the owner, set "confirmed": true, then run --live again.')
 
@@ -444,6 +447,34 @@ def services_band(root):
 </section>
 """
 
+def pay_card(key, title=None, cta=None):
+    """One Stripe payment link as a card. Opens Stripe's secure checkout in a new tab."""
+    x = PAY["links"].get(key)
+    if not x:
+        return ""
+    amount = money(x["amount"]) if x["amount"] else "Any amount"
+    return (f'<li><a class="paycard" href="{e(x["url"])}" target="_blank" rel="noopener" data-pay="{e(key)}">'
+            f'<span class="pk">{e(title or x["label"])}</span><b>{e(amount)}</b><small>{e(x["what"])}</small>'
+            f'<span class="go">{e(cta or ("Pay " + amount + " now" if x["amount"] else "Pay now"))} {ARROW}</span></a></li>')
+
+def pay_band(heading="Pay online", intro="Ready to book? Lock in your date with a deposit. Every deposit comes off your final price. Paid securely through Stripe."):
+    if not PAY["links"]:
+        return ""
+    cards = "".join(pay_card(k) for k in ("deposit-250", "deposit-50", "design-300", "print-100")) + pay_card("quote", "Already have your price?", "Pay your quote")
+    return f"""<section class="band payband" id="pay" aria-labelledby="payh">
+  <div class="bandhead" data-reveal><h2 id="payh">{e(heading)}</h2><p>{e(intro)}</p></div>
+  <ul class="paygrid" data-reveal>{cards}</ul>
+  <p class="pfine">Cards, Apple Pay, Google Pay, Cash App Pay, Klarna and Affirm, depending on your device. Not sure which deposit fits? <a href="#" data-quote="">Send a request first</a> and pay after you get your price.</p>
+</section>
+"""
+
+def pay_line(key, text):
+    """A small pay link under a call to action, for pages where people pick a priced service."""
+    x = PAY["links"].get(key)
+    if not x:
+        return ""
+    return f'<a class="paylink" href="{e(x["url"])}" target="_blank" rel="noopener" data-pay="{e(key)}">{e(text)} {ARROW}</a>'
+
 def price_table(group):
     """Rows of starting prices. Where the price depends on vehicle size, tabs switch the column."""
     g, sizes = PRICING["groups"][group], PRICING["sizes"]
@@ -768,6 +799,7 @@ def chrome(root, com=False):
       <div class="qstep" data-step="4">
         <dl class="sum" id="qSum"></dl>
         <p class="note flag" id="qDone"></p>
+        <div class="qpay" id="qPay" data-payset="{e(json.dumps(PAY_PUBLIC, separators=(',', ':')))}" hidden></div>
         <span class="legend">What happens next</span>
         <ol class="nextsteps">{''.join('<li>' + e(x) + '</li>' for x in COPY['next'])}</ol>
         <div class="srow"><button class="btn pri" type="button" data-close>Done</button></div>
@@ -918,7 +950,7 @@ def page_pricing():
   <h1 class="display">{e(c['h1'])}</h1>
   <p class="sub">{e(c['sub'])}</p>
 </section>
-""" + blocks + f"""<section class="band" aria-labelledby="pfh">
+""" + blocks + pay_band() + f"""<section class="band" aria-labelledby="pfh">
   <div class="bandhead" data-reveal><h2 id="pfh">What moves the price</h2></div>
   <ul class="pfactlist" data-reveal>{facts}</ul>
   <p class="pfine">{e(COPY['price_fine'])}</p>
@@ -1035,7 +1067,7 @@ def page_design():
   <div class="bandhead" data-reveal><h2 id="dph">{e(c['design_price_h2'])}</h2><p>{e(c['design_price_p'])}</p></div>
   <div class="price-in">
     {price_table('design')}
-    <aside class="pfact" data-reveal><h3>Start a design</h3><ul><li>Tell us the vehicle and send the logo if you have one</li><li>You get a proof on your own vehicle</li><li>Nothing is printed until you approve it</li></ul><button class="btn pri" type="button" data-quote="design">Start a design</button></aside>
+    <aside class="pfact" data-reveal><h3>Start a design</h3><ul><li>Tell us the vehicle and send the logo if you have one</li><li>You get a proof on your own vehicle</li><li>Nothing is printed until you approve it</li></ul><button class="btn pri" type="button" data-quote="design">Start a design</button>{pay_line("design-300", "Or pay the " + money(PAY["links"]["design-300"]["amount"]) + " design start now") if "design-300" in PAY["links"] else ""}</aside>
   </div>
 </section>
 <section class="band prices" id="print" aria-labelledby="prh" style="--th:#27d3ff">
@@ -1052,6 +1084,7 @@ def page_design():
       </div>
       <p class="calc-out" aria-live="polite"><span id="calcArea">45 sq ft</span><b id="calcTotal"></b></p>
       <button class="btn pri" type="button" id="calcGo">Order this print</button>
+      {pay_line("print-100", "Or pay the " + money(PAY["links"]["print-100"]["amount"]) + " print deposit now") if "print-100" in PAY["links"] else ""}
     </aside>
   </div>
   <p class="pfine">{e(COPY['price_fine'])}</p>
@@ -1101,6 +1134,8 @@ def extras():
     # The page scripts read this copy: prices only, without the owner's notes and sources.
     pub = {"sizes": PRICING["sizes"], "groups": {k: {"rows": [{"id": r["id"], "from": r.get("from")} for r in g["rows"]]} for k, g in PRICING["groups"].items()}}
     write("assets/pricing.json", json.dumps(pub, separators=(",", ":")))
+    # The desk reads the pay links from here to text a customer the right one.
+    write("assets/pay.json", json.dumps(PAY_PUBLIC, separators=(",", ":")))
     write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{canonical(p)}</loc></url>\n" for p in paths) + "</urlset>\n")
     write("robots.txt", (f"User-agent: *\nAllow: /\nDisallow: /desk/\nDisallow: /api/\nSitemap: {SITE['domain']}/sitemap.xml\n" if LIVE else "User-agent: *\nDisallow: /\n"))
     write("site.webmanifest", json.dumps({"name": "EveryWrap", "short_name": "EveryWrap", "start_url": "./", "display": "standalone", "background_color": "#000000", "theme_color": "#000000", "icons": [{"src": "favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}, indent=1))

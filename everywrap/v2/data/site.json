@@ -100,5 +100,54 @@
   "does": "Designs, quotes and negotiates every fleet, business, design and print job, for both shops.",
   "instagram": "https://www.instagram.com/614lux/",
   "phone": ""
+ },
+ "pay": {
+  "_note": "Stripe payment links in the Everywrap Stripe account. Each deposit comes off the final price. The booking form adds ?client_reference_id=<request id> so a payment lands on its request in the desk.",
+  "links": {
+   "deposit-250": {
+    "amount": 250,
+    "url": "https://book.stripe.com/aFafZjegQdHF2Dg3qYgIo05",
+    "label": "Wrap, PPF, body kit or fleet",
+    "what": "booking deposit",
+    "plink": "plink_1Uei6ZPSsZeROo5BmsiqbxQR"
+   },
+   "deposit-50": {
+    "amount": 50,
+    "url": "https://book.stripe.com/00w5kF5Kkbzx7XA4v2gIo06",
+    "label": "Window tint",
+    "what": "booking deposit",
+    "plink": "plink_1Uei6aPSsZeROo5B2FsXlUgK"
+   },
+   "design-300": {
+    "amount": 300,
+    "url": "https://buy.stripe.com/fZu7sNgoY8nlb9M2mUgIo07",
+    "label": "Design",
+    "what": "design start",
+    "plink": "plink_1Uei6bPSsZeROo5BaDwLcHlu"
+   },
+   "print-100": {
+    "amount": 100,
+    "url": "https://buy.stripe.com/eVq7sN4Gg0UTgu6d1ygIo08",
+    "label": "Printing",
+    "what": "print deposit",
+    "plink": "plink_1Uei6bPSsZeROo5BtLJwpFmB"
+   },
+   "quote": {
+    "amount": 0,
+    "url": "https://buy.stripe.com/bJe28t4GggTR91E5z6gIo09",
+    "label": "Pay your quote",
+    "what": "the amount on your written quote",
+    "plink": "plink_1Uei6cPSsZeROo5BXVgcTss3"
+   }
+  },
+  "service": {
+   "wrap": "deposit-250",
+   "ppf": "deposit-250",
+   "kits": "deposit-250",
+   "fleet": "deposit-250",
+   "tint": "deposit-50",
+   "design": "design-300",
+   "print": "print-100"
+  }
  }
 }
