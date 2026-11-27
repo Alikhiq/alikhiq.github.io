@@ -7,7 +7,7 @@
      tools/build-muse.mjs), so it costs no second download.
    - Never blocks: it waits for the portrait and fonts, but always leaves by 8 s.
      Tap, click or any key skips.
-   - Phones, no WebGL, reduced motion, or three.js too slow to arrive: the gold mark turns in with
+   - No WebGL, reduced motion, or three.js too slow to arrive: the gold mark turns in with
      a bevel and a shimmer, all CSS (same icons, words and fly-home).
    - Tells js/site.js the page may show with `window.__susuIntroReady` + a `susu:intro-ready` event. */
 (() => {
@@ -121,11 +121,9 @@
     if (g) { const l = g.getExtension('WEBGL_lose_context'); l && l.loseContext(); }
   } catch (e) { hasGL = false; }
 
-  // Phones and tablets get the light version of the mark (gold, bevelled, turning in with CSS):
-  // building the 3D one there competes with the portrait for the same processor and is what
-  // made the old intro slow on phones. Desktops and laptops get the full 3D piece.
-  const lite = matchMedia('(pointer: coarse)').matches || Math.min(innerWidth, innerHeight) < 600;
-  if (reduce || !hasGL || lite) { run2D(); return; }
+  // Ali's call (Nov 27): phones get the full 3D mark too. If three.js has not arrived within the
+  // load budget below, the light CSS mark (bevelled gold, turns in, shimmer) takes over instead.
+  if (reduce || !hasGL) { run2D(); return; }
 
   /* ---------------- 3D ---------------- */
   const LIB = new URL('../assets/intro-three.r3.js', import.meta.url).href;
