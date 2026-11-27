@@ -518,18 +518,22 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
 @media (prefers-reduced-motion:reduce){.story__stage::before{animation:none}}
 
 /* ---------- 3D studio room behind the portrait ---------- */
-/* Four plates in media/room/ (two camera angles of the Higgsfield 3D room, desktop and phone),
-   blurred and darkened so they read as depth and light behind her, not as furniture. */
+/* One plate per screen shape in media/room/ (the Higgsfield 3D room, blurred and darkened so it
+   reads as depth and light behind her, not furniture). js/room.js moves a virtual camera over it:
+   each chapter lands on a different part of the room, in step with the portrait's own zoom. */
 .story__room{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1.8s var(--ease)}
 .story__room.is-on{opacity:1}
-.story__room i{position:absolute;inset:-5%;background:center/cover no-repeat;will-change:transform,opacity}
-.story__room.is-on .story__room-wide{background-image:url(../media/room/wide-desktop.webp);transform:scale(calc(1 + var(--room,0)*.07)) translate3d(calc(var(--room,0)*-1.2%),0,0)}
-.story__room.is-near .story__room-close{background-image:url(../media/room/close-desktop.webp)}
-.story__room-close{opacity:var(--room,0);transform:scale(calc(1.07 - var(--room,0)*.05))}
-.story__room::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,15,24,.62) 0%,rgba(22,15,24,.40) 45%,rgba(22,15,24,.30) 100%)}
+.story__room i{position:absolute;inset:0;background:center/cover no-repeat;transform-origin:50% 50%;will-change:transform}
+.story__room.is-on i{background-image:url(../media/room/wide-desktop.webp)}
+.story__room::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,15,24,.66) 0%,rgba(22,15,24,.42) 45%,rgba(22,15,24,.30) 100%)}
 @media (max-width:760px){
-  .story__room.is-on .story__room-wide{background-image:url(../media/room/wide-phone.webp)}
-  .story__room.is-near .story__room-close{background-image:url(../media/room/close-phone.webp)}
-  .story__room::after{background:linear-gradient(0deg,rgba(22,15,24,.78) 0%,rgba(22,15,24,.42) 45%,rgba(22,15,24,.34) 100%)}
+  .story__room.is-on i{background-image:url(../media/room/wide-phone.webp)}
+  .story__room::after{background:linear-gradient(0deg,rgba(22,15,24,.80) 0%,rgba(22,15,24,.44) 45%,rgba(22,15,24,.34) 100%)}
 }
-@media (prefers-reduced-motion:reduce){.story__room i{transform:none!important}}
+
+/* phones: the "Real client" proof card shows in the story too (it was desktop-only) */
+@media (max-width:760px){
+  .proof{display:block;right:14px;left:auto;bottom:auto;top:41svh;width:104px;padding:5px 5px 7px;border-radius:12px}
+  .proof img,.proof img.proof__wide{aspect-ratio:4/3;border-radius:8px}
+  .proof figcaption{margin-top:5px;font-size:10px;letter-spacing:.04em}
+}

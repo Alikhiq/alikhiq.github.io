@@ -75,5 +75,6 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 
 ## 3D studio room behind the portrait (Nov 27, 2026)
 - A real 3D room was built in Higgsfield 3D Jutsu (project "Susu Ink & Glow - hero studio room": arched mirror, vanity, stool, armchair, sconces, pendant globes, curtain). Two camera angles (wide, close) were rendered for desktop and phone, then finished with GPT Image 2.6 as empty-room plates.
-- `.story__room` in `index.html`, styles in the last block of `css/site.css`, scroll logic in `js/room.js`. Wide plate on the hero, cross-fade to the close plate from chapter 1.
-- The plates live in `media/room/` (about 10 KB each). They are deliberately blurred and darkened: the sharp, bright versions fought with her linework and Ali called that a mess. Originals are in the Higgsfield account (Nov 27 generations).
+- `.story__room` in `index.html`, styles near the end of `css/site.css`, camera move in `js/room.js`. One plate per screen shape in `media/room/` (about 20 KB each), blurred and darkened on purpose: the sharp, bright versions fought with her linework and Ali called that a mess. `js/room.js` zooms and pans over the plate so each chapter lands on a different part of the room (mirror, bottles, wall lamp, armchair, hanging globes), eased like the portrait's own zoom. To retune, edit the `WIDE` and `TALL` tables there.
+- The "Real client" proof cards in the story now show on phones too (they were desktop-only).
+- Originals of the room images are in the Higgsfield account (Nov 27 generations). The 3D Jutsu project lost its arch, lamps and globes after revision 1, so re-render from revision 1 or rebuild those before making new angles.
