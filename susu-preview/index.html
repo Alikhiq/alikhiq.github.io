@@ -58,8 +58,10 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 <link rel="preload" as="font" href="assets/fonts/dm-sans-latin-opsz-normal.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="assets/fonts/playfair-display-latin-wght-normal.woff2" type="font/woff2" crossorigin>
 <link rel="preload" as="font" href="assets/fonts/playfair-display-latin-wght-italic.woff2" type="font/woff2" crossorigin>
-<link rel="modulepreload" href="assets/muse-story.r2.js">
-<link rel="modulepreload" href="assets/chunk-JJKLDU2A.js">
+<link rel="modulepreload" href="js/intro3d.js">
+<link rel="modulepreload" href="assets/muse-story.r3.js">
+<link rel="modulepreload" href="assets/intro-three.r3.js">
+<link rel="modulepreload" href="assets/chunk-X7SO7IBG.js">
 </head>
 <body class="is-loading">
 <a class="skip" href="#results">Skip to my work</a>
@@ -67,8 +69,8 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 
 <div class="loader" aria-hidden="true">
   <div class="loader__bg"></div>
+  <div class="loader__tilt"><div class="loader__mark"></div></div>
   <div class="loader__stack">
-    <div class="loader__mark"></div>
     <div class="loader__icons"><i></i><i></i><i></i><i></i><i></i></div>
     <p class="loader__words"><span>Brows</span><span>Lips</span><span>Ink</span><span>Piercing</span></p>
     <span class="loader__line"></span>
@@ -565,9 +567,9 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 
 <a class="mbar" href="#book">Book an appointment</a>
 
-<script src="js/intro.js" defer></script>
+<script type="module" src="js/intro3d.js" async></script>
 <script src="js/lenis.min.js" defer></script>
-<script type="module" src="assets/muse-story.r2.js"></script>
+<script type="module" src="assets/muse-story.r3.js"></script>
 <script src="js/site.js" defer></script>
 <script type="module" src="js/footer3d.js"></script>
 <script async src="https://aether-app-production-b559074c.up.railway.app/t.js" data-site="susu"></script></body>

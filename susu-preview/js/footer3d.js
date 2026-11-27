@@ -18,7 +18,7 @@
   if (!gl) return;
 
   // built by tools/build-muse.mjs; shares its three.js chunk with the portrait engine
-  const THREE_URL = new URL('../assets/footer-three.r2.js', import.meta.url).href;
+  const THREE_URL = new URL('../assets/footer-three.r3.js', import.meta.url).href;
   const fine = matchMedia('(pointer: fine)').matches;
   let started = false;
 

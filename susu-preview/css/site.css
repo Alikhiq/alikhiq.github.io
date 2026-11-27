@@ -497,3 +497,22 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
 /* viewport-fit=cover: keep fixed chrome clear of the notch and rounded corners (landscape) */
 .nav{padding-left:max(var(--pad),env(safe-area-inset-left,0px));padding-right:max(var(--pad),env(safe-area-inset-right,0px))}
 .mbar{left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px))}
+
+/* ---------- hero environment: depth behind the portrait ---------- */
+/* three soft lights (warm key, rose fill, cool rim) drifting very slowly, and a vignette that pulls the eye in */
+.story__stage::before{content:"";position:absolute;inset:-18%;pointer-events:none;background:
+  radial-gradient(36% 42% at 70% 38%,rgba(240,194,126,.17),transparent 70%),
+  radial-gradient(30% 36% at 24% 76%,rgba(196,128,116,.11),transparent 72%),
+  radial-gradient(26% 30% at 90% 80%,rgba(140,122,178,.10),transparent 72%);
+  animation:envDrift 24s ease-in-out infinite alternate;will-change:transform}
+.story__stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(115% 95% at 62% 44%,transparent 52%,rgba(8,5,10,.6) 100%)}
+@keyframes envDrift{from{transform:translate3d(-2%,-1.5%,0) scale(1)}to{transform:translate3d(2.5%,2%,0) scale(1.08)}}
+@media (max-width:760px){
+  .story__stage::before{background:
+    radial-gradient(60% 34% at 54% 26%,rgba(240,194,126,.18),transparent 70%),
+    radial-gradient(48% 26% at 12% 58%,rgba(196,128,116,.11),transparent 72%),
+    radial-gradient(44% 24% at 96% 50%,rgba(140,122,178,.10),transparent 72%)}
+  .story__stage::after{background:radial-gradient(130% 80% at 50% 34%,transparent 50%,rgba(8,5,10,.55) 100%)}
+}
+@media (prefers-reduced-motion:reduce){.story__stage::before{animation:none}}
