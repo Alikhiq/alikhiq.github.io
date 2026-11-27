@@ -90,3 +90,5 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 - Phone spacing tightened for prices, deposit, steps and the booking photo header.
 - Footer: the gold hoop is replaced by her 3D logo (`js/footer3d.js`, same build as the entrance, reuses `assets/intro-three.r3.js`) with the five service icons floating round it (CSS in `css/footer.css`). Flat gold logo is the fallback.
 - Story proof cards switch every ~1.3s.
+
+- Prices section restyled dark to match the rest of the site (overrides at the end of `css/site.css`); `media/paper.webp` removed.

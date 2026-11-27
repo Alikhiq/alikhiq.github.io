@@ -218,7 +218,7 @@ em{font-style:italic}
 .compare__range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;touch-action:pan-y}
 
 /* PRICES */
-.prices{position:relative;padding:clamp(100px,12vw,160px) 0;color:var(--ink-on-paper);background-color:var(--paper);background-image:linear-gradient(rgba(239,228,212,.84),rgba(239,228,212,.84)),url(../media/paper.webp);background-size:auto,700px}
+.prices{position:relative;padding:clamp(100px,12vw,160px) 0}
 .prices .eyebrow{color:var(--accent-on-paper)}
 .prices .h2{color:var(--ink-on-paper)}
 .prices .h2 em{background:linear-gradient(135deg,#a3794a,#7a5a2e);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -609,3 +609,21 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
   .book__bg{inset:0 0 auto 0;height:300px}
   .book__grid{padding-top:200px}
 }
+
+/* ---------- Prices: dark, on-brand (was an ivory paper section) ---------- */
+.prices{--ink-on-paper:var(--ivory);--soft-on-paper:var(--taupe-light);--accent-on-paper:var(--champagne);--paper:#1c141f;--pcard:#251b29;
+  color:var(--body);background-color:var(--paper);
+  background-image:radial-gradient(70% 45% at 85% 0%,rgba(228,189,145,.10),transparent 62%),radial-gradient(60% 50% at 5% 100%,rgba(185,120,111,.10),transparent 60%),linear-gradient(180deg,var(--plum) 0%,#1c141f 30%,#1c141f 75%,var(--plum-deep) 100%);background-size:auto}
+.prices .h2 em{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prices .menu__card{background:linear-gradient(180deg,#2a1f2e 0%,var(--pcard) 100%);border-color:var(--hair);box-shadow:0 40px 70px -50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,236,210,.06)}
+@media (hover:hover) and (pointer:fine){.prices .menu__card:hover{border-color:var(--hair-strong);box-shadow:0 50px 80px -45px rgba(0,0,0,.95),0 0 0 1px rgba(228,189,145,.12)}}
+.prices .menu__img{position:relative;background:#140e16}
+.prices .menu__img img{filter:brightness(.62) contrast(1.08) saturate(.9) sepia(.18)}
+.prices .menu__img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(37,27,41,0) 35%,rgba(42,31,46,.92) 100%),radial-gradient(120% 90% at 50% 0%,rgba(37,27,41,0) 40%,rgba(20,14,22,.45) 100%);pointer-events:none}
+.prices .menu__badge{box-shadow:0 0 0 1px rgba(228,189,145,.55),0 0 0 5px #2a1f2e,0 14px 28px -10px rgba(0,0,0,.8),0 0 26px rgba(228,189,145,.16)}
+.prices .menu__prices li span::after{border-bottom-color:rgba(228,189,145,.3)}
+.prices .menu__prices b{font-weight:500;color:var(--champagne-hi)}
+.prices .menu__card--deposit{background:radial-gradient(90% 70% at 80% 0%,rgba(228,189,145,.2),transparent 62%),#2d2031;border-color:var(--hair-strong)}
+.prices .steps::before{background:linear-gradient(90deg,var(--hair-strong),rgba(228,189,145,.08))}
+.prices .steps__n{background:#2a1f2e;border:1px solid var(--hair-strong)}
+@media (max-width:760px){.prices .steps::before{background:linear-gradient(180deg,var(--hair-strong),rgba(228,189,145,.08))}}
