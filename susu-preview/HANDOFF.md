@@ -72,3 +72,8 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 - **Footer hoop:** `js/footer3d.js` now imports `assets/footer-three.r3.js`, which shares the portrait's three.js chunk.
 - **Caching:** `/media` and `/brand` are cached for a day (`vercel.json`). If you replace a photo and need it seen at once, give it a new file name.
 - **Phone polish (emilkowalski `mobile-native` skill):** `viewport-fit=cover` (the safe-area padding on the Book bar was doing nothing without it), every `:hover` rule gated to real mouse pointers, tap highlight off with `:active` press feedback, `touch-action: manipulation` on controls, no text selection on long-press of buttons, menu sheet no longer scrolls the page behind it. All in the last block of `css/site.css`. These need a check on a real phone; emulation cannot show them.
+
+## 3D studio room behind the portrait (Nov 27, 2026, preview only)
+- A real 3D room was built in Higgsfield 3D Jutsu (project "Susu Ink & Glow - hero studio room": arched mirror, vanity, stool, armchair, sconces, pendant globes, curtain). Two camera angles (wide, close) were rendered for desktop and phone, then finished with GPT Image 2.6 as empty-room plates.
+- `.story__room` in `index.html`, styles in the last block of `css/site.css`, scroll logic in `js/room.js`. Wide plate on the hero, cross-fade to the close plate from chapter 1.
+- **Before going live:** the four plates are hot-linked from Higgsfield's CDN. Download them, compress to WebP (about 150 KB each), put them in `media/room/` and update the four URLs in `css/site.css`. Do not ship the hot-links.

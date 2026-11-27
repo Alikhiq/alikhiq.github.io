@@ -516,3 +516,20 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
   .story__stage::after{background:radial-gradient(130% 80% at 50% 34%,transparent 50%,rgba(8,5,10,.55) 100%)}
 }
 @media (prefers-reduced-motion:reduce){.story__stage::before{animation:none}}
+
+/* ---------- 3D studio room behind the portrait ---------- */
+/* PREVIEW ONLY: the four plates are still served from Higgsfield. Before going live, copy them
+   into media/room/ as compressed WebP and point these four URLs there. */
+.story__room{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1.8s var(--ease)}
+.story__room.is-on{opacity:1}
+.story__room i{position:absolute;inset:-5%;background:center/cover no-repeat;will-change:transform,opacity}
+.story__room.is-on .story__room-wide{background-image:url(https://d8j0ntlcm91z4.cloudfront.net/user_3Gpx99rqxp04IZMVeXrNotd2Rxg/hf_20261127_125639_c87fccd3-ebe0-4a39-acef-21fa416fafce.webp);transform:scale(calc(1 + var(--room,0)*.07)) translate3d(calc(var(--room,0)*-1.2%),0,0)}
+.story__room.is-near .story__room-close{background-image:url(https://d8j0ntlcm91z4.cloudfront.net/user_3Gpx99rqxp04IZMVeXrNotd2Rxg/hf_20261127_125639_99961096-e2b7-47b6-945d-5bf1bc5cbf82.webp)}
+.story__room-close{opacity:var(--room,0);transform:scale(calc(1.07 - var(--room,0)*.05))}
+.story__room::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,15,24,.62) 0%,rgba(22,15,24,.40) 45%,rgba(22,15,24,.30) 100%)}
+@media (max-width:760px){
+  .story__room.is-on .story__room-wide{background-image:url(https://d8j0ntlcm91z4.cloudfront.net/user_3Gpx99rqxp04IZMVeXrNotd2Rxg/hf_20261127_125638_13d03434-ed0d-42db-a09b-98ba744bdc59.webp)}
+  .story__room.is-near .story__room-close{background-image:url(https://d8j0ntlcm91z4.cloudfront.net/user_3Gpx99rqxp04IZMVeXrNotd2Rxg/hf_20261127_125642_bab97248-86ad-4942-91d7-c055b8237fa0.webp)}
+  .story__room::after{background:linear-gradient(0deg,rgba(22,15,24,.78) 0%,rgba(22,15,24,.42) 45%,rgba(22,15,24,.34) 100%)}
+}
+@media (prefers-reduced-motion:reduce){.story__room i{transform:none!important}}
