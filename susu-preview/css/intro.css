@@ -1,40 +1,39 @@
-/* Susu Ink & Glow — intro / loader (driven by js/intro3d.js)
-   The 3D crystal & gold wordmark is drawn by three.js on a canvas. Everything else here is
-   CSS: her five service icons and the service line arrive under the mark while it settles. */
-.loader{--lw:min(50vw,720px);position:fixed;inset:0;z-index:150;display:grid;place-items:center;overflow:hidden;-webkit-tap-highlight-color:transparent}
-@media (max-width:599px){.loader{--lw:82vw}}
-.loader__bg{position:absolute;inset:0;background:
-  radial-gradient(ellipse 62vmax 34vmax at 50% 48%,rgba(228,189,145,.13),rgba(228,189,145,0) 70%),
-  radial-gradient(120% 90% at 50% 50%,var(--plum) 0%,var(--plum-deep) 55%,#0f0a11 100%);
-  transition:opacity 1s var(--ease)}
-.loader__bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 40vmax 22vmax at 50% 48%,rgba(243,217,180,.10),transparent);opacity:0;animation:lGlow 1.6s var(--ease) .1s forwards}
+/* Susu Ink & Glow — entrance (driven by js/intro3d.js)
+   Nothing here covers the page: the headline and nav paint at once. The mark plays in the spot
+   where the portrait is about to appear (--lx / --ly / --lw are set by the script), with her
+   five service icons and the service line under it, then flies into the nav logo. */
+.loader{--lx:50%;--ly:50%;--lw:300px;position:fixed;inset:0;z-index:150;overflow:hidden;pointer-events:none;-webkit-tap-highlight-color:transparent}
+.loader__bg{position:absolute;inset:0;background:radial-gradient(ellipse 34vmax 20vmax at var(--lx) var(--ly),rgba(228,189,145,.13),rgba(228,189,145,0) 70%);opacity:0;animation:lGlow 1.2s var(--ease) .1s forwards;transition:opacity .8s var(--ease)}
 @keyframes lGlow{to{opacity:1}}
 .loader__gl{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;pointer-events:none}
+/* she fades in as the mark leaves */
+.story__muse{transition:opacity 1.1s var(--ease)}
+body.intro-playing:not(.intro-landing) .story__muse{opacity:0!important}
 
 /* light mark (phones / no WebGL / slow network): the gold logo turns in from edge-on with a
    bevelled edge and a soft shadow, sways slightly, and a shimmer passes over it */
 .loader{perspective:900px}
-.loader__tilt{position:relative;transform-style:preserve-3d;
+.loader__tilt{position:absolute;left:var(--lx);top:var(--ly);translate:-50% -50%;transform-style:preserve-3d;
   filter:drop-shadow(0 1px 0 #a07c4a) drop-shadow(0 2px 0 #7d5f37) drop-shadow(0 3px 1px rgba(60,40,20,.9)) drop-shadow(0 16px 22px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(228,189,145,.16))}
 .loader--2d .loader__tilt{animation:lTurn 1.5s cubic-bezier(.16,1,.3,1) both,lSway 6s ease-in-out 1.5s infinite alternate}
 @keyframes lTurn{from{transform:rotateY(-62deg) rotateX(9deg) translateZ(-120px)}to{transform:rotateY(-7deg) rotateX(2deg)}}
 @keyframes lSway{from{transform:rotateY(-7deg) rotateX(2deg)}to{transform:rotateY(8deg) rotateX(-2deg)}}
 .loader--exit .loader__tilt{animation-play-state:paused}
-.loader__mark{position:relative;width:calc(var(--lw)*.92);aspect-ratio:2953/1380;opacity:0;visibility:hidden;
+.loader__mark{position:relative;width:var(--lw);aspect-ratio:2953/1380;opacity:0;visibility:hidden;
   -webkit-mask:url(../brand/susu-logo-gold.svg) center/contain no-repeat;mask:url(../brand/susu-logo-gold.svg) center/contain no-repeat;
   background:linear-gradient(105deg,#b8925a 0%,#e4bd91 28%,#fff6e6 45%,#f0cfa2 54%,#c9a271 78%,#a9824f 100%) 0 0/300% 100%;
   will-change:transform,opacity}
 .loader--2d .loader__mark{visibility:visible;animation:lMarkIn 1s var(--ease) forwards,lShimmer 2.1s var(--ease-io) .5s forwards,lShimmer 2.6s var(--ease-io) 3s infinite}
 @keyframes lMarkIn{from{opacity:0}to{opacity:1}}
 @keyframes lShimmer{from{background-position:100% 0}to{background-position:0 0}}
-.loader--2d .loader__stack{--d:.45s}
+.loader--2d .loader__stack{--d:.3s}
 
 /* under the mark: icons, service line, hairline. --d shifts the timeline: 3D assembles slower than 2D */
-.loader__stack{--d:0s;position:absolute;left:50%;top:calc(50% + var(--lw)*.2335 + clamp(14px,3.2vh,34px));transform:translateX(-50%);
+.loader__stack{--d:0s;position:absolute;left:var(--lx);top:calc(var(--ly) + var(--lw)*.2335 + clamp(10px,2.2vh,22px));transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.8vh,26px)}
-.loader--3d .loader__stack{--d:1.15s}
-.loader__icons{display:flex;align-items:center;gap:clamp(8px,2.6vw,20px);transition:opacity .45s var(--ease),transform .6s var(--ease)}
-.loader__icons i{display:block;width:clamp(44px,12.5vw,62px);aspect-ratio:1;opacity:0;transform:translateY(12px) scale(.92)}
+.loader--3d .loader__stack{--d:.6s}
+.loader__icons{display:flex;align-items:center;gap:clamp(6px,calc(var(--lw)*.035),16px);transition:opacity .45s var(--ease),transform .6s var(--ease)}
+.loader__icons i{display:block;width:clamp(34px,calc(var(--lw)*.15),54px);aspect-ratio:1;opacity:0;transform:translateY(12px) scale(.92)}
 .loader__icons i::before{content:"";display:block;width:100%;height:100%;
   background:url(../media/icons/loader-sprite.webp) calc(var(--i)*25%) 0/500% 100% no-repeat;opacity:.82}
 .loader__icons i:nth-child(1){--i:0}.loader__icons i:nth-child(2){--i:1}.loader__icons i:nth-child(3){--i:2}
@@ -44,13 +43,13 @@
 @keyframes lIn{to{opacity:1;transform:none}}
 @keyframes lWave{0%,55%,100%{opacity:.82;transform:none}24%{opacity:1;transform:translateY(-5px)}}
 
-.loader__words{display:flex;gap:.9em;margin:0;font:600 11px/1 var(--sans);letter-spacing:.34em;text-transform:uppercase;color:var(--champagne);white-space:nowrap;transition:opacity .4s var(--ease)}
+.loader__words{display:flex;gap:.9em;margin:0;font:600 10px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--champagne);white-space:nowrap;transition:opacity .4s var(--ease)}
 .loader__words span{opacity:0;transform:translateY(8px)}
 .loader__words span:nth-child(1){--w:0}.loader__words span:nth-child(2){--w:1}.loader__words span:nth-child(3){--w:2}.loader__words span:nth-child(4){--w:3}
 .loader__words span+span::before{content:"·";margin-right:.9em;opacity:.6}
 .loader--3d .loader__words,.loader--2d .loader__words{animation:lTrack 1.6s var(--ease) calc(var(--d) + 1.3s) both}
 .loader--3d .loader__words span,.loader--2d .loader__words span{animation:lIn .75s var(--ease) forwards;animation-delay:calc(var(--d) + 1.3s + var(--w)*140ms)}
-@keyframes lTrack{from{letter-spacing:.54em}to{letter-spacing:.34em}}
+@keyframes lTrack{from{letter-spacing:.46em}to{letter-spacing:.3em}}
 
 /* hairline: shows from the start, so there is always something moving while three.js arrives */
 .loader__line{position:relative;width:120px;height:1px;background:var(--hair);overflow:hidden;opacity:0;animation:lFade .6s ease .5s forwards;transition:opacity .3s}
@@ -66,13 +65,14 @@
   .loader--2d .loader__words{animation:none}
 }
 
-/* hand-off: page fades up under the flying mark; the rest dissolves */
-body.is-ready .loader{pointer-events:none;cursor:auto}
-body.is-ready .loader__bg{opacity:0}
+/* hand-off: the mark flies home, the rest dissolves */
+.loader--exit .loader__bg{opacity:0!important;animation:none}
 .loader--exit .loader__icons{opacity:0;transform:translateY(-8px) scale(.97)}
 .loader--exit .loader__words,.loader--exit .loader__line{opacity:0!important;animation:none}
 .loader--out{opacity:0;transition:opacity .6s var(--ease)}
 
 /* the nav logo stays hidden until the mark has landed on it */
 .nav__logo img{transition:opacity .35s ease}
-body.is-loading .nav__logo img,body.intro-landing .nav__logo img{opacity:0}
+body.intro-playing .nav__logo img{opacity:0}
+/* the headline is there from the very first paint, before any script has run */
+body.is-loading .chapter--hero{opacity:1}

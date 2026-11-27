@@ -15,7 +15,7 @@
     body.classList.remove('is-loading'); body.classList.add('is-ready'); revealAbove();
   };
   if (window.__susuIntroReady) setTimeout(ready, 0); else addEventListener('susu:intro-ready', () => setTimeout(ready, 0), { once: true });
-  setTimeout(() => { ready(); const l = $('.loader'); if (l) l.remove(); }, 8000); // safety net if the intro never ran
+  setTimeout(() => { ready(); const l = $('.loader'); if (l) l.remove(); body.classList.remove('intro-playing', 'intro-landing'); }, 8000); // safety net if the entrance never ran
 
   /* ---------- smooth scroll ---------- */
   let lenis = null;

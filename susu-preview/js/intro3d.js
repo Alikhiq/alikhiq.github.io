@@ -1,21 +1,20 @@
-/* Susu Ink & Glow — intro: the SUSU wordmark in crystal & gold (three.js), with her five
-   service icons and the service line arriving under it (those are CSS, see css/intro.css).
-   - First visit of a session: the full piece (about 5 s). Later pages in the session: about 1 s.
-   - Letters turn in from edge-on, "INK & GLOW" settles in, the icons and words arrive, a light
-     sweep crosses the glass, then the mark flies into the nav logo while the page fades up.
-   - It uses the same three.js copy as the portrait (assets/intro-three.r3.js, built by
-     tools/build-muse.mjs), so it costs no second download.
-   - Never blocks: it waits for the portrait and fonts, but always leaves by 8 s.
-     Tap, click or any key skips.
-   - No WebGL, reduced motion, or three.js too slow to arrive: the gold mark turns in with
-     a bevel and a shimmer, all CSS (same icons, words and fly-home).
-   - Tells js/site.js the page may show with `window.__susuIntroReady` + a `susu:intro-ready` event. */
+/* Susu Ink & Glow — entrance: the SUSU wordmark in crystal & gold (three.js), with her five
+   service icons and the service line under it (those are CSS, see css/intro.css).
+   - It does NOT cover the page. The headline, buttons and nav paint at once (good for visitors
+     and for Google's speed score); the mark plays in the spot where the portrait is about to
+     appear, then flies into the nav logo as she fades in.
+   - First visit of a session: about 3 s of animation. Later pages: under 1 s.
+   - It uses the same three.js copy as the portrait (assets/intro-three.r3.js).
+   - Scrolling or any key ends it early. It always ends by 6 s.
+   - No WebGL, reduced motion, or three.js slow to arrive: a light CSS version of the mark.
+   - Tells js/site.js the page may show with `window.__susuIntroReady` + a `susu:intro-ready` event,
+     now sent straight away. */
 (() => {
   const loader = document.querySelector('.loader');
   const body = document.body;
   const T0 = performance.now();
   const now = () => (performance.now() - T0) / 1000;
-  const HARD_CAP = 8.0; // seconds since navigation start: the page is always shown by then
+  const HARD_CAP = 6.0; // seconds since navigation start: the entrance has always ended by then
 
   const signalReady = (() => {
     let sent = false;
@@ -26,7 +25,19 @@
     };
   })();
 
-  if (!loader) { signalReady(); return; }
+  signalReady(); // the page shows immediately; the mark plays over the portrait's spot
+  if (!loader) { body.classList.remove('intro-playing'); return; }
+
+  // where the mark plays: the centre of the portrait area, and how wide
+  const spot = () => {
+    const tall = innerWidth / innerHeight < 0.9;
+    const s = { fx: tall ? 0.5 : 0.69, fy: tall ? 0.30 : 0.47, w: tall ? innerWidth * 0.62 : Math.min(innerWidth * 0.3, 440) };
+    loader.style.setProperty('--lx', (s.fx * 100).toFixed(2) + '%');
+    loader.style.setProperty('--ly', (s.fy * 100).toFixed(2) + '%');
+    loader.style.setProperty('--lw', s.w.toFixed(0) + 'px');
+    return s;
+  };
+  spot();
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let repeat = false;
@@ -55,10 +66,9 @@
   const finish = () => {
     if (finished) return; finished = true;
     signalReady();
-    body.classList.remove('intro-landing');
+    body.classList.remove('intro-landing', 'intro-playing');
     if (skipHandler) {
       removeEventListener('keydown', skipHandler);
-      loader.removeEventListener('pointerdown', skipHandler);
     }
     loader.remove();
     // the body-piercing illustration is only needed six chapters down: fetch it once the page is up
@@ -71,7 +81,7 @@
   function run2D() {
     loader.classList.add('loader--2d');
     const mark = loader.querySelector('.loader__mark');
-    const hold = repeat ? 0.8 : 4.0;
+    const hold = repeat ? 0.7 : 2.4;
     const start = now();
     let left = false;
     const leave = () => {
@@ -92,11 +102,11 @@
         mark.style.transition = 'transform .8s cubic-bezier(.65,0,.35,1), opacity .3s ease .62s';
         mark.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
         mark.style.opacity = '0';
-        setTimeout(() => { body.classList.remove('intro-landing'); }, 620);
+        setTimeout(() => { body.classList.remove('intro-landing', 'intro-playing'); }, 620);
         setTimeout(finish, 1000);
       } else {
         loader.classList.add('loader--out');
-        body.classList.remove('intro-landing');
+        body.classList.remove('intro-landing', 'intro-playing');
         setTimeout(finish, 700);
       }
     };
@@ -107,9 +117,9 @@
       else setTimeout(tick, 100);
     };
     tick();
-    skipHandler = (e) => { if (e.type === 'keydown' || e.type === 'pointerdown') leave(); };
+    skipHandler = () => leave();
     addEventListener('keydown', skipHandler);
-    loader.addEventListener('pointerdown', skipHandler);
+    addEventListener('scroll', () => { if (scrollY > 40) leave(); }, { passive: true });
   }
 
   /* ---------------- WebGL probe ---------------- */
@@ -365,14 +375,15 @@
     inner.add(dust);
 
     /* ---- layout: size the logo to the screen ---- */
-    let W = innerWidth, H = innerHeight, ppu = 1, baseScale = 1;
+    let W = innerWidth, H = innerHeight, ppu = 1, baseScale = 1, ox = 0, oy = 0;
     const layout = () => {
       W = innerWidth; H = innerHeight;
       renderer.setSize(W, H);
       camera.aspect = W / H; camera.updateProjectionMatrix();
       ppu = H / (2 * CAM_Z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); // px per world unit at z=0
-      const want = W < 600 ? W * 0.82 : Math.min(W * 0.5, 720);
-      baseScale = want / ppu;
+      const sp = spot();
+      baseScale = sp.w / ppu;
+      ox = (sp.fx - 0.5) * W / ppu; oy = -(sp.fy - 0.5) * H / ppu;
       dustMat.uniforms.uPx.value = renderer.getPixelRatio() * (W < 600 ? 1.5 : 1) * baseScale;
     };
     layout();
@@ -391,7 +402,7 @@
     // short: already assembled, quick sweep, exit ≥0.55
     const S = repeat
       ? { letters: -10, tagline: -10, sweepA: 0.05, sweepB: 0.65, glint: 0.42, minExit: 0.55, fly: 0.7, dustIn: 0.25 }
-      : { letters: 0.12, tagline: 1.25, sweepA: 2.6, sweepB: 3.7, glint: 3.4, minExit: 4.3, fly: 0.95, dustIn: 0.9 };
+      : { letters: 0.12, tagline: 1.25, sweepA: 1.9, sweepB: 2.8, glint: 2.55, minExit: 2.9, fly: 0.95, dustIn: 0.9 };
 
     let raf = 0, t = 0, last = 0, exitAt = -1, flyFrom = null, flyTo = null, idleSweep = 0;
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -487,7 +498,7 @@
       let ry = Math.sin(t * 0.55) * 0.09 * settle + pointer.x * 0.12 - (1 - settle) * 0.12;
       let rx = Math.sin(t * 0.43 + 1) * 0.04 * settle + pointer.y * 0.07;
       let s = baseScale * (repeat ? 0.97 + 0.03 * settle : 0.94 + 0.06 * settle);
-      let x = 0, y = repeat ? 0 : (1 - settle) * -0.004;
+      let x = ox, y = oy + (repeat ? 0 : (1 - settle) * -0.004);
 
       // opacity of the whole thing (short version fades in)
       let alpha = repeat ? ease.outCubic(seg(t, 0, 0.25)) : 1;
@@ -510,12 +521,12 @@
           halo.material.opacity *= 1 - e;
           dustMat.uniforms.uA.value *= 1 - ease.outCubic(p);
           // hand over to the flat logo in the nav during the last stretch
-          if (p > 0.88 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing');
+          if (p > 0.88 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing', 'intro-playing');
           alpha *= 1 - seg(p, 0.9, 1);
         } else {
           s *= 1 + e * 0.08;
           alpha *= 1 - e;
-          if (p > 0.5) body.classList.remove('intro-landing');
+          if (p > 0.5) body.classList.remove('intro-landing', 'intro-playing');
         }
         if (p >= 1) { cleanup(); return; }
       }
@@ -558,7 +569,7 @@
         try { renderer.compile(scene, camera); } catch (e) { /* fine */ }
         skipHandler = () => { if (exitAt < 0) startExit(); };
         addEventListener('keydown', skipHandler);
-        loader.addEventListener('pointerdown', skipHandler);
+        addEventListener('scroll', () => { if (scrollY > 40 && exitAt < 0) startExit(); }, { passive: true });
         raf = requestAnimationFrame(frame);
         // background tab or stalled rAF: still leave on time
         const guard = setInterval(() => {
