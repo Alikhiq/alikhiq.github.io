@@ -8,7 +8,7 @@
   const fine = matchMedia('(pointer: fine)').matches;
   const body = document.body;
 
-  /* ---------- loader: js/intro3d.js signals when the page may show ---------- */
+  /* ---------- loader: js/intro.js signals when the page may show ---------- */
   let shown = false;
   const ready = () => {
     if (shown) return; shown = true;

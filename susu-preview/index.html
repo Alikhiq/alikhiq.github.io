@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Susu Ink &amp; Glow · Brows, Lip Blush, Tattoos &amp; Piercings in Columbus</title>
 <meta name="description" content="Brows, lip blush, permanent makeup, fine-line tattoos and piercings by Susu, all around Columbus, Ohio. See my work, check prices and request an appointment.">
 <meta name="theme-color" content="#211B23">
@@ -48,16 +48,17 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
   ]
 }
 </script>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" crossorigin>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/SVGLoader.js" crossorigin>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <link rel="stylesheet" href="css/footer.css">
 <link rel="stylesheet" href="css/intro.css">
+<!-- first paint: loader icons, the half-size portrait, fonts and the portrait engine, all from this domain -->
+<link rel="preload" as="image" href="media/icons/loader-sprite.webp" type="image/webp">
+<link rel="preload" as="image" href="brand/muse-master-1168.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="font" href="assets/fonts/dm-sans-latin-opsz-normal.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="assets/fonts/playfair-display-latin-wght-normal.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="assets/fonts/playfair-display-latin-wght-italic.woff2" type="font/woff2" crossorigin>
+<link rel="modulepreload" href="assets/muse-story.r2.js">
+<link rel="modulepreload" href="assets/chunk-JJKLDU2A.js">
 </head>
 <body class="is-loading">
 <a class="skip" href="#results">Skip to my work</a>
@@ -65,9 +66,10 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 
 <div class="loader" aria-hidden="true">
   <div class="loader__bg"></div>
-  <div class="loader__mark"></div>
+  <div class="loader__icons"><i></i><i></i><i></i><i></i><i></i></div>
   <span class="loader__line"></span>
 </div>
+<noscript><style>.loader{display:none}</style></noscript>
 
 <!-- NAV -->
 <header class="nav" id="nav">
@@ -108,7 +110,7 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
     <!-- body piercing: camera travels down to an engraved navel study -->
     <figure class="bodyart" aria-hidden="true">
       <div class="bodyart__pan">
-        <img src="brand/navel.webp" alt="" decoding="async">
+        <img data-src="brand/navel.webp" alt="" decoding="async">
         <span class="bodyart__jewel"><i></i></span>
         <span class="bodyart__tag"><b></b><em>Navel</em></span>
       </div>
@@ -387,11 +389,11 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
           <legend>What would you like?</legend>
           <p class="tiles__count" aria-live="polite">Pick one or more</p>
           <div class="tiles" role="group" aria-label="Services, choose one or more">
-            <label class="tile"><input type="checkbox" name="service" value="brows"><span class="tile__art" aria-hidden="true"><img src="media/icons/brows.webp" alt="" width="160" height="160" decoding="async"></span><span class="tile__name">Brows</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
-            <label class="tile"><input type="checkbox" name="service" value="lips"><span class="tile__art" aria-hidden="true"><img src="media/icons/lips.webp" alt="" width="160" height="160" decoding="async"></span><span class="tile__name">Lip blush</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
-            <label class="tile"><input type="checkbox" name="service" value="pmu"><span class="tile__art" aria-hidden="true"><img src="media/icons/pmu.webp" alt="" width="160" height="160" decoding="async"></span><span class="tile__name">PMU</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
-            <label class="tile"><input type="checkbox" name="service" value="tattoo"><span class="tile__art" aria-hidden="true"><img src="media/icons/tattoo.webp" alt="" width="160" height="160" decoding="async"></span><span class="tile__name">Tattoo</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
-            <label class="tile"><input type="checkbox" name="service" value="piercing"><span class="tile__art" aria-hidden="true"><img src="media/icons/piercing.webp" alt="" width="160" height="160" decoding="async"></span><span class="tile__name">Piercing</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
+            <label class="tile"><input type="checkbox" name="service" value="brows"><span class="tile__art" aria-hidden="true"><img src="media/icons/brows.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="tile__name">Brows</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
+            <label class="tile"><input type="checkbox" name="service" value="lips"><span class="tile__art" aria-hidden="true"><img src="media/icons/lips.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="tile__name">Lip blush</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
+            <label class="tile"><input type="checkbox" name="service" value="pmu"><span class="tile__art" aria-hidden="true"><img src="media/icons/pmu.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="tile__name">PMU</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
+            <label class="tile"><input type="checkbox" name="service" value="tattoo"><span class="tile__art" aria-hidden="true"><img src="media/icons/tattoo.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="tile__name">Tattoo</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
+            <label class="tile"><input type="checkbox" name="service" value="piercing"><span class="tile__art" aria-hidden="true"><img src="media/icons/piercing.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="tile__name">Piercing</span><i class="tile__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>
           </div>
           <p class="err" data-err="service" role="alert"></p>
         </fieldset>
@@ -558,10 +560,10 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 
 <a class="mbar" href="#book">Book an appointment</a>
 
-<script type="module" src="js/intro3d.js" async></script>
-<script src="js/lenis.min.js"></script>
-<script type="module" src="assets/story-IExGlf7c.js"></script>
+<script src="js/intro.js" defer></script>
+<script src="js/lenis.min.js" defer></script>
+<script type="module" src="assets/muse-story.r2.js"></script>
 <script src="js/site.js" defer></script>
 <script type="module" src="js/footer3d.js"></script>
-<script defer src="https://aether-app-production-b559074c.up.railway.app/t.js" data-site="susu"></script></body>
+<script async src="https://aether-app-production-b559074c.up.railway.app/t.js" data-site="susu"></script></body>
 </html>

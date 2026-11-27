@@ -17,7 +17,8 @@
   } catch (e) { gl = null; }
   if (!gl) return;
 
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+  // built by tools/build-muse.mjs; shares its three.js chunk with the portrait engine
+  const THREE_URL = new URL('../assets/footer-three.r2.js', import.meta.url).href;
   const fine = matchMedia('(pointer: fine)').matches;
   let started = false;
 
@@ -56,11 +57,7 @@
   }
 
   async function boot() {
-    // The page's portrait engine bundles its own copy of three; hide its marker during
-    // import so three doesn't log the (harmless) "multiple instances" warning.
-    const mark = window.__THREE__; delete window.__THREE__;
-    let THREE;
-    try { THREE = await import(THREE_URL); } finally { if (mark) window.__THREE__ = mark; }
+    const THREE = await import(THREE_URL);
     if (reduce.matches) return;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
