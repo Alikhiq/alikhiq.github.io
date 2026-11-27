@@ -52,6 +52,7 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 <link rel="stylesheet" href="css/footer.css">
 <link rel="stylesheet" href="css/intro.css">
 <!-- first paint: loader icons, the half-size portrait, fonts and the portrait engine, all from this domain -->
+<link rel="preload" as="image" href="brand/susu-logo-gold.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="media/icons/loader-sprite.webp" type="image/webp">
 <link rel="preload" as="image" href="brand/muse-master-1168.webp" type="image/webp" fetchpriority="high">
 <link rel="preload" as="font" href="assets/fonts/dm-sans-latin-opsz-normal.woff2" type="font/woff2" crossorigin>
@@ -66,8 +67,12 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 
 <div class="loader" aria-hidden="true">
   <div class="loader__bg"></div>
-  <div class="loader__icons"><i></i><i></i><i></i><i></i><i></i></div>
-  <span class="loader__line"></span>
+  <div class="loader__stack">
+    <div class="loader__mark"></div>
+    <div class="loader__icons"><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="loader__words"><span>Brows</span><span>Lips</span><span>Ink</span><span>Piercing</span></p>
+    <span class="loader__line"></span>
+  </div>
 </div>
 <noscript><style>.loader{display:none}</style></noscript>
 
