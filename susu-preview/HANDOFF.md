@@ -78,3 +78,8 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 - `.story__room` in `index.html`, styles near the end of `css/site.css`, camera move in `js/room.js`. One plate per screen shape in `media/room/` (about 20 KB each), blurred and darkened on purpose: the sharp, bright versions fought with her linework and Ali called that a mess. `js/room.js` zooms and pans over the plate so each chapter lands on a different part of the room (mirror, bottles, wall lamp, armchair, hanging globes), eased like the portrait's own zoom. To retune, edit the `WIDE` and `TALL` tables there.
 - The "Real client" proof cards in the story now show on phones too (they were desktop-only).
 - Originals of the room images are in the Higgsfield account (Nov 27 generations). The 3D Jutsu project lost its arch, lamps and globes after revision 1, so re-render from revision 1 or rebuild those before making new angles.
+
+## Proof cards (Nov 27)
+- Each story chapter's small card now cycles through several results (`data-slides` on `.proof`, `js/proof.js`, wipe in `css/site.css`). Images load one ahead and only while the card is on screen.
+- `media/proof/` holds the crops: ears and lips are real client work cropped from Susu's Instagram posts, stories and reels; `navel.webp` is from her navel reel.
+- `tattoo-1..5.webp` are AI-generated style examples, NOT client work. They are captioned "Fine line · design ideas". Do not relabel them "Real client"; swap in real tattoo photos when Susu has them.

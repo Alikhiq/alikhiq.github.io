@@ -187,9 +187,11 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
     </article>
 
     <!-- proof cards (real client work) -->
-    <figure class="proof" data-for="1"><img src="media/brows-after.webp" alt="Real client: microblading result" loading="lazy" decoding="async" class="proof__wide"><figcaption>Real client · brows</figcaption></figure>
-    <figure class="proof" data-for="2"><img src="media/lips-after.webp" alt="Real client: lip blush result" loading="lazy" decoding="async" class="proof__wide"><figcaption>Real client · lips</figcaption></figure>
-    <figure class="proof" data-for="5"><img src="media/ear-stack.webp" alt="Real client: ear stack" loading="lazy" decoding="async"><figcaption>Real client · ear stack</figcaption></figure>
+    <figure class="proof" data-for="1" data-slides="media/brows-before.webp|Before,media/brows-after.webp|After"><div class="proof__frame proof__wide"><img src="media/brows-before.webp" alt="Real client: microblading before and after" loading="lazy" decoding="async"><i class="proof__tag"></i></div><figcaption>Real client · brows</figcaption></figure>
+    <figure class="proof" data-for="2" data-slides="media/lips-before.webp|Before,media/lips-after.webp|After,media/proof/lips2-before.webp|Before,media/proof/lips2-after.webp|After,media/proof/lips3-before.webp|Before,media/proof/lips3-after.webp|After"><div class="proof__frame proof__wide"><img src="media/lips-before.webp" alt="Real clients: lip blush before and after" loading="lazy" decoding="async"><i class="proof__tag"></i></div><figcaption>Real clients · lips</figcaption></figure>
+    <figure class="proof" data-for="4" data-slides="media/proof/tattoo-1.webp,media/proof/tattoo-2.webp,media/proof/tattoo-3.webp,media/proof/tattoo-4.webp,media/proof/tattoo-5.webp"><div class="proof__frame"><img src="media/proof/tattoo-1.webp" alt="Fine-line tattoo design ideas" loading="lazy" decoding="async"><i class="proof__tag"></i></div><figcaption>Fine line · design ideas</figcaption></figure>
+    <figure class="proof" data-for="5" data-slides="media/ear-stack.webp,media/proof/ear-emerald.webp,media/proof/ear-trio.webp,media/proof/ear-butterfly.webp,media/proof/ear-crawler.webp,media/proof/ear-curated.webp,media/proof/ear-flower.webp,media/proof/ear-marquise.webp"><div class="proof__frame"><img src="media/ear-stack.webp" alt="Real clients: ear piercings" loading="lazy" decoding="async"><i class="proof__tag"></i></div><figcaption>Real clients · ears</figcaption></figure>
+    <figure class="proof" data-for="6" data-slides="media/proof/navel.webp"><div class="proof__frame"><img src="media/proof/navel.webp" alt="Real client: navel piercing" loading="lazy" decoding="async"><i class="proof__tag"></i></div><figcaption>Real client · navel</figcaption></figure>
 
     <nav class="rail" aria-label="Services">
       <button type="button" data-go="1"><b></b><span>Brows</span></button>
@@ -573,6 +575,7 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 <script src="js/lenis.min.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/room.js" defer></script>
+<script src="js/proof.js" defer></script>
 <script type="module" src="assets/muse-story.r3.js"></script>
 <script type="module" src="js/footer3d.js"></script>
 <script async src="https://aether-app-production-b559074c.up.railway.app/t.js" data-site="susu"></script></body>

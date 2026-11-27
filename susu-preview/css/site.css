@@ -534,6 +534,17 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
 /* phones: the "Real client" proof card shows in the story too (it was desktop-only) */
 @media (max-width:760px){
   .proof{display:block;right:14px;left:auto;bottom:auto;top:41svh;width:104px;padding:5px 5px 7px;border-radius:12px}
-  .proof img,.proof img.proof__wide{aspect-ratio:4/3;border-radius:8px}
+  .proof__frame{border-radius:8px}
   .proof figcaption{margin-top:5px;font-size:10px;letter-spacing:.04em}
 }
+
+/* proof cards: several real results per service, cycled with a soft wipe (js/proof.js) */
+.proof__frame{position:relative;overflow:hidden;border-radius:9px;aspect-ratio:4/5;background:rgba(0,0,0,.25)}
+.proof__frame.proof__wide{aspect-ratio:16/10}
+.proof .proof__frame img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;border-radius:0}
+.proof__frame img.is-in{animation:proofWipe .8s cubic-bezier(.22,1,.36,1) both}
+@keyframes proofWipe{from{clip-path:inset(0 100% 0 0);transform:scale(1.06)}to{clip-path:inset(0 0 0 0);transform:none}}
+.proof__tag{position:absolute;left:6px;top:6px;z-index:2;padding:3px 7px;border-radius:99px;background:rgba(18,12,10,.62);color:var(--ivory);font:500 9.5px/1 "DM Sans",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-style:normal}
+.proof__tag:empty{display:none}
+@media (prefers-reduced-motion:reduce){.proof__frame img.is-in{animation:none}}
+@media (max-width:760px){.proof__tag{left:4px;top:4px;padding:2px 5px;font-size:8px}}
