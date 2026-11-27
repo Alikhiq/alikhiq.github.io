@@ -1,19 +1,21 @@
 /* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
-/* Susu Ink & Glow — intro: the SUSU wordmark in crystal & gold (three.js).
-   - First visit of a session: full piece (~4 s). Later pages in the session: a ~1 s version.
-   - Letters turn in from edge-on, "INK & GLOW" settles in, a light sweep crosses the glass,
-     then the mark flies into the nav logo while the page fades up.
-   - Never blocks: if the page is still loading it idles, but it always leaves by ~7 s.
-     Tap, click or any key skips.
-   - No WebGL, reduced motion, or three.js too slow to arrive: a 2D gold mark with a shimmer.
-   - Tells js/site.js the page may show with `window.__susuIntroReady` + a `susu:intro-ready` event.
-   - Everything (renderer, geometry, textures, canvas, the loader itself) is released afterwards. */
+/* Susu Ink & Glow — entrance: the SUSU wordmark in crystal & gold (three.js), with her five
+   service icons and the service line under it (those are CSS, see css/intro.css).
+   - It does NOT cover the page. The headline, buttons and nav paint at once (good for visitors
+     and for Google's speed score); the mark plays in the spot where the portrait is about to
+     appear, then flies into the nav logo as she fades in.
+   - First visit of a session: about 3 s of animation. Later pages: under 1 s.
+   - It uses the same three.js copy as the portrait (assets/intro-three.r3.js).
+   - Scrolling or any key ends it early. It always ends by 6 s.
+   - No WebGL, reduced motion, or three.js slow to arrive: a light CSS version of the mark.
+   - Tells js/site.js the page may show with `window.__susuIntroReady` + a `susu:intro-ready` event,
+     now sent straight away. */
 (() => {
   const loader = document.querySelector('.loader');
   const body = document.body;
   const T0 = performance.now();
   const now = () => (performance.now() - T0) / 1000;
-  const HARD_CAP = 7.0; // seconds since navigation start: the page is always shown by then
+  const HARD_CAP = 6.0; // seconds since navigation start: the entrance has always ended by then
 
   const signalReady = (() => {
     let sent = false;
@@ -24,19 +26,32 @@
     };
   })();
 
-  if (!loader) { signalReady(); return; }
+  signalReady(); // the page shows immediately; the mark plays over the portrait's spot
+  if (!loader) { body.classList.remove('intro-playing'); return; }
+
+  // where the mark plays: the centre of the portrait area, and how wide
+  const spot = () => {
+    const tall = innerWidth / innerHeight < 0.9;
+    const s = { fx: tall ? 0.5 : 0.69, fy: tall ? 0.30 : 0.47, w: tall ? innerWidth * 0.62 : Math.min(innerWidth * 0.3, 440) };
+    loader.style.setProperty('--lx', (s.fx * 100).toFixed(2) + '%');
+    loader.style.setProperty('--ly', (s.fy * 100).toFixed(2) + '%');
+    loader.style.setProperty('--lw', s.w.toFixed(0) + 'px');
+    return s;
+  };
+  spot();
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let repeat = false;
   try { repeat = sessionStorage.getItem('susu-intro') === '1'; sessionStorage.setItem('susu-intro', '1'); } catch (e) { /* private mode */ }
 
-  // page "loaded" = window load (portrait engine, images) + fonts
-  let pageLoaded = false;
-  const onLoaded = () => {
-    const f = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    f.then(() => { pageLoaded = true; }, () => { pageLoaded = true; });
-  };
-  if (document.readyState === 'complete') onLoaded(); else addEventListener('load', onLoaded, { once: true });
+  // page "loaded" = the portrait is ready to draw (or its still fallback is in) + fonts
+  let pageLoaded = false, fontsIn = false;
+  const ff = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  ff.then(() => { fontsIn = true; }, () => { fontsIn = true; });
+  const muse = document.querySelector('muse-story');
+  const poll = setInterval(() => {
+    if (fontsIn && (!muse || muse._ready || muse._fb)) { pageLoaded = true; clearInterval(poll); }
+  }, 60);
 
   // the nav logo the mark lands on
   const navImg = () => {
@@ -52,12 +67,13 @@
   const finish = () => {
     if (finished) return; finished = true;
     signalReady();
-    body.classList.remove('intro-landing');
+    body.classList.remove('intro-landing', 'intro-playing');
     if (skipHandler) {
       removeEventListener('keydown', skipHandler);
-      loader.removeEventListener('pointerdown', skipHandler);
     }
     loader.remove();
+    // the body-piercing illustration is only needed six chapters down: fetch it once the page is up
+    document.querySelectorAll('img[data-src]').forEach((i) => { i.src = i.dataset.src; i.removeAttribute('data-src'); });
   };
   // absolute safety net: whatever happens, never hold the page past the cap
   setTimeout(() => { signalReady(); setTimeout(finish, 1400); }, Math.max(0, HARD_CAP * 1000 - performance.now() + 200));
@@ -66,13 +82,14 @@
   function run2D() {
     loader.classList.add('loader--2d');
     const mark = loader.querySelector('.loader__mark');
-    const hold = repeat ? 0.7 : 1.2;
+    const hold = repeat ? 0.7 : 2.4;
     const start = now();
     let left = false;
     const leave = () => {
       if (left) return; left = true;
       const r = navImg();
       body.classList.add('intro-landing');
+      loader.classList.add('loader--exit');
       signalReady();
       if (mark && r && !reduce) {
         const m = mark.getBoundingClientRect();
@@ -86,24 +103,24 @@
         mark.style.transition = 'transform .8s cubic-bezier(.65,0,.35,1), opacity .3s ease .62s';
         mark.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
         mark.style.opacity = '0';
-        setTimeout(() => { body.classList.remove('intro-landing'); }, 620);
+        setTimeout(() => { body.classList.remove('intro-landing', 'intro-playing'); }, 620);
         setTimeout(finish, 1000);
       } else {
         loader.classList.add('loader--out');
-        body.classList.remove('intro-landing');
+        body.classList.remove('intro-landing', 'intro-playing');
         setTimeout(finish, 700);
       }
     };
     const tick = () => {
       if (left) return;
       const t = now() - start;
-      if ((t >= hold && pageLoaded) || performance.now() / 1000 > HARD_CAP - 1 || t > hold + 2.5) leave();
+      if ((t >= hold && pageLoaded) || performance.now() / 1000 > HARD_CAP - 1 || t > hold + 3) leave();
       else setTimeout(tick, 100);
     };
     tick();
-    skipHandler = (e) => { if (e.type === 'keydown' || e.type === 'pointerdown') leave(); };
+    skipHandler = () => leave();
     addEventListener('keydown', skipHandler);
-    loader.addEventListener('pointerdown', skipHandler);
+    addEventListener('scroll', () => { if (scrollY > 40) leave(); }, { passive: true });
   }
 
   /* ---------------- WebGL probe ---------------- */
@@ -115,22 +132,23 @@
     if (g) { const l = g.getExtension('WEBGL_lose_context'); l && l.loseContext(); }
   } catch (e) { hasGL = false; }
 
+  // Ali's call (Nov 27): phones get the full 3D mark too. If three.js has not arrived within the
+  // load budget below, the light CSS mark (bevelled gold, turns in, shimmer) takes over instead.
   if (reduce || !hasGL) { run2D(); return; }
 
   /* ---------------- 3D ---------------- */
-  const BASE = 'https://cdn.jsdelivr.net/npm/three@0.160.0/';
+  const LIB = new URL('../assets/intro-three.r3.js', import.meta.url).href;
   const LOGO_URL = 'brand/susu-logo-gold.svg';
   // if three.js has not arrived by then, take the 2D route instead
-  const LOAD_BUDGET = repeat ? 0.9 : 2.4;
+  const LOAD_BUDGET = repeat ? 1.0 : 2.8;
   let gave2D = false;
   const budgetTimer = setTimeout(() => { gave2D = true; run2D(); }, LOAD_BUDGET * 1000);
 
   Promise.all([
-    import(BASE + 'build/three.module.js'),
-    import(BASE + 'examples/jsm/loaders/SVGLoader.js'),
-    import(BASE + 'examples/jsm/environments/RoomEnvironment.js'),
+    import(LIB),
     fetch(LOGO_URL).then((r) => { if (!r.ok) throw new Error('logo'); return r.text(); }),
-  ]).then(([THREE, { SVGLoader }, { RoomEnvironment }, svgText]) => {
+  ]).then(([THREE, svgText]) => {
+    const { SVGLoader, RoomEnvironment } = THREE;
     if (gave2D || finished) return;
     let built;
     try { built = build(THREE, SVGLoader, RoomEnvironment, svgText); } catch (e) { built = null; }
@@ -358,14 +376,15 @@
     inner.add(dust);
 
     /* ---- layout: size the logo to the screen ---- */
-    let W = innerWidth, H = innerHeight, ppu = 1, baseScale = 1;
+    let W = innerWidth, H = innerHeight, ppu = 1, baseScale = 1, ox = 0, oy = 0;
     const layout = () => {
       W = innerWidth; H = innerHeight;
       renderer.setSize(W, H);
       camera.aspect = W / H; camera.updateProjectionMatrix();
       ppu = H / (2 * CAM_Z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); // px per world unit at z=0
-      const want = W < 600 ? W * 0.82 : Math.min(W * 0.5, 720);
-      baseScale = want / ppu;
+      const sp = spot();
+      baseScale = sp.w / ppu;
+      ox = (sp.fx - 0.5) * W / ppu; oy = -(sp.fy - 0.5) * H / ppu;
       dustMat.uniforms.uPx.value = renderer.getPixelRatio() * (W < 600 ? 1.5 : 1) * baseScale;
     };
     layout();
@@ -380,11 +399,11 @@
     const seg = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
     const bump = (t, a, m, b) => (t < a || t > b ? 0 : t < m ? ease.outCubic(seg(t, a, m)) : 1 - ease.inOut(seg(t, m, b)));
 
-    // full: assemble 0–1.9, tagline 1.2–2.4, sweep 1.95–2.95, glints, settle → exit ≥3.45
+    // full: assemble 0–1.9, tagline 1.2–2.4, icons + words (CSS) 1.7–3.2, sweep 2.6–3.7, glints, settle → exit ≥4.3
     // short: already assembled, quick sweep, exit ≥0.55
     const S = repeat
       ? { letters: -10, tagline: -10, sweepA: 0.05, sweepB: 0.65, glint: 0.42, minExit: 0.55, fly: 0.7, dustIn: 0.25 }
-      : { letters: 0.12, tagline: 1.25, sweepA: 1.95, sweepB: 2.95, glint: 2.7, minExit: 3.45, fly: 0.95, dustIn: 0.9 };
+      : { letters: 0.12, tagline: 1.25, sweepA: 1.9, sweepB: 2.8, glint: 2.55, minExit: 2.9, fly: 0.95, dustIn: 0.9 };
 
     let raf = 0, t = 0, last = 0, exitAt = -1, flyFrom = null, flyTo = null, idleSweep = 0;
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -480,7 +499,7 @@
       let ry = Math.sin(t * 0.55) * 0.09 * settle + pointer.x * 0.12 - (1 - settle) * 0.12;
       let rx = Math.sin(t * 0.43 + 1) * 0.04 * settle + pointer.y * 0.07;
       let s = baseScale * (repeat ? 0.97 + 0.03 * settle : 0.94 + 0.06 * settle);
-      let x = 0, y = repeat ? 0 : (1 - settle) * -0.004;
+      let x = ox, y = oy + (repeat ? 0 : (1 - settle) * -0.004);
 
       // opacity of the whole thing (short version fades in)
       let alpha = repeat ? ease.outCubic(seg(t, 0, 0.25)) : 1;
@@ -503,12 +522,12 @@
           halo.material.opacity *= 1 - e;
           dustMat.uniforms.uA.value *= 1 - ease.outCubic(p);
           // hand over to the flat logo in the nav during the last stretch
-          if (p > 0.88 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing');
+          if (p > 0.88 && body.classList.contains('intro-landing')) body.classList.remove('intro-landing', 'intro-playing');
           alpha *= 1 - seg(p, 0.9, 1);
         } else {
           s *= 1 + e * 0.08;
           alpha *= 1 - e;
-          if (p > 0.5) body.classList.remove('intro-landing');
+          if (p > 0.5) body.classList.remove('intro-landing', 'intro-playing');
         }
         if (p >= 1) { cleanup(); return; }
       }
@@ -551,7 +570,7 @@
         try { renderer.compile(scene, camera); } catch (e) { /* fine */ }
         skipHandler = () => { if (exitAt < 0) startExit(); };
         addEventListener('keydown', skipHandler);
-        loader.addEventListener('pointerdown', skipHandler);
+        addEventListener('scroll', () => { if (scrollY > 40 && exitAt < 0) startExit(); }, { passive: true });
         raf = requestAnimationFrame(frame);
         // background tab or stalled rAF: still leave on time
         const guard = setInterval(() => {

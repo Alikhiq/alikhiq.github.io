@@ -16,7 +16,7 @@
     body.classList.remove('is-loading'); body.classList.add('is-ready'); revealAbove();
   };
   if (window.__susuIntroReady) setTimeout(ready, 0); else addEventListener('susu:intro-ready', () => setTimeout(ready, 0), { once: true });
-  setTimeout(() => { ready(); const l = $('.loader'); if (l) l.remove(); }, 8000); // safety net if the intro never ran
+  setTimeout(() => { ready(); const l = $('.loader'); if (l) l.remove(); body.classList.remove('intro-playing', 'intro-landing'); }, 8000); // safety net if the entrance never ran
 
   /* ---------- smooth scroll ---------- */
   let lenis = null;
@@ -432,6 +432,25 @@
       p_marketing_consent: !!form.elements['optin'].checked,
     };
   };
+  // WhatsApp alert to Susu after a request is stored (server side: /api/booking-alert).
+  // Fire-and-forget: the booking itself never depends on it.
+  const notifySusu = () => {
+    try {
+      const d = form.querySelector('input[name=date]:checked'), t = form.querySelector('input[name=time]:checked');
+      const pl = form.querySelector('input[name=place]:checked');
+      const v = (k) => String(form.elements[k].value || '').trim();
+      fetch('/api/booking-alert', {
+        method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: v('name'),
+          services: services().map((k) => names[k]),
+          when: `${d ? d.dataset.label : ''} · ${t ? t.value : ''}`,
+          phone: v('phone'),
+          where: pl && pl.value === 'client' ? ['street', 'city'].map(v).filter(Boolean).join(', ') : 'At my place',
+        }),
+      }).catch(() => {});
+    } catch (e) {}
+  };
   const send = async () => {
     clearErr('send');
     if (!LIVE) {
@@ -442,6 +461,7 @@
     form.classList.add('is-sending'); next.textContent = 'Sending…';
     try {
       await rpc('submit_susu_booking_request', payload());
+      notifySusu();
       if (window.gtag) gtag('event', 'generate_lead', { method: 'booking_form' });
       $('.bdone__title', form).textContent = 'Request sent';
       $('.bdone__text', form).textContent = "I'll text you to confirm the time, the location and the price. Your appointment isn't booked until I confirm it with you.";
