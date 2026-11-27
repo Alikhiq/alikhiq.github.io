@@ -83,3 +83,10 @@ Session times, licence, real reviews, and a microblading price if she wants one 
 - Each story chapter's small card now cycles through several results (`data-slides` on `.proof`, `js/proof.js`, wipe in `css/site.css`). Images load one ahead and only while the card is on screen.
 - `media/proof/` holds the crops: ears and lips are real client work cropped from Susu's Instagram posts, stories and reels; `navel.webp` is from her navel reel.
 - `tattoo-1..5.webp` are AI-generated style examples, NOT client work. They are captioned "Fine line · design ideas". Do not relabel them "Real client"; swap in real tattoo photos when Susu has them.
+
+## Lower sections pass (Nov 27)
+- "Real clients, real results" is now **The work** (`#results`): two compare sliders (`.gallery--compare`), then a reel of cards (`.gallery--reel`) mixing slideshow cards (`.media.slides[data-slides]`, driven by `js/proof.js`) and short films in `media/work/` (cut from her reels, Instagram interface cropped out). On phones the reel is one swipeable row.
+- About copy rewritten in a confident artist voice; on phones the section is compact (two portraits side by side, plain promise rows, photo strip swipes).
+- Phone spacing tightened for prices, deposit, steps and the booking photo header.
+- Footer: the gold hoop is replaced by her 3D logo (`js/footer3d.js`, same build as the entrance, reuses `assets/intro-three.r3.js`) with the five service icons floating round it (CSS in `css/footer.css`). Flat gold logo is the fallback.
+- Story proof cards switch every ~1.3s.
