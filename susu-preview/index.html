@@ -113,8 +113,6 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 <section class="story" id="story" aria-label="Services, told on Susu's portrait">
   <div class="story__stage">
     <div class="story__glow" aria-hidden="true"></div>
-    <!-- 3D studio room behind the portrait: two camera angles that cross-fade as you scroll (js/room.js) -->
-    <div class="story__room" aria-hidden="true"><i class="story__room-wide"></i><i class="story__room-close"></i></div>
     <muse-story class="story__muse" track="muse-track" blink="3.6" irisa="#F0C27E" irisb="#8C5A2E" irisamt="1" glint="1" foil="1" tilt="4" dust="true"></muse-story>
     <!-- body piercing: camera travels down to an engraved navel study -->
     <figure class="bodyart" aria-hidden="true">
@@ -573,7 +571,6 @@ document.addEventListener('click',function(e){var l=e.target.closest&&e.target.c
 <script src="js/lenis.min.js" defer></script>
 <script type="module" src="assets/muse-story.r3.js"></script>
 <script src="js/site.js" defer></script>
-<script src="js/room.js" defer></script>
 <script type="module" src="js/footer3d.js"></script>
 <script async src="https://aether-app-production-b559074c.up.railway.app/t.js" data-site="susu"></script></body>
 </html>
