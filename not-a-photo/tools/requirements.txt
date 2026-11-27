@@ -1,0 +1,7 @@
+numpy
+pillow
+scipy
+torch
+# only for prep.py (cut-out and depth):
+rembg[cpu]
+transformers
