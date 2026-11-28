@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Kitab al-Bulhan Decoded</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Marcellus&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each folio is a plate (image left, reading right) that stacks on phones. */
+:root{
+  --bg:#e9edf2; --surface:#f6f8fa; --ink:#16202e; --muted:#566377;
+  --lapis:#1f4a8a; --rubric:#b3261e; --line:#c5cdd8; --gold:#8a6a1c;
+  --display:"Marcellus","Palatino Linotype",Georgia,serif;
+  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+  --arabic:"Amiri","Scheherazade New","Traditional Arabic",serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1420; --surface:#161e2d; --ink:#e6ebf2; --muted:#9aa7ba;
+  --lapis:#8bb4f0; --rubric:#f0786c; --line:#2a364a; --gold:#d9b65a; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0e1420; --surface:#161e2d; --ink:#e6ebf2; --muted:#9aa7ba;
+  --lapis:#8bb4f0; --rubric:#f0786c; --line:#2a364a; --gold:#d9b65a; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 72px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2.2rem,6vw,3.6rem)}
+h2{font-size:1.7rem}
+h3{font-size:1.35rem}
+p{margin:0;max-width:65ch}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);font-weight:600}
+header{display:flex;flex-direction:column;gap:14px}
+header .ar{font-family:var(--arabic);font-size:clamp(1.8rem,5vw,2.6rem);color:var(--lapis);direction:rtl;text-align:left;line-height:1.3}
+.lede{font-size:1.15rem;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:22px}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;padding:0;margin:0;list-style:none;counter-reset:s}
+.method li{counter-increment:s;border-top:2px solid var(--lapis);padding-top:10px;min-width:0}
+.method li::before{content:"Step " counter(s);display:block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.method b{font-family:var(--display);font-weight:400;font-size:1.15rem;display:block}
+.plate{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:28px;border-top:1px solid var(--line);padding-top:26px}
+@media (max-width:720px){.plate{grid-template-columns:1fr}}
+.crop{width:100%;max-width:100%;background-color:var(--surface);background-repeat:no-repeat;border:1px solid var(--line)}
+.q{aspect-ratio:407/534;background-image:url(jinn-kings.webp);background-size:200% 200%}
+.h{aspect-ratio:500/713;background-image:url(fever-fire.webp);background-size:200% 100%}
+.full{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.read{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ar{font-family:var(--arabic);direction:rtl}
+.heading-ar{font-size:1.75rem;color:var(--rubric);line-height:1.5;text-align:right}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px}
+dt{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+dd{margin:0}
+.conf{align-self:flex-start;font-size:.8rem;font-weight:600;padding:2px 10px;border:1px solid currentColor;border-radius:999px}
+.hi{color:var(--lapis)} .mid{color:var(--gold)} .lo{color:var(--rubric)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.ar{font-size:1.25rem;text-align:right;white-space:nowrap}
+.note{background:var(--surface);border:1px solid var(--line);padding:16px 18px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:0;padding:0;list-style:none}
+.shots li{background:var(--surface);border:1px solid var(--line);padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.shots .t{font-variant-numeric:tabular-nums;color:var(--lapis);font-weight:600;font-size:.9rem}
+.shots p{font-size:.95rem;color:var(--muted)}
+video{width:100%;max-width:854px;background:#000;display:block}
+footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);padding-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Bodleian Library, MS. Bodl. Or. 133 · Arabic · late 14th century</span>
+  <h1>Kitab al-Bulhan, decoded</h1>
+  <div class="ar" lang="ar">كتاب البلهان</div>
+  <p class="lede">Seven painted pages from the <em>Book of Wonders</em>, a divination and astrology compendium made in Jalayirid Iraq around 1390–1410. Each page opens with a red or black headline that names its subject. Reading those headlines is how the pictures are decoded below.</p>
+</header>
+
+<section>
+  <h2>How each page was read</h2>
+  <ol class="method">
+    <li><b>Find the formula</b>Every headline starts with <span class="ar" lang="ar">القول على</span> (<em>al-qawl ʿalā</em>), "the discourse on…". What follows is the subject.</li>
+    <li><b>Read the name</b>The scribe writes large thuluth with stacked letters and few dots, so the name is read letter by letter, right to left.</li>
+    <li><b>Check against the picture</b>Colour, heads, horns and attendants should match what the name promises. A red king should be red.</li>
+    <li><b>Grade the reading</b>Clear headline and matching picture: firm. Cropped or damaged headline: marked as tentative.</li>
+  </ol>
+</section>
+
+<section>
+  <span class="eyebrow">Sheet one</span>
+  <h2>Four jinn</h2>
+
+  <article class="plate">
+    <div class="crop q" style="background-position:0 0" role="img" aria-label="A red-skinned crowned king seated with a sword, flanked by red dragon-headed attendants"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على صفة الملك الأحمر وأعوانه</div>
+      <h3>The Red King and his helpers</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā ṣifat al-malik al-aḥmar wa-aʿwānih</em></dd>
+        <dt>Means</dt><dd>"The discourse on the description of the Red King and his helpers."</dd>
+        <dt>Who</dt><dd>Al-Aḥmar, one of the seven jinn kings of the week. He rules Tuesday and belongs to Mars, which is why everything about him is red and why he holds a sword.</dd>
+        <dt>Picture</dt><dd>Red face, red tunic, sword across the lap, crowned heads stacked behind him, two red dragon-snouted helpers at his sides.</dd>
+      </dl>
+      <span class="conf hi">Firm reading</span>
+    </div>
+  </article>
+
+  <article class="plate">
+    <div class="crop q" style="background-position:100% 0" role="img" aria-label="A horned, bearded jinn seated with crossed arms among smaller demons"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">… العينية النظر …</div>
+      <h3>A horned jinn, headline cut off</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>… al-ʿayniyya al-naẓar …</em></dd>
+        <dt>Means</dt><dd>Only the end of the line survives in this crop. Both visible words come from the vocabulary of the eye and the gaze, which points toward the evil eye, but the name itself is missing.</dd>
+        <dt>Picture</dt><dd>Curved black horns, wild hair, heavy beard, arms crossed over the chest, bare belly. A grey dog-headed helper and a dark horned one attend him. A line of talismanic "spectacle letters" sits at top left.</dd>
+      </dl>
+      <span class="conf lo">Name not readable from this image</span>
+    </div>
+  </article>
+
+  <article class="plate">
+    <div class="crop q" style="background-position:0 100%" role="img" aria-label="A dark demon tumbling head-first onto a sleeping man"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على الكابوس وأعوانه</div>
+      <h3>Kābūs, the nightmare</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā al-kābūs wa-aʿwānih</em></dd>
+        <dt>Means</dt><dd>"The discourse on the Nightmare and his helpers." <em>Kābūs</em> is still the everyday Arabic word for a nightmare, from a root meaning to press down.</dd>
+        <dt>Picture</dt><dd>A brown demon drops head-first onto a man asleep under a patterned quilt. Animal-headed helpers watch from the margins. This is sleep paralysis drawn six centuries ago.</dd>
+      </dl>
+      <span class="conf mid">Headline cropped, picture confirms</span>
+    </div>
+  </article>
+
+  <article class="plate">
+    <div class="crop q" style="background-position:100% 100%" role="img" aria-label="A turbaned grey jinn with attendants, a magic square and a six-pointed star above"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على شمهورش …</div>
+      <h3>Shamhūrash, the judge of the jinn</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā Shamhūrash …</em></dd>
+        <dt>Means</dt><dd>"The discourse on Shamhūrash…" The final word of the line is unclear in this photo.</dd>
+        <dt>Who</dt><dd>The jinn king of Thursday and of Jupiter, known in the magical tradition as a judge. That fits the turban, the only scholar's headgear on these pages.</dd>
+        <dt>Picture</dt><dd>Pale grey body, blue turban, gold collar. Above him a number grid (a <em>wafq</em>, or magic square) and a six-pointed Seal of Solomon, the sign used to bind jinn.</dd>
+      </dl>
+      <span class="conf mid">Probable reading</span>
+    </div>
+  </article>
+</section>
+
+<section>
+  <span class="eyebrow">Sheet two</span>
+  <h2>Fever and the Mountain of Fire</h2>
+
+  <article class="plate">
+    <div class="crop h" style="background-position:0 0" role="img" aria-label="A black three-headed demon with outstretched arms and a two-headed serpent tail"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على الحمّى …</div>
+      <h3>Ḥummā, the fever demon</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā al-ḥummā …</em></dd>
+        <dt>Means</dt><dd>"The discourse on Fever…" The second half of the line is rubbed.</dd>
+        <dt>Picture</dt><dd>One dark body with three heads: a horned bull-like face in the middle and a human profile on each side. Red tongues of heat curl from the mouths. The tail ends in two serpent heads. Two Solomonic stars guard the top corners.</dd>
+        <dt>Why three</dt><dd>Medieval medicine counted fevers by their rhythm: daily, every third day, every fourth day. Three heads is a likely way to draw that.</dd>
+      </dl>
+      <span class="conf mid">Probable reading</span>
+    </div>
+  </article>
+
+  <article class="plate">
+    <div class="crop h" style="background-position:100% 0" role="img" aria-label="A blue rocky mountain wrapped in red flames with white birds inside the fire"></div>
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على جبل النار وطيره</div>
+      <h3>The Mountain of Fire and its birds</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā jabal al-nār wa-ṭayrih</em></dd>
+        <dt>Means</dt><dd>"The discourse on the Mountain of Fire and its birds."</dd>
+        <dt>Picture</dt><dd>A blue-grey crag wrapped in red flame, with white birds perched and flying inside the fire unharmed. Arabic wonder books place the <em>samandal</em>, the creature that lives in fire, on mountains like this one.</dd>
+      </dl>
+      <span class="conf hi">Firm reading</span>
+    </div>
+  </article>
+</section>
+
+<section>
+  <span class="eyebrow">Sheet three</span>
+  <h2>The twitching chart</h2>
+  <article class="plate">
+    <img class="full" src="ikhtilaj.webp" alt="A manuscript table with a crowned figure in a red robe standing between two candlesticks, flanked by columns of Arabic words">
+    <div class="read">
+      <div class="ar heading-ar" lang="ar">القول على لعبة الاختلاج</div>
+      <h3>Ikhtilāj: fortunes from a twitch</h3>
+      <dl>
+        <dt>Sounds</dt><dd><em>al-qawl ʿalā … al-ikhtilāj</em></dd>
+        <dt>Means</dt><dd>"The discourse on the chart of involuntary twitching." This is palmomancy: when a part of your body twitches by itself, the chart tells you what is coming.</dd>
+        <dt>Layout</dt><dd>Red headers split the page into <span class="ar" lang="ar">الشق الأيمن</span> (the right side of the body) and <span class="ar" lang="ar">الشق الأيسر</span> (the left side). The inner columns list body parts from head to foot. The outer columns give the omen for each.</dd>
+        <dt>Figure</dt><dd>A crowned person in a red robe raises both hands to the ears, standing between two lit candlesticks. The body is the index for the table.</dd>
+      </dl>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Word on the page</th><th>Sounds</th><th>Means</th></tr></thead>
+          <tbody>
+            <tr><td class="ar" lang="ar">الجبهة</td><td><em>al-jabha</em></td><td>forehead</td></tr>
+            <tr><td class="ar" lang="ar">الحاجب</td><td><em>al-ḥājib</em></td><td>eyebrow</td></tr>
+            <tr><td class="ar" lang="ar">الأنف</td><td><em>al-anf</em></td><td>nose</td></tr>
+            <tr><td class="ar" lang="ar">الكتف</td><td><em>al-katif</em></td><td>shoulder</td></tr>
+            <tr><td class="ar" lang="ar">الكف</td><td><em>al-kaff</em></td><td>palm</td></tr>
+            <tr><td class="ar" lang="ar">الركبة</td><td><em>al-rukba</em></td><td>knee</td></tr>
+            <tr><td class="ar" lang="ar">الساق</td><td><em>al-sāq</em></td><td>shin</td></tr>
+            <tr><td class="ar" lang="ar">الكعب</td><td><em>al-kaʿb</em></td><td>ankle</td></tr>
+            <tr><td class="ar" lang="ar">الإبهام</td><td><em>al-ibhām</em></td><td>thumb or big toe</td></tr>
+            <tr><td class="ar" lang="ar">سرور</td><td><em>surūr</em></td><td>omen: joy</td></tr>
+            <tr><td class="ar" lang="ar">كرامة</td><td><em>karāma</em></td><td>omen: honour</td></tr>
+            <tr><td class="ar" lang="ar">خير</td><td><em>khayr</em></td><td>omen: good fortune</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="conf mid">Title and headers firm, small script sampled</span>
+      <p class="note">The photo is taken at an angle and the small script is soft, so only the words above could be read with confidence. Matching a specific body part to its specific omen needs a sharper, flat scan of this folio.</p>
+    </div>
+  </article>
+</section>
+
+<section id="film">
+  <span class="eyebrow">From page to screen</span>
+  <h2>The film</h2>
+  <p>Ninety seconds, narrated. The camera moves across the manuscript paintings, and four of the figures are imagined in slow-motion live action: the Red King, the Nightmare, Fever and the Mountain of Fire. The live-action footage and the narrator's voice are AI-generated.</p>
+  <video id="film" controls preload="metadata" src="film.mp4"></video>
+</section>
+
+<footer>
+  <p>Source images: three photographs of folios from the Kitab al-Bulhan supplied for this reading. Readings were made from those photographs alone, so cropped or blurred lines are marked as tentative and were not filled in from guesswork.</p>
+</footer>
+
+</div>
+</body>
+</html>

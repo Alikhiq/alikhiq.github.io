@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Kitab al-Bulhan: the film</title>
+<!-- 5-minute explainer, 1280x720. Deterministic: window.seek(t) draws second t. Capture with lib/bulhancap.js. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Marcellus&family=Source+Sans+3:wght@400;600&display=block">
+<style>
+:root{--bg:#0e1420;--panel:#161e2d;--ink:#e9eef5;--muted:#9aa7ba;--lapis:#8bb4f0;--red:#f0655a;--gold:#e0bd62;--line:#2a364a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1280px;height:720px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",sans-serif}
+#stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#1a2740 0%,#0e1420 70%)}
+.scene{position:absolute;inset:0;opacity:0}
+.abs{position:absolute}
+h1,h2,.d{font-family:"Marcellus",serif;font-weight:400}
+.ar{font-family:"Amiri",serif;direction:rtl}
+.eyebrow{font-size:17px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);font-weight:600}
+.img{position:absolute;background-repeat:no-repeat;border:2px solid #3a4a66;box-shadow:0 18px 60px #000a;overflow:hidden}
+.img i{position:absolute;inset:0;background-repeat:no-repeat;display:block}
+.q i{background-image:url(../../bulhan/jinn-kings.webp);background-size:200% 200%}
+.h i{background-image:url(../../bulhan/fever-fire.webp);background-size:200% 100%}
+.k i{background-image:url(../../bulhan/ikhtilaj.webp);background-size:cover;background-position:50% 30%}
+.chip{display:inline-block;border:1.5px solid var(--lapis);color:var(--lapis);border-radius:99px;padding:6px 20px;font-size:23px;margin:0 10px 12px 0}
+.fact{font-size:29px;line-height:1.35;margin-bottom:18px;padding-left:22px;border-left:3px solid var(--gold)}
+.fact small{display:block;color:var(--muted);font-size:20px}
+.arh{font-size:62px;color:var(--red);line-height:1.5;text-align:right;white-space:nowrap}
+.tr{font-size:26px;color:var(--muted);font-style:italic}
+.mean{font-family:"Marcellus",serif;font-size:44px;line-height:1.15}
+.badge{display:inline-block;font-size:20px;font-weight:600;border:2px solid currentColor;border-radius:99px;padding:3px 16px}
+#cap{position:absolute;left:0;right:0;bottom:0;height:112px;background:linear-gradient(#0e142000,#070b13 45%);display:flex;align-items:flex-end;justify-content:center;padding:0 90px 26px}
+#capt{font-size:31px;line-height:1.25;text-align:center;text-wrap:balance;text-shadow:0 2px 10px #000}
+#bar{position:absolute;left:0;bottom:0;height:5px;background:var(--red)}
+#chap{position:absolute;left:40px;top:28px;font-size:16px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.ring{position:absolute;border:3px solid var(--gold);border-radius:50%;box-shadow:0 0 0 2000px #0008}
+.vc{font-size:24px!important;box-shadow:0 4px 18px #000a}
+.call{position:absolute;font-size:22px;background:var(--gold);color:#1a1405;padding:3px 12px;font-weight:600;white-space:nowrap}
+svg text{font-family:"Source Sans 3",sans-serif;fill:var(--ink)}
+.cell{position:absolute;width:86px;height:86px;border:2px solid var(--lapis);display:flex;align-items:center;justify-content:center;font-size:42px;font-family:"Marcellus",serif;background:#16223a}
+.sum{position:absolute;white-space:nowrap;font-size:26px;color:var(--gold);font-weight:600}
+.row{display:flex;align-items:center;gap:18px;font-size:27px;margin-bottom:16px}
+.row b{display:inline-block;width:14px;height:14px;border-radius:50%}
+#bg{position:absolute;inset:0;opacity:0;background:#000;overflow:hidden}
+#bg img{position:absolute;left:0;top:0;width:1280px;height:720px}
+#bgs{position:absolute;inset:0}
+#ail{position:absolute;right:28px;top:24px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;background:#0009;padding:4px 12px;border:1px solid #fff4;opacity:0}
+.cs .img{transform:scale(.5);transform-origin:0 0;left:44px!important;top:64px!important}
+.cs > div.abs:not(.img){left:700px!important;width:540px!important;text-shadow:0 2px 12px #000}
+.cs > svg.abs{left:680px!important}
+.cs .arh{white-space:normal}
+.cs .arh[style*="54px"]{font-size:42px!important}
+.cs #fev{width:540px;height:266px}
+</style></head><body><div id="stage"><div id="bg"><img id="bgi"><div id="bgs"></div></div>
+
+<!-- 1 TITLE -->
+<div class="scene" data-a="0" data-b="18" data-chap="">
+  <div class="img q" style="left:120px;top:80px;width:330px;height:433px" data-at="0.3" data-fx="left"><i style="background-position:0 0;background-size:212% 200%" data-kb="1,1.12"></i></div>
+  <div class="abs" style="left:520px;top:150px;width:700px">
+    <div class="eyebrow" data-at="1">A 600-year-old book, decoded</div>
+    <h1 style="font-size:92px;line-height:1.02;margin-top:14px" data-at="1.6">The Book of Wonders</h1>
+    <div class="ar" style="font-size:74px;color:var(--lapis);text-align:left;margin-top:6px" data-at="6" data-fx="rtl">كتاب البلهان</div>
+    <div class="tr" style="margin-top:2px" data-at="7">Kitāb al-Bulhān</div>
+  </div>
+</div>
+
+<!-- 2 WHAT IS IT -->
+<div class="scene" data-a="18" data-b="46" data-chap="What is this book?">
+  <div class="img q" style="left:70px;top:110px;width:230px;height:302px;transform-origin:50% 100%" data-at="0.4" data-fx="up" data-rot="-7"><i style="background-position:100% 100%"></i></div>
+  <div class="img h" style="left:210px;top:90px;width:230px;height:328px" data-at="0.9" data-fx="up" data-rot="0"><i style="background-position:100% 0"></i></div>
+  <div class="img k" style="left:350px;top:110px;width:230px;height:302px" data-at="1.4" data-fx="up" data-rot="7"><i></i></div>
+  <div class="abs" style="left:680px;top:110px;width:540px">
+    <div class="fact" data-at="1.5">Made around the year 1400<small>in Iraq, in the time of the Jalayirid sultans</small></div>
+    <div class="fact" data-at="7.5">Kept in Oxford<small>Bodleian Library, MS. Bodl. Or. 133</small></div>
+    <div class="fact" data-at="14.5">A handbook for the unseen<small>stars, omens, spirits, cures</small></div>
+    <div class="fact" data-at="21.5" style="border-color:var(--red)">Every painting has a label<small>and the label can be read</small></div>
+  </div>
+</div>
+
+<!-- 3 THE KEY -->
+<div class="scene" data-a="46" data-b="80" data-chap="The key: read the headline">
+  <div class="img q" style="left:70px;top:90px;width:400px;height:525px"><i style="background-position:0 0;background-size:212% 200%"></i>
+    <div class="abs" style="left:-2px;top:-2px;width:400px;height:74px;border:4px solid var(--gold);box-shadow:0 0 0 900px #000a" data-at="1.5" data-out="12"></div></div>
+  <div class="abs" style="left:540px;top:120px;width:680px">
+    <div class="abs" style="right:0;top:0;width:680px" data-at="7" data-out="13">
+      <svg width="680" height="70"><defs><marker id="ah" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12z" fill="#e0bd62"/></marker></defs>
+      <line x1="660" y1="35" x2="60" y2="35" stroke="#e0bd62" stroke-width="4" marker-end="url(#ah)"/></svg>
+      <div style="text-align:center;font-size:24px;color:var(--gold)">read this way: right to left</div></div>
+    <div class="ar abs" style="right:0;top:120px;font-size:120px;line-height:1.3;white-space:nowrap">
+      <span style="color:var(--red)" data-at="13" data-fx="rtl">القول على</span> <span style="color:var(--muted)" data-at="26" data-fx="rtl">…</span></div>
+    <div class="abs" style="right:0;top:300px;text-align:right;width:680px">
+      <div class="tr" style="font-size:34px" data-at="14.5">al-qawl ʿalā …</div>
+      <div class="mean" style="margin-top:14px" data-at="20">“The discourse on …”</div>
+      <div style="font-size:27px;color:var(--gold);margin-top:22px" data-at="26">what follows is the name of the thing in the picture</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 RED KING -->
+<div class="scene cs" data-a="80" data-b="114" data-clip="king" data-n="405" data-fx="translate(-150px,70px) scale(1.25)" data-chap="Page 1 · The Red King">
+<div class="call vc" style="left:540px;top:150px" data-at="21" data-out="28.5">a crown: he is a king</div><div class="call vc" style="left:270px;top:345px" data-at="22.5" data-out="28.5">red skin, red robe</div><div class="call vc" style="left:300px;top:520px" data-at="24" data-out="28.5">the sword of Mars</div>
+  <div class="img q" style="left:70px;top:80px;width:410px;height:538px"><i style="background-position:0 0;background-size:212% 200%" data-kb="1,1.1"></i>
+    <div class="call" style="left:210px;top:230px" data-at="21" data-out="28">red skin, red robe</div>
+    <div class="call" style="left:150px;top:420px" data-at="23.5" data-out="28">a sword</div>
+    <div class="call" style="left:10px;top:150px" data-at="25.5" data-out="28">his helpers</div></div>
+  <div class="abs" style="left:540px;top:100px;width:690px;text-align:right">
+    <div class="ar arh" style="font-size:54px"><span style="color:var(--muted)" data-at="0.5" data-fx="rtl">القول على صفة</span> <span data-at="2.5" data-fx="rtl">الملك الأحمر</span> <span style="color:var(--muted)" data-at="8" data-fx="rtl">وأعوانه</span></div>
+    <div class="tr" data-at="3.5">al-malik al-aḥmar · wa-aʿwānih</div>
+    <div class="mean" style="margin-top:22px;color:var(--red);font-size:58px" data-at="8">The Red King</div>
+    <div class="mean" style="font-size:34px" data-at="9">and his helpers</div>
+    <div style="font-size:26px;color:var(--muted);margin-top:26px;line-height:1.35" data-at="13">Jinn: spirits made of smokeless fire.<br>Unseen neighbours of humankind, with kings of their own.</div>
+    <div class="badge" style="color:var(--lapis);margin-top:26px" data-at="28">Name and picture match · firm reading</div>
+  </div>
+</div>
+
+<!-- 5 WEEK WHEEL -->
+<div class="scene" data-a="114" data-b="146" data-clip="king" data-n="405" data-off="34" data-dim="1" data-fx="scale(1.1)" data-chap="Why is he red?">
+  <svg id="wheel" class="abs" style="left:90px;top:60px" width="560" height="560" viewBox="-280 -280 560 560"></svg>
+  <div class="abs" style="left:720px;top:150px;width:500px">
+    <div class="d" style="font-size:46px;line-height:1.12" data-at="0.5">Seven jinn kings share the week</div>
+    <div style="font-size:27px;color:var(--muted);margin-top:16px" data-at="8">one king · one day · one planet</div>
+    <div style="margin-top:40px" data-at="15"><div class="d" style="font-size:54px;color:var(--red)">Tuesday · Mars</div>
+      <div style="font-size:28px;margin-top:8px">the red planet, the planet of war</div></div>
+    <div style="font-size:28px;color:var(--gold);margin-top:26px" data-at="24">so: a red king with a sword</div>
+  </div>
+</div>
+
+<!-- 6 KABUS -->
+<div class="scene cs" data-a="146" data-b="176" data-clip="kabus" data-n="358" data-fx="translateX(-110px) scale(-1.18,1.18)" data-chap="Page 2 · The Nightmare">
+<div class="call vc" style="left:300px;top:330px" data-at="20.5" data-out="29">the weight that presses down</div>
+  <div class="img q" style="left:70px;top:80px;width:410px;height:538px"><i style="background-position:0 100%;background-size:212% 200%" data-kb="1.12,1"></i></div>
+  <div class="abs" style="left:540px;top:95px;width:690px;text-align:right">
+    <div class="ar arh" style="font-size:96px" data-at="7" data-fx="rtl">الكابوس</div>
+    <div class="tr" style="font-size:32px" data-at="8">al-Kābūs</div>
+    <div class="mean" style="font-size:60px;margin-top:10px" data-at="13">Nightmare</div>
+    <div style="font-size:25px;color:var(--muted);margin-top:4px" data-at="13.6">the same word Arabic speakers use today</div>
+  </div>
+  <svg class="abs" style="left:640px;top:410px" width="590" height="190" data-at="20">
+    <text x="295" y="26" text-anchor="middle" font-size="22" style="fill:#e0bd62">root k-b-s: “to press down”</text>
+    <rect id="kweight" x="205" y="40" width="180" height="46" rx="6" fill="#3a2630" stroke="#f0655a" stroke-width="2"/>
+    <path id="kbody" d="" fill="none" stroke="#8bb4f0" stroke-width="5" stroke-linecap="round"/>
+    <line x1="60" y1="172" x2="530" y2="172" stroke="#2a364a" stroke-width="4"/></svg>
+</div>
+
+<!-- 7 SHAMHURASH -->
+<div class="scene" data-a="176" data-b="210" data-chap="Page 3 · The Judge">
+  <div class="img q" style="left:70px;top:80px;width:410px;height:538px"><i style="background-position:100% 100%" data-kb="1,1.08"></i>
+    <div class="ring" style="left:44px;top:92px;width:132px;height:132px" data-at="16" data-out="26.5"></div>
+    <div class="ring" style="left:312px;top:112px;width:84px;height:84px;box-shadow:none" data-at="27" data-out="33"></div></div>
+  <div class="abs" style="left:540px;top:86px;width:690px;text-align:right" data-out="15.5">
+    <div class="ar arh" style="font-size:96px" data-at="2.5" data-fx="rtl">شمهورش</div>
+    <div class="tr" style="font-size:32px" data-at="3.5">Shamhūrash</div>
+    <div class="mean" style="margin-top:20px" data-at="8">King of Thursday and Jupiter</div>
+    <div style="font-size:28px;color:var(--muted);margin-top:8px" data-at="9.5">remembered as a judge among the jinn. Hence the turban.</div>
+    <div class="badge" style="color:var(--gold);margin-top:22px" data-at="11">probable reading · end of the line is unclear</div>
+  </div>
+  <div class="abs" style="left:560px;top:110px;width:670px;height:470px" data-at="16">
+    <div class="d abs" style="left:0;top:0;font-size:40px">Two tools of protection</div>
+    <div id="sq" class="abs" style="left:10px;top:100px;width:300px;height:300px" data-at="21"></div>
+    <div class="abs" style="left:0;top:400px;width:340px;font-size:22px;color:var(--muted)" data-at="21">a magic square (simple example):<br>every line adds up to 15</div>
+    <svg class="abs" style="left:400px;top:90px" width="250" height="270" viewBox="-125 -135 250 270" data-at="27">
+      <path id="hexa" d="M0,-110 L95.3,55 L-95.3,55Z M0,110 L95.3,-55 L-95.3,-55Z" fill="none" stroke="#e0bd62" stroke-width="5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1"/></svg>
+    <div class="abs" style="left:380px;top:400px;width:290px;font-size:22px;color:var(--muted);text-align:center" data-at="27">the Seal of Solomon,<br>said to bind the jinn</div>
+  </div>
+</div>
+
+<!-- 8 FEVER -->
+<div class="scene cs" data-a="210" data-b="236" data-clip="fever" data-n="310" data-fx="translate(-170px,95px) scale(1.28)" data-chap="Page 4 · Fever">
+<div class="call vc" style="left:290px;top:330px" data-at="1" data-out="8">three heads, one body</div>
+  <div class="img h" style="left:70px;top:80px;width:378px;height:538px"><i style="background-position:0 0;background-size:212% 200%" data-kb="1,1.1"></i></div>
+  <div class="abs" style="left:520px;top:90px;width:710px;text-align:right" data-out="14.5">
+    <div class="ar arh" style="font-size:96px" data-at="3.5" data-fx="rtl">الحمّى</div>
+    <div class="tr" style="font-size:32px" data-at="4.5">al-Ḥummā</div>
+    <div class="mean" style="font-size:60px;margin-top:10px" data-at="5.5">Fever</div>
+    <div style="font-size:28px;color:var(--muted);margin-top:14px" data-at="8">an illness drawn as a creature:<br>something you can name, and so resist</div>
+  </div>
+  <div class="abs" style="left:520px;top:110px;width:710px" data-at="15">
+    <div class="d" style="font-size:38px">Why three heads?</div>
+    <div class="badge" style="color:var(--gold);margin:10px 0 18px">our best guess</div>
+    <svg id="fev" width="710" height="350" viewBox="0 0 710 350"></svg>
+  </div>
+</div>
+
+<!-- 9 MOUNTAIN -->
+<div class="scene cs" data-a="236" data-b="256" data-clip="mountain" data-n="298" data-fx="translate(-170px,60px) scale(1.28)" data-chap="Page 5 · The Mountain of Fire">
+<div class="call vc" style="left:290px;top:170px" data-at="9" data-out="14">birds in the fire, unharmed</div>
+  <div class="img h" style="left:70px;top:80px;width:378px;height:538px"><i style="background-position:100% 0" data-kb="1,1.12"></i>
+    <canvas id="fire" width="378" height="538" class="abs" style="left:0;top:0;mix-blend-mode:screen"></canvas></div>
+  <div class="abs" style="left:500px;top:100px;width:730px;text-align:right">
+    <div class="ar arh" style="font-size:54px"><span style="color:var(--muted)" data-at="1" data-fx="rtl">القول على</span> <span data-at="2.5" data-fx="rtl">جبل النار وطيره</span></div>
+    <div class="tr" data-at="3.5">jabal al-nār wa-ṭayrih</div>
+    <div class="mean" style="margin-top:20px;font-size:50px" data-at="5">The Mountain of Fire<br>and its birds</div>
+    <div style="font-size:28px;color:var(--muted);margin-top:22px" data-at="9">white birds inside the flames, unharmed</div>
+    <div style="font-size:28px;color:var(--gold);margin-top:10px" data-at="14">compare the samandal: the creature that lives in fire</div>
+    <div class="badge" style="color:var(--lapis);margin-top:22px" data-at="16">firm reading</div>
+  </div>
+</div>
+
+<!-- 10 TWITCH -->
+<div class="scene" data-a="256" data-b="284" data-chap="Page 6 · The Twitching Chart">
+  <div class="img k" style="left:70px;top:80px;width:378px;height:538px"><i data-kb="1,1.08"></i></div>
+  <div class="abs" style="left:500px;top:84px;width:410px">
+    <div class="ar" style="font-size:66px;color:var(--red);text-align:left;line-height:1.4" data-at="1" data-fx="rtl">الاختلاج</div>
+    <div class="tr" data-at="2">al-ikhtilāj</div>
+    <div class="mean" style="font-size:46px;margin-top:8px" data-at="3">Twitching</div>
+    <div style="font-size:26px;color:var(--muted);margin-top:14px;line-height:1.3" data-at="7">A muscle jumps by itself.<br>The chart says what is coming.</div>
+    <div style="margin-top:26px" data-at="20"><span class="chip" style="border-color:var(--gold);color:var(--gold)">joy</span><span class="chip" style="border-color:var(--gold);color:var(--gold)">honour</span><span class="chip" style="border-color:var(--gold);color:var(--gold)">good fortune</span>
+      <div style="font-size:19px;color:var(--muted)">omens read on the page. Which part gives which omen needs a sharper scan.</div></div>
+  </div>
+  <svg id="body" class="abs" style="left:885px;top:70px" width="380" height="540" viewBox="-40 0 380 540"></svg>
+</div>
+
+<!-- 11 RECAP -->
+<div class="scene" data-a="284" data-b="300" data-clip="mountain" data-n="298" data-off="20" data-dim="1" data-fx="scale(1.1)" data-chap="What we found">
+  <div class="abs" style="left:90px;top:96px;width:560px">
+    <div class="d" style="font-size:50px;margin-bottom:26px" data-at="0.3">Seven pages</div>
+    <div class="row" data-at="1"><b style="background:var(--lapis)"></b>Red King<span style="color:var(--muted)">· firm</span></div>
+    <div class="row" data-at="1.4"><b style="background:var(--lapis)"></b>Mountain of Fire<span style="color:var(--muted)">· firm</span></div>
+    <div class="row" data-at="1.8"><b style="background:var(--gold)"></b>Nightmare<span style="color:var(--muted)">· probable</span></div>
+    <div class="row" data-at="2.2"><b style="background:var(--gold)"></b>Shamhūrash the judge<span style="color:var(--muted)">· probable</span></div>
+    <div class="row" data-at="2.6"><b style="background:var(--gold)"></b>Fever<span style="color:var(--muted)">· probable</span></div>
+    <div class="row" data-at="3"><b style="background:var(--gold)"></b>Twitching chart<span style="color:var(--muted)">· title firm, details sampled</span></div>
+    <div class="row" data-at="3.4"><b style="background:var(--red)"></b>Horned jinn<span style="color:var(--muted)">· headline cut off, left unnamed</span></div>
+  </div>
+  <div class="img q" style="left:760px;top:96px;width:300px;height:394px" data-at="3.4" data-fx="left"><i style="background-position:100% 0"></i></div>
+  <div class="abs d" style="left:700px;top:520px;width:500px;font-size:27px;text-align:center;color:var(--gold)" data-at="9">A labelled guide to luck, illness and fear</div>
+</div>
+
+<div id="ail">Imagined in live action · AI-generated · slowed down</div>
+<div id="chap"></div>
+<div id="cap"><div id="capt"></div></div><div id="bar"></div>
+</div>
+<script>
+const DUR=300;
+const CAPS={0:[[0,"This is a page from a 600-year-old Arabic book."],[6,"It is called Kitāb al-Bulhān, the Book of Wonders."],[12,"We read seven of its pages. Here is what they say."]],
+18:[[0,"The book was made around the year 1400, in Iraq."],[7,"Today it is kept in the Bodleian Library in Oxford."],[14,"It is a handbook for reading the unseen: stars, omens and spirits."],[21,"Its paintings look strange. But every one comes with a label."]],
+46:[[0,"Look at the top of each page. There is a headline in large script."],[7,"Arabic is read from right to left."],[13,"Every headline opens with the same two words: al-qawl ʿalā."],[20,"They mean: “the discourse on…”"],[26,"Whatever comes next is the name of the thing in the picture."]],
+80:[[0,"So we read the first one. After the opening words comes: al-malik al-aḥmar."],[8,"The Red King, and his helpers."],[13,"He is a king of the jinn: spirits made, in Islamic tradition, from smokeless fire."],[21,"The picture agrees with the name. Red skin, red robe, a sword on his lap."],[28,"Name and picture match, so this reading is firm."]],
+114:[[0,"Why red? In this tradition, seven jinn kings share the week."],[8,"Each king has a day, and each day has a planet."],[15,"The Red King rules Tuesday, the day of Mars: the red planet, the planet of war."],[24,"That is why he is red, and why he carries a sword."]],
+146:[[0,"Next page. A dark figure falls onto a man asleep in bed."],[7,"The headline names it: al-Kābūs."],[13,"Kābūs is still the everyday Arabic word for a nightmare."],[20,"It comes from a root meaning “to press down”: the weight on the chest in sleep paralysis."]],
+176:[[0,"This one wears a turban. The headline reads: Shamhūrash."],[8,"He is the jinn king of Thursday and of Jupiter, known as a judge."],[16,"Above him are two tools of protection."],[21,"A magic square: a grid where every line adds up to the same number."],[27,"And a six-pointed star, the Seal of Solomon, said to bind the jinn."]],
+210:[[0,"One body, three heads. The headline says: al-Ḥummā. Fever."],[8,"Sickness is drawn as a creature you can name, and so resist."],[15,"Why three heads? Doctors then sorted fevers by rhythm: every day, every third day, every fourth."]],
+236:[[0,"Not every page is a demon. This one reads: the Mountain of Fire and its birds."],[9,"White birds sit inside the flames, unharmed."],[14,"Arabic wonder books tell of the samandal, a creature that lives in fire."]],
+256:[[0,"The last page is a table. Its title: al-ikhtilāj, “twitching”."],[7,"If part of your body twitches by itself, the chart tells you what it means."],[14,"Red headers split it into the right side of the body and the left."],[20,"The lists run from forehead to toe, with omens such as joy, honour and good fortune."]],
+284:[[0,"Seven pages. Two read firmly, four are probable, and one headline is cut off, so we left it unnamed."],[9,"A book of monsters turns out to be a labelled guide to luck, illness and fear."]]};
+const cl=x=>Math.max(0,Math.min(1,x)), ease=x=>1-Math.pow(1-cl(x),3), io=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const NS="http://www.w3.org/2000/svg", $=s=>document.querySelector(s);
+const el=(p,n,a,txt)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(txt)e.textContent=txt;p.appendChild(e);return e};
+function rnd(i){const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+
+// wheel
+const DAYS=[["Sunday","Sun"],["Monday","Moon"],["Tuesday","Mars"],["Wednesday","Mercury"],["Thursday","Jupiter"],["Friday","Venus"],["Saturday","Saturn"]];
+const W=$("#wheel"), wseg=[];
+el(W,"circle",{r:250,fill:"none",stroke:"#2a364a","stroke-width":2});el(W,"circle",{r:120,fill:"#0e1420",stroke:"#2a364a","stroke-width":2});
+DAYS.forEach((d,i)=>{const a0=(i/7)*Math.PI*2-Math.PI/2-Math.PI/7,a1=a0+Math.PI*2/7,am=(a0+a1)/2,P=(r,a)=>(r*Math.cos(a)).toFixed(1)+","+(r*Math.sin(a)).toFixed(1);
+ const g=el(W,"g",{});const p=el(g,"path",{d:`M${P(122,a0)} L${P(248,a0)} A248,248 0 0 1 ${P(248,a1)} L${P(122,a1)} A122,122 0 0 0 ${P(122,a0)}Z`,fill:"#16223a",stroke:"#2a364a","stroke-width":2});
+ el(g,"text",{x:200*Math.cos(am),y:200*Math.sin(am)-4,"text-anchor":"middle","font-size":21,"font-weight":600},d[0]);
+ const pl=el(g,"text",{x:200*Math.cos(am),y:200*Math.sin(am)+22,"text-anchor":"middle","font-size":19,style:"fill:#9aa7ba"},d[1]);
+ const cr=el(g,"path",{d:"M-13,6 L-13,-6 L-6,1 L0,-9 L6,1 L13,-6 L13,6Z",transform:`translate(${150*Math.cos(am)},${150*Math.sin(am)})`,fill:"#e0bd62"});
+ wseg.push({g,p,pl,cr})});
+const wc=el(W,"text",{y:-4,"text-anchor":"middle","font-size":24,style:"fill:#9aa7ba"},"the week"),wc2=el(W,"text",{y:26,"text-anchor":"middle","font-size":20,style:"fill:#9aa7ba"},"7 days · 7 kings");
+// magic square
+const SQ=[4,9,2,3,5,7,8,1,6],sqc=SQ.map((n,i)=>{const c=document.createElement("div");c.className="cell";c.textContent=n;c.style.left=(i%3)*92+"px";c.style.top=Math.floor(i/3)*92+"px";$("#sq").appendChild(c);return c});
+const sums=[0,1,2].map(i=>{const s=document.createElement("div");s.className="sum";s.textContent="= 15";s.style.left="290px";s.style.top=(i*92+26)+"px";$("#sq").appendChild(s);return s});
+// fever
+const FV=$("#fev"),fv=[["every day",1,"#f0655a"],["every third day",2,"#e0bd62"],["every fourth day",3,"#8bb4f0"]].map((r,i)=>{const y=40+i*114;
+ el(FV,"text",{x:0,y:y-12,"font-size":23},r[0]);el(FV,"line",{x1:0,y1:y+50,x2:710,y2:y+50,stroke:"#2a364a","stroke-width":2});
+ let d="M0,"+(y+50);for(let k=0;k<12;k++){const x=k*59;d+=(k%r[1]==0)?` L${x+10},${y+50} L${x+26},${y+4} L${x+44},${y+50}`:` L${x+59},${y+50}`}d+=" L710,"+(y+50);
+ for(let k=0;k<12;k++)el(FV,"text",{x:k*59+27,y:y+68,"text-anchor":"middle","font-size":13,style:"fill:#566377"},"day "+(k+1));
+ return el(FV,"path",{d,fill:"none",stroke:r[2],"stroke-width":4,"stroke-linejoin":"round",pathLength:1,"stroke-dasharray":1})});
+// body
+const B=$("#body");el(B,"line",{x1:155,y1:20,x2:155,y2:520,stroke:"#2a364a","stroke-width":2,"stroke-dasharray":"6 8"});
+const bfig=el(B,"g",{fill:"none",stroke:"#8bb4f0","stroke-width":5,"stroke-linecap":"round","stroke-linejoin":"round"});
+el(bfig,"circle",{cx:155,cy:80,r:38});el(bfig,"path",{d:"M155,118 L155,300 M80,160 L230,160 M80,160 L60,290 M230,160 L250,290 M155,300 L110,500 M155,300 L200,500 M110,500 L85,508 M200,500 L225,508"});
+const bR=el(B,"text",{x:70,y:28,"text-anchor":"middle","font-size":21,style:"fill:#f0655a"},"right side"),bL=el(B,"text",{x:240,y:28,"text-anchor":"middle","font-size":21,style:"fill:#f0655a"},"left side");
+const PTS=[["forehead",160,50,1],["eyebrow",140,72,-1],["shoulder",80,160,-1],["palm",250,290,1],["knee",128,410,-1],["ankle",200,490,1]].map(p=>{const g=el(B,"g",{});
+ el(g,"circle",{cx:p[1],cy:p[2],r:9,fill:"#e0bd62"});const h=el(g,"circle",{cx:p[1],cy:p[2],r:9,fill:"none",stroke:"#e0bd62","stroke-width":3});
+ el(g,"text",{x:p[1]+p[3]*18,y:p[2]+7,"text-anchor":p[3]>0?"start":"end","font-size":21},p[0]);return {g,h}});
+const fire=$("#fire").getContext("2d");
+
+const scenes=[...document.querySelectorAll(".scene")].map(s=>({s,a:+s.dataset.a,b:+s.dataset.b,chap:s.dataset.chap,els:[...s.querySelectorAll("[data-at],[data-out]")],kb:[...s.querySelectorAll("[data-kb]")]}));
+window.seek=async function(t){
+ for(const sc of scenes){const vis=t>=sc.a-0.01&&t<sc.b;const L=t-sc.a;
+  const o=vis?Math.min(ease(L/0.6),sc.b===DUR?1:ease((sc.b-t)/0.5)):0;sc.s.style.opacity=o;sc.o=o;sc.s.style.visibility=o>0?"visible":"hidden";if(!vis)continue;
+  for(const e of sc.els){const at=e.dataset.at===undefined?-9:+e.dataset.at,out=e.dataset.out===undefined?1e9:+e.dataset.out,p=ease((L-at)/0.8),q=1-ease((L-out)/0.5),fx=e.dataset.fx||"up";
+   e.style.opacity=fx==="rtl"?q:p*q;const rot=e.dataset.rot?` rotate(${(+e.dataset.rot)*p}deg)`:"";
+   if(fx==="rtl"){e.style.display="inline-block";e.style.clipPath=`inset(-20% 0 -20% ${(1-io((L-at)/1.4))*100}%)`}
+   else if(fx==="left")e.style.transform=`translateX(${(1-p)*-50}px)`+rot; else e.style.transform=`translateY(${(1-p)*26}px)`+rot}
+  for(const k of sc.kb){const[a,b]=k.dataset.kb.split(",").map(Number);k.style.transform=`scale(${a+(b-a)*(L/(sc.b-sc.a))})`}
+  $("#chap").textContent=sc.chap;$("#chap").style.opacity=ease((L-0.5)/0.8);
+  const cs=CAPS[sc.a];let ci=0;for(let i=0;i<cs.length;i++)if(L>=cs[i][0])ci=i;const cend=ci+1<cs.length?cs[ci+1][0]:sc.b-sc.a;
+  $("#capt").textContent=cs[ci][1];$("#capt").style.opacity=Math.min(ease((L-cs[ci][0])/0.4),ease((cend-L)/0.3));
+  if(sc.a===114){const turn=io((L-1)/6);wseg.forEach((w,i)=>{const on=ease((L-1-i*0.7)/0.6);w.g.style.opacity=on;w.cr.style.opacity=ease((L-8-i*0.3)/0.5);w.pl.style.opacity=ease((L-9-i*0.3)/0.5);
+    const hot=i===2?ease((L-15)/1):0;w.p.setAttribute("fill",hot>0?`rgb(${22+hot*150},${34+hot*10},${58-hot*20})`:"#16223a");w.g.setAttribute("transform",`scale(${1+hot*0.07})`)});
+   const h=ease((L-15)/1);wc.textContent=h>0.5?"al-Aḥmar":"the week";wc.style.fill=h>0.5?"#f0655a":"#9aa7ba";wc2.textContent=h>0.5?"the Red King":"7 days · 7 kings"}
+  if(sc.a===146){const pr=L<20?0:(0.5+0.5*Math.sin((L-20.5)*1.6))*ease((L-20.5)/1.5);$("#kweight").setAttribute("y",40+pr*52);
+   $("#kbody").setAttribute("d",`M70,160 C180,${150-28*(1-pr)} 400,${150-28*(1-pr)} 520,160 M70,160 a16,16 0 1 0 -1,0`)}
+  if(sc.a===176){sqc.forEach((c,i)=>{c.style.opacity=ease((L-21.3-i*0.22)/0.4)});sums.forEach((s,i)=>s.style.opacity=ease((L-24-i*0.5)/0.4));$("#hexa").style.strokeDashoffset=1-io((L-27.3)/3)}
+  if(sc.a===210)fv.forEach((p,i)=>p.style.strokeDashoffset=1-io((L-16-i*2)/3.5));
+  if(sc.a===236){fire.clearRect(0,0,378,538);for(let i=0;i<70;i++){const life=2+rnd(i)*2.5,ph=((L+rnd(i+9)*life)%life)/life,x=40+rnd(i+3)*300+Math.sin(L*1.3+i)*14*ph,y=470-ph*(260+rnd(i+5)*200)-rnd(i+7)*120,r=(1-ph)*(5+rnd(i+1)*9);
+    fire.fillStyle=`rgba(255,${120+ph*110|0},${40+ph*40|0},${0.5*(1-ph)*Math.sin(Math.min(1,ph*6)*Math.PI/2)})`;fire.beginPath();fire.arc(x,y,r,0,7);fire.fill()}}
+  if(sc.a===256){bfig.style.opacity=ease((L-7)/1);bR.style.opacity=bL.style.opacity=ease((L-14)/0.8);PTS.forEach((p,i)=>{const s=L-8.5-i*1.6;p.g.style.opacity=ease(s/0.5);
+    const tw=((L*1.1+i*0.37)%1);p.h.setAttribute("r",9+tw*16);p.h.style.opacity=(1-tw)*cl(s)})}
+ }
+ let bo=0;for(const sc of scenes){const d=sc.s.dataset;if(!d.clip||!(sc.o>0))continue;bo=sc.o;const N=+d.n,seg=N/24,u=((t-sc.a+(+d.off||0))/seg)%2,pp=u<1?u:2-u,f=1+Math.round(pp*(N-1)),src="work/slow/"+d.clip+"/"+String(f).padStart(4,"0")+".jpg",im=$("#bgi");
+   im.style.transform=d.fx||"";$("#bgs").style.background=d.dim?"rgba(8,12,20,.8)":"linear-gradient(90deg,rgba(8,12,20,.3) 0%,rgba(8,12,20,.18) 38%,rgba(8,12,20,.86) 58%,rgba(8,12,20,.93) 100%)";
+   if(im.dataset.s!==src){im.dataset.s=src;im.src=src;try{await im.decode()}catch(e){}}}
+ $("#bg").style.opacity=bo;$("#ail").style.opacity=bo;
+ $("#bar").style.width=(t/DUR*1280)+"px";
+};
+document.fonts.ready.then(()=>{seek(+(new URLSearchParams(location.search).get("t")||0));window.READY=true});
+</script></body></html>
