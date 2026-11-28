@@ -1,0 +1,38 @@
+[
+ {
+  "id": "A-spotlight",
+  "refs": [
+   "tesla-satin-black.jpg",
+   "hellcat-night.jpg",
+   "z06-matte-black.jpg"
+  ],
+  "prompt": "Award-winning luxury automotive website hero, full desktop browser screenshot, 16:9, no browser window, no address bar, no tabs, edge-to-edge page only. A pitch-black infinite studio. One car in satin black vinyl wrap (styled like the reference satin black Dodge Charger Hellcat) sits center-frame in a low 3/4 front angle, shot on a 35mm lens at f/1.8: a single long overhead softbox light strip sweeps across the hood and roofline, so the satin finish shows a soft milky gradient highlight, deep crushed blacks, subtle haze in the air, thin rim light on the wheel arches, faint reflection on a glossy black floor. Cinematic contrast, high-end commercial car photography, like a Porsche or Lucid launch film frame. UI overlay, minimal and premium: top-left tiny wordmark 'EVERYWRAP' in wide-tracked white sans-serif, top-right a small pill toggle 'PERSONAL | COMMERCIAL' with PERSONAL active. Huge headline on the left in a refined condensed serif-and-sans mix: 'Satin black. Done right.' with a small line beneath 'Vinyl wrap \u00b7 PPF \u00b7 Window tint \u00b7 Body kits \u2014 Columbus, Ohio'. Along the bottom, a horizontal service dial of five glass chips: 'VINYL WRAP' (selected, glowing), 'PPF', 'WINDOW TINT', 'BODY KITS', 'COMMERCIAL'. Two buttons: primary solid white 'Get my price in 60 sec' and secondary outline 'Upload my car \u2192 see it wrapped'. Bottom-right a small floating glass AI assistant bubble: 'Hi \u2014 what are you driving?' with a typing cursor. Typography crisp and correctly spelled. Color palette: black, bone white, one warm amber accent. Do not print any concept title or extra text beyond the UI copy listed."
+ },
+ {
+  "id": "B-peel",
+  "refs": [
+   "porsche.jpg",
+   "install-hands.jpg",
+   "tesla-satin-black.jpg"
+  ],
+  "prompt": "Award-winning automotive wrap website hero, full desktop browser screenshot, 16:9, no browser window, no address bar, no tabs, edge-to-edge page only. A dramatic split-reveal: a sports car (styled like the reference Porsche 911 Turbo) photographed side-on in a dark wrap studio, and a vertical seam runs through the middle of the car. Left of the seam the car is factory bright aqua blue paint; right of the seam it is freshly wrapped in satin black vinyl. At the seam, a gloved installer's hand (like the reference install photo) pulls a large sheet of vinyl film with a curling edge catching light, a squeegee and the warm orange glow of a heat gun, shallow depth of field, slight motion blur on the film edge, macro detail of the film texture. Moody top light, rich contrast, cinematic color grade. UI overlay: the seam is a draggable slider handle (a round glass knob with left-right arrows) labeled 'DRAG TO WRAP'. Top-left tiny wordmark 'EVERYWRAP', top-right pill toggle 'PERSONAL | COMMERCIAL'. Upper-left headline in bold modern sans: 'Same car. New identity.' Subline: 'Vinyl wrap, PPF and tint, installed by hand in Columbus, Ohio.' Below the car, a row of finish swatches as small round chips: 'Satin Black' (selected), 'Gloss Black', 'Nardo Grey', 'Satin Red', 'Color Shift'. Two buttons: solid 'Get my price' and outline 'Try it on my car'. Small floating AI chat card at the right: 'Upload a photo of your car \u2014 I'll show it in satin black and send a price.' with an upload icon. Crisp, correctly spelled typography. Palette: graphite, white, electric aqua accent. Do not print any concept title or extra text beyond the UI copy listed."
+ },
+ {
+  "id": "C-nightdrive",
+  "refs": [
+   "hellcat-night.jpg",
+   "durango-satin.jpg",
+   "tesla-satin-black.jpg"
+  ],
+  "prompt": "Award-winning cinematic automotive website hero, full desktop browser screenshot, 16:9, no browser window, no address bar, no tabs, edge-to-edge page only. Low POV camera at bumper height on a wet city street at night (downtown Columbus skyline bokeh in the distance), a muscle car wrapped in satin black with tinted windows (styled like the reference satin black Hellcat with blue stripes) rolling toward camera, horizontal motion blur streaks on the background lights, anamorphic lens flare from the headlights, reflections on the wet asphalt, sodium orange and cyan neon color contrast, shallow depth of field, 24mm lens, film grain, feels like a frame from a high-budget car film. UI overlay integrated like a heads-up display: top-left tiny wordmark 'EVERYWRAP', top-right pill toggle 'PERSONAL | COMMERCIAL'. Big headline left in tight uppercase grotesk: 'BUILT FOR THE NIGHT.' subline 'Wraps \u00b7 Tint \u00b7 PPF \u00b7 Body kits'. On the right, a slim vertical glass panel 'WINDOW TINT' with a tint-level selector showing 70% \u00b7 35% \u00b7 20% \u00b7 5% (20% highlighted) and the car's windows visibly darkened. Bottom center a large pill input like an AI search bar: 'Tell me your car and what you want\u2026' with a microphone icon and a camera/upload icon, and below it three suggestion chips: 'Satin black wrap price', 'Ceramic tint 20%', 'Full front PPF'. One primary button 'Request a callback'. Crisp, correctly spelled typography. Palette: deep navy black, cyan, warm orange. Do not print any concept title or extra text beyond the UI copy listed."
+ },
+ {
+  "id": "D-dual",
+  "refs": [
+   "sprinter.jpg",
+   "hellcat-night.jpg",
+   "foodtruck.jpg"
+  ],
+  "prompt": "Award-winning automotive wrap company website hero, full desktop browser screenshot, 16:9, no browser window, no address bar, no tabs, edge-to-edge page only. The screen is split by a bold diagonal glass seam. LEFT side, 'PERSONAL' world: dark luxury mood, a satin black Dodge Charger sedan with twin blue stripes (styled like the reference satin black Charger Hellcat) under a moody spotlight, smoky contrast, warm amber rim light. RIGHT side, 'COMMERCIAL' world: bright clean daylight, a fleet of three branded commercial vehicles lined up in perspective \u2014 a Mercedes Sprinter van with a full printed graphic wrap, a box truck and a food truck (styled like the reference commercial wraps), wrapped in bold abstract cobalt, white and orange geometric graphics with NO readable lettering and NO logos on the vehicles, blue sky, sharp architectural lighting. At the center of the diagonal seam sits a large round toggle switch reading 'PERSONAL' and 'BUSINESS' with a glowing indicator, as if the visitor can slide between the two worlds. Top-left tiny wordmark 'EVERYWRAP' and 'Columbus, Ohio'. Left headline in elegant serif: 'Make it yours.' with chips 'Vinyl wrap \u00b7 PPF \u00b7 Tint \u00b7 Body kits'. Right headline in confident bold sans: 'Make it work.' with chips 'Fleet graphics \u00b7 Box trucks \u00b7 Food trucks \u00b7 Signage'. Bottom center: a single wide primary button 'Get a quote in 60 seconds' and next to it a small round AI assistant avatar with a speech bubble 'Personal or business? I'll guide you.' Crisp, correctly spelled typography, premium agency-level layout. Palette: left black and amber, right white and cobalt blue. Do not print any concept title or extra text beyond the UI copy listed."
+ }
+]

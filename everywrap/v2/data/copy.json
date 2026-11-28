@@ -1,0 +1,740 @@
+{
+ "price_fine": "Starting prices for vehicles with sound paint and glass. Size, film and condition move the number, so your exact price comes in a written quote before any work starts.",
+ "areas_p": "We work by appointment at two locations: Columbus, Ohio and Dearborn Heights, Michigan. Customers bring cars and fleets to us from across central Ohio and the Detroit area.",
+ "how": {
+  "h2": "How it works",
+  "steps": [
+   [
+    "Tell us what you need",
+    "Pick a service, add your car or a photo"
+   ],
+   [
+    "Get your price in writing",
+    "Film, coverage and the exact number"
+   ],
+   [
+    "Book the install",
+    "A date set by call or text"
+   ]
+  ]
+ },
+ "final": {
+  "h2": "See your car in it first.",
+  "p": "Send a photo or the year, make and model. You get your exact price in writing, and nothing starts until you say so.",
+  "book": "Get your exact price",
+  "photo": "See it on your own car"
+ },
+ "final_com": {
+  "h2": "Send the logo. We do the rest.",
+  "p": "Tell us the vehicles and how many. You get a design proof and a written price for each one.",
+  "book": "Fleet graphics",
+  "photo": "Send a photo of the vehicle"
+ },
+ "home": {
+  "title": "Car Wraps, PPF & Window Tint in Columbus, Ohio | EveryWrap",
+  "desc": "Vinyl car wraps from {$wrap.full}, paint protection film, window tint, body kits and fleet graphics in Columbus, Ohio. See real jobs, see the prices and book a quote.",
+  "h1": "Car wraps, paint protection film and window tint in Columbus, Ohio",
+  "sub": "Pick a service above, then a finish. Drag the line across the car to compare.",
+  "tunnel_sub": "One car, eight finishes. Keep scrolling.",
+  "services_h2": "Wrap it. Protect it. Tint it. Build it.",
+  "services_p": "Tap a service for the options, real jobs and prices.",
+  "prices_h2": "Prices, up front.",
+  "prices_p": "Most shops make you call. Here are our starting prices for a coupe or sedan.",
+  "price_notes": [
+   "Full colour change",
+   "Partial front",
+   "Carbon film, full car",
+   "Door logos and lettering"
+  ],
+  "teaser_p": "Vans, box trucks, buses, food trucks and boats. We design it, print it and install it, and one design carries across every vehicle you run.",
+  "faq": [
+   [
+    "How much does it cost to wrap a car in Columbus, Ohio?",
+    "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV. Colour-shift and specialty films start at {$wrap.shift}. Roofs, hoods and chrome delete are priced on their own."
+   ],
+   [
+    "How long does a car wrap last?",
+    "Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and hand washing get you the long end of that."
+   ],
+   [
+    "Is a wrap cheaper than a paint job?",
+    "For a colour change of the same quality, usually yes. A wrap also comes off, so the factory paint is still there underneath."
+   ],
+   [
+    "What window tint is legal in Ohio?",
+    "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark."
+   ],
+   [
+    "How much is paint protection film?",
+    "A partial front starts at {$ppf.partial}, a full front at {$ppf.front} and full body at {$ppf.full} for a coupe or sedan."
+   ],
+   [
+    "Can I see it on my own car first?",
+    "Yes. Upload a photo and pick a finish, and we send your car back in that finish with your price."
+   ],
+   [
+    "Do you wrap business vehicles?",
+    "Yes. Vans, box trucks, buses, food trucks and boats, from door lettering at {$fleet.lettering} to full printed wraps. See the commercial page."
+   ],
+   [
+    "Where are you?",
+    "We work in the Columbus area by appointment, with customers from Dublin, Hilliard and the rest of central Ohio. Book and we send the details with your price."
+   ]
+  ],
+  "design_h2": "Need it designed or printed?",
+  "design_p": "Custom wrap design, branding and large-format printing on 3M and Avery Dennison film, from {$print.wall} per square foot.",
+  "hero_h1": "Car wraps, protection film and window tint in Columbus.",
+  "hero_eyebrow": "Wraps · Protection film · Tint",
+  "hero_hook": [
+   "New colour.",
+   "Same car."
+  ],
+  "sub_hook": "Pick a colour and drag the line. Thirteen finishes to try, then see it on your own car before you book."
+ },
+ "commercial": {
+  "title": "Fleet Wraps & Commercial Vehicle Graphics in Columbus, Ohio",
+  "desc": "Fleet wraps, van wraps, box truck and food truck graphics in Columbus, Ohio. Designed, printed and installed, from door lettering at {$fleet.lettering} to full wraps.",
+  "h1": "Fleet wraps and commercial vehicle graphics in Columbus, Ohio",
+  "sub": "Designed, printed and installed. From one van to the whole fleet.",
+  "fleet_note": "Tap a type to bring it forward.",
+  "motion_sub": "A wrapped vehicle advertises every mile it drives and every hour it is parked. These are jobs we have printed and installed.",
+  "line_h2": "One brand on every vehicle.",
+  "line_p": "A van, a box truck and a trailer are different shapes. We lay the design out for each one, so the logo, the phone number and the colours read the same across the fleet.",
+  "steps": [
+   "Send the logo and the list of vehicles.",
+   "Approve the design proof and the written price.",
+   "We print, laminate and install, then hand the vehicles back."
+  ],
+  "price_h2": "Fleet and commercial wrap prices",
+  "price_intro": "Starting prices per vehicle. Fleets are quoted together.",
+  "factors": [
+   "Vehicle size and how much of it is covered",
+   "Printed and laminated wrap, or cut-vinyl lettering",
+   "Design work: a new design costs more than applying artwork you already have",
+   "The number of vehicles, since fleets are priced as one job"
+  ],
+  "work_h2": "Commercial work we have installed",
+  "faq": [
+   [
+    "How much does a commercial vehicle wrap cost?",
+    "Door logos and lettering start at {$fleet.lettering}. A partial wrap starts at {$fleet.partial}, a full van wrap at {$fleet.van}, a box truck at {$fleet.box} and a food truck or trailer at {$fleet.foodtruck}."
+   ],
+   [
+    "Do you design the graphics?",
+    "Yes. Send the logo and the vehicle list. Setting up artwork you already have starts at {$fleet.design}, and a full custom design at {$design.custom}. The proof comes back with your price."
+   ],
+   [
+    "Can you match one design across different vehicles?",
+    "Yes. The design is laid out per vehicle so the brand reads the same on a van, a box truck and a trailer."
+   ],
+   [
+    "How long does a fleet wrap last?",
+    "Printed and laminated wraps are made to last years of daily use. Up to about seven is typical for a vehicle that is washed regularly."
+   ],
+   [
+    "How long are the vehicles off the road?",
+    "Installing a wrap on a van or box truck usually takes two to three days. For a fleet we stagger the vehicles so the work keeps moving."
+   ],
+   [
+    "Can you wrap a leased van?",
+    "Yes. A wrap comes off without marking sound factory paint, which is why leased fleets are wrapped and not painted."
+   ],
+   [
+    "Do you do food trucks, trailers and boats?",
+    "Yes. All three are in our work, including a full colour change and custom design on a food truck in Dublin."
+   ]
+  ],
+  "hero_h1": "Fleet wraps and vehicle graphics in Columbus.",
+  "hero_eyebrow": "For business"
+ },
+ "pricing": {
+  "title": "Car Wrap, PPF & Tint Prices in Columbus, Ohio | EveryWrap",
+  "desc": "Starting prices for car wraps, paint protection film, window tint and fleet graphics in Columbus, Ohio. Full wraps from {$wrap.full}, PPF from {$ppf.partial}, tint from {$tint.carbon}.",
+  "h1": "Wrap, PPF and tint prices in Columbus, Ohio",
+  "sub": "Most shops make you call for a number. These are our starting prices, by service and vehicle size.",
+  "factors": [
+   "Vehicle size. More panels and more glass mean more film and more hours.",
+   "The film. Colour-shift, chrome-look and textured wrap films cost more, and ceramic tint costs more than carbon.",
+   "Coverage. A roof is not a full wrap, and a partial front is not full body protection film.",
+   "Condition. Chipped paint, old tint and poor resprays need dealing with before new film goes on."
+  ],
+  "faq": [
+   [
+    "Are these the final prices?",
+    "They are starting prices for vehicles in good condition. Your exact price comes in a written quote, and nothing starts until you agree to it."
+   ],
+   [
+    "How much does it cost to wrap a car in Columbus?",
+    "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV."
+   ],
+   [
+    "Why do colour-shift and chrome-look wraps cost more?",
+    "The film itself costs more per roll and takes more care to install, so specialty films start at {$wrap.shift}."
+   ],
+   [
+    "Is it cheaper to do a wrap, PPF and tint together?",
+    "It saves you time, because the car is off the road once. Ask for all three in one quote and we price them as one job."
+   ],
+   [
+    "How do I get an exact price?",
+    "Tap Book now, tell us the car and what you want done, and you get the price in writing by text or call."
+   ]
+  ]
+ },
+ "work": {
+  "title": "Car Wrap Gallery: Real Wraps & Fleet Graphics | EveryWrap",
+  "desc": "Real EveryWrap jobs: satin black wraps, colour changes, colour-shift film and fleet graphics, with the film and location for each. Browse the gallery.",
+  "h1": "Car wrap gallery: real EveryWrap jobs",
+  "display": "Proof in the finish.",
+  "sub": "Wraps, colour changes and fleet graphics we have installed. Tap any one for the film and the story."
+ },
+ "design": {
+  "title": "Wrap Design & Large-Format Printing | Columbus, OH | EveryWrap",
+  "desc": "Custom wrap design, branding and large-format printing in Columbus, Ohio. Printed 3M wrap film {$print.3m-lam} per sq ft, wall graphics {$print.wall}. Designed, printed and installed.",
+  "h1": "Wrap design and large-format printing in Columbus, Ohio",
+  "display": "Design it. Print it. Wrap it.",
+  "sub": "We draw the design, print it on 3M and Avery Dennison film and install it. Or send your own files and we print them.",
+  "design_h2": "Design",
+  "design_p": "You see the design on your own vehicle before anything is printed.",
+  "services": [
+   {
+    "name": "Branding and logo design",
+    "text": "A logo, colours and type that still read from across a car park. Built to work on a van door, a shop front and a business card.",
+    "img": "dp/brand.webp",
+    "alt": "A designer's desk with logo sketches, vinyl colour swatches and a van layout",
+    "th": "#ff4fa3"
+   },
+   {
+    "name": "Custom car wrap design",
+    "text": "One-off liveries, stripes, camo and printed colour. Drawn to your car's body lines, so nothing lands on a door gap by accident.",
+    "th": "#ef5b2a",
+    "img": "concepts/coupe.webp",
+    "alt": "A sports coupe in a black, orange and white geometric livery"
+   },
+   {
+    "name": "Commercial van and fleet wraps",
+    "text": "Full advertising wraps for vans, box trucks, trailers and food trucks. Your name, your number and what you do, readable in the three seconds a driver has.",
+    "img": "dp/van.webp",
+    "alt": "A cargo van in a full navy and yellow printed advertising wrap",
+    "th": "#f2c200"
+   },
+   {
+    "name": "Print-ready artwork",
+    "text": "Have a logo but no print files? We rebuild it as clean vector art and fit it to the vehicle, panel by panel.",
+    "img": "dp/printer.webp",
+    "alt": "A wide-format printer printing a vehicle wrap",
+    "th": "#27d3ff"
+   }
+  ],
+  "design_price_h2": "Design prices",
+  "design_price_p": "Design is quoted before it starts.",
+  "steps_h2": "How a design job runs",
+  "steps": [
+   [
+    "Brief",
+    "The vehicle, your logo and what it needs to say"
+   ],
+   [
+    "Proof",
+    "The design shown on your exact vehicle"
+   ],
+   [
+    "Print and install",
+    "Printed, laminated and fitted"
+   ]
+  ],
+  "print_h2": "Large-format printing, by the square foot",
+  "print_p": "Send us your files, or have us design it. Pick a product and enter the size to see the price.",
+  "more_h2": "What we print",
+  "why_h2": "Not the cheapest print. On purpose.",
+  "why": [
+   [
+    "The film",
+    "We print on 3M and Avery Dennison cast wrap film. It stretches into recesses and comes off cleanly years later, which cheaper film does not."
+   ],
+   [
+    "The laminate",
+    "A laminated print is sealed under a clear layer, so the ink is protected from fuel, washing and sun."
+   ],
+   [
+    "Printed by installers",
+    "We wrap with what we print. Panels are sized and overlapped to go on a vehicle, not just to come off a printer."
+   ]
+  ],
+  "work_h2": "Designed, printed and installed by us",
+  "faq": [
+   [
+    "How much does wrap printing cost per square foot?",
+    "3M wrap film is {$print.3m-lam} per square foot printed and laminated, or {$print.3m} without laminate. Avery Dennison film is {$print.avery-lam} laminated. Chrome prints are {$print.chrome} and wall graphics {$print.wall}."
+   ],
+   [
+    "How much does a custom wrap design cost?",
+    "A full custom design starts at {$design.custom}. If you already have artwork, setting it up for print starts at {$design.setup}."
+   ],
+   [
+    "Can I see a mockup before I pay for a design?",
+    "Yes. Use the mockup studio on this page to try layouts and colours with your own name, and send us the one you like. A full design is then drawn to your exact vehicle."
+   ],
+   [
+    "How many square feet does it take to wrap a vehicle?",
+    "As a rough guide, a sedan takes 250 to 300 square feet of film, an SUV 300 to 375 and a cargo van 400 to 500, including the overlap and waste. We measure your exact vehicle for the quote."
+   ],
+   [
+    "What files do you need?",
+    "Vector files are best: AI, EPS or PDF with the fonts outlined. For photos, send the largest file you have and we tell you whether it will hold up at full size."
+   ],
+   [
+    "Do I need the print laminated?",
+    "For anything going on a vehicle or outdoors, yes. Print without laminate suits shops that laminate in-house, and short-term or indoor graphics."
+   ],
+   [
+    "Do you install what you print?",
+    "Yes. You can also order print only and install it yourself."
+   ],
+   [
+    "Can you design the wrap for me?",
+    "Yes. We design car wraps, van and fleet wraps and full brand identities, and you approve the design on your own vehicle before we print."
+   ],
+   [
+    "Can you print on chrome?",
+    "Yes. Chrome prints run on mirror-finish film and cost {$print.chrome} per square foot."
+   ]
+  ]
+ },
+ "explain": {
+  "home": {
+   "h2": "What actually goes on your car",
+   "p": "Nothing is sanded or resprayed. Each layer sits on the one below and comes off again.",
+   "layers": [
+    [
+     "Protection film",
+     "Optional. A clear layer that takes the stone chips",
+     "clear"
+    ],
+    [
+     "Vinyl wrap",
+     "Your new colour, in the finish you picked",
+     "film"
+    ],
+    [
+     "Factory paint",
+     "Untouched, and shielded while the film is on",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Exactly as it left the factory",
+     "panel"
+    ]
+   ]
+  },
+  "wrap": {
+   "h2": "How a wrap sits on the car",
+   "p": "The film bonds to the paint, not into it. That is why it can come off.",
+   "layers": [
+    [
+     "Vinyl wrap",
+     "Cast film, laid panel by panel with the edges tucked",
+     "film"
+    ],
+    [
+     "Factory paint",
+     "Untouched, and shielded while the film is on",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Nothing is sanded, filled or resprayed",
+     "panel"
+    ]
+   ]
+  },
+  "ppf": {
+   "h2": "A clear layer between the road and your paint",
+   "p": "You do not see it. The stones hit it first.",
+   "layers": [
+    [
+     "Protection film",
+     "Clear urethane with a self-healing top coat",
+     "clear"
+    ],
+    [
+     "Factory paint",
+     "Stays glossy and unmarked underneath",
+     "paint"
+    ],
+    [
+     "Body panel",
+     "Bumper, hood, fenders, mirrors or the whole car",
+     "panel"
+    ]
+   ]
+  },
+  "ppf_fx": {
+   "h2": "What the film does",
+   "items": [
+    [
+     "Stone chips",
+     "The film takes the hit. The paint under it does not."
+    ],
+    [
+     "Light scratches",
+     "Fine swirl marks in the top coat soften and close with warmth."
+    ]
+   ]
+  },
+  "tint": {
+   "h2": "What the percentage means",
+   "p": "It is how much light gets through the glass. Tap a shade."
+  },
+  "fleet": {
+   "h2": "One design, every vehicle",
+   "p": "The same brand, laid out again for each shape so it reads the same on all of them."
+  },
+  "ticker": [
+   "Full wraps from {$wrap.full}",
+   "Satin black",
+   "Gloss",
+   "Matte",
+   "Colour-shift",
+   "Chrome",
+   "Protection film",
+   "Window tint",
+   "Body kits",
+   "Fleet graphics",
+   "3M",
+   "Avery Dennison",
+   "KPMF"
+  ],
+  "ticker_fleet": [
+   "Vans",
+   "Box trucks",
+   "Buses",
+   "Food trucks",
+   "Trailers",
+   "Boats",
+   "Door lettering",
+   "Full wraps",
+   "Design",
+   "Print",
+   "Install"
+  ]
+ },
+ "mock": {
+  "h2": "Send your files. Get a proof.",
+  "p": "You do not have to design anything here. Send your logo and a few words, and our designer lays it out on your exact vehicle. You see a proof, ask for changes, and nothing prints until you approve it.",
+  "svc": "design"
+ },
+ "mock_fleet": {
+  "h2": "Send your logo. Get a proof.",
+  "p": "No design work on your side. Send your logo and tell us the vehicles. Our designer lays the brand out on each one, you mark up the proof, and nothing prints until you approve it.",
+  "svc": "fleet"
+ },
+ "catalog": {
+  "h2": "Pick your lane.",
+  "p": "Your car, your business vehicles, or design and print. Every one comes with a starting price.",
+  "cats": [
+   {
+    "id": "car",
+    "tab": "Your car",
+    "name": "For your car",
+    "blurb": "Change the colour, protect the paint, tint the glass.",
+    "slug": "vinyl-wrap",
+    "th": "#ef5b2a",
+    "items": [
+     [
+      "Full colour-change wrap",
+      "A new colour without a respray",
+      "wrap.full",
+      "vinyl-wrap"
+     ],
+     [
+      "Roof, hood, stripes, chrome delete",
+      "Change one part, not the whole car",
+      "wrap.roof",
+      "vinyl-wrap#prices"
+     ],
+     [
+      "Paint protection film",
+      "Clear film that takes the stone chips",
+      "ppf.partial",
+      "paint-protection-film"
+     ],
+     [
+      "Window tint",
+      "Carbon or ceramic, fitted to Ohio law",
+      "tint.carbon",
+      "window-tint"
+     ],
+     [
+      "Body kits",
+      "Found, fitted and wrapped to match",
+      "",
+      "body-kits"
+     ]
+    ],
+    "img": "svc/wrap.webp",
+    "img_alt": "Satin black film going onto a white car",
+    "reels": [
+     "tag:color",
+     "tag:black",
+     "img:svc/ppf.webp",
+     "img:svc/tint.webp",
+     "img:svc/kits.webp"
+    ]
+   },
+   {
+    "id": "biz",
+    "tab": "Your business",
+    "name": "For your business",
+    "blurb": "Turn the vehicles you already run into advertising.",
+    "slug": "commercial",
+    "th": "#f2c200",
+    "items": [
+     [
+      "Door logos and lettering",
+      "Name, number and DOT numbers",
+      "fleet.lettering",
+      "commercial#prices"
+     ],
+     [
+      "Partial wraps",
+      "Printed graphics on the sides and rear",
+      "fleet.partial",
+      "commercial#prices"
+     ],
+     [
+      "Full van and truck wraps",
+      "Vans, box trucks and buses",
+      "fleet.van",
+      "commercial#prices"
+     ],
+     [
+      "Food trucks, trailers and boats",
+      "Full custom prints",
+      "fleet.foodtruck",
+      "commercial#prices"
+     ],
+     [
+      "Fleet design",
+      "One brand laid out for every vehicle",
+      "design.setup",
+      "commercial#mockup"
+     ]
+    ],
+    "img": "concepts/fleet.webp",
+    "img_alt": "A van, a box truck and a pickup in one matching livery",
+    "reels": [
+     "tag:commercial",
+     "tag:commercial",
+     "tag:commercial",
+     "tag:commercial",
+     "img:concepts/fleet.webp"
+    ]
+   },
+   {
+    "id": "studio",
+    "tab": "Design and print",
+    "name": "Design and print",
+    "blurb": "We draw it and print it. Install it yourself, or leave it to us.",
+    "slug": "design-print",
+    "th": "#27d3ff",
+    "items": [
+     [
+      "Custom wrap design",
+      "Shown on your vehicle before we print",
+      "design.custom",
+      "design-print#design"
+     ],
+     [
+      "Branding and logo design",
+      "Logo, colours and type",
+      "",
+      "design-print"
+     ],
+     [
+      "Printed wrap film",
+      "3M and Avery Dennison, by the square foot",
+      "print.3m-lam",
+      "design-print#print"
+     ],
+     [
+      "Wall graphics",
+      "Murals for offices and shops",
+      "print.wall",
+      "design-print#print"
+     ],
+     [
+      "Window, chrome and reflective prints",
+      "Specialty films",
+      "print.perf",
+      "design-print#print"
+     ],
+     [
+      "Mockup studio",
+      "Try layouts and colours with your own name",
+      "",
+      "design-print#mockup"
+     ]
+    ],
+    "img": "dp/printer.webp",
+    "img_alt": "A wide-format printer printing a vehicle wrap",
+    "reels": [
+     "img:concepts/coupe.webp",
+     "img:dp/brand.webp",
+     "img:dp/rolls.webp",
+     "img:dp/wall.webp",
+     "img:dp/chrome.webp",
+     "img:concepts/elec.webp"
+    ]
+   }
+  ]
+ },
+ "next": [
+  "We text or call you with your price in writing.",
+  "You approve it, or ask for changes.",
+  "We book your install date."
+ ],
+ "concepts": {
+  "h2": "Design concepts",
+  "p": "Starting points for different trades. Yours is drawn around your own brand. Tap one to start from it.",
+  "items": [
+   [
+    "plumb",
+    "Plumbing van",
+    "A cargo van in a blue and white wrap with a water-drop emblem"
+   ],
+   [
+    "move",
+    "Moving company box truck",
+    "A box truck in bold orange and black diagonal blocks"
+   ],
+   [
+    "food",
+    "Food truck",
+    "A food truck in a colourful illustrated wrap"
+   ],
+   [
+    "elec",
+    "Electrician van",
+    "A black compact van with yellow lightning graphics"
+   ],
+   [
+    "land",
+    "Landscaping truck and trailer",
+    "A pickup and trailer in a matching green leaf wrap"
+   ],
+   [
+    "clean",
+    "Cleaning service car",
+    "A white hatchback with teal bubble graphics"
+   ],
+   [
+    "fleet",
+    "Matching fleet",
+    "A van, a box truck and a pickup in the same navy and red livery"
+   ],
+   [
+    "coupe",
+    "One-off car livery",
+    "A sports coupe in a black, orange and white geometric livery"
+   ]
+  ]
+ },
+ "trust": [
+  [
+   "quote",
+   "Price in writing"
+  ],
+  [
+   "check",
+   "You approve first"
+  ],
+  [
+   "layers",
+   "Named film brands"
+  ],
+  [
+   "scale",
+   "Tint fitted to the law"
+  ]
+ ],
+ "trust_com": [
+  [
+   "quote",
+   "Price in writing",
+   "Per vehicle, before we print"
+  ],
+  [
+   "check",
+   "Proof before print",
+   "You approve the design first"
+  ],
+  [
+   "layers",
+   "Named film brands",
+   "3M and Avery Dennison"
+  ],
+  [
+   "truck",
+   "One job, whole fleet",
+   "Vehicles staggered so work keeps moving"
+  ]
+ ],
+ "suppliers": {
+  "h2": "Thirteen on the car. Hundreds in the books.",
+  "p": "Film from 3M, Avery Dennison, KPMF, TeckWrap and Arlon. Tap a swatch to see it on the car. Want a colour that is not here? Give us the maker's code."
+ },
+ "promo": {
+  "eyebrow": "Promotion",
+  "h2": "Full wraps starting at {$wrap.full}.",
+  "p": "A full colour change in gloss, satin or matte film, edges tucked. The starting price is for a coupe or sedan; larger vehicles are priced by size. You get the exact price in writing before any work starts.",
+  "chip": "Promotion · Full wraps from {$wrap.full}",
+  "cta": "Book the promotion",
+  "note": "Promotion: full wrap from {$wrap.full}"
+ },
+ "roundcity": {
+  "k": "Our developers and partners",
+  "name": "Round City",
+  "p": "Brand, web, systems and operations. The studio that built this site.",
+  "url": "https://roundcity.co",
+  "go": "roundcity.co"
+ },
+ "proof_steps": [
+  [
+   "Send your files",
+   "Logo, photos, a sketch, or just your name."
+  ],
+  [
+   "We draw the proof",
+   "Laid out on your exact vehicle, to scale."
+  ],
+  [
+   "You mark changes",
+   "Tell us what to move. We revise it."
+  ],
+  [
+   "You approve, we print",
+   "Nothing is printed before you say yes."
+  ]
+ ],
+ "team": {
+  "h2": "The people behind your wrap.",
+  "p": "Two installers, one at each shop, and one designer for every business job. The person you message is the person doing the work.",
+  "alt": "Zain and Karrar of EveryWrap in black EveryWrap polos, standing in the wrap studio in front of a black sports car and a wall of vinyl film rolls.",
+  "badges": [
+   [
+    "Text the installer",
+    "No call centre. Your messages go straight to the person doing the work."
+   ],
+   [
+    "Two shops",
+    "Columbus, Ohio and Dearborn Heights, Michigan, both by appointment."
+   ],
+   [
+    "Price in writing",
+    "You get the number by text before anything starts."
+   ]
+  ]
+ }
+}

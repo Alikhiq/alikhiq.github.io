@@ -1,0 +1,186 @@
+[
+ {
+  "slug": "vinyl-wrap",
+  "ch": "wrap",
+  "price_group": "wrap",
+  "name": "Vinyl wrap",
+  "nav": "Vinyl wrap",
+  "h1": "Car wraps in Columbus, Ohio",
+  "title": "Car Wraps in Columbus, Ohio | Vinyl Wrap Prices | EveryWrap",
+  "desc": "Colour-change vinyl car wraps in Columbus, Ohio from {$wrap.full}. Satin, gloss, matte and colour-shift film from 3M and Avery Dennison. See real jobs and prices.",
+  "card": "A new colour without a respray. Satin black is the one people ask for most.",
+  "img_alt": "Satin black vinyl film being laid over the white hood of a car",
+  "tag": "all",
+  "about_h2": "A new colour, and your paint stays underneath.",
+  "lead": "A vinyl wrap changes the colour of your car without repainting it. We lay the film one panel at a time and tuck the edges, so the old colour does not show at the doors and seams. When you want the original colour back, the film comes off.",
+  "points": [
+   ["Finishes", "Satin, gloss, matte and colour-shift. Satin black is the most requested, and we have wrapped cars in pink, Tiffany blue, purple and chrome-look green too."],
+   ["Full or partial", "A full colour change, or one part of the car: roof, hood, mirrors, stripes or a chrome delete."],
+   ["Film", "We install cast film from 3M, Avery Dennison and KPMF. Tell us if you have a colour code in mind."],
+   ["Your paint first", "Film follows whatever is under it. We check the paint before we quote, because film will not hide chips and can lift a poor respray."]
+  ],
+  "price_h2": "Car wrap prices in Columbus",
+  "price_intro": "Starting prices by vehicle size. Pick yours.",
+  "factors": [
+   "Vehicle size, and how deep the bumpers, mirrors and vents are",
+   "The film: colour-shift, chrome-look and textured films cost more per roll",
+   "Extras such as door jambs, which add time",
+   "Paint condition: chips, peeling clear coat and resprays need dealing with first"
+  ],
+  "know": [
+   ["How long it takes", "Most full wraps are in the shop for a few days. A roof, hood or chrome delete is a much shorter visit. You get the dates with your price."],
+   ["How long it lasts", "Film makers rate quality cast vinyl for about five to seven years outdoors. Garage parking and regular hand washing get you the long end of that."],
+   ["Looking after it", "Hand wash or use a touchless wash. Skip brush washes, abrasive polish and wax on satin or matte film, and wipe off fuel and bird droppings quickly."]
+  ],
+  "work_h2": "Cars we have wrapped",
+  "faq_h2": "Car wrap questions",
+  "faq": [
+   ["How much does it cost to wrap a car in Columbus, Ohio?", "A full colour change starts at {$wrap.full} for a coupe or sedan, {$wrap.full.1} for an SUV or truck and {$wrap.full.2} for a van or large SUV. Colour-shift and specialty films start at {$wrap.shift}. You get your exact price in writing before any work starts."],
+   ["How long does a car wrap last?", "Film makers rate quality cast vinyl for about five to seven years outdoors. Sun, road salt and how the car is washed decide where in that range yours lands."],
+   ["Will a wrap damage my paint?", "On sound factory paint, quality film comes off cleanly and the paint underneath has been shielded the whole time. Repainted or chipped panels are the risk, so we check the car before we quote and tell you what we see."],
+   ["Is wrapping a car cheaper than painting it?", "For a colour change of the same quality, usually yes. A wrap also comes off, so the factory colour is still there when you sell the car."],
+   ["Can you wrap just part of the car?", "Yes. A roof starts at {$wrap.roof}, a hood at {$wrap.hood} and a chrome delete at {$wrap.chrome}."],
+   ["Can a wrapped car go through a car wash?", "Touchless washes are fine. Brush washes can scratch the film and catch an edge, so we tell people to avoid them."],
+   ["Can you wrap a leased car?", "Yes, and it is a common reason to wrap, because the film comes off before the car goes back. Read your lease first."],
+   ["How long does it take to wrap a car?", "A few days for most full wraps. You get the dates with your price."],
+   ["What finishes are available?", "Gloss, satin, matte, colour-shift, chrome-look and textured films such as carbon-look. Satin black is the one people ask for most."]
+  ]
+ },
+ {
+  "slug": "paint-protection-film",
+  "ch": "ppf",
+  "price_group": "ppf",
+  "name": "Paint protection film",
+  "nav": "Protection film",
+  "h1": "Paint protection film (PPF) in Columbus, Ohio",
+  "title": "Paint Protection Film (PPF) in Columbus, Ohio | EveryWrap",
+  "desc": "Clear paint protection film in Columbus, Ohio from {$ppf.partial}. Partial front, full front or full body coverage against stone chips and scratches. See the prices.",
+  "card": "Clear film on the panels that take the stone chips.",
+  "img_alt": "Water beading on the hood of a gloss black car with paint protection film",
+  "tag": "",
+  "about_h2": "Clear film that takes the hit, so the paint does not.",
+  "lead": "Paint protection film, also called PPF or a clear bra, is a clear urethane layer over the paint. It takes the stone chips, bug marks and light scratches of Ohio roads, and it is far cheaper to replace than a respray.",
+  "points": [
+   ["Partial front", "The bumper, plus the leading edge of the hood and fenders. The lowest-cost way to cover where chips land first."],
+   ["Full front", "The bumper, the whole hood, both fenders and the mirrors, with no line across the hood. The most popular choice."],
+   ["Full body", "Every painted panel. For a car you plan to keep, or one you want to hand back unmarked."],
+   ["With a wrap or tint", "Protection film, a colour wrap and tint can be planned as one job, so the car is off the road once."]
+  ],
+  "price_h2": "PPF prices in Columbus",
+  "price_intro": "Starting prices by coverage and vehicle size.",
+  "factors": [
+   "How much of the car is covered",
+   "Vehicle size and the shape of the bumper",
+   "The film line you choose",
+   "Paint condition: chips are sealed in if they are not fixed first"
+  ],
+  "know": [
+   ["How long it takes", "A full front is usually two to three days. Full body takes most of a week."],
+   ["How long it lasts", "Modern film is made to stay clear for years, and the makers back it with long warranties. We tell you the warranty for the film you pick."],
+   ["Looking after it", "Wait about a week before the first wash, then wash it like paint. Light swirl marks in self-healing film soften with warmth."]
+  ],
+  "work_h2": "",
+  "faq_h2": "PPF questions",
+  "faq": [
+   ["How much does paint protection film cost in Columbus, Ohio?", "A partial front starts at {$ppf.partial}, a full front at {$ppf.front} and full body at {$ppf.full} for a coupe or sedan. SUVs and trucks cost a little more because there is more to cover."],
+   ["Is PPF worth it?", "If you drive on the highway, yes for the front of the car at least. That is where stone chips land, and film costs less than repainting a bumper and hood."],
+   ["Can you see the film?", "On clean paint it is hard to spot. Edges are placed along panel lines where they are least visible, and a full front has no line across the hood."],
+   ["Which coverage should I choose?", "Full front covers the area that takes most of the damage. Full body is for a car you plan to keep a long time. Tell us how you use the car and we will say what we would do."],
+   ["What is the difference between PPF and a ceramic coating?", "Film is a physical layer that stops chips and scratches. A coating is a thin chemical layer that makes the car easier to clean but will not stop a stone. Many people put a coating over film."],
+   ["Does PPF damage paint when it comes off?", "Not on sound factory paint. As with a wrap, repainted panels are where the risk is, and we check for that first."],
+   ["Does PPF yellow over time?", "Old films did. Modern urethane film is made to stay clear, and the makers back that with warranties of ten years or more on their main lines."],
+   ["Can I take my car through a car wash with PPF?", "Yes, after the film has cured. Touchless or hand washing is kindest to it."],
+   ["Can you put a ceramic coating over PPF?", "Yes. A coating over film makes it easier to clean and is a common pairing."],
+   ["Will PPF show on a black car?", "Black shows everything, so edge placement matters most there. Edges go along panel lines, and a full front avoids a line across the hood."]
+  ]
+ },
+ {
+  "slug": "window-tint",
+  "ch": "tint",
+  "price_group": "tint",
+  "name": "Window tint",
+  "nav": "Window tint",
+  "h1": "Window tinting in Columbus, Ohio",
+  "title": "Window Tinting in Columbus, Ohio | Ceramic Tint | EveryWrap",
+  "desc": "Car window tint in Columbus, Ohio from {$tint.carbon}. Carbon and ceramic film in 70, 35, 20 and 5 percent, fitted to Ohio tint law. See each shade and the prices.",
+  "card": "Four shades. See each one on the glass before you choose.",
+  "img_alt": "Dark tinted side windows on a satin black sedan",
+  "tag": "",
+  "about_h2": "Cooler, darker, and legal in Ohio.",
+  "lead": "Tint cuts glare and heat, keeps the cabin private and finishes the look of the car. The number is how much light gets through: 70% is light, 5% is limo dark. Ceramic film blocks more heat than carbon at the same shade.",
+  "points": [
+   ["70%", "Light. Barely changes the look, takes the edge off the sun."],
+   ["35%", "Medium. A clear step darker than factory glass."],
+   ["20%", "Dark. The common choice for rear glass."],
+   ["5%", "Limo. Very dark, for rear windows."]
+  ],
+  "price_h2": "Window tint prices in Columbus",
+  "price_intro": "Starting prices by film and vehicle size.",
+  "factors": [
+   "The film: ceramic costs more than carbon and blocks more heat",
+   "The number of windows, and how curved the rear glass is",
+   "Old tint that has to come off first",
+   "Windshield and sunroof film, which are priced on their own"
+  ],
+  "know": [
+   ["How long it takes", "Most cars are done the same day."],
+   ["Curing", "Leave the windows up for a few days. Haze or small water pockets are normal while the film dries and clear by themselves."],
+   ["Ohio law", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any shade. No reflective film."],
+   ["Michigan law", "On the front side windows, only a strip across the top four inches can be tinted. Rear side windows and the back glass can be any shade."]
+  ],
+  "work_h2": "",
+  "faq_h2": "Window tint questions",
+  "faq": [
+   ["How much does window tint cost in Columbus, Ohio?", "A full car in carbon film starts at {$tint.carbon} and in ceramic at {$tint.ceramic}. Two front windows to match factory rear glass start at {$tint.fronts}."],
+   ["What is the legal tint in Ohio?", "Front side windows must let at least 50% of light through. Rear side windows and the back glass can be any darkness. On the windshield, only a strip across the top five inches can be dark. Reflective film is not allowed on any window. We confirm what applies to your car before we cut film."],
+   ["Is 20% tint legal in Ohio?", "On the rear side windows and the back glass, yes. On the front side windows, no: those need to let in at least 50%."],
+   ["What is the legal tint in Michigan?", "For cars we tint at our Dearborn Heights location: the front side windows can only carry a strip across the top four inches. Rear side windows and the back glass can be any darkness. On the windshield, only the top four inches can be tinted. We confirm what applies to your car before we cut film."],
+   ["Is ceramic tint worth the extra?", "If heat is the reason you want tint, yes. Ceramic blocks noticeably more heat than carbon at the same shade, and it does not interfere with phone or radio signal."],
+   ["How long does it take to tint a car?", "Most cars are done the same day."],
+   ["When can I roll my windows down?", "Give it a few days so the film can cure. We tell you exactly how long when you collect the car."],
+   ["Can you remove old tint?", "Yes. Old, purple or bubbling tint is removed before the new film goes on. Removal starts at {$tint.removal}."]
+  ]
+ },
+ {
+  "slug": "body-kits",
+  "ch": "kits",
+  "price_group": "kits",
+  "name": "Body kits",
+  "nav": "Body kits",
+  "h1": "Body kit installation in Columbus, Ohio",
+  "title": "Body Kit Installation in Columbus, Ohio | EveryWrap",
+  "desc": "Body kits found, fitted and wrapped to match in Columbus, Ohio. Front lips, splitters, side skirts, diffusers and widebody kits. Send your car for a quote.",
+  "card": "Tell us the car. We find the kit that fits, fit it and wrap it.",
+  "img_alt": "Satin black widebody sedan with a carbon fibre front splitter",
+  "tag": "",
+  "about_h2": "Tell us the car. We find the kit, fit it and finish it.",
+  "lead": "A kit changes the shape of the car: splitter, skirts, diffuser, spoiler, wider arches. Send the year, make and model and we look for a kit made for that car, test fit it, install it and wrap it so it matches.",
+  "points": [
+   ["Find", "We look for a kit made for your exact model and year, or fit one you already have."],
+   ["Fit", "Test fit first, then install. Bolt-on where possible, and we tell you before anything needs cutting or bonding."],
+   ["Finish", "Wrapped with the rest of the car, or in a contrast finish such as gloss black or carbon-look."]
+  ],
+  "price_h2": "Body kit pricing",
+  "price_intro": "Every kit fits differently, so these are quoted per car. The kit, the fitting and the wrap are listed separately.",
+  "factors": [
+   "The kit itself, and how well it is made",
+   "Bolt-on or bonded, and whether panels need trimming",
+   "Whether we source the kit or you bring it",
+   "The finish: wrapped to match, contrast, or left in carbon"
+  ],
+  "know": [
+   ["How long it takes", "A lip or splitter is usually a same-day job. A full kit depends on the fit and is planned with the wrap."],
+   ["Reversible or not", "Bolt-on parts come off. Parts that are bonded or need cutting are permanent, and we say which before you commit."],
+   ["Ground clearance", "Lips and splitters sit low. We talk through driveways and speed bumps before you choose."]
+  ],
+  "work_h2": "",
+  "faq_h2": "Body kit questions",
+  "faq": [
+   ["How much does it cost to install a body kit?", "It depends on the kit and how it attaches, so we quote per car. The kit, the fitting and the wrap are priced separately so you can see each one."],
+   ["Do you supply the kit?", "We can source it, or fit one you already have. Send the year, make and model and we will tell you what is available."],
+   ["Can it be removed later?", "Bolt-on parts come off. Parts that are bonded or need cutting are permanent. We tell you which before you commit."],
+   ["Can you wrap the kit to match my car?", "Yes. The kit can be wrapped with the rest of the car, or in a contrast finish such as gloss black."],
+   ["Will a kit fit my car?", "Kits are made for a specific model and year. Send yours and we check fitment before anything is ordered."]
+  ]
+ }
+]

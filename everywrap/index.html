@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--PAGE-->
+<title>EveryWrap Hero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="EveryWrap, Columbus, Ohio. Vinyl wrap, paint protection film, window tint, body kits and commercial fleet graphics.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+/* Layout: a full-bleed cinematic stage with the UI floating over it on a two-column grid
+   (copy and actions left, live controls right). On phones the stage becomes a top band and the UI stacks under it. */
+@property --w { syntax: "<number>"; inherits: true; initial-value: 0; }
+:root{
+  --ink:#09090a; --bone:#f3ede2; --ash:#a8a299; --amber:#f2a64b; --cobalt:#1d4ed8; --navy:#0b1730; --paper:#eef2f7;
+  --bg:var(--ink); --fg:var(--bone); --mute:var(--ash); --accent:var(--amber);
+  --card:#141415; --line:rgba(243,237,226,.2); --glass:rgba(14,14,16,.58); --glass-fg:var(--bone);
+  --btn:var(--bone); --btn-fg:#0b0b0c; --hero-fg:#f6f1e7; --shadow:rgba(0,0,0,.5);
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --ui:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --gl:max(20px, env(safe-area-inset-left, 0px)); --gr:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+:root[data-mode="commercial"]{
+  --bg:var(--paper); --fg:var(--navy); --mute:#55627a; --accent:var(--cobalt);
+  --card:#ffffff; --line:rgba(11,23,48,.16); --glass:rgba(255,255,255,.78); --glass-fg:var(--navy);
+  --btn:var(--cobalt); --btn-fg:#ffffff; --hero-fg:#ffffff; --shadow:rgba(11,23,48,.22);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.5 var(--ui);transition:background .7s ease,color .7s ease;overflow-x:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{display:block;max-width:100%}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- hero shell ---------- */
+.hero{position:relative;isolation:isolate;min-height:clamp(620px,56.25vw,100svh);display:flex;flex-direction:column;background:#000;overflow:hidden}
+.stage{position:absolute;inset:0;z-index:0;overflow:hidden;--p:50;--sy:50%}
+.world{position:absolute;inset:-1.5%;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.world.per{z-index:1}
+.world.com{z-index:5;clip-path:polygon(calc(122% - var(--w)*122%) 0,100% 0,100% 100%,calc(100% - var(--w)*122%) 100%);transition:--w 1.05s cubic-bezier(.7,0,.2,1)}
+.seam{position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,.0),rgba(255,255,255,.85) 45%,rgba(255,255,255,.25));
+  clip-path:polygon(calc(121.2% - var(--w)*122%) 0,calc(122% - var(--w)*122%) 0,calc(100% - var(--w)*122%) 100%,calc(99.2% - var(--w)*122%) 100%);transition:--w 1.05s cubic-bezier(.7,0,.2,1)}
+:root[data-mode="commercial"] .stage{--w:1}
+.plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .75s ease,transform 1.1s cubic-bezier(.2,.7,.2,1);will-change:opacity}
+.plate.on{opacity:1}
+.plate.pa{object-position:62% 55%}.plate.pb{object-position:50% 55%}.plate.pc{object-position:50% 70%}.plate.pd{object-position:80% 70%}
+.plate.clipR{clip-path:inset(0 0 0 calc(var(--p)*1%))}
+.plate.clipL{clip-path:inset(0 calc(100% - var(--p)*1%) 0 0)}
+.ppf{position:absolute;inset:0;z-index:3;opacity:0;transition:opacity .6s ease;pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,.26) 0%,rgba(255,255,255,.26) 30%,rgba(225,250,255,.85) 45%,rgba(255,255,255,.26) 60%,rgba(255,255,255,.26) 100%) 0 0/260% 100%;
+  -webkit-mask:var(--mask) 50% 55%/cover no-repeat;mask:var(--mask) 50% 55%/cover no-repeat;animation:sheen 3.6s linear infinite}
+.ppf.on{opacity:1}
+@keyframes sheen{from{background-position:120% 0}to{background-position:-140% 0}}
+.fx{position:absolute;inset:0;pointer-events:none}
+.shade{z-index:7;background:linear-gradient(90deg,rgba(0,0,0,.62),rgba(0,0,0,.18) 42%,rgba(0,0,0,0) 62%),linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,0) 34%),linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0) 18%);transition:opacity .8s ease}
+:root[data-mode="commercial"] .shade{opacity:0}
+.sky{z-index:7;opacity:0;background:linear-gradient(180deg,rgba(9,30,90,.38),rgba(9,30,90,0) 46%);transition:opacity .8s ease}
+:root[data-mode="commercial"] .sky{opacity:1}
+.grain{z-index:8;opacity:.11;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sweep{z-index:4;mix-blend-mode:screen;opacity:0;background:linear-gradient(105deg,rgba(255,255,255,0) 40%,rgba(255,244,225,.16) 50%,rgba(255,255,255,0) 60%) 0 0/300% 100%}
+:root[data-state="wrap"][data-view="show"][data-mode="personal"] .sweep,:root[data-state="kits"][data-mode="personal"] .sweep{opacity:1;animation:sheen 7s ease-in-out infinite}
+.streak{z-index:9;opacity:0;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,236,205,.9),rgba(255,255,255,0));height:2px;top:52%;inset-inline:0;bottom:auto;filter:blur(1px)}
+.stage.cut .world.per{animation:cut .8s cubic-bezier(.2,.7,.2,1)}
+.stage.cut .streak{animation:streak .7s ease-out}
+@keyframes cut{from{transform:scale(1.09);filter:blur(9px) brightness(1.5)}to{transform:scale(1);filter:none}}
+@keyframes streak{0%{opacity:0;transform:scaleX(.1)}30%{opacity:1}100%{opacity:0;transform:scaleX(1.4)}}
+
+/* before/after slider */
+.ba{position:absolute;left:0;right:0;top:var(--sy);z-index:10;height:64px;margin-top:-32px;display:none}
+.ba.show{display:block}
+.ba input{position:absolute;inset:0;width:100%;height:100%;margin:0;background:none;-webkit-appearance:none;appearance:none;cursor:ew-resize}
+.ba input::-webkit-slider-runnable-track{background:none;height:64px}
+.ba input::-moz-range-track{background:none;height:64px}
+.ba input::-webkit-slider-thumb{-webkit-appearance:none;width:58px;height:58px;margin-top:3px;border-radius:50%;border:1px solid rgba(255,255,255,.65);background:rgba(20,20,22,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E") center/26px no-repeat;backdrop-filter:blur(8px);box-shadow:0 0 0 6px rgba(255,255,255,.08),0 8px 30px rgba(0,0,0,.5)}
+.ba input::-moz-range-thumb{width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.65);background:rgba(20,20,22,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E") center/26px no-repeat;box-shadow:0 0 0 6px rgba(255,255,255,.08),0 8px 30px rgba(0,0,0,.5)}
+.edge{position:absolute;top:0;bottom:0;left:calc(var(--p)*1%);width:1px;z-index:9;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.8) 20%,rgba(255,255,255,.8) 80%,rgba(255,255,255,0));display:none;pointer-events:none}
+.edge.show{display:block}
+.edge.film::before{content:"";position:absolute;top:27%;bottom:31%;right:0;width:clamp(14px,2vw,30px);border-radius:60% 0 0 60%/12% 0 0 12%;
+  background:linear-gradient(90deg,rgba(0,0,0,0),rgba(8,8,9,.82) 28%,rgba(46,46,48,.95) 62%,rgba(170,170,172,.9) 92%,rgba(255,255,255,.95));box-shadow:-18px 0 30px rgba(0,0,0,.45)}
+.batag{position:absolute;top:calc(var(--sy) + 46px);z-index:9;font:600 10.5px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:#fff;padding:7px 10px;border-radius:999px;background:rgba(10,10,12,.5);backdrop-filter:blur(6px);display:none;pointer-events:none;white-space:nowrap}
+.batag.show{display:block}
+.batag.l{right:calc(100% - var(--p)*1% + 14px)}.batag.r{left:calc(var(--p)*1% + 14px)}
+.cap{position:absolute;z-index:11;right:var(--gr);top:calc(74px + env(safe-area-inset-top, 0px));font:500 10.5px/1.2 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-align:right}
+
+/* ---------- top bar ---------- */
+.top{position:absolute;z-index:20;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(18px + env(safe-area-inset-top, 0px)) var(--gr) 0 var(--gl)}
+.mark{font:500 15px/1 var(--ui);letter-spacing:.42em;color:#fff;text-decoration:none;display:flex;align-items:baseline;gap:14px}
+.mark small{font:400 12px/1 var(--ui);letter-spacing:.04em;color:rgba(255,255,255,.62)}
+.mode{display:inline-flex;padding:4px;border-radius:999px;background:rgba(14,14,16,.5);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(10px)}
+.mode button{border:0;background:none;color:rgba(255,255,255,.72);font:600 11.5px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;padding:10px 14px;border-radius:999px;transition:background .4s,color .4s}
+.mode button[aria-pressed="true"]{background:#f6f1e7;color:#0b0b0c}
+:root[data-mode="commercial"] .mode button[aria-pressed="true"]{background:#fff;color:var(--cobalt)}
+
+/* ---------- hero UI grid ---------- */
+.ui{position:relative;z-index:15;flex:1;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:"copy tools" "dial tools" "cta tools";column-gap:32px;row-gap:14px;padding-block:calc(92px + env(safe-area-inset-top, 0px)) 30px;padding-left:var(--gl);padding-right:var(--gr)}
+.copy{grid-area:copy;align-self:center;min-width:0;max-width:min(46vw,640px);color:var(--hero-fg)}
+:root[data-view="peel"][data-state="wrap"][data-mode="personal"] .copy,:root[data-state="ppf"][data-mode="personal"] .copy{align-self:end}
+:root[data-mode="commercial"] .copy{align-self:start;padding-top:2vw}
+h1{margin:0;font:400 clamp(44px,6.5vw,104px)/.94 var(--display);letter-spacing:-.028em;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.45)}
+h1 span{display:block}
+:root[data-view="peel"][data-state="wrap"][data-mode="personal"] h1,:root[data-state="ppf"][data-mode="personal"] h1{font-size:clamp(30px,3.5vw,56px);line-height:1.02}
+:root[data-view="peel"][data-state="wrap"][data-mode="personal"] h1 span,:root[data-state="ppf"][data-mode="personal"] h1 span{display:inline}
+:root[data-view="peel"][data-state="wrap"][data-mode="personal"] .copy,:root[data-state="ppf"][data-mode="personal"] .copy{max-width:min(56vw,820px)}
+:root[data-view="peel"][data-state="wrap"][data-mode="personal"] .sub,:root[data-state="ppf"][data-mode="personal"] .sub{margin-top:8px}
+:root[data-mode="commercial"] .ui{grid-template-rows:minmax(0,1fr) auto auto auto;grid-template-areas:"copy copy" "dial dial" "cta cta" "tools tools"}
+:root[data-mode="commercial"] .tools{justify-self:start;align-items:flex-start;padding-top:4px}
+:root[data-mode="commercial"] .toolset{display:none}
+:root[data-mode="commercial"] h1{font:700 clamp(42px,6.6vw,104px)/.95 var(--ui);letter-spacing:-.035em}
+.sub{margin:16px 0 0;font:400 clamp(14px,1.25vw,18px)/1.45 var(--ui);color:var(--hero-fg);opacity:.86;max-width:44ch}
+.swap{animation:swap .55s cubic-bezier(.2,.7,.2,1)}
+@keyframes swap{from{opacity:0;transform:translateY(14px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+
+.dial{grid-area:dial;display:flex;flex-wrap:wrap;gap:8px;align-self:end}
+.chip{border:1px solid var(--line);background:var(--glass);color:var(--glass-fg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:999px;padding:11px 16px;font:600 11.5px/1 var(--ui);letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;transition:border-color .3s,box-shadow .3s,background .3s,color .3s}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 26px -4px var(--accent)}
+:root[data-mode="commercial"] .chip[aria-pressed="true"]{background:var(--cobalt);color:#fff}
+.cta{grid-area:cta;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;align-self:end}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 22px;border-radius:8px;border:1px solid transparent;font:600 15px/1 var(--ui);text-decoration:none;transition:transform .2s,box-shadow .3s,background .3s}
+.btn.pri{background:var(--btn);color:var(--btn-fg);box-shadow:0 10px 36px -10px var(--shadow)}
+.btn.pri:hover{transform:translateY(-1px)}
+.btn.sec{background:var(--glass);color:var(--glass-fg);border-color:var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.btn.sec:hover{border-color:var(--accent)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* tools (right column) */
+.tools{grid-area:tools;align-self:stretch;justify-self:end;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:18px;min-width:0;padding-top:16px}
+.toolset{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.tool{display:none;flex-direction:column;align-items:center;gap:10px}
+.tool.show{display:flex}
+.tlabel{font:600 10.5px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.sw{display:flex;flex-direction:column;gap:12px}
+.sw button{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;padding:0;font:500 11px/1.1 var(--ui);color:rgba(255,255,255,.72);width:76px}
+.sw i{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.3);box-shadow:inset -8px -8px 14px rgba(0,0,0,.45),inset 6px 6px 10px rgba(255,255,255,.14);transition:box-shadow .3s,transform .3s}
+.sw button:hover i{transform:scale(1.06)}
+.sw button[aria-pressed="true"]{color:#fff}
+.sw button[aria-pressed="true"] i{box-shadow:inset -8px -8px 14px rgba(0,0,0,.45),inset 6px 6px 10px rgba(255,255,255,.14),0 0 0 2px #000,0 0 0 3.5px var(--amber),0 0 22px var(--amber)}
+.seg{display:flex;flex-direction:column;gap:4px;padding:6px;border-radius:14px;background:rgba(14,14,16,.5);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.seg button{border:0;background:none;color:rgba(255,255,255,.75);font:600 14px/1 var(--ui);padding:12px 18px;border-radius:10px;white-space:nowrap;transition:background .3s,color .3s}
+.seg button small{display:block;font:400 10.5px/1.2 var(--ui);opacity:.7;margin-top:4px}
+.seg button[aria-pressed="true"]{background:#f6f1e7;color:#0b0b0c}
+.viewsw{flex-direction:row}
+.viewsw button{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px}
+
+/* assistant */
+.assist{width:min(430px,38vw);display:flex;flex-direction:column;gap:8px;min-width:0}
+.say{margin:0;align-self:flex-start;max-width:100%;padding:10px 14px;border-radius:14px 14px 14px 4px;background:var(--glass);color:var(--glass-fg);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font:400 13.5px/1.4 var(--ui)}
+.say b{font-weight:600}
+.say::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);margin-right:8px;vertical-align:1px}
+.ask{display:flex;align-items:center;gap:4px;padding:5px 6px 5px 16px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent),0 0 30px -8px var(--accent)}
+.ask input{flex:1;min-width:0;border:0;background:none;color:var(--glass-fg);font:400 15px/1 var(--ui);padding:10px 0;outline:none}
+.ask input::placeholder{color:var(--glass-fg);opacity:.6}
+.ask button{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:none;color:var(--glass-fg);display:grid;place-items:center}
+.ask button:hover{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.ask button svg{width:20px;height:20px}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+.sugg button{border:1px solid var(--line);background:var(--glass);color:var(--glass-fg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:999px;padding:8px 12px;font:500 12.5px/1 var(--ui)}
+.sugg button:hover{border-color:var(--accent)}
+
+/* ---------- below the hero ---------- */
+.band{padding-block:56px;padding-left:var(--gl);padding-right:var(--gr)}
+.band h2{margin:0;font:400 clamp(30px,3.6vw,52px)/1 var(--display);letter-spacing:-.02em}
+:root[data-mode="commercial"] .band h2{font:700 clamp(28px,3.2vw,46px)/1.02 var(--ui);letter-spacing:-.03em}
+.bandhead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;margin-bottom:22px}
+.bandhead p{margin:0;color:var(--mute);max-width:52ch}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:12px;scrollbar-width:thin}
+.card{flex:none;width:clamp(210px,22vw,300px);scroll-snap-align:start;margin:0}
+.card img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;background:var(--card)}
+.card figcaption{padding-top:10px;font:600 14px/1.25 var(--ui)}
+.card figcaption span{display:block;font-weight:400;color:var(--mute);font-size:13px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-block:1px solid var(--line);margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{background:var(--bg);padding:26px 22px 28px 0;counter-increment:s;transition:background .7s}
+.steps li + li{padding-left:22px}
+.steps li::before{content:"0" counter(s);font:500 12px/1 var(--ui);letter-spacing:.14em;color:var(--accent)}
+.steps h3{margin:12px 0 6px;font:500 20px/1.2 var(--ui)}
+.steps p{margin:0;color:var(--mute)}
+.foot{padding-block:26px 40px;padding-left:var(--gl);padding-right:var(--gr);color:var(--mute);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.foot button{border:0;background:none;color:var(--fg);text-decoration:underline;padding:0;font-size:13px}
+
+/* ---------- sheets ---------- */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{width:min(520px,100%);max-height:100%;overflow:auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 40px 120px rgba(0,0,0,.6);animation:rise .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{transform:translateY(22px);opacity:0}to{transform:none;opacity:1}}
+.shead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
+.shead h2{margin:0;font:400 30px/1.05 var(--display);letter-spacing:-.02em}
+:root[data-mode="commercial"] .shead h2{font:700 26px/1.1 var(--ui);letter-spacing:-.02em}
+.x{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;font-size:18px;line-height:1}
+.prog{font:600 11px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.step{display:none;flex-direction:column;gap:14px}
+.step.show{display:flex}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.legend{font:600 12px/1.2 var(--ui);letter-spacing:.06em;color:var(--mute)}
+.field input,.field select{width:100%;min-height:48px;border-radius:8px;border:1px solid var(--line);background:color-mix(in srgb,var(--fg) 5%,transparent);padding:0 14px;font-size:16px}
+.picks{display:flex;flex-wrap:wrap;gap:8px}
+.picks label{position:relative;display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--line);font:500 14px/1 var(--ui);cursor:pointer}
+.picks input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.picks label:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.picks label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
+.srow{display:flex;gap:10px;justify-content:space-between;margin-top:6px}
+.srow .btn{flex:1}
+.err{margin:0;color:#ff8f7a;font-size:13px;min-height:1.2em}
+:root[data-mode="commercial"] .err{color:#b3261e}
+.sum{margin:0;padding:14px;border-radius:10px;border:1px solid var(--line);display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;font-size:14px}
+.sum dt{color:var(--mute)}.sum dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.note{margin:0;font-size:13px;color:var(--mute)}
+.note.flag{color:var(--fg);padding:10px 12px;border-left:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.drop{display:grid;place-items:center;text-align:center;gap:8px;min-height:170px;border:1px dashed var(--line);border-radius:10px;padding:18px;cursor:pointer;position:relative;overflow:hidden}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop img{max-height:240px;border-radius:6px}
+.usw{display:flex;flex-wrap:wrap;gap:8px}
+.usw button{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;background:none;padding:6px 12px 6px 6px;font:500 13px/1 var(--ui)}
+.usw i{width:26px;height:26px;border-radius:50%;border:1px solid var(--line)}
+.usw button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+
+/* ---------- launch intro ---------- */
+.intro{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;overflow:hidden}
+.intro.out{animation:introout .55s ease forwards;pointer-events:none}
+@keyframes introout{to{opacity:0;visibility:hidden}}
+.ibg{position:absolute;inset:-8%;background:center/cover no-repeat;filter:blur(44px) brightness(.5) saturate(1.3);transition:background-image .1s}
+.icard{position:relative;width:min(58vw,52vh);aspect-ratio:4/5;overflow:hidden;border-radius:4px;box-shadow:0 40px 140px rgba(0,0,0,.8)}
+.icard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.icard img.hit{animation:hit .34s cubic-bezier(.1,.8,.2,1) forwards}
+@keyframes hit{0%{opacity:0;transform:scale(1.35) translateX(9%);filter:blur(14px) brightness(1.8)}35%{opacity:1}100%{opacity:1;transform:scale(1.02);filter:none}}
+.intro.boom .icard{animation:boom .6s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes boom{to{transform:scale(3.2);filter:blur(18px) brightness(2.2);opacity:0}}
+.iword{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom, 0px));text-align:center;font:500 clamp(13px,1.3vw,18px)/1 var(--ui);letter-spacing:.6em;text-indent:.6em;color:#fff;animation:track 2.6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes track{from{letter-spacing:1.4em;opacity:0}to{letter-spacing:.6em;opacity:1}}
+.itag{position:absolute;left:0;right:0;top:calc(9vh + env(safe-area-inset-top, 0px));text-align:center;font:500 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.iskip{position:absolute;right:max(16px, env(safe-area-inset-right, 0px));bottom:calc(16px + env(safe-area-inset-bottom, 0px));border:1px solid rgba(255,255,255,.3);background:none;color:#fff;border-radius:999px;padding:9px 14px;font:500 12px/1 var(--ui)}
+.fab{display:none}
+.fab.hide{opacity:0;pointer-events:none}
+
+/* ---------- phone ---------- */
+@media (max-width:860px){
+  :root{--gl:max(16px, env(safe-area-inset-left, 0px));--gr:max(16px, env(safe-area-inset-right, 0px))}
+  .hero{min-height:0;background:var(--bg);transition:background .7s}
+  .stage{position:relative;inset:auto;height:var(--band,88vw);flex:none}
+  :root[data-view="peel"][data-state="wrap"] .stage,:root[data-state="ppf"] .stage,:root[data-mode="commercial"] .stage{--band:70vw}
+  .plate.pa{object-position:68% 60%}.plate.pb{object-position:52% 58%}.plate.pd{object-position:88% 78%}
+  .ppf{-webkit-mask-position:52% 58%;mask-position:52% 58%}
+  .shade{background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,0) 26%),linear-gradient(0deg,var(--ink),rgba(9,9,10,0) 30%)}
+  .cap{top:auto;bottom:10px;right:var(--gr)}
+  .ui{display:flex;flex-direction:column;gap:16px;padding-block:6px 30px}
+  .copy{max-width:none;color:var(--fg);order:1}
+  :root[data-mode="commercial"] .copy{padding-top:14px}
+  h1{font-size:clamp(40px,12.5vw,64px);text-shadow:none}
+  :root[data-view="peel"][data-state="wrap"][data-mode="personal"] h1,:root[data-state="ppf"][data-mode="personal"] h1{font-size:clamp(34px,10vw,52px);line-height:.96}
+  :root[data-view="peel"][data-state="wrap"][data-mode="personal"] h1 span,:root[data-state="ppf"][data-mode="personal"] h1 span{display:block}
+  :root[data-view="peel"][data-state="wrap"][data-mode="personal"] .copy,:root[data-state="ppf"][data-mode="personal"] .copy{max-width:none}
+  :root[data-mode="commercial"] h1{font-size:clamp(38px,11.5vw,60px)}
+  .sub{color:var(--fg);margin-top:10px}
+  .dial{order:3;align-self:stretch;flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(var(--gl)*-1) calc(var(--gr)*-1);padding-inline:var(--gl) var(--gr);scrollbar-width:none}
+  .dial::-webkit-scrollbar{display:none}
+  .tools{order:4;align-self:stretch;justify-self:auto;align-items:stretch;padding-top:0;gap:22px}
+  .toolset{align-items:stretch}
+  .tool{align-items:flex-start}
+  .tlabel{color:var(--mute)}
+  .sw{flex-direction:row;gap:4px;overflow-x:auto;max-width:100%}
+  .sw button{width:68px;color:var(--mute)}
+  .sw button[aria-pressed="true"]{color:var(--fg)}
+  .seg{flex-direction:row;background:var(--glass);border-color:var(--line)}
+  .seg button{color:var(--glass-fg);padding:11px 14px}
+  .seg button small{display:none}
+  .cta{order:2;flex-wrap:nowrap;align-self:stretch}
+  .cta .btn{flex:1 1 auto;padding:0 14px;font-size:14px;min-height:52px}
+  .cta .btn.sec{flex:0 1 auto}
+  .assist{width:auto}
+  .mark small{display:none}
+  .mode button{padding:9px 11px;font-size:10.5px}
+  .steps{grid-template-columns:1fr}
+  .steps li,.steps li + li{padding:20px 0}
+  .card{width:62vw}
+  .fab{display:grid;place-items:center;position:fixed;z-index:40;right:max(14px, env(safe-area-inset-right, 0px));bottom:calc(14px + env(safe-area-inset-bottom, 0px));width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--btn);color:var(--btn-fg);box-shadow:0 12px 34px -8px var(--shadow);transition:opacity .3s}
+  .fab svg{width:24px;height:24px}
+  .icard{width:min(72vw,46vh)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+<!--/PAGE-->
+</head>
+<body>
+<!--PAGE-->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="ibg" id="ibg"></div>
+  <p class="itag">Real work · EveryWrap archive</p>
+  <div class="icard" id="icard"></div>
+  <p class="iword">EVERYWRAP</p>
+  <button class="iskip" id="iskip" type="button">Skip</button>
+</div>
+
+<main>
+<section class="hero" id="hero" aria-label="EveryWrap">
+  <div class="stage" id="stage">
+    <div class="world per" id="wper">
+      <img class="plate pa on" data-k="a-satin-black" src="img/plates/a-satin-black.jpg" alt="Satin black sedan under a single overhead light in a dark studio" fetchpriority="high">
+      <div class="ppf" id="ppf"></div>
+      <div class="fx sweep"></div>
+    </div>
+    <div class="world com" id="wcom"></div>
+    <div class="seam"></div>
+    <div class="fx shade"></div><div class="fx sky"></div><div class="fx grain"></div><div class="fx streak"></div>
+    <div class="edge" id="edge"></div>
+    <span class="batag l" id="tagL"></span><span class="batag r" id="tagR"></span>
+    <div class="ba" id="ba"><label class="vh" for="bar" id="barl">Drag to compare</label><input type="range" id="bar" min="4" max="96" step="0.5" value="50"></div>
+    <p class="cap" id="cap">Visualizer render</p>
+  </div>
+
+  <header class="top">
+    <a class="mark" href="#hero">EVERYWRAP <small>Columbus, Ohio</small></a>
+    <div class="mode" role="group" aria-label="Who is this for">
+      <button type="button" id="mPer" aria-pressed="true">Personal</button>
+      <button type="button" id="mCom" aria-pressed="false">Commercial</button>
+    </div>
+  </header>
+
+  <div class="ui">
+    <div class="copy">
+      <h1 id="h1"><span>Satin black.</span> <span>Done right.</span></h1>
+      <p class="sub" id="sub">Vinyl wrap, PPF, window tint and body kits. Installed by hand in Columbus, Ohio.</p>
+    </div>
+
+    <div class="tools" id="tools">
+     <div class="toolset">
+      <div class="tool" data-tool="finish">
+        <div class="sw" id="sw" role="group" aria-label="Finish"></div>
+        <div class="seg viewsw" role="group" aria-label="View">
+          <button type="button" id="vShow" aria-pressed="true">Showroom</button>
+          <button type="button" id="vPeel" aria-pressed="false">Before / after</button>
+        </div>
+      </div>
+      <div class="tool" data-tool="tint">
+        <span class="tlabel">Window tint</span>
+        <div class="seg" id="tintseg" role="group" aria-label="Tint level">
+          <button type="button" data-t="70">70%<small>Light</small></button>
+          <button type="button" data-t="35">35%<small>Medium</small></button>
+          <button type="button" data-t="20">20%<small>Dark</small></button>
+          <button type="button" data-t="5">5%<small>Limo</small></button>
+        </div>
+      </div>
+      <div class="tool" data-tool="ppf">
+        <span class="tlabel">Coverage</span>
+        <div class="seg" id="ppfseg" role="group" aria-label="PPF coverage">
+          <button type="button" data-c="partial">Partial front<small>Bumper, part hood</small></button>
+          <button type="button" data-c="front">Full front<small>Bumper, hood, fenders</small></button>
+          <button type="button" data-c="full">Full body<small>Every painted panel</small></button>
+        </div>
+      </div>
+     </div>
+    <div class="assist" id="assist">
+      <p class="say" id="say" aria-live="polite">Hi. What are you driving?</p>
+      <form class="ask" id="askf" autocomplete="off">
+        <label class="vh" for="ask">Tell me your car and what you want</label>
+        <input id="ask" type="text" placeholder="Tell me your car and what you want…" enterkeyhint="send">
+        <button type="button" id="askCam" aria-label="Upload a photo of your car"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+        <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <div class="sugg" id="sugg"></div>
+    </div>
+    </div>
+
+    <div class="dial" id="dial" role="group" aria-label="Services"></div>
+
+    <div class="cta">
+      <button class="btn pri" type="button" id="bQuote">Get my price in 60 sec</button>
+      <button class="btn sec" type="button" id="bUpload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <span id="bUploadT">Upload my car, see it wrapped</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section class="band" aria-labelledby="workh">
+  <div class="bandhead">
+    <h2 id="workh">Proof in the finish.</h2>
+    <p id="workp">Real EveryWrap jobs from our own Instagram. Not renders.</p>
+  </div>
+  <div class="rail" id="rail" tabindex="0" aria-label="Work gallery"></div>
+</section>
+
+<section class="band" aria-labelledby="howh" style="padding-top:0">
+  <div class="bandhead"><h2 id="howh">Price first. Then we talk.</h2></div>
+  <ol class="steps">
+    <li><h3>Tell us the car</h3><p>Year, make and model, or just a photo. Pick the service and the finish.</p></li>
+    <li><h3>See it before you pay</h3><p>We send your own car back in the finish you chose, with the price next to it.</p></li>
+    <li><h3>Get a callback</h3><p>We call or text to confirm fitment, film and a date. You get the quote in writing.</p></li>
+  </ol>
+</section>
+
+<footer class="foot">
+  <span>Preview build. Hero scenes are visualizer renders. The gallery is real EveryWrap work.</span>
+  <button type="button" id="replay">Replay the intro</button>
+</footer>
+</main>
+
+<button class="fab" type="button" id="fab" aria-label="Ask the assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h14v10H10l-5 4z"/></svg>
+</button>
+
+<!-- quote sheet -->
+<div class="scrim" id="qScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="qTitle">
+    <div class="shead"><h2 id="qTitle">Get my price</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <p class="prog" id="qProg">Step 1 of 3</p>
+    <form id="qForm" novalidate>
+      <div class="step show" data-step="1">
+        <div class="field"><label for="qCar">What are you driving?</label><input id="qCar" type="text" placeholder="2021 Dodge Charger" autocomplete="off"></div>
+        <p class="note" id="qPhoto" hidden>Photo attached from this device.</p>
+        <p class="err" id="qErr1" role="alert"></p>
+        <div class="srow"><button class="btn pri" type="button" data-next>Next</button></div>
+      </div>
+      <div class="step" data-step="2">
+        <span class="legend" id="qSvcL">What do you want done?</span>
+        <div class="picks" id="qSvc" role="group" aria-labelledby="qSvcL"></div>
+        <div class="field" id="qFinF"><label for="qFin">Wrap finish</label>
+          <select id="qFin"><option>Satin black</option><option>Gloss black</option><option>Nardo grey</option><option>Satin red</option><option>Color shift</option><option>Not sure yet</option></select></div>
+        <p class="err" id="qErr2" role="alert"></p>
+        <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="button" data-next>Next</button></div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="field"><label for="qName">Your name</label><input id="qName" type="text" autocomplete="name"></div>
+        <div class="field"><label for="qPhone">Mobile number</label><input id="qPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="614 555 0123"></div>
+        <span class="legend" id="qHowL">How should we reach you?</span>
+        <div class="picks" role="group" aria-labelledby="qHowL">
+          <label><input type="radio" name="qHow" id="qHowText" value="Text" checked>Text me</label>
+          <label><input type="radio" name="qHow" id="qHowCall" value="Call">Call me</label>
+        </div>
+        <p class="err" id="qErr3" role="alert"></p>
+        <div class="srow"><button class="btn sec" type="button" data-back>Back</button><button class="btn pri" type="submit">Request my price</button></div>
+      </div>
+      <div class="step" data-step="4">
+        <dl class="sum" id="qSum"></dl>
+        <p class="note flag">This is a preview, so nothing was sent. On the live site this request goes to the EveryWrap team and the price comes back here.</p>
+        <div class="srow"><button class="btn pri" type="button" data-close>Done</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- upload sheet -->
+<div class="scrim" id="uScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="uTitle">
+    <div class="shead"><h2 id="uTitle">See it on your car</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <p class="prog">Photo, finish, price</p>
+    <div class="step show">
+      <label class="drop" id="drop" for="uFile">
+        <input id="uFile" type="file" accept="image/*">
+        <span id="dropT"><b>Add a photo of your car</b><br>A side or front three-quarter shot in daylight works best.</span>
+      </label>
+      <span class="legend">Finish to try</span>
+      <div class="usw" id="usw" role="group" aria-label="Finish to try"></div>
+      <p class="note">Your photo stays on this device in the preview. On the live site it comes back wrapped in this finish, with your price.</p>
+      <div class="srow"><button class="btn pri" type="button" id="uGo">Continue to my price</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var R=document.documentElement, $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var phone=window.matchMedia("(max-width: 860px)");
+
+var FIN=[["satin-black","Satin Black","Satin black.","radial-gradient(circle at 32% 28%,#4a4a4c,#151516 62%)"],
+         ["gloss-black","Gloss Black","Gloss black.","radial-gradient(circle at 30% 24%,#fff 0 5%,#2a2a2c 14%,#050506 60%)"],
+         ["nardo-grey","Nardo Grey","Nardo grey.","radial-gradient(circle at 32% 28%,#b9bdc2,#7d8389 70%)"],
+         ["satin-red","Satin Red","Satin red.","radial-gradient(circle at 32% 28%,#e0484d,#7c1118 70%)"],
+         ["color-shift","Color Shift","Color shift.","conic-gradient(from 210deg,#6d3bd6,#1fb8b0,#2b6fe0,#7a3fd1,#6d3bd6)"]];
+var S={mode:"personal",state:"wrap",view:"show",finish:"satin-black",tint:20,ppf:"front",focus:"fleet",touched:0,swaps:0};
+var PER=[["wrap","Vinyl wrap"],["ppf","PPF"],["tint","Window tint"],["kits","Body kits"],["com","Commercial"]];
+var COM=[["fleet","Whole fleet"],["van","Vans"],["box","Box trucks"],["food","Food trucks"]];
+var FOCUS={fleet:["60% 80%",1],van:["42% 82%",1.3],box:["58% 80%",1.22],food:["100% 76%",1.18]};
+
+/* ---------- plates ---------- */
+var plates={}, zc=2, wper=$("#wper"), wcom=$("#wcom"), stage=$("#stage");
+function plate(k){
+  if(plates[k]) return plates[k];
+  var el=wper.querySelector('[data-k="'+k+'"]');
+  if(!el){ el=document.createElement("img"); el.className="plate p"+k.charAt(0); el.dataset.k=k; el.alt=""; el.decoding="async";
+    (k.charAt(0)==="d"?wcom:wper).insertBefore(el,(k.charAt(0)==="d"?null:$("#ppf"))); }
+  plates[k]=el; return el;
+}
+function ready(k){
+  var el=plate(k);
+  if(el.complete&&el.naturalWidth) return Promise.resolve(el);
+  if(!el.getAttribute("src")) el.src="img/plates/"+k+".jpg";
+  return new Promise(function(res){ el.addEventListener("load",function(){res(el)},{once:true}); el.addEventListener("error",function(){res(el)},{once:true}); });
+}
+function scene(){
+  if(S.state==="wrap") return S.view==="show"?{base:"a-"+S.finish}:{base:"b-before",over:"b-"+S.finish,clip:"clipR"};
+  if(S.state==="ppf") return {base:"b-before",ppf:S.ppf};
+  if(S.state==="tint") return {base:"c-clear",over:"c-limo",alpha:{70:.2,35:.5,20:.78,5:1}[S.tint]};
+  return {base:"a-satin-black",over:"a-kit",clip:"clipL"};
+}
+var sceneTok=0;
+function paint(cut){
+  var sc=scene(), tok=++sceneTok, need=[sc.base].concat(sc.over?[sc.over]:[]);
+  Promise.all(need.map(ready)).then(function(){
+    if(tok!==sceneTok) return;
+    var base=plate(sc.base), reuse=base.classList.contains("on");
+    Object.keys(plates).forEach(function(k){
+      if(k.charAt(0)==="d"||need.indexOf(k)>-1) return;
+      var el=plates[k]; if(!el.classList.contains("on")) return;
+      if(reuse){ el.classList.remove("on"); el.style.opacity=""; }
+      else setTimeout(function(){ if(tok===sceneTok||need.indexOf(k)<0){ if(scene().base!==k&&scene().over!==k){ el.classList.remove("on"); el.style.opacity=""; } } },820);
+    });
+    if(!reuse){ base.style.zIndex=++zc; }
+    base.classList.remove("clipR","clipL"); base.style.opacity=""; base.classList.add("on");
+    if(sc.over){ var o=plate(sc.over); o.classList.remove("clipR","clipL"); if(sc.clip) o.classList.add(sc.clip);
+      if(!o.classList.contains("on")||+o.style.zIndex<+base.style.zIndex) o.style.zIndex=++zc;
+      o.classList.add("on"); o.style.opacity=sc.alpha!=null?sc.alpha:""; }
+    var pf=$("#ppf"); pf.style.zIndex=zc+1;
+    if(sc.ppf){ pf.style.setProperty("--mask",'url("img/plates/ppf-'+sc.ppf+'.png")'); pf.classList.add("on"); } else pf.classList.remove("on");
+    if(cut&&!reduce){ stage.classList.remove("cut"); void stage.offsetWidth; stage.classList.add("cut"); }
+  });
+}
+function warm(){ var all=["b-before","b-satin-black","c-clear","c-limo","a-kit","d-fleet"].concat(FIN.slice(1).map(function(f){return "a-"+f[0]}),FIN.slice(1).map(function(f){return "b-"+f[0]}));
+  var i=0; (function nx(){ if(i>=all.length) return; ready(all[i++]).then(function(){ setTimeout(nx,120); }); })(); }
+
+/* ---------- copy ---------- */
+function finName(){ return FIN.filter(function(f){return f[0]===S.finish})[0]; }
+function copy(){
+  var h,s,up="Upload my car, see it wrapped",ph=phone.matches,sh="Try it on my car";
+  if(S.mode==="commercial"){ h=["Make it work."]; s="Fleet graphics, box trucks, food trucks and signage. One design, every vehicle, the same every time."; up="Send my logo and vehicle list"; sh="Send my logo"; }
+  else if(S.state==="wrap"&&S.view==="show"){ h=[finName()[2],"Done right."]; s="Vinyl wrap, PPF, window tint and body kits. Installed by hand in Columbus, Ohio."; }
+  else if(S.state==="wrap"){ h=["Same car.","New identity."]; s="Drag the line. Left is the factory paint, right is "+finName()[1].toLowerCase()+" vinyl."; }
+  else if(S.state==="ppf"){ h=["Protection you","can't see."]; s="Clear film over the panels that take the hits. The highlighted area is what gets covered."; up="Upload my car, see the coverage"; }
+  else if(S.state==="tint"){ h=["Built for","the night."]; s="Pick a shade and watch the glass change. The number is how much light gets through."; up="Upload my car, see it tinted"; }
+  else { h=["Your car.","The right kit."]; s="Tell us what you drive and we find the kit that fits, then fit and wrap it. Drag to compare stock with the kit."; up="Upload my car, find my kit"; sh="Find my kit"; }
+  var h1=$("#h1"), html=h.map(function(t){return "<span>"+t+"</span>"}).join(" ");
+  if(h1.innerHTML!==html){ h1.innerHTML=html; h1.classList.remove("swap"); void h1.offsetWidth; h1.classList.add("swap"); }
+  $("#sub").textContent=s; $("#bUploadT").textContent=ph?sh:up;
+  $("#cap").textContent=S.mode==="commercial"?"Visualizer render · sample fleet":"Visualizer render";
+}
+
+/* ---------- controls ---------- */
+function press(list,fn){ list.forEach(function(b){ b.setAttribute("aria-pressed",fn(b)?"true":"false"); }); }
+function dial(){
+  var d=$("#dial"), items=S.mode==="commercial"?COM:PER, key=S.mode==="commercial"?"focus":"state";
+  if(d.dataset.set!==S.mode){ d.dataset.set=S.mode; d.innerHTML=items.map(function(i){return '<button type="button" class="chip" data-v="'+i[0]+'">'+i[1]+"</button>"}).join(""); }
+  press($$(".chip",d),function(b){return b.dataset.v===S[key]});
+}
+function tools(){
+  var t=S.mode==="commercial"?"":{wrap:"finish",ppf:"ppf",tint:"tint",kits:""}[S.state];
+  $$(".tool").forEach(function(el){ el.classList.toggle("show",el.dataset.tool===t); });
+  press($$("#sw button"),function(b){return b.dataset.f===S.finish});
+  press($$("#tintseg button"),function(b){return +b.dataset.t===S.tint});
+  press($$("#ppfseg button"),function(b){return b.dataset.c===S.ppf});
+  $("#vShow").setAttribute("aria-pressed",S.view==="show"); $("#vPeel").setAttribute("aria-pressed",S.view==="peel");
+  $("#mPer").setAttribute("aria-pressed",S.mode==="personal"); $("#mCom").setAttribute("aria-pressed",S.mode==="commercial");
+  var peel=S.mode==="personal"&&S.state==="wrap"&&S.view==="peel", kit=S.mode==="personal"&&S.state==="kits", on=peel||kit;
+  $("#ba").classList.toggle("show",on); var e=$("#edge"); e.classList.toggle("show",on); e.classList.toggle("film",peel);
+  $("#tagL").classList.toggle("show",on); $("#tagR").classList.toggle("show",on);
+  $("#tagL").textContent=peel?"Factory paint":"With kit"; $("#tagR").textContent=peel?finName()[1]:"Stock";
+  $("#barl").textContent=peel?"Drag to wrap the car":"Drag to compare stock with the kit";
+  stage.style.setProperty("--sy",peel?"50%":"56%");
+}
+function setP(v,anim){
+  var bar=$("#bar");
+  if(!anim||reduce){ bar.value=v; stage.style.setProperty("--p",v); return; }
+  var from=+bar.value, t0=performance.now();
+  (function tick(t){ var k=Math.min(1,(t-t0)/900), e=1-Math.pow(1-k,3), val=from+(v-from)*e; bar.value=val; stage.style.setProperty("--p",val); if(k<1&&!S.dragging) requestAnimationFrame(tick); })(t0);
+}
+function focusCam(){ var d=plates["d-fleet"]; if(!d) return; var f=FOCUS[S.focus]; d.style.transformOrigin=f[0]; d.style.transform="scale("+f[1]+")"; }
+function render(cut){
+  R.dataset.mode=S.mode; R.dataset.state=S.state; R.dataset.view=S.view;
+  copy(); dial(); tools(); paint(cut); suggest(); rail();
+}
+function go(patch,cut){
+  var prev={state:S.state,view:S.view,mode:S.mode};
+  for(var k in patch) S[k]=patch[k];
+  S.touched++;
+  if(S.mode==="commercial"&&prev.mode!=="commercial"){ ready("d-fleet").then(function(){ plate("d-fleet").classList.add("on"); focusCam(); }); }
+  render(cut);
+  if(S.mode==="personal"&&(S.state!==prev.state||S.view!==prev.view||prev.mode!=="personal")){
+    if(S.state==="wrap"&&S.view==="peel"){ setP(86); setTimeout(function(){ setP(phone.matches?52:47,true); },350); }
+    if(S.state==="kits"){ setP(96); setTimeout(function(){ setP(phone.matches?52:63,true); },350); }
+  }
+  if(S.mode==="commercial") focusCam();
+  nudge();
+}
+
+/* ---------- assistant (scripted in this preview) ---------- */
+var sayEl=$("#say"), idleT;
+function say(html){ sayEl.innerHTML=html; sayEl.classList.remove("swap"); void sayEl.offsetWidth; sayEl.classList.add("swap"); }
+function suggest(){
+  var list;
+  if(S.mode==="commercial") list=["Quote for 5 vans","Food truck wrap","Do you design the graphics?"];
+  else list={wrap:["Satin black wrap price","Show me satin red","How long does a wrap last?"],ppf:["Full front PPF price","PPF or ceramic?","Show me a wrap instead"],tint:["Ceramic tint 20%","What's legal in Ohio?","Tint plus wrap"],kits:["Find a kit for my car","Kit and wrap together","Show me tint"]}[S.state];
+  $("#sugg").innerHTML=list.map(function(t){return '<button type="button">'+t+"</button>"}).join("");
+}
+function nudge(){
+  clearTimeout(idleT);
+  var m;
+  if(S.mode==="commercial") m={fleet:"Tell me how many vehicles and what they are. I'll line up a fleet quote.",van:"Vans are the most common fleet job. How many do you run?",box:"Box trucks carry the biggest canvas. Send the box length and your logo.",food:"Food trucks get full print and menu panels. Got a logo ready?"}[S.focus];
+  else if(S.state==="wrap") m=S.swaps>=3?"Stuck between a few? <b>Upload your car</b> and I'll show each finish on it.":(S.view==="peel"?"That's "+finName()[1].toLowerCase()+" going over factory paint. Want a price for your car?":(S.finish==="satin-black"?"Satin black is our most requested finish. What are you driving?":finName()[1]+" looks sharp. Tell me your car and I'll price it."));
+  else if(S.state==="ppf") m={partial:"Partial front covers the bumper and the leading edge of the hood and fenders.",front:"Full front covers the bumper, the full hood, both fenders and the mirrors.",full:"Full body protects every painted panel. Good for a new car you plan to keep."}[S.ppf];
+  else if(S.state==="tint") m=S.tint+"% means "+S.tint+"% of light gets through. "+(S.tint<50?"In Ohio the front side windows must let in at least 50%, so this shade is for the rear.":"This shade is fine for front side windows in Ohio.");
+  else m="Tell me the year, make and model and I'll look for kits that fit it.";
+  say(m);
+  idleT=setTimeout(function(){ if(!$("#qScrim").hidden||!$("#uScrim").hidden) return; say("Still looking? Type your car below and I'll do the rest."); },16000);
+}
+var MAKES="acura audi bmw buick cadillac chevy chevrolet chrysler dodge ford gmc honda hyundai infiniti jeep kia lexus lincoln mazda mercedes nissan porsche ram subaru tesla toyota volkswagen vw volvo charger challenger mustang camaro corvette durango sprinter transit".split(" ");
+function findCar(t){
+  var y=t.match(/\b(19[6-9]\d|20[0-3]\d)\b/), words=t.split(/\s+/), i=-1;
+  words.forEach(function(w,n){ if(i<0&&MAKES.indexOf(w.toLowerCase().replace(/[^a-z]/g,""))>-1) i=n; });
+  if(i<0) return y?y[0]:"";
+  var tail=words.slice(i,i+3).filter(function(w){return !/^(wrap|tint|ppf|price|in|with|and|for|satin|gloss|black|red|grey|gray|kit)$/i.test(w)}).join(" ").replace(/[.,!?]/g,"");
+  return ((y?y[0]+" ":"")+tail.replace(/\b\w/g,function(c){return c.toUpperCase()})).trim();
+}
+function ask(text){
+  var t=text.trim(); if(!t) return; var l=t.toLowerCase(), car=findCar(t), patch={}, bits=[];
+  var com=/(fleet|van\b|vans|box truck|food truck|business|company|logo|trailer|signage|storefront)/.test(l);
+  if(com){ patch.mode="commercial"; patch.focus=/food/.test(l)?"food":/box/.test(l)?"box":/van/.test(l)?"van":"fleet"; bits.push("commercial graphics"); }
+  else {
+    if(/personal|my own car/.test(l)) patch.mode="personal";
+    if(/tint|window|limo/.test(l)){ patch.mode="personal"; patch.state="tint"; var n=l.match(/\b(70|35|20|5)\s?%?/); if(n) patch.tint=+n[1]; bits.push("window tint"+(n?" "+n[1]+"%":"")); }
+    else if(/ppf|protect|clear bra|rock chip|ceramic/.test(l)){ patch.mode="personal"; patch.state="ppf"; if(/full body/.test(l)) patch.ppf="full"; else if(/partial/.test(l)) patch.ppf="partial"; bits.push("paint protection film"); }
+    else if(/kit|widebody|splitter|spoiler|diffuser/.test(l)){ patch.mode="personal"; patch.state="kits"; bits.push("body kit"); }
+    var f=/gloss black/.test(l)?"gloss-black":/nardo|grey|gray/.test(l)?"nardo-grey":/red/.test(l)?"satin-red":/shift|chameleon|purple/.test(l)?"color-shift":/black|satin/.test(l)?"satin-black":"";
+    if(f||/wrap|vinyl|color change/.test(l)){ if(!patch.state||f){ patch.mode="personal"; patch.state=patch.state&&!/wrap|vinyl/.test(l)&&!f?patch.state:"wrap"; } if(f) patch.finish=f; if(patch.state==="wrap") bits.push((f?FIN.filter(function(x){return x[0]===f})[0][1].toLowerCase()+" ":"")+"wrap"); }
+  }
+  var price=/(price|quote|cost|how much|\$|callback|call me|book)/.test(l);
+  if(Object.keys(patch).length) go(patch,true);
+  if(/legal|law/.test(l)&&/tint|ohio|window/.test(l+S.state)){ say("In Ohio the front side windows must let in at least 50% of light. The rear side and back glass can go darker. We confirm it for your car before we cut film."); return; }
+  if(/how long|last|years/.test(l)){ say("That depends on the film and how the car is kept. Tell me the car and I'll get you a real answer with the quote."); return; }
+  if(/design/.test(l)&&com){ say("Yes. Send the logo and the vehicle list and the design comes back with the quote."); return; }
+  if(car||price){
+    openQuote({car:car});
+    say("Got it"+(car?": <b>"+car+"</b>":"")+(bits.length?", "+bits.join(" and "):"")+". I opened the price form with that filled in.");
+  } else if(bits.length){ say("Here's "+bits.join(" and ")+". Tell me the car and I'll price it."); }
+  else say("I can show wraps, PPF, tint, body kits or fleet graphics. Try “2021 Charger satin black wrap price”.");
+}
+
+/* ---------- gallery ---------- */
+var WORK=[["hellcat-satin-black","Charger Hellcat","Satin black, blue stripes","p"],["tesla-3-satin-black","Tesla Model 3","Satin black","p"],["porsche-aqua","Porsche 911 Turbo","Satin aqua","p"],["bmw-autumn-fire","BMW 3 Series","Matte Autumn Fire","p"],["mustang-satin-pink","Ford Mustang","Satin pink","p"],["tesla-y-satin-charcoal","Tesla Model Y","Satin dark grey","p"],["corvette-color-shift","Corvette C7","Color-shift chrome","p"],["durango-satin-black","Dodge Durango","Satin black, red stripes","p"],["s580-satin-red","Mercedes S580","Satin red","p"],["corvette-matte-black","Corvette Z06","Matte black, tricolor stripe","p"],["range-rover-copper","Range Rover Sport","Burnt copper","p"],["trackhawk-sky-blue","Jeep Trackhawk","Gloss sky blue","p"],["bmw-satin-copper","BMW 550i","Satin copper","p"],["tesla-y-pearl-white","Tesla Model Y","Satin pearl white","p"],["hellcat-lime","Challenger Hellcat","Gloss lime green","p"],["install-mirror","Mirror cap","Mid-install, trimmed by hand","p"],
+          ["sprinter-print","Sprinter van","Full custom print","c"],["library-bus","Queens Public Library bus","Full custom print","c"],["crv-print","Honda CR-V","Full print for a pet-care business","c"],["lexus-lettering","Lexus sedan","Matte black with printed lettering","c"],["boat-print","Wake boat","Custom printed livery","c"],["ryker-print","Can-Am Ryker","Custom printed graphics","c"]];
+function rail(){
+  var r=$("#rail"), k=S.mode==="commercial"?"c":"p"; if(r.dataset.set===k) return; r.dataset.set=k;
+  r.innerHTML=WORK.filter(function(w){return w[3]===k}).map(function(w){return '<figure class="card"><img loading="lazy" src="img/work/'+w[0]+'.jpg" alt="'+w[1]+", "+w[2].toLowerCase()+'"><figcaption>'+w[1]+"<span>"+w[2]+"</span></figcaption></figure>"}).join("");
+  r.scrollLeft=0;
+  $("#workh").textContent=k==="c"?"Work that works.":"Proof in the finish.";
+  $("#workp").textContent=k==="c"?"Real commercial jobs from the EveryWrap archive. Not renders.":"Real EveryWrap jobs from our own Instagram. Not renders.";
+}
+
+/* ---------- sheets ---------- */
+var lastFocus, qStep=1, photo=false;
+function open(id){ lastFocus=document.activeElement; var s=$(id); s.hidden=false; var f=s.querySelector("input:not([type=file]),button.btn"); if(f) setTimeout(function(){f.focus()},60); }
+function close(){ $$(".scrim").forEach(function(s){s.hidden=true}); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+function step(n){ qStep=n; $$("#qForm .step").forEach(function(s){ s.classList.toggle("show",+s.dataset.step===n); }); $("#qProg").textContent=n<4?"Step "+n+" of 3":"Request ready"; $("#qTitle").textContent=n<4?"Get my price":"Here's what we got"; var f=$('#qForm .step[data-step="'+n+'"] input, #qForm .step[data-step="'+n+'"] button'); if(f) f.focus(); }
+var SVC=[["wrap","Vinyl wrap"],["ppf","PPF"],["tint","Window tint"],["kits","Body kit"],["com","Commercial graphics"]];
+function openQuote(pre){
+  pre=pre||{};
+  $("#qSvc").innerHTML=SVC.map(function(s){ var on=S.mode==="commercial"?s[0]==="com":s[0]===S.state; return '<label><input type="checkbox" id="qS_'+s[0]+'" value="'+s[1]+'"'+(on?" checked":"")+">"+s[1]+"</label>"; }).join("");
+  if(pre.car) $("#qCar").value=pre.car;
+  $("#qFin").value=finName()[1].charAt(0)+finName()[1].slice(1).toLowerCase();
+  $("#qPhoto").hidden=!photo; $$("#qForm .err").forEach(function(e){e.textContent=""});
+  finField(); step(1); close(); open("#qScrim");
+}
+function finField(){ var w=$("#qS_wrap"); $("#qFinF").hidden=!(w&&w.checked); }
+function picked(){ return $$("#qSvc input:checked").map(function(i){return i.value}); }
+function next(){
+  if(qStep===1){ if(!$("#qCar").value.trim()&&!photo){ $("#qErr1").textContent="Add the year, make and model so we can price the right car."; $("#qCar").focus(); return; } $("#qErr1").textContent=""; step(2); }
+  else if(qStep===2){ if(!picked().length){ $("#qErr2").textContent="Pick at least one service."; return; } $("#qErr2").textContent=""; step(3); }
+}
+function submitQuote(e){
+  e.preventDefault();
+  if(qStep<3){ next(); return; }
+  var name=$("#qName").value.trim(), digits=$("#qPhone").value.replace(/\D/g,"");
+  if(!name){ $("#qErr3").textContent="Add your name so we know who to ask for."; $("#qName").focus(); return; }
+  if(digits.length<10){ $("#qErr3").textContent="That number looks short. Enter all 10 digits."; $("#qPhone").focus(); return; }
+  var svc=picked(), rows=[["Vehicle",$("#qCar").value.trim()||"From photo"],["Service",svc.join(", ")]];
+  if($("#qS_wrap").checked) rows.push(["Finish",$("#qFin").value]);
+  if($("#qS_tint").checked) rows.push(["Tint",S.tint+"%"]);
+  rows.push(["Contact",name+", "+$("#qPhone").value.trim()+" ("+($("#qHowCall").checked?"call":"text")+")"],["Price","Shown here once pricing is loaded"]);
+  $("#qSum").innerHTML=rows.map(function(r){ return "<dt>"+r[0]+"</dt><dd></dd>"; }).join("");
+  $$("#qSum dd").forEach(function(d,i){ d.textContent=rows[i][1]; });
+  step(4); say("Request ready for <b>"+name.replace(/[<>&]/g,"")+"</b>. In this preview nothing is sent.");
+}
+function buildSwatches(){
+  $("#sw").innerHTML=FIN.map(function(f){return '<button type="button" data-f="'+f[0]+'" aria-pressed="false"><i style="background:'+f[3]+'"></i>'+f[1]+"</button>"}).join("");
+  $("#usw").innerHTML=FIN.map(function(f){return '<button type="button" data-f="'+f[0]+'" aria-pressed="false"><i style="background:'+f[3]+'"></i>'+f[1]+"</button>"}).join("");
+}
+
+/* ---------- intro ---------- */
+var REEL=["hellcat-satin-black","porsche-aqua","bmw-autumn-fire","tesla-3-satin-black","mustang-satin-pink","corvette-color-shift","durango-satin-black","s580-satin-red","corvette-matte-black","tesla-y-satin-charcoal"];
+var introT=[];
+function endIntro(fast){
+  var el=$("#intro"); introT.forEach(clearTimeout); introT=[];
+  if(el.hidden) return;
+  if(fast||reduce){ el.hidden=true; el.classList.remove("out","boom"); }
+  else { el.classList.add("boom","out"); setTimeout(function(){ el.hidden=true; el.classList.remove("out","boom"); },650); }
+  if(!reduce){ stage.classList.remove("cut"); void stage.offsetWidth; stage.classList.add("cut"); }
+  nudge();
+}
+function playIntro(){
+  var el=$("#intro"), card=$("#icard"), bg=$("#ibg"); el.hidden=false; el.classList.remove("out","boom"); card.innerHTML="";
+  var imgs=REEL.map(function(n){ var i=new Image(); i.src="img/work/"+n+".jpg"; i.alt=""; card.appendChild(i); return i; });
+  var beat=215, start=320;
+  imgs.forEach(function(im,n){ introT.push(setTimeout(function(){ if(!im.complete||!im.naturalWidth) return; im.style.zIndex=n+1; im.classList.add("hit"); bg.style.backgroundImage='url("'+im.src+'")'; },start+n*beat)); });
+  introT.push(setTimeout(function(){ endIntro(false); },start+imgs.length*beat+260));
+}
+
+/* ---------- events ---------- */
+buildSwatches();
+$("#dial").addEventListener("click",function(e){ var b=e.target.closest(".chip"); if(!b) return; var v=b.dataset.v;
+  if(S.mode==="commercial") go({focus:v}); else if(v==="com") go({mode:"commercial",focus:"fleet"}); else go({state:v,view:"show"},true); });
+$("#sw").addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; S.swaps++; go({finish:b.dataset.f}); });
+$("#tintseg").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) go({tint:+b.dataset.t}); });
+$("#ppfseg").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) go({ppf:b.dataset.c}); });
+$("#vShow").addEventListener("click",function(){ go({view:"show"},true); });
+$("#vPeel").addEventListener("click",function(){ go({view:"peel"},true); });
+$("#mPer").addEventListener("click",function(){ if(S.mode!=="personal") go({mode:"personal"}); });
+$("#mCom").addEventListener("click",function(){ if(S.mode!=="commercial") go({mode:"commercial",focus:"fleet"}); });
+var bar=$("#bar");
+bar.addEventListener("input",function(){ stage.style.setProperty("--p",bar.value); });
+bar.addEventListener("pointerdown",function(){ S.dragging=true; }); window.addEventListener("pointerup",function(){ S.dragging=false; });
+$("#bQuote").addEventListener("click",function(){ openQuote(); });
+$("#bUpload").addEventListener("click",function(){ openUpload(); });
+$("#askCam").addEventListener("click",function(){ openUpload(); });
+function openUpload(){ press($$("#usw button"),function(b){return b.dataset.f===S.finish}); close(); open("#uScrim"); }
+$("#usw").addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; S.finish=b.dataset.f; press($$("#usw button"),function(x){return x===b}); if(S.mode==="personal"&&S.state==="wrap") render(); });
+$("#uFile").addEventListener("change",function(){ var f=this.files&&this.files[0]; if(!f) return; var u=URL.createObjectURL(f), t=$("#dropT"); t.innerHTML=""; var im=new Image(); im.alt="Your car"; im.src=u; t.appendChild(im); photo=true; });
+$("#uGo").addEventListener("click",function(){ if(S.mode==="personal"&&S.state!=="wrap"){} openQuote(); });
+$("#askf").addEventListener("submit",function(e){ e.preventDefault(); var i=$("#ask"); ask(i.value); i.value=""; });
+$("#sugg").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) ask(b.textContent); });
+$("#fab").addEventListener("click",function(){ $("#assist").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"}); setTimeout(function(){ $("#ask").focus(); },350); });
+$("#qForm").addEventListener("submit",submitQuote);
+$("#qForm").addEventListener("click",function(e){ if(e.target.closest("[data-next]")) next(); else if(e.target.closest("[data-back]")) step(qStep-1); });
+$("#qSvc").addEventListener("change",finField);
+document.addEventListener("click",function(e){ if(e.target.closest("[data-close]")||e.target.classList.contains("scrim")) close(); });
+document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ if(!$("#intro").hidden) endIntro(true); else close(); } });
+$("#iskip").addEventListener("click",function(){ endIntro(true); });
+$("#intro").addEventListener("click",function(e){ if(e.target.id!=="iskip") endIntro(false); });
+$("#replay").addEventListener("click",function(){ window.scrollTo(0,0); playIntro(); });
+/* pointer parallax on desktop */
+if(!reduce&&window.matchMedia("(pointer:fine)").matches){
+  $("#hero").addEventListener("pointermove",function(e){ var r=stage.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    wper.style.transform="translate3d("+(-x*14).toFixed(1)+"px,"+(-y*8).toFixed(1)+"px,0)"; wcom.style.transform="translate3d("+(-x*10).toFixed(1)+"px,"+(-y*6).toFixed(1)+"px,0)"; });
+}
+if(phone.addEventListener) phone.addEventListener("change",function(){ copy(); });
+if("IntersectionObserver" in window){ var vis={}, io=new IntersectionObserver(function(es){ es.forEach(function(e){ vis[e.target.className.split(" ")[0]]=e.isIntersecting; }); $("#fab").classList.toggle("hide",!!(vis.cta||vis.assist)); },{threshold:.2}); io.observe($(".cta")); io.observe($("#assist")); }
+plates["a-satin-black"]=wper.querySelector('[data-k="a-satin-black"]');
+render(false);
+var seen=false; try{ seen=sessionStorage.getItem("ew-intro")==="1"; sessionStorage.setItem("ew-intro","1"); }catch(_){}
+if(seen||reduce){ $("#intro").hidden=true; nudge(); } else playIntro();
+if(document.readyState==="complete") setTimeout(warm,900); else window.addEventListener("load",function(){ setTimeout(warm,900); });
+})();
+</script>
+<!--/PAGE-->
+</body>
+</html>

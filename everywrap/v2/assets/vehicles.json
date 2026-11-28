@@ -1,0 +1,27 @@
+{
+ "_help": "Hand-written facts about each vehicle. tools/build_manifest.py merges this with the image files it finds under assets/sets/<vehicle>/<set>/NNN.(png|webp|jpg). carBox is [left, top, right, bottom] of the car body as fractions of the image. nose says which way the front of the car points: 'left' or 'right'. Both can be a single value (applies to every frame) or a list with one value per frame.",
+ "sedan": {
+  "label": "Sedan",
+  "body": "sedan",
+  "nose": "left",
+  "carBox": [
+   0.1092,
+   0.1261,
+   0.8908,
+   0.7311
+  ],
+  "anchorY": 0.5
+ },
+ "coupe": {
+  "label": "Coupe",
+  "body": "coupe",
+  "nose": "right",
+  "carBox": [
+   0.13,
+   0.27,
+   0.89,
+   0.66
+  ],
+  "anchorY": 0.5
+ }
+}

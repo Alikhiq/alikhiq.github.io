@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /desk/
+Disallow: /api/
+Sitemap: https://everywrap.com/sitemap.xml
