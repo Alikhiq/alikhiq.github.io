@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — footer mark: her crystal & gold logo, slowly turning (three.js),
    with the five service icons floating round it (CSS, see footer.css).
    Lazy: nothing is fetched until the footer comes near; it reuses the three.js copy the

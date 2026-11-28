@@ -1,0 +1,25 @@
+Copyright © 2026 Round City and Susu Ink & Glow. All rights reserved.
+
+This repository is published so the sites in it can be served. It is not
+open source. No licence is granted to anyone, for any purpose.
+
+Without prior written permission from the copyright owners you may not copy,
+modify, redistribute, republish, host, sell, or build on any part of this
+repository. That covers, without limit:
+
+  - the Susu Ink & Glow website (susuinkandglow.com): its design, layout,
+    HTML, CSS, JavaScript, 3D scenes, animations and written copy;
+  - the Susu Ink & Glow name, logo and wordmark, and the Round City name
+    and mark, which are trademarks of their owners;
+  - all photographs, portraits, illustrations, icons, videos and audio;
+  - the motion kit, build scripts and documentation.
+
+Viewing the sites in a browser, and the copies a browser makes to do that,
+are allowed. Nothing else is.
+
+Third-party components keep their own licences and are not covered by the
+claim above. They include three.js (MIT), Lenis (MIT), React (MIT), the
+Supabase client (MIT), and the Bodoni Moda, Manrope, Playfair Display and
+DM Sans typefaces (SIL Open Font License 1.1).
+
+Permission requests: https://roundcity.co

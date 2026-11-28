@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — site styles (Round City) */
 /* fonts: self-hosted (same Playfair Display + DM Sans files Google Fonts serves, latin subset) */
 @font-face{font-family:'Playfair Display';font-style:normal;font-weight:400 900;font-display:swap;src:url(../assets/fonts/playfair-display-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -627,3 +628,4 @@ button,summary,.btn,.chip,.tile,.date,.mbar,.rail button,.nav__menu,.seg label,.
 .prices .steps::before{background:linear-gradient(90deg,var(--hair-strong),rgba(228,189,145,.08))}
 .prices .steps__n{background:#2a1f2e;border:1px solid var(--hair-strong)}
 @media (max-width:760px){.prices .steps::before{background:linear-gradient(180deg,var(--hair-strong),rgba(228,189,145,.08))}}
+.lede a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}

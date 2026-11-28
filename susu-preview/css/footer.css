@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — footer: the closing scene (Round City) */
 .foot{position:relative;isolation:isolate;overflow:hidden;padding:clamp(96px,11vw,168px) 0 44px;background:var(--plum-deep);border-top:1px solid var(--hair);color:var(--body)}
 .foot::before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;

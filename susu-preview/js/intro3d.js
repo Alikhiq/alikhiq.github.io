@@ -1,3 +1,4 @@
+/* © 2026 Round City (roundcity.co) for Susu Ink & Glow. All rights reserved. No copying or reuse without written permission. */
 /* Susu Ink & Glow — entrance: the SUSU wordmark in crystal & gold (three.js), with her five
    service icons and the service line under it (those are CSS, see css/intro.css).
    - It does NOT cover the page. The headline, buttons and nav paint at once (good for visitors

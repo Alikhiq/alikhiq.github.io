@@ -1,0 +1,217 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Round City: mark to mark</title>
+<!-- © 2026 Round City (roundcity.co). All rights reserved.
+     One film, three marks: the Round City seal -> the Susu Ink & Glow logo -> its three.js crystal wordmark,
+     with a hook line animated over each. 18.5 s, 1080x1920. Hooks live in HOOKS below.
+     Render: node lib/logoshot.js work/frames/logo 0 10.2 && node lib/cap.js marks.html work/marks 30 0 18.5 -->
+<link rel="stylesheet" href="lib/common.css">
+<style>
+:root{--night:#0b0d13;--plaster:#f1ebe0;--cobalt:#1D4ED8}
+.stage{background:var(--night)}
+#bgNight{background:radial-gradient(110% 70% at 50% 46%,#1a1f2c 0%,#10131b 46%,var(--night) 100%)}
+#bgPlum{background:radial-gradient(120% 80% at 50% 44%,#30233a 0%,var(--plum) 48%,var(--plum-deep) 100%)}
+
+/* hooks */
+.hook{position:absolute;left:70px;right:70px;top:250px;text-align:center;font-family:var(--serif);font-size:128px;line-height:1.08;letter-spacing:-.012em;color:var(--ivory);z-index:40}
+.hook .wm{display:inline-block;overflow:hidden;vertical-align:top;padding:.04em .07em .2em;margin:0 -.07em -.2em}
+.hook .w{display:inline-block;transform-origin:0 100%;white-space:pre}
+.hook em{font-style:italic}
+.hook em .w{padding:0 .1em .1em 0;margin-right:-.06em}
+#h1{color:var(--plaster)}
+#h1 em .w{background:none;-webkit-text-fill-color:currentColor;color:var(--plaster)}
+#h1 em{filter:none}
+#bar1{position:absolute;left:50%;top:556px;height:9px;width:610px;margin-left:-305px;background:var(--cobalt);transform-origin:0 50%;z-index:39}
+.sub{position:absolute;left:0;right:0;text-align:center;font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.28em;font-size:32px;color:rgba(247,238,226,.74);z-index:40}
+
+/* Round City seal */
+#seal{position:absolute;left:50%;top:1010px;width:560px;height:560px;margin:-280px 0 0 -280px;z-index:10}
+#seal svg{display:block;width:100%;height:100%;overflow:visible}
+#seal .wall{fill:var(--plaster)}
+#rcName{position:absolute;left:0;right:0;top:1380px;text-align:center;font-family:var(--sans);font-weight:600;font-size:54px;letter-spacing:.46em;padding-left:.46em;color:var(--plaster);z-index:10}
+#rcName span{display:inline-block}
+#rcTag{top:1480px;font-size:28px;color:rgba(241,235,224,.6)}
+
+/* Susu flat logo + 3D wordmark */
+#flat{position:absolute;left:50%;top:1010px;width:800px;margin:-187px 0 0 -400px;z-index:12}
+#flat img{width:100%;display:block;filter:drop-shadow(0 0 40px rgba(233,191,149,.3))}
+#glint{position:absolute;top:-40px;bottom:-40px;width:5px;margin-left:-2px;background:linear-gradient(180deg,rgba(255,236,208,0),#fff1dc 30%,#fff1dc 70%,rgba(255,236,208,0));box-shadow:0 0 34px 10px rgba(255,220,170,.55)}
+#l3d{position:absolute;left:0;top:470px;width:1080px;height:1080px;mix-blend-mode:screen;z-index:14}
+#sub3{top:1470px}
+#sub2{top:1330px}
+
+/* end card */
+#end{position:absolute;left:0;right:0;top:1040px;z-index:20;text-align:center}
+#end .rule{width:300px;margin:0 auto 54px}
+#endBy{font-family:var(--sans);font-weight:500;font-size:25px;letter-spacing:.34em;text-transform:uppercase;color:rgba(247,238,226,.72)}
+#endRow{display:inline-flex;align-items:center;gap:34px;margin-top:40px}
+#endSeal{width:112px;height:112px}
+#endSeal svg{width:100%;height:100%;display:block}
+#endSeal .wall{fill:var(--plaster)}
+#endName{font-family:var(--sans);font-weight:600;font-size:66px;letter-spacing:.3em;color:var(--plaster)}
+#endUrl{margin-top:60px;font-family:var(--serif);font-size:58px;color:var(--ivory)}
+#endSite{margin-top:28px;font-family:var(--sans);font-size:32px;letter-spacing:.06em;color:rgba(247,238,226,.62)}
+#h4{top:1500px;font-size:84px}
+#sweep{z-index:60;mix-blend-mode:screen;background:linear-gradient(110deg,rgba(255,226,190,0) 44%,rgba(255,232,204,.26) 50%,rgba(255,226,190,0) 56%);background-size:320% 100%}
+#flash{z-index:70;background:#fff3e2;mix-blend-mode:screen}
+</style></head><body>
+<div class="stage" id="stage">
+  <div class="layer" id="bgNight"></div>
+  <div class="layer" id="bgPlum"></div>
+  <canvas class="dust" id="dustFar" style="z-index:2"></canvas>
+
+  <div class="hook" id="h1"></div><div id="bar1"></div>
+  <div class="hook" id="h2"></div>
+  <div class="hook" id="h3"></div>
+
+  <div id="seal"></div>
+  <div id="rcName">ROUND CITY</div>
+  <div class="sub" id="rcTag"></div>
+
+  <div id="flat"><img alt=""><div id="glint"></div></div>
+  <div class="sub" id="sub2"></div>
+  <img id="l3d" alt="">
+  <div class="sub" id="sub3"></div>
+
+  <div id="end">
+    <div class="rule" id="endRule"></div>
+    <div id="endBy">Designed &amp; built by</div>
+    <div id="endRow"><div id="endSeal"></div><div id="endName">ROUND CITY</div></div>
+    <div id="endUrl">roundcity.co</div>
+    <div id="endSite"></div>
+  </div>
+
+  <canvas class="dust" id="dustNear" style="z-index:61"></canvas>
+  <div class="layer" id="sweep"></div>
+  <div class="layer" id="flash"></div>
+  <div class="vignette"></div>
+  <div class="grain" id="grain"></div>
+  <div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+// ---- the words. <em> is the stressed phrase. Edit here; timing follows. ----
+const HOOKS = {
+  h1: 'Most logos<br><em>just sit there.</em>',
+  rcTag: 'Software · brand · motion',
+  h2: 'We drew hers<br><em>in gold.</em>',
+  sub2: 'Susu Ink &amp; Glow · the logo',
+  h3: 'Then built it<br><em>in crystal.</em>',
+  sub3: 'Real-time 3D · runs in your browser',
+  endSite: 'See it live · susuinkandglow.com',
+};
+// ---- timeline (seconds) ----
+const T = { rc: 0, toSusu: 4.1, to3d: 8.5, end: 14.4, dur: 18.5 };
+window.EVENTS = { dur: T.dur, cuts: [T.toSusu + 0.15, T.to3d + 0.1, T.end], risers: [T.to3d + 0.1], hits: [0.22, T.to3d + 0.1], pops: [0.55, 0.75, 0.95, 1.15], end: T.end };
+
+// Round City seal (roundcity.co/mark.svg): four walls and the cobalt module. The module never moves and never recolours.
+const WALLS = [
+  ['M 557.46 553.466 L 907.002 553.959 L 907.024 898.185 L 753.816 898.073 L 753.352 708.657 C 743.136 708.417 720.453 707.631 710.905 709.111 L 710.828 1095.96 L 557.477 1096.17 L 557.46 553.466 z', -1, 0],
+  ['M 949.676 553.895 L 1491.95 553.824 L 1491.95 708.32 L 1302.41 708.238 L 1099.41 708.123 L 1098.91 897.645 C 1048.98 897.997 999.044 898.005 949.113 897.672 L 949.058 674.838 C 949.104 635.24 948.533 593.278 949.676 553.895 z', 0, -1],
+  ['M 1337.3 748.995 C 1388.53 748.504 1440.65 749.036 1491.95 749.078 L 1492 1494.99 L 1337 1494.89 L 1337.02 1095.98 L 1099.38 1095.9 C 1097.99 1160.76 1099.49 1229.64 1099.03 1295.02 L 711.022 1295.49 L 710.986 1494.46 C 659.88 1494.85 608.772 1494.87 557.666 1494.52 L 557.46 1138.28 L 753.781 1138.5 C 754.528 1119.5 753.8 1097.45 753.879 1078.3 C 754.067 1032.68 752.983 986.723 753.661 941.125 L 906.987 941.204 L 906.962 1138.47 L 949.017 1138.62 L 949.1 941.129 L 1337.27 941.313 L 1337.3 748.995 z', 1, 0],
+  ['M 1141.28 1138.78 C 1190.71 1137.48 1245.29 1138.75 1295.01 1138.88 L 1295.01 1494.93 L 907.5 1494.97 L 754.047 1494.67 C 754.072 1442.71 753.658 1389.88 754.433 1338 L 1141.16 1337.93 C 1141.11 1272.41 1140.05 1204.07 1141.28 1138.78 z', 0, 1],
+];
+const MODULE = 'M 1142.81 749.334 L 1295.18 749.168 C 1295.63 798.766 1295.67 848.368 1295.29 897.967 L 1143.38 898.145 C 1141.63 851.775 1142.9 796.415 1142.81 749.334 z';
+const sealSVG = () => `<svg viewBox="524 524 1000 1000">${WALLS.map((w) => `<g class="wg"><path class="wall" d="${w[0]}"/></g>`).join('')}<path class="mod" fill="#1D4ED8" d="${MODULE}"/></svg>`;
+$('#seal').innerHTML = sealSVG(); $('#endSeal').innerHTML = sealSVG();
+const wg = $$('#seal .wg'), mod = $('#seal .mod');
+mod.style.transformBox = 'fill-box'; mod.style.transformOrigin = '50% 50%';
+
+// kinetic hook: every word rises out of its own mask; out = [start] sends them up and away
+function kin(id) {
+  const el = $('#' + id); el.innerHTML = HOOKS[id];
+  const ws = splitWords(el);
+  ws.forEach((w) => { const m = document.createElement('span'); m.className = 'wm'; w.replaceWith(m); m.appendChild(w); });
+  return ws;
+}
+function kinDraw(ws, t, t0, out, o = {}) {
+  const st = o.stagger ?? 0.11, d = o.dur ?? 0.85;
+  ws.forEach((w, i) => {
+    const p = E.outExpo(seg(t, t0 + i * st, t0 + i * st + d));
+    let y = (1 - p) * 112, r = (1 - p) * 7, op = seg(t, t0 + i * st, t0 + i * st + 0.08);
+    if (out != null) { const q = E.inCubic(seg(t, out + i * 0.045, out + i * 0.045 + 0.42)); y -= q * 118; r -= q * 5; if (q >= 1) op = 0; }
+    w.style.transform = `translate3d(0,${y.toFixed(2)}%,0) rotate(${r.toFixed(2)}deg)`; w.style.opacity = op.toFixed(3);
+  });
+}
+function sub(id) { const el = $('#' + id); el.innerHTML = HOOKS[id]; return splitWords(el); }
+const outBack = (t) => { const c = 1.7; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+
+const H1 = kin('h1'), H2 = kin('h2'), H3 = kin('h3');
+const S1 = sub('rcTag'), S2 = sub('sub2'), S3 = sub('sub3'), S4 = sub('endSite');
+$('#rcName').innerHTML = [...'ROUND CITY'].map((c) => `<span>${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+const RN = $$('#rcName span');
+const WBy = splitWords($('#endBy')), WUrl = splitWords($('#endUrl'));
+const far = new Dust($('#dustFar'), { n: 130, seed: 3, size: [1, 2.6], bokeh: 0.04, speed: 12, depth: 0.4 });
+const near = new Dust($('#dustNear'), { n: 30, seed: 9, size: [1.6, 3.4], bokeh: 0.26, speed: 24, depth: 1 });
+const flat = $('#flat'), flatImg = $('#flat img'), glint = $('#glint'), l3d = $('#l3d');
+flatImg.src = '/brand/susu-logo-gold.svg';
+
+window.__ready = Promise.all([document.fonts.ready, flatImg.decode().catch(() => {}), preload([logoFrame(0)])]).then(() => true);
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.35)) + E.inOutSine(seg(t, T.dur - 0.5, T.dur))).toFixed(3);
+  const plum = E.inOutSine(seg(t, T.toSusu, T.toSusu + 0.9));
+  $('#bgPlum').style.opacity = plum.toFixed(3);
+
+  // ---------- 1. Round City seal ----------
+  const leave = E.inCubic(seg(t, T.toSusu - 0.05, T.toSusu + 0.55));
+  const m = outBack(seg(t, 0.2, 0.75));
+  // the module holds its place; it only scales in, and at the hand-off shrinks to the point the gold line starts from
+  mod.style.transform = `scale(${(m * (1 - E.inOut(seg(t, T.toSusu + 0.1, T.toSusu + 0.6)))).toFixed(4)})`;
+  wg.forEach((g, i) => {
+    const [, dx, dy] = WALLS[i]; const a = 0.5 + i * 0.2;
+    const p = E.outExpo(seg(t, a, a + 0.95)); const q = leave;
+    const off = (1 - p) * 420 + q * 900;
+    g.style.transform = `translate(${(dx * off).toFixed(1)}px,${(dy * off).toFixed(1)}px)`;
+    g.style.opacity = (seg(t, a, a + 0.12) * (1 - seg(t, T.toSusu + 0.2, T.toSusu + 0.55))).toFixed(3);
+  });
+  const breathe = 1 + 0.035 * seg(t, 1.4, T.toSusu);
+  $('#seal').style.transform = `scale(${breathe.toFixed(4)})`;
+  $('#seal').style.display = t < T.toSusu + 0.7 ? '' : 'none';
+  RN.forEach((s, i) => {
+    const p = E.outQuart(seg(t, 1.35 + i * 0.045, 2.05 + i * 0.045)); const q = E.inCubic(seg(t, T.toSusu - 0.25 + i * 0.02, T.toSusu + 0.15 + i * 0.02));
+    s.style.opacity = (p * (1 - q)).toFixed(3); s.style.transform = `translate3d(${((1 - p) * 46 * (i - 4.5) / 4.5).toFixed(1)}px,${(-q * 30).toFixed(1)}px,0)`;
+    s.style.filter = p < 1 ? `blur(${((1 - p) * 8).toFixed(1)}px)` : 'none';
+  });
+  animWords(S1, t, 1.9, 0.08, 0.9, [T.toSusu - 0.35, 0.4], { dy: 14, blur: 6 });
+  kinDraw(H1, t, 0.75, T.toSusu - 0.45);
+  const b1 = E.outExpo(seg(t, 1.55, 2.3)) * (1 - E.inCubic(seg(t, T.toSusu - 0.45, T.toSusu - 0.05)));
+  $('#bar1').style.transform = `scaleX(${b1.toFixed(4)})`; $('#bar1').style.transformOrigin = t > T.toSusu - 0.45 ? '100% 50%' : '0 50%';
+
+  // ---------- 2. her logo, drawn in gold ----------
+  const w = E.inOut(seg(t, T.toSusu + 0.55, T.toSusu + 1.95));
+  const flip = E.inCubic(seg(t, T.to3d - 0.05, T.to3d + 0.4));
+  flat.style.display = t > T.toSusu + 0.5 && flip < 1 ? '' : 'none';
+  flatImg.style.clipPath = `inset(-10% ${((1 - w) * 100).toFixed(2)}% -10% -5%)`;
+  glint.style.left = (w * 100).toFixed(2) + '%'; glint.style.opacity = (Math.sin(Math.PI * clamp(w)) ** 0.5 * (w < 1 ? 1 : 0)).toFixed(3);
+  flat.style.transform = `perspective(1400px) rotateY(${(flip * 88).toFixed(2)}deg) scale(${(1 + 0.04 * seg(t, T.toSusu + 0.6, T.to3d)).toFixed(4)})`;
+  flat.style.opacity = (1 - seg(t, T.to3d + 0.2, T.to3d + 0.4)).toFixed(3);
+  kinDraw(H2, t, T.toSusu + 0.7, T.to3d - 0.5);
+  animWords(S2, t, T.toSusu + 1.8, 0.07, 0.9, [T.to3d - 0.45, 0.4], { dy: 14, blur: 6 });
+
+  // ---------- 3. the three.js crystal wordmark ----------
+  const tl = t - T.to3d;
+  const e = E.inOut(seg(t, T.end, T.end + 1.3));
+  l3d.style.display = tl >= 0 ? '' : 'none';
+  if (tl >= 0) seqFrame(l3d, logoFrame(tl));
+  l3d.style.opacity = E.outCubic(seg(tl, 0, 0.5)).toFixed(3);
+  l3d.style.transform = `translate3d(0,${(-e * 330).toFixed(1)}px,0) scale(${(1.12 - 0.34 * e).toFixed(4)})`;
+  kinDraw(H3, t, T.to3d + 1.0, T.end - 0.5);
+  animWords(S3, t, T.to3d + 2.3, 0.07, 0.9, [T.end - 0.45, 0.4], { dy: 14, blur: 6 });
+  const fl = seg(t, T.to3d, T.to3d + 0.5); $('#flash').style.opacity = (fl > 0 && fl < 1 ? (1 - fl) ** 2 * 0.09 : 0).toFixed(3);
+
+  // ---------- 4. end card ----------
+  const te = t - T.end;
+  $('#end').style.display = te > 0 ? '' : 'none';
+  const r = E.outQuart(seg(te, 0.5, 1.5)); $('#endRule').style.transform = `scaleX(${r.toFixed(3)})`; $('#endRule').style.opacity = r.toFixed(3);
+  animWords(WBy, te, 0.75, 0.07, 0.9, null, { dy: 14, blur: 6 });
+  const es = outBack(seg(te, 1.0, 1.6)); $('#endSeal').style.transform = `scale(${es.toFixed(4)}) rotate(${((1 - E.outExpo(seg(te, 1.0, 1.9))) * -90).toFixed(2)}deg)`; $('#endSeal').style.opacity = seg(te, 1.0, 1.1).toFixed(3);
+  const en = E.outQuart(seg(te, 1.15, 2.0)); setEl($('#endName'), { op: en, x: (1 - en) * 40, blur: (1 - en) * 8 });
+  animWords(WUrl, te, 1.6, 0.08, 1.0, null, { dy: 18, blur: 8 });
+  animWords(S4, te, 2.0, 0.05, 0.9, null, { dy: 12, blur: 5 });
+
+  // ---------- atmosphere ----------
+  const sw = seg(t, T.end + 1.5, T.end + 3.0); $('#sweep').style.opacity = (sw > 0 && sw < 1 ? Math.sin(Math.PI * sw) * 0.9 : 0).toFixed(3);
+  $('#sweep').style.backgroundPosition = `${(135 - sw * 170).toFixed(1)}% 0`;
+  far.draw(t + 4, plum * 0.8, { dy: -t * 6 }); near.draw(t + 2, plum * 0.5, { dy: -t * 20 });
+  grainJitter($('#grain'), t);
+  await flushDecodes();
+};
+</script></body></html>
