@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paradise Market Proposal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A Round City website and catering package for Paradise International Food Market, Dublin, Ohio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: a proposal set like a catering menu card — lapis ground, gold rules, one interactive phone that previews the site. */
+:root{
+  --bg:#f6efe4; --surface:#fffaf2; --ink:#16193a; --muted:#5d5a6b; --line:#e2d4bf;
+  --gold:#a8743f; --gold-soft:#e9c39d; --lapis:#1b2150; --on-lapis:#f7eee2; --warn:#a2402c; --ok:#2f6b4f;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ar:"Amiri","Noto Naskh Arabic","Geeza Pro","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11142e; --surface:#181c3d; --ink:#f4ebde; --muted:#b4adbd; --line:#2c3160;
+  --gold:#e4bd91; --gold-soft:#e9c39d; --lapis:#0c0f26; --on-lapis:#f7eee2; --warn:#f0a08c; --ok:#8fd0ad; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11142e; --surface:#181c3d; --ink:#f4ebde; --muted:#b4adbd; --line:#2c3160;
+  --gold:#e4bd91; --gold-soft:#e9c39d; --lapis:#0c0f26; --on-lapis:#f7eee2; --warn:#f0a08c; --ok:#8fd0ad; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(30px,4.4vw,46px)}
+h3{font-size:24px}
+p{margin:0}
+.lede{font-size:19px;color:var(--muted);max-width:62ch}
+.ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate}
+section{padding-block:72px}
+.sec-head{display:grid;gap:14px;margin-bottom:36px;max-width:760px}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+
+/* top bar */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.brand{font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);font-size:13px}
+
+/* hero */
+.hero{padding-block:56px 64px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(44px,7vw,84px);letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .ar-line{font-size:clamp(22px,3vw,30px);color:var(--gold);margin-top:14px;line-height:1.5}
+.hero-copy{display:grid;gap:22px;min-width:0}
+.for{font-size:14px;color:var(--muted);border-left:2px solid var(--gold);padding-left:12px}
+.for b{color:var(--ink);font-weight:600}
+.hero-pic{position:relative;min-width:0;margin:0;border-radius:200px 200px 18px 18px;overflow:hidden;aspect-ratio:4/5;max-width:440px;justify-self:end;width:100%;box-shadow:0 30px 60px -30px rgba(10,12,40,.5)}
+.hero-pic img{width:100%;height:100%;object-fit:cover}
+.hero-pic figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 18px 14px;background:linear-gradient(transparent,rgba(8,10,30,.85));color:#f7eee2;font-size:13px}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-size:14px}
+.pill b{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--gold)}
+
+/* strengths strip */
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.strip figure{margin:0;display:grid;gap:10px}
+.strip img{aspect-ratio:4/5;object-fit:cover;border-radius:12px;width:100%}
+.strip figcaption{font-size:14px;line-height:1.4}
+.strip figcaption b{display:block;font-family:var(--serif);font-weight:600;font-size:17px}
+.strip .ar{font-size:15px;color:var(--gold)}
+
+/* audit */
+.audit{background:var(--lapis);color:var(--on-lapis)}
+.audit .eyebrow{color:var(--gold-soft)}
+.audit .lede{color:rgba(247,238,226,.75)}
+.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.finds{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.finds li{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(233,195,157,.22)}
+.finds li:last-child{border-bottom:1px solid rgba(233,195,157,.22)}
+.finds .k{font-family:var(--serif);font-size:15px;color:var(--gold-soft);min-width:22px}
+.finds b{color:#fff;font-weight:600}
+.finds code{font-size:13px;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:4px}
+.shot{border-radius:12px;overflow:hidden;border:1px solid rgba(233,195,157,.3);background:#fff}
+.shot-cap{font-size:13px;color:rgba(247,238,226,.7);margin-top:10px}
+.fair{margin-top:28px;font-size:15px;color:rgba(247,238,226,.8);max-width:70ch}
+
+/* packages */
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.tier.rec{border:1.5px solid var(--gold);box-shadow:0 24px 50px -32px rgba(168,116,63,.6)}
+.tier-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.tag{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:var(--gold);color:var(--bg);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.price{font-family:var(--serif);font-size:54px;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.price small{font-family:var(--sans);font-size:14px;color:var(--muted);margin-left:6px;letter-spacing:0}
+.who{color:var(--muted);font-size:15px}
+.inc{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.inc li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15.5px;line-height:1.45}
+.inc li::before{content:"";width:8px;height:8px;margin-top:8px;border-radius:50%;background:var(--gold);justify-self:center}
+.inc li.plus::before{background:none;border:1.5px solid var(--gold);width:9px;height:9px}
+.meta{margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--line);padding-top:18px}
+.meta div{font-size:13px;color:var(--muted);line-height:1.35}
+.meta b{display:block;font-size:15px;color:var(--ink);font-weight:600}
+.addons{margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.addons h3{padding:22px 26px 8px;font-size:22px}
+.addon{display:grid;grid-template-columns:1fr auto;gap:18px;padding:16px 26px;border-top:1px solid var(--line);align-items:baseline}
+.addon:first-of-type{border-top:0}
+.addon p{font-size:14.5px;color:var(--muted);margin-top:2px}
+.addon .ap{font-family:var(--serif);font-size:22px;color:var(--gold);white-space:nowrap;font-variant-numeric:tabular-nums}
+.fine{font-size:13.5px;color:var(--muted);margin-top:18px;max-width:80ch}
+
+.grow{background:var(--surface);border-block:1px solid var(--line)}
+.grow .tier{background:var(--bg)}
+.films{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;counter-reset:f}
+.films li{counter-increment:f;display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:center;padding-block:12px;border-top:1px solid var(--line);min-width:0}
+.films img,.films .pin{width:88px;height:88px;border-radius:12px;object-fit:cover}
+.films .pin{display:grid;place-items:center;background:var(--lapis);color:var(--gold-soft);font-family:var(--serif);font-size:20px}
+.films b{display:block;font-family:var(--serif);font-weight:600;font-size:19px}
+.films b::before{content:"Film " counter(f) " · ";font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.films p{font-size:15px;color:var(--muted)}
+/* concept */
+.concept .wrap{display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center}
+.concept-copy{display:grid;gap:20px;min-width:0}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:var(--surface);width:max-content}
+.toggle button{font:inherit;font-size:14px;border:0;background:none;color:var(--ink);padding:8px 18px;border-radius:999px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.toggle button:last-child{font-family:var(--ar);font-size:16px}
+.notes{display:grid;gap:12px;font-size:15.5px}
+.notes div{display:grid;grid-template-columns:28px 1fr;gap:8px}
+.notes span{font-family:var(--serif);color:var(--gold)}
+
+.phone{width:100%;max-width:360px;justify-self:center;aspect-ratio:9/19;border-radius:46px;background:#0b0d22;padding:12px;box-shadow:0 40px 80px -40px rgba(8,10,30,.7),inset 0 0 0 2px #2a2f5c}
+.screen{position:relative;height:100%;border-radius:36px;overflow:hidden;background:#fbf6ee;color:#1d1a16}
+.scroll{height:100%;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* the mock is the client's site: its own warm palette, fixed in both themes */
+.m{--m-ink:#1d1a16;--m-red:#b8452b;--m-green:#2e5d3a;--m-cream:#fbf6ee;--m-sand:#efe3cf;font-size:13px;line-height:1.45}
+.m-bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 16px 10px;background:rgba(251,246,238,.94);backdrop-filter:blur(6px);border-bottom:1px solid #eadcc6}
+.m-logo{font-family:var(--serif);font-weight:600;font-size:16px;line-height:1}
+.m-logo small{display:block;font-family:var(--sans);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--m-red);margin-top:3px;font-weight:700}
+.m-call{font-size:11px;font-weight:700;background:var(--m-green);color:#fff;border-radius:999px;padding:6px 11px}
+.m-hero{position:relative;height:300px}
+.m-hero img{width:100%;height:100%;object-fit:cover}
+.m-hero div{position:absolute;inset:auto 0 0 0;padding:60px 16px 16px;background:linear-gradient(transparent,rgba(20,12,6,.86));color:#fff}
+.m-hero h4{font-family:var(--serif);font-size:25px;font-weight:500;line-height:1.1;margin:0}
+.m-hero p{font-size:12px;opacity:.85;margin-top:6px}
+.m-today{margin:14px;background:#fff;border:1px solid #eadcc6;border-radius:14px;padding:12px 14px}
+.m-today .t{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--m-red)}
+.m-today .d{font-family:var(--serif);font-size:16px;margin-top:4px}
+.m-today .u{font-size:10.5px;color:#7a7065;margin-top:4px}
+.m-h{font-family:var(--serif);font-size:19px;padding:8px 16px 8px;margin:0;font-weight:500}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px}
+.m-grid div{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1}
+.m-grid img{width:100%;height:100%;object-fit:cover}
+.m-grid span{position:absolute;left:8px;bottom:7px;color:#fff;font-weight:700;font-size:12px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.m-cat{margin:16px 14px;background:var(--m-green);color:#fff;border-radius:16px;padding:16px}
+.m-cat h5{font-family:var(--serif);font-size:19px;font-weight:500;margin:0}
+.m-cat p{font-size:12px;opacity:.85;margin:6px 0 10px}
+.m-cat ul{margin:0 0 12px;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:5px}
+.m-cat li{font-size:10.5px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 8px}
+.m-btn{display:block;text-align:center;background:#fff;color:var(--m-green);border-radius:10px;padding:10px;font-weight:700;font-size:12.5px}
+.m-visit{margin:0 14px 18px;padding:14px;border-radius:14px;background:var(--m-sand);display:grid;gap:4px;font-size:12px}
+.m-visit b{font-family:var(--serif);font-size:16px;font-weight:500}
+.m-foot{text-align:center;font-size:10px;color:#8b8073;padding:4px 0 26px}
+.m[dir="rtl"]{font-family:var(--ar);font-size:14px}
+.m[dir="rtl"] .m-logo,.m[dir="rtl"] h4,.m[dir="rtl"] .m-h,.m[dir="rtl"] h5,.m[dir="rtl"] .d,.m[dir="rtl"] .m-visit b{font-family:var(--ar);font-weight:700}
+.m[dir="rtl"] .m-grid span{left:auto;right:8px}
+.m[dir="rtl"] .m-logo small,.m[dir="rtl"] .t{letter-spacing:0}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;border-top:1px solid var(--line)}
+.step{padding:24px 22px 0 0;display:grid;gap:8px;align-content:start}
+.step .n{font-family:var(--serif);font-size:40px;color:var(--gold);line-height:1}
+.step h3{font-size:20px}
+.step p{font-size:15px;color:var(--muted)}
+.step .w{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.why div{display:grid;gap:8px;align-content:start;border-top:2px solid var(--gold);padding-top:16px}
+.why h3{font-size:21px}
+.why p{font-size:15px;color:var(--muted)}
+
+/* close */
+.close{background:var(--lapis);color:var(--on-lapis);text-align:center}
+.close .wrap{display:grid;gap:18px;justify-items:center}
+.close h2{font-size:clamp(32px,5vw,54px)}
+.close .ar{font-size:24px;color:var(--gold-soft)}
+.contact{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;font-size:16px;margin-top:6px}
+.contact span{display:grid;gap:2px}
+.contact small{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
+.contact b{font-weight:500;user-select:all}
+.close .fine{color:rgba(247,238,226,.65);margin-inline:auto}
+
+@media (max-width:900px){
+  .hero .wrap,.audit-grid,.concept .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero-pic{justify-self:start;max-width:380px}
+  .tiers{grid-template-columns:1fr}
+  .strip{grid-template-columns:repeat(3,1fr)}
+  .steps{grid-template-columns:1fr 1fr;gap:0 20px}
+  .why{grid-template-columns:1fr}
+  .films{grid-template-columns:1fr}
+  .concept .phone{order:2}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  section{padding-block:52px}
+  .strip{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr}
+  .tier{padding:22px}
+  .price{font-size:44px}
+  .addon{grid-template-columns:1fr;gap:4px;padding:16px 20px}
+  .meta{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:no-preference){
+  .m{transition:opacity .25s ease}
+  .m.swap{opacity:.2}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="brand">Round City</span>
+    <span>Proposal · November 19, 2026 · valid 30 days</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">For Paradise International Food Market</p>
+      <h1>The food is ready.<br><em>Now let Columbus see it.</em></h1>
+      <p class="ar ar-line">كل اللي بتحبوه بتلاقوه في Paradise… وهلّق على الإنترنت كمان.</p>
+      <p class="lede">The butcher counter, the stone-oven bread, the grill, the kunafa and a 40-dish catering menu deserve a brand, a website and a feed that show them every day, in English and Arabic, with an easy way to order.</p>
+      <p class="for">Prepared for <b>Paradise International Food Market</b>, 5891 Karric Square Dr, Dublin, OH 43016<br>by <b>Ali Al-Khafaji, Round City</b>, a neighbor two minutes away</p>
+      <div class="pill-row">
+        <span class="pill"><b>$2,650</b> Brand + Website</span>
+        <span class="pill"><b>$589/mo</b> Content Engine</span>
+      </div>
+    </div>
+    <figure class="hero-pic">
+      <img src="img/ouzi.jpg" alt="Whole roasted lamb ouzi on spiced rice with pine nuts, from Paradise Market's catering kitchen">
+      <figcaption>Ouzi from your catering kitchen. Every photo here comes from your own Instagram reels.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What you've built</p>
+      <h2>Six reasons people drive to Karric Square</h2>
+      <p class="lede">Your reels already show it. Each of these gets its own section on the new site, with its own photo and its own search terms.</p>
+    </div>
+    <div class="strip">
+      <figure><img src="img/butcher.jpg" alt="Halal butcher counter with fresh cuts" loading="lazy"><figcaption><b>Halal butcher</b>Fresh cuts daily<br><span class="ar">ملحمة حلال</span></figcaption></figure>
+      <figure><img src="img/bread.jpg" alt="Bread baking in the stone oven" loading="lazy"><figcaption><b>Bakery</b>From the stone oven<br><span class="ar">مخبز طازة</span></figcaption></figure>
+      <figure><img src="img/grill.jpg" alt="Lamb kofta and shish tawook over rice" loading="lazy"><figcaption><b>Grill &amp; kitchen</b>Today's dishes<br><span class="ar">طبخة اليوم</span></figcaption></figure>
+      <figure><img src="img/nests.jpg" alt="Trays of pistachio bird's nest pastries" loading="lazy"><figcaption><b>Sweets</b>Kunafa, warbat, baklava<br><span class="ar">حلويات وكنافة</span></figcaption></figure>
+      <figure><img src="img/mansaf.jpg" alt="A catering tray of lamb with pickles and lemon" loading="lazy"><figcaption><b>Catering</b>40+ dishes on the menu<br><span class="ar">ولائم ومناسبات</span></figcaption></figure>
+      <figure><img src="img/produce.jpg" alt="Boxes of fresh fruit in the produce aisle" loading="lazy"><figcaption><b>Produce &amp; pantry</b>Groceries, gifts, fragrance<br><span class="ar">خضرة وفواكه وجروسري</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="audit">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What a customer finds today</p>
+      <h2>Someone searches "halal butcher Dublin." Here is what they land on.</h2>
+      <p class="lede">Checked on November 19, 2026, on paradisefoodmarkets.com, Instagram and Apple Maps.</p>
+    </div>
+    <div class="audit-grid">
+      <ol class="finds">
+        <li><span class="k">1</span><div><b>The shop lists 24,750 products, and the homepage says 3,900+.</b> Many appear to be auto-imported: names include raw barcodes like <code>0012000057427</code>, an Instagram handle, Spanish avocado hummus and Snickers "from Qatar."</div></li>
+        <li><span class="k">2</span><div><b>Most items share the same placeholder prices,</b> $8.49 or $3.49, each with an "Add to Cart" button. That invites orders for items you may not carry, at prices you never set.</div></li>
+        <li><span class="k">3</span><div><b>No address, phone number, hours or map</b> appear anywhere on the site. The "Featured Products" section reads "No featured products yet."</div></li>
+        <li><span class="k">4</span><div><b>The butcher, bakery, kitchen, kunafa and catering aren't mentioned.</b> They are what your reels are about, and what people search for.</div></li>
+        <li><span class="k">5</span><div><b>Catering runs through Instagram DMs.</b> The QR code on your catering menu opens Instagram, and the menu has no prices.</div></li>
+        <li><span class="k">6</span><div><b>Your Apple Maps listing still shows "Opening Soon,"</b> five months after the June 19 opening.</div></li>
+      </ol>
+      <div>
+        <div class="shot"><img src="img/today-shop.jpg" alt="Screenshot of the current shop page showing 60 of 24,750 products with garbled names and placeholder prices"></div>
+        <p class="shot-cap">paradisefoodmarkets.com/shop, November 19, 2026.</p>
+      </div>
+    </div>
+    <p class="fair">None of this is unusual for a store that opened five months ago, and all of it can be fixed. Every item above is covered in the packages below.</p>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Build once</p>
+      <h2>A brand and a website that work together</h2>
+      <p class="lede">One-time project fees for the scope written below. Operations is added on top of the website package.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier-top">
+          <div><h3>Brand + Website</h3><p class="who">Look the same everywhere, and get found</p></div>
+        </div>
+        <p class="price">$2,650<small>one time</small></p>
+        <ul class="inc">
+          <li>Brand refresh: logo cleanup, colors and fonts, so the store, the website and every post look like one brand</li>
+          <li>A new website in English and Arabic with a cleaner design, real product photos and enhanced images</li>
+          <li>Replaces the current 24,750-product shop, so nobody can order something you don't carry</li>
+          <li>Butcher, bakery, kitchen, sweets, catering and grocery sections, plus your full catering menu and a request form</li>
+          <li>Google Maps: your Google and Apple Maps listings fixed, plus review automation that asks happy customers for a Google review and helps you reply to every review in English or Arabic</li>
+          <li>Social linking: Instagram, TikTok, Facebook, YouTube, Snapchat and Google, all connected to the site. New accounts are created where you don't have one</li>
+          <li>A content hub: one place to post, and your products auto-post daily to every platform at once</li>
+        </ul>
+        <div class="meta">
+          <div><b>2–3 weeks</b>after the store walkthrough</div>
+          <div><b>1 round</b>of changes</div>
+          <div><b>EN + AR</b>both languages included</div>
+        </div>
+      </article>
+
+      <article class="tier rec">
+        <div class="tier-top">
+          <div><h3>Website + Operations</h3><p class="who">Online orders, delivery and catering in one system</p></div>
+          <span class="tag">Full system</span>
+        </div>
+        <p class="price">+$5,400<small>on top of the website</small></p>
+        <p class="who">$8,050 total with Brand + Website</p>
+        <ul class="inc">
+          <li class="plus">Everything in Brand + Website</li>
+          <li>Starts with a walkthrough of each department, to map how orders, catering and stock move today before anything is built</li>
+          <li>Online ordering on your own site for pickup and local delivery, including groceries, the way DoorDash works but under your name</li>
+          <li>Orders from the delivery apps you use, such as DoorDash, Uber Eats and Grubhub, brought into one order screen where each platform allows it</li>
+          <li>A checkout upgrade: product photos, a clean catalog, your real prices and a better shopping experience on phones</li>
+          <li>Catering tracked from request to deposit to event day</li>
+          <li>Each department gets its own order queue: butcher, bakery, kitchen, sweets and grocery</li>
+          <li>An owner dashboard, staff logins, training and written instructions in English and Arabic</li>
+        </ul>
+        <div class="meta">
+          <div><b>4–6 weeks</b>after the walkthrough</div>
+          <div><b>2 rounds</b>of changes</div>
+          <div><b>1 session</b>of staff training</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="grow">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Grow every month</p>
+      <h2>Content that keeps coming. You just approve it.</h2>
+      <p class="lede">We take your products and turn them into videos, carousels, designed images and ads. You approve what you like from your phone, and the hub posts it.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier-top">
+          <div><h3>Content Engine</h3><p class="who">Daily posting, without the daily work</p></div>
+        </div>
+        <p class="price">$589<small>per month</small></p>
+        <ul class="inc">
+          <li>Automated content every month: product videos, carousels, designed images and ads in several styles, ready for you to approve</li>
+          <li>Approved posts go out on schedule to every connected platform</li>
+          <li>Daily product auto-posting from the content hub</li>
+          <li>1 master video a month, filmed in person at the store</li>
+          <li>New social accounts set up for you if you need them</li>
+          <li>Local SEO on your website and across the web, so you show up for searches like "halal butcher near me," included at no extra cost</li>
+        </ul>
+        <div class="meta">
+          <div><b>1</b>master video a month</div>
+          <div><b>Daily</b>product posts</div>
+          <div><b>Included</b>local SEO</div>
+        </div>
+      </article>
+
+      <article class="tier rec">
+        <div class="tier-top">
+          <div><h3>Master Media</h3><p class="who">The full film series, plus a steady stream of video</p></div>
+          <span class="tag">Most reach</span>
+        </div>
+        <p class="price">$1,299<small>per month</small></p>
+        <ul class="inc">
+          <li class="plus">Everything in Content Engine</li>
+          <li>7 master films shot in person, one for each part of the store (see the series below)</li>
+          <li>15 videos a month, produced with the newest AI video and editing tools from your products and footage</li>
+          <li>Short cuts of every master film for Reels, TikTok and Shorts</li>
+        </ul>
+        <div class="meta">
+          <div><b>7</b>master films</div>
+          <div><b>15</b>videos a month</div>
+          <div><b>Included</b>local SEO</div>
+        </div>
+      </article>
+    </div>
+    <p class="fine">Prices in USD. Domain, hosting, delivery-app fees, payment processing and paid ad spend are separate where they apply. You approve every post before it goes out.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The master film series</p>
+      <h2>Seven films. One for every reason to visit.</h2>
+      <p class="lede">Filmed in person at the store and at a real catering event. Each film becomes the anchor for a month of posts.</p>
+    </div>
+    <ol class="films">
+      <li><img src="img/mansaf.jpg" alt="" loading="lazy"><div><b>Catering</b><p>How the food is made, then served at a real event.</p></div></li>
+      <li><span class="pin" aria-hidden="true">5891</span><div><b>Finding Paradise</b><p>The drive in and the storefront, so first-time visitors recognize the location, which is easy to miss.</p></div></li>
+      <li><img src="img/grill.jpg" alt="" loading="lazy"><div><b>The kitchen menu</b><p>Grill, shawarma and today's dishes from the restaurant inside.</p></div></li>
+      <li><img src="img/nests.jpg" alt="" loading="lazy"><div><b>Products and offers</b><p>What's new, what's on sale and what's worth the trip this week.</p></div></li>
+      <li><img src="img/kunafa.jpg" alt="" loading="lazy"><div><b>Sweets</b><p>Kunafa cut fresh, warbat, baklava and cakes.</p></div></li>
+      <li><img src="img/butcher.jpg" alt="" loading="lazy"><div><b>Fresh halal meat</b><p>The butcher counter and the cuts people come for.</p></div></li>
+      <li><img src="img/produce.jpg" alt="" loading="lazy"><div><b>Groceries</b><p>Produce, pantry, gifts and the imports you can't find elsewhere.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<section class="concept">
+  <div class="wrap">
+    <div class="concept-copy">
+      <p class="eyebrow">A first look</p>
+      <h2>Your homepage on a customer's phone</h2>
+      <p class="lede">A quick concept made from your own photos and menu. Scroll inside the phone, and switch languages to see the whole page flip to Arabic.</p>
+      <div class="toggle" role="group" aria-label="Preview language">
+        <button type="button" id="lang-en" aria-pressed="true" data-lang="en">English</button>
+        <button type="button" id="lang-ar" aria-pressed="false" data-lang="ar">عربي</button>
+      </div>
+      <div class="notes">
+        <div><span>a</span><p>Call and Catering are always one tap away. They are the two things a hungry customer is looking for.</p></div>
+        <div><span>b</span><p>"Today's dishes" comes from the content hub, the same post that goes out to Instagram, TikTok and Facebook.</p></div>
+        <div><span>c</span><p>The catering card opens the request form. With Operations, every request is tracked through to event day.</p></div>
+      </div>
+    </div>
+    <div class="phone" aria-label="Concept homepage preview">
+      <div class="screen">
+        <div class="scroll">
+          <div class="m" id="mock" dir="ltr" lang="en">
+            <div class="m-bar"><div class="m-logo" data-t="logo">Paradise<small>International Food Market</small></div><span class="m-call" data-t="call">Call</span></div>
+            <div class="m-hero"><img src="img/ouzi.jpg" alt=""><div><h4 data-t="h">Fresh from our kitchen, every day.</h4><p data-t="hs">Halal butcher · Bakery · Grill · Sweets · Catering</p></div></div>
+            <div class="m-today"><div class="t" data-t="tt">Today's dishes</div><div class="d" data-t="td">Mansaf · Maqluba · Stuffed grape leaves &amp; zucchini</div><div class="u" data-t="tu">Updated this morning · 11:40 AM</div></div>
+            <h4 class="m-h" data-t="sh">Shop the store</h4>
+            <div class="m-grid">
+              <div><img src="img/sujuk.jpg" alt=""><span data-t="g1">Halal butcher</span></div>
+              <div><img src="img/bread.jpg" alt=""><span data-t="g2">Bakery</span></div>
+              <div><img src="img/grill.jpg" alt=""><span data-t="g3">Grill</span></div>
+              <div><img src="img/kunafa.jpg" alt=""><span data-t="g4">Kunafa &amp; sweets</span></div>
+            </div>
+            <div class="m-cat">
+              <h5 data-t="ch">Catering for every gathering</h5>
+              <p data-t="cp">40+ dishes, from mansaf and ouzi to trays of kunafa.</p>
+              <ul><li data-t="c1">Mansaf</li><li data-t="c2">Lamb kabsa</li><li data-t="c3">Ouzi</li><li data-t="c4">Musakhan</li><li data-t="c5">Kofta trays</li><li data-t="c6">Kunafa</li></ul>
+              <span class="m-btn" data-t="cb">Request catering</span>
+            </div>
+            <div class="m-visit"><b data-t="vh">Visit us</b><span data-t="va">5891 Karric Square Dr, Dublin, OH</span><span data-t="vo">Open daily, 9 AM – 10 PM</span><span>(614) 376-0538</span></div>
+            <p class="m-foot" data-t="f">Concept by Round City</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">How it goes</p>
+      <h2>From yes to live</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><span class="w">Day 1</span><h3>Walk the store</h3><p>I walk each department with you: how orders, catering and posting work today, and what you want people to find first.</p></div>
+      <div class="step"><span class="n">2</span><span class="w">Weeks 1–3</span><h3>Brand and website</h3><p>The brand refresh and the new site in both languages, with a preview link on your phone and one round of changes.</p></div>
+      <div class="step"><span class="n">3</span><span class="w">Launch</span><h3>Connect everything</h3><p>The site goes live at the same address. Google and Apple Maps, review automation, every social account and the content hub are connected.</p></div>
+      <div class="step"><span class="n">4</span><span class="w">Every month</span><h3>Film and post</h3><p>I film at the store, the content arrives for your approval, and the hub posts it on schedule.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Why Round City</p>
+      <h2>A neighbor who builds this for a living</h2>
+    </div>
+    <div class="why">
+      <div><h3>Two minutes away</h3><p>I live two minutes from the store. When something needs changing, I can walk over.</p></div>
+      <div><h3>Arabic and English</h3><p>I grew up in Baghdad. Your Arabic won't come out of a translation tool, and right-to-left pages will read the way they should.</p></div>
+      <div><h3>Food businesses, live today</h3><p>59 live websites, plus operations work for Halal New York Gyro across its five Columbus locations. Prices are published at roundcity.co.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <p class="eyebrow">Next step</p>
+    <h2>Let's put Paradise on every screen in Columbus.</h2>
+    <p class="ar">نتشرف نشتغل معكم. خلّينا نقعد ربع ساعة بالمحل ونبلّش.</p>
+    <div class="contact">
+      <span><small>Ali Al-Khafaji</small><b>Founder, Round City</b></span>
+      <span><small>Call or text</small><b>(614) 618-4644</b></span>
+      <span><small>Email</small><b>ali@roundcity.co</b></span>
+      <span><small>Web</small><b>roundcity.co</b></span>
+    </div>
+    <p class="fine">This proposal is valid for 30 days from November 19, 2026. Work starts once the scope is confirmed in writing. Operations scope is finalized after the store walkthrough.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var T = {
+    ar: {logo:'الفردوس<small>أسواق الفردوس العالمية</small>',call:'اتصل',h:'طازة من مطبخنا، كل يوم.',hs:'ملحمة حلال · مخبز · مشاوي · حلويات · ولائم',
+      tt:'طبخة اليوم',td:'منسف · مقلوبة · ورق عنب وكوسا',tu:'آخر تحديث الصبح · ١١:٤٠',sh:'تسوّق من المحل',
+      g1:'ملحمة حلال',g2:'المخبز',g3:'المشاوي',g4:'كنافة وحلويات',ch:'ولائم لكل مناسبة',cp:'أكثر من ٤٠ طبق، من المنسف والقوزي لصواني الكنافة.',
+      c1:'منسف',c2:'كبسة لحم',c3:'قوزي',c4:'مسخّن',c5:'صواني كفتة',c6:'كنافة',cb:'اطلب وليمة',vh:'زورونا',va:'5891 Karric Square Dr, Dublin, OH',
+      vo:'مفتوح يوميًا من ٩ الصبح لـ ١٠ بالليل',f:'تصميم مبدئي من Round City'},
+    en: {}
+  };
+  var mock = document.getElementById('mock');
+  mock.querySelectorAll('[data-t]').forEach(function(el){ T.en[el.dataset.t] = el.innerHTML; });
+  function set(lang){
+    var apply = function(){
+      mock.querySelectorAll('[data-t]').forEach(function(el){ el.innerHTML = T[lang][el.dataset.t]; });
+      mock.dir = lang === 'ar' ? 'rtl' : 'ltr'; mock.lang = lang; mock.classList.remove('swap');
+    };
+    document.querySelectorAll('.toggle button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { apply(); return; }
+    mock.classList.add('swap'); setTimeout(apply, 180);
+  }
+  document.querySelectorAll('.toggle button').forEach(function(b){ b.addEventListener('click', function(){ set(b.dataset.lang); }); });
+})();
+</script>
+</body>
+</html>
