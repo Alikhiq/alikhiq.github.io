@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mo Tint: Pick your shade (tint ad, 40s, 14 bars at 84 BPM)</title>
+<link rel="stylesheet" href="/__fonts/mtk/mtk.css">
+<style>
+/* Mo Tint brand kit ed.03. Shade numbers and the law come from motintking/web/lib/shades.ts (OAC 4501-41-03, ORC 4513.241);
+   the price and "darkness is free" come from lib/pricing.ts. The window darkening is a labelled preview drawn in code over their own job photo. */
+:root{--bay:#0A0B09;--tire:#171914;--steel:#30332E;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--cal:#C63B2F;
+  --boltg:linear-gradient(160deg,#F6CE4A 0%,#FABD44 42%,#F5D24B 100%);--disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);color:var(--paper);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:var(--bay)}
+#root{position:absolute;inset:0;transform-origin:50% 45%}
+.L{position:absolute;inset:0;opacity:0}
+/* the car: photo + window polygons share the photo's own pixel grid (1280x1600) */
+#car{position:absolute;left:0;top:0;width:1280px;height:1600px;transform-origin:0 0}
+#car img{position:absolute;inset:0;width:1280px;height:1600px}
+#car svg{position:absolute;inset:0;width:1280px;height:1600px;overflow:visible}
+.shT{position:absolute;left:0;right:0;top:0;height:760px;background:linear-gradient(180deg,rgba(10,11,9,.94) 0%,rgba(10,11,9,.6) 50%,rgba(10,11,9,0) 100%)}
+.shB{position:absolute;left:0;right:0;bottom:0;height:900px;background:linear-gradient(0deg,rgba(10,11,9,.97) 0%,rgba(10,11,9,.75) 45%,rgba(10,11,9,0) 100%)}
+.chip{position:absolute;left:70px;padding:12px 20px 11px;background:var(--gold);color:var(--bay);font-family:var(--mono);font-weight:600;font-size:28px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.h1{position:absolute;left:66px;right:60px;font-family:var(--disp);font-size:128px;line-height:.9;letter-spacing:-.01em;text-transform:uppercase}
+.h1 .w{display:inline-block}
+.sub{position:absolute;left:70px;right:70px;font-family:var(--sans);font-weight:500;font-size:36px;line-height:1.35;color:var(--galv)}
+.note{position:absolute;left:70px;right:70px;font-family:var(--mono);font-weight:500;font-size:22px;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,201,193,.75)}
+/* shade selector */
+#ui{position:absolute;left:70px;right:70px;top:1270px;height:330px;opacity:0}
+#read{position:absolute;left:0;top:0;font-family:var(--disp);font-size:200px;line-height:1;color:var(--paper);letter-spacing:-.02em}
+#read small{font-size:96px}
+#name{position:absolute;left:4px;top:212px;font-family:var(--mono);font-weight:600;font-size:30px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+#track{position:absolute;left:0;right:0;top:300px;height:6px;background:var(--steel)}
+#fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold)}
+.tick{position:absolute;top:-34px;width:2px;height:18px;background:var(--galv);transform:translateX(-1px)}
+.tick b{position:absolute;top:-38px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-weight:600;font-size:24px;color:var(--galv);white-space:nowrap}
+#knob{position:absolute;top:-17px;width:40px;height:40px;margin-left:-20px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 30px rgba(246,202,75,.6)}
+/* law labels */
+.lab{position:absolute;padding:10px 16px;background:rgba(10,11,9,.88);border-left:6px solid var(--gold);font-family:var(--mono);font-weight:600;font-size:26px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);white-space:nowrap}
+.lab em{font-style:normal;color:var(--gold)}
+.band{position:absolute;left:0;right:0;background:var(--gold);color:var(--bay);transform-origin:0 50%}
+.band .a{position:absolute;left:70px;top:36px;font-family:var(--mono);font-weight:600;font-size:28px;letter-spacing:.16em;text-transform:uppercase}
+.band .b{position:absolute;left:62px;top:76px;font-family:var(--disp);font-size:118px;line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
+.grid4{position:absolute;left:40px;right:40px;top:560px;height:1040px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:16px}
+.cell{position:relative;overflow:hidden;background:var(--tire);box-shadow:0 0 0 2px rgba(246,202,75,.4)}
+.cell img{width:100%;height:100%;object-fit:cover;display:block}
+.cell i{position:absolute;left:14px;top:14px;padding:6px 10px;background:var(--gold);color:var(--bay);font-family:var(--mono);font-weight:600;font-size:22px;font-style:normal;letter-spacing:.14em}
+#sun{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.price{position:absolute;left:0;right:0;text-align:center;font-family:var(--disp);font-size:330px;line-height:1;letter-spacing:-.03em;color:var(--bay)}
+.ctrM{position:absolute;left:60px;right:60px;text-align:center;font-family:var(--mono);font-weight:600;font-size:30px;letter-spacing:.14em;text-transform:uppercase}
+#slash{position:absolute;top:-300px;height:2600px;width:260px;left:0;background:var(--boltg);z-index:40;transform:skewX(-22deg);opacity:0;box-shadow:0 0 80px rgba(246,202,75,.5)}
+#endL{position:absolute;inset:0;z-index:30;opacity:0;background:radial-gradient(70% 45% at 50% 33%,rgba(246,202,75,.13) 0%,rgba(10,11,9,0) 70%),var(--bay)}
+#bolt{position:absolute;left:-90px;top:60px;width:1260px;height:1260px}
+#wm{position:absolute;left:110px;top:920px;width:860px}
+#rule{position:absolute;left:340px;width:400px;top:1260px;height:4px;background:var(--gold)}
+#phone{position:absolute;left:0;right:0;top:1305px;text-align:center;font-family:var(--disp);font-size:118px;color:var(--paper)}
+#url{position:absolute;left:0;right:0;top:1455px;text-align:center;font-family:var(--mono);font-weight:600;font-size:36px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.vig{position:absolute;inset:0;z-index:60;pointer-events:none;background:radial-gradient(130% 95% at 50% 45%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%)}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.07;mix-blend-mode:overlay;z-index:61}
+.black{position:absolute;inset:0;background:#000;z-index:95}
+#flash{position:absolute;inset:0;z-index:41;background:radial-gradient(80% 60% at 50% 45%,#fff6dc 0%,rgba(255,240,200,0) 70%);mix-blend-mode:screen;opacity:0}
+</style></head><body>
+<div class="stage">
+ <div id="root">
+  <!-- CAR LAYER: lives across bars 1-8 -->
+  <div class="L" id="carL">
+    <div id="car"><img src="/mtk/img/luxury-g-class-white.jpg">
+      <svg viewBox="0 0 1280 1600">
+        <defs><linearGradient id="glare" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+        <polygon id="wF" points="770,746 880,746 892,760 892,884 752,889 752,790"/>
+        <polygon id="wR" points="925,739 1035,739 1045,751 1045,880 930,886 918,870 918,751"/>
+        <polygon id="wQ" points="1068,736 1180,736 1192,750 1190,869 1065,874 1060,860 1060,746"/>
+      </svg></div>
+    <div class="shT"></div><div class="shB" id="shB"></div>
+  </div>
+  <div class="L" id="hookL"><div class="chip" style="top:240px">Shade preview</div><div class="h1" id="hookH" style="top:320px">5%, 20%<br>or 35%?</div></div>
+  <div class="L" id="uiL"><div class="chip" style="top:240px">Pick your shade</div><div class="h1" id="uiH" style="top:320px;font-size:110px">Same film.<br>Any darkness.</div>
+    <div id="ui"><div id="read">70<small>%</small></div><div id="name">Light</div><div id="track"><div id="fill"></div><div id="knob"></div></div></div>
+    <div class="note" style="top:1700px">Preview drawn over a Mo Tint job · VLT = light let through</div></div>
+  <div class="L" id="freeL"><div class="band" id="freeB" style="top:1180px;height:330px"><div class="a">5% or 35%: same film, same price</div><div class="b">Darkness<br>is free.</div></div>
+    <div class="sub" id="freeS" style="top:1550px">You pay for the film, not the shade.</div></div>
+  <div class="L" id="lawL"><div class="chip" style="top:240px">Ohio law</div><div class="h1" id="lawH" style="top:320px;font-size:112px">The one that<br>gets tickets.</div>
+    <div class="lab" id="lF" style="left:70px;top:1260px">Front sides · <em>50% ±3</em></div>
+    <div class="lab" id="lR" style="left:70px;top:1340px">Rear sides + back · <em>any darkness*</em></div>
+    <div class="lab" id="lW" style="left:70px;top:1420px">Windshield · <em>70% ±3</em> · top strip OK</div>
+    <div class="note" id="lN" style="top:1520px">*With both outside mirrors · OAC 4501-41-03 · ORC 4513.241</div></div>
+  <div class="L" id="chargeL"><div style="position:absolute;inset:0;background:rgba(10,11,9,.78)"></div><div class="h1" id="chH" style="top:560px;font-size:118px">Illegal tint?<br>Ohio charges<br>the driver<br><span style="color:var(--gold)">and the<br>installer.</span></div>
+    <div class="sub" id="chS" style="top:1360px">Ask us what's legal on your car before we cut a single sheet.</div></div>
+  <div class="L" id="workL"><div class="chip" style="top:240px">Real jobs · Columbus</div><div class="h1" id="wkH" style="top:320px;font-size:104px">Tinted here.</div>
+    <div class="grid4"><div class="cell"><img src="/mtk/img/tint-install-c-class.jpg" style="object-position:40% 50%"><i>01</i></div><div class="cell"><img src="/mtk/img/tint-supra-rear.jpg"><i>02</i></div>
+      <div class="cell"><img src="/mtk/img/tint-black-model-y.jpg"><i>03</i></div><div class="cell"><img src="/mtk/img/windshield-lexus-head-on.jpg"><i>04</i></div></div></div>
+  <div class="L" id="ceramL"><canvas id="sun" width="1080" height="1920"></canvas><div class="chip" style="top:240px">Ceramic Grade A</div><div class="h1" id="ceH" style="top:320px;font-size:110px">Heat stays<br>outside.</div>
+    <div class="sub" id="ceS" style="top:1500px">Genuine heat rejection. No signal interference.</div><div class="note" style="top:1640px">Illustration</div></div>
+  <div class="L" id="priceL" style="background:var(--gold)"><div class="ctrM" id="pA" style="top:520px;color:var(--bay)">Ceramic Grade A · all around · from</div>
+    <div class="price" id="pB" style="top:580px">$299</div><div class="ctrM" id="pC" style="top:930px;color:var(--bay);font-size:26px;font-weight:500">Every window except the windshield · regular-size vehicle<br>Larger vehicles are quoted</div>
+    <div class="ctrM" id="pD" style="top:1120px;color:var(--bay);font-size:40px">★★★★★ 4.7 · 352 Google reviews</div></div>
+ </div>
+ <div id="endL"><img id="bolt"><img id="wm" src="/mtk/motint-wordmark-on-dark.svg"><div id="rule"></div><div id="phone">614-822-0494</div><div id="url">motintking.com</div></div>
+ <div id="slash"></div><div id="flash"></div><div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const BAR = 60 / 84 * 4, NB = 72, END = 12 * BAR, DUR = 14 * BAR; window.__DUR = DUR;
+const W = (s) => splitWords($(s)); const IN = { dy: 40, blur: 10 };
+const ws = { hook: W('#hookH'), ui: W('#uiH'), law: W('#lawH'), ch: W('#chH'), chS: W('#chS'), wk: W('#wkH'), ce: W('#ceH'), ceS: W('#ceS'), fS: W('#freeS'), ph: W('#phone'), url: W('#url') };
+const SH = [[70, 'Light'], [50, "Ohio's front-side line"], [35, 'Medium'], [20, 'Dark'], [5, 'Limo']];
+const fill = (el, vlt) => { const d = 1 - vlt / 100; el.setAttribute('fill', `rgba(6,8,10,${(0.08 + 0.9 * d).toFixed(3)})`); };
+// layer windows (bar index ranges); each [startBar, endBar)
+const LAY = { carL: [0, 8], hookL: [0, 1], uiL: [1, 4], freeL: [4, 5], lawL: [5, 7], chargeL: [7, 8], workL: [8, 10], ceramL: [10, 11], priceL: [11, 12] };
+const CUTS = [1, 4, 5, 7, 8, 10, 11, 12].map((b) => b * BAR);
+const HITS = [4 * BAR + 0.55, 11 * BAR + 0.5]; // "Darkness is free" band, $299
+// shade steps in bars 2-4: knob lands on each stop
+const STOPS = [0.35, 1.75, 3.15, 4.55, 5.95].map((x) => BAR + x);
+window.__EVENTS = { cuts: CUTS.slice(0, -1).concat([END]), hits: HITS, risers: HITS, pops: STOPS.concat([5 * BAR + 0.9, 5 * BAR + 1.3, 5 * BAR + 1.7, 8 * BAR + 0.5, 8 * BAR + 0.75, 8 * BAR + 1.0, 8 * BAR + 1.25]), end: END, dur: DUR };
+// ticks
+const track = $('#track'); const xOf = (v) => (70 - v) / 65 * 100;
+SH.forEach(([v]) => { const t = document.createElement('div'); t.className = 'tick'; t.style.left = xOf(v) + '%'; t.innerHTML = `<b>${v}</b>`; track.appendChild(t); });
+// ceramic illustration: sun rays hit a glass pane, most bounce back
+const cx = $('#sun').getContext('2d');
+function drawSun(t) { cx.clearRect(0, 0, 1080, 1920); const gx = 640, top = 600, bot = 1400;
+  const k = E.outQuart(seg(t, 0.15, 0.7));
+  // glass pane with film
+  cx.fillStyle = 'rgba(160,175,190,.16)'; cx.fillRect(gx, top, 46, (bot - top) * k); cx.fillStyle = '#F6CA4B'; cx.fillRect(gx, top, 8, (bot - top) * k);
+  // sun with glow
+  const g = cx.createRadialGradient(170, 1000, 10, 170, 1000, 220); g.addColorStop(0, 'rgba(246,202,75,.55)'); g.addColorStop(1, 'rgba(246,202,75,0)');
+  cx.fillStyle = g; cx.fillRect(0, 760, 420, 480); cx.beginPath(); cx.arc(170, 1000, 80 * k, 0, 7); cx.fillStyle = '#F6CA4B'; cx.fill();
+  cx.lineCap = 'round';
+  for (let i = 0; i < 11; i++) { const y0 = top + 40 + i * 70; const ph = ((t - 0.4) * 1.1 + i * 0.37) % 1; if (t < 0.4) continue;
+    const x = 260 + ph * 820; const back = i % 5 !== 2;
+    // faint path
+    cx.strokeStyle = 'rgba(246,202,75,.14)'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(260, y0); cx.lineTo(gx, y0); cx.stroke();
+    if (x < gx) { cx.strokeStyle = '#F6CA4B'; cx.lineWidth = 10; cx.beginPath(); cx.moveTo(Math.max(260, x - 170), y0); cx.lineTo(x, y0); cx.stroke(); }
+    else if (back) { const dx = x - gx; cx.strokeStyle = 'rgba(198,59,47,.95)'; cx.lineWidth = 10; cx.beginPath(); cx.moveTo(gx - dx, y0 - dx * 0.3); cx.lineTo(Math.min(gx, gx - dx + 170), y0 - Math.max(0, dx - 170) * 0.3); cx.stroke(); }
+    else { cx.strokeStyle = 'rgba(242,239,229,.55)'; cx.lineWidth = 6; cx.beginPath(); cx.moveTo(Math.max(gx + 46, x - 170), y0); cx.lineTo(x, y0); cx.stroke(); } }
+  cx.font = "600 28px 'IBM Plex Mono'"; cx.fillStyle = '#C8C9C1'; cx.globalAlpha = k; cx.fillText('SUN', 140, 1150); cx.fillText('FILM', gx - 22, bot + 50); cx.fillText('CABIN', 860, bot + 50); cx.globalAlpha = 1; }
+const bolt = $('#bolt'), wm = $('#wm'), rule = $('#rule'), car = $('#car');
+window.__ready = Promise.all([document.fonts.ready]).then(() => true);
+window.seek = async (t) => {
+  const bar = t / BAR;
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.3))).toFixed(3);
+  for (const [id, [a, b]] of Object.entries(LAY)) { const A = a * BAR, B = b * BAR; const o = (a === 0 ? 1 : E.inOutSine(seg(t, A - 0.12, A + 0.08))) * (1 - E.inOutSine(seg(t, B - 0.08, B + 0.12)));
+    const el = $('#' + id); el.style.opacity = o.toFixed(3); el.style.visibility = o > 0.001 ? 'visible' : 'hidden'; }
+  // --- car framing: photo pixel grid scaled 1.2, Ken Burns drift; law bars push in on the windows
+  const lawK = E.inOut(seg(t, 5 * BAR - 0.2, 5 * BAR + 0.8)) * (1 - E.inOut(seg(t, 7 * BAR - 0.4, 7 * BAR + 0.2)));
+  const s = 1.2 + 0.06 * seg(t, 0, 5 * BAR) + 0.35 * lawK, x0 = -330 * 1.2 - 110 * lawK, y0 = -10 + -260 * lawK;
+  car.style.transform = `translate(${x0.toFixed(1)}px,${y0.toFixed(1)}px) scale(${s.toFixed(4)})`;
+  // --- window shade logic
+  let vF = 70, vR = 70;
+  if (t < BAR) { const k = Math.floor(seg(t, 0.15, BAR - 0.2) * 10); const seq = [70, 35, 5, 20, 50, 5, 35, 70, 20, 5, 5]; vF = vR = seq[k]; }
+  else if (t < 4 * BAR) { let v = 70; STOPS.forEach((st, i) => { if (i > 0) { const k = E.inOut(seg(t, st - 0.55, st)); v = lerp(v, SH[i][0], k); } }); vF = vR = v; }
+  else { vF = vR = 5; const k = E.inOut(seg(t, 5 * BAR + 1.0, 5 * BAR + 1.8)); vF = lerp(5, 50, k); }
+  fill($('#wF'), vF); fill($('#wR'), vR); fill($('#wQ'), vR);
+  // --- hook
+  animWords(ws.hook, t, 0.15, 0.1, 0.45, null, IN);
+  // --- shade UI
+  const ut = t - BAR; animWords(ws.ui, ut, 0.1, 0.08, 0.5, null, IN);
+  $('#ui').style.opacity = E.outQuart(seg(ut, 0.1, 0.5)).toFixed(3);
+  const v = Math.round(vR), idx = SH.reduce((b, s2, i) => (Math.abs(s2[0] - vR) < Math.abs(SH[b][0] - vR) ? i : b), 0);
+  $('#read').innerHTML = `${v}<small>%</small>`; $('#name').textContent = SH[idx][1];
+  $('#knob').style.left = xOf(vR) + '%'; $('#fill').style.width = xOf(vR) + '%';
+  // --- darkness is free
+  const ft = t - 4 * BAR; const bk = E.outExpo(seg(ft, 0.35, 0.8)); $('#freeB').style.transform = `scaleX(${bk.toFixed(4)})`; animWords(ws.fS, ft, 0.9, 0.05, 0.5, null, { dy: 14, blur: 4 });
+  // --- law
+  const lt = t - 5 * BAR; animWords(ws.law, lt, 0.1, 0.08, 0.5, null, IN);
+  ['#lF', '#lR', '#lW'].forEach((s2, i) => { const k = E.outQuart(seg(lt, 0.9 + i * 0.4, 1.3 + i * 0.4)); setEl($(s2), { op: k, x: (1 - k) * -50 }); }); setEl($('#lN'), { op: seg(lt, 2.4, 2.9) });
+  // --- charges
+  const ct = t - 7 * BAR; animWords(ws.ch, ct, 0.1, 0.07, 0.45, null, IN); animWords(ws.chS, ct, 1.4, 0.03, 0.45, null, { dy: 14, blur: 4 });
+  // --- real work grid
+  const wt = t - 8 * BAR; animWords(ws.wk, wt, 0.1, 0.08, 0.5, null, IN);
+  $$('.cell').forEach((c, i) => { const k = E.outQuart(seg(wt, 0.45 + i * 0.25, 0.95 + i * 0.25)); setEl(c, { op: k, s: 0.9 + 0.1 * k }); $('img', c).style.transform = `scale(${(1.04 + 0.06 * seg(wt, 0, 2 * BAR)).toFixed(4)})`; });
+  // --- ceramic illustration
+  const et = t - 10 * BAR; if (et > -0.3 && et < BAR + 0.3) drawSun(Math.max(0, et)); animWords(ws.ce, et, 0.1, 0.08, 0.5, null, IN); animWords(ws.ceS, et, 1.0, 0.04, 0.5, null, { dy: 14, blur: 4 });
+  // --- price
+  const pt = t - 11 * BAR; setEl($('#pA'), { op: E.outQuart(seg(pt, 0.1, 0.5)) }); const pk = E.outQuart(seg(pt, 0.3, 0.9)); setEl($('#pB'), { op: pk, s: 1.3 - 0.3 * pk, blur: (1 - pk) * 14 });
+  setEl($('#pC'), { op: seg(pt, 0.9, 1.4) }); setEl($('#pD'), { op: seg(pt, 1.3, 1.8), y: (1 - seg(pt, 1.3, 1.8)) * 20 });
+  // --- end card (shared with The Bay)
+  const te = t - END; $('#endL').style.opacity = E.inOutSine(seg(te, -0.12, 0.08)).toFixed(3);
+  if (te > -0.2) { seqFrame(bolt, `/mtk/bolt/${pad(clamp(Math.floor(Math.max(0, te) * 30) + 1, 1, NB), 4)}.png`);
+    const up = E.inOut(seg(te, BAR - 0.35, BAR + 0.25)); setEl(bolt, { y: -230 * up, s: 1 - 0.38 * up });
+    const w = E.outQuart(seg(te, BAR - 0.05, BAR + 0.4)); setEl(wm, { op: w, s: 1.25 - 0.25 * w, blur: (1 - w) * 12 });
+    const r = E.outQuart(seg(te, BAR + 0.35, BAR + 0.85)); rule.style.transform = `scaleX(${r.toFixed(3)})`; rule.style.opacity = r.toFixed(3);
+    animWords(ws.ph, te, BAR + 0.55, 0.1, 0.5, null, { dy: 30, blur: 8 }); animWords(ws.url, te, BAR + 0.95, 0.06, 0.5, null, { dy: 14, blur: 4 }); }
+  // --- gold bolt-slash on every cut, whip, shake on hits
+  let amt = 0, dir = 1, sl = null; CUTS.forEach((c) => { const d = t - c; if (Math.abs(d) < 0.26) { const a = 1 - Math.abs(d) / 0.26; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } if (Math.abs(d) < 0.2) sl = d; });
+  amt = E.inOutSine(amt); const slash = $('#slash');
+  if (sl !== null) { const p = (sl + 0.2) / 0.4; slash.style.opacity = '1'; slash.style.transform = `translateX(${(-500 + p * 2100).toFixed(1)}px) skewX(-22deg)`; } else slash.style.opacity = '0';
+  let sx = 0, sy = 0; HITS.concat([END + 0.87]).forEach((h) => { const d = t - h; if (d >= 0 && d < 0.4) { const k = Math.pow(1 - d / 0.4, 2); sx += Math.sin(d * 95) * 12 * k; sy += Math.cos(d * 80) * 9 * k; } });
+  const R = $('#root'); R.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.08 * amt).toFixed(4)}) rotate(${(dir * 1.2 * amt).toFixed(3)}deg)`;
+  R.style.filter = amt > 0.01 ? `blur(${(amt * 8).toFixed(2)}px)` : 'none';
+  $('#flash').style.opacity = (Math.max(0, ...CUTS.map((c) => 1 - Math.abs(t - c) / 0.14)) * 0.28).toFixed(3);
+  grainJitter($('#grain'), t); await flushDecodes();
+};
+</script></body></html>

@@ -1,0 +1,156 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mo Tint: Controlled (premium tint motion graphic, 32s, silent)</title>
+<link rel="stylesheet" href="/__fonts/mtk/mtk.css">
+<style>
+/* Mo Tint brand kit ed.03: bay-black, paper, gold; Archivo Black + IBM Plex Mono.
+   Copy: pricing.ts ($299 Ceramic Grade A all around; same film, any shade, same price; genuine heat rejection, no signal interference),
+   business.ts (reduce heat and glare). Pure motion graphic: one window, one film, no photos, no sound. */
+:root{--bay:#0A0B09;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--steel:#30332E;--disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(90% 55% at 50% 44%,#15160F 0%,#0A0B09 62%,#070806 100%)}
+.abs{position:absolute}
+#bloom{position:absolute;left:50%;top:820px;width:1500px;height:1100px;margin:-550px 0 0 -750px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,244,218,.55) 0%,rgba(255,232,190,.18) 40%,rgba(255,220,170,0) 100%);opacity:0;mix-blend-mode:screen}
+#heat{position:absolute;inset:0}
+#win{position:absolute;left:130px;top:520px;width:820px;height:525px;transform-origin:50% 50%}
+#win svg{width:100%;height:100%;overflow:visible}
+#swatches{position:absolute;left:0;right:0;top:640px;height:420px;perspective:1800px}
+.sw{position:absolute;top:0;width:176px;height:113px;transform-style:preserve-3d}
+.sw svg{width:100%;height:100%;overflow:visible}
+.sw b{position:absolute;left:0;right:0;top:136px;text-align:center;font-family:var(--mono);font-weight:600;font-size:26px;letter-spacing:.12em;color:var(--galv)}
+.word{position:absolute;left:0;right:0;text-align:center;font-family:var(--disp);font-size:150px;line-height:.92;letter-spacing:-.02em;color:var(--paper);text-transform:uppercase;white-space:nowrap}
+.word .c{display:inline-block}
+.label{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-weight:600;font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:var(--galv)}
+.label.gold{color:var(--gold)}
+.fine{position:absolute;left:150px;right:150px;text-align:center;font-family:var(--sans);font-weight:400;font-size:28px;line-height:1.45;color:rgba(200,201,193,.8)}
+#vlt{position:absolute;left:0;right:0;top:1110px;text-align:center;font-family:var(--mono);font-weight:600;font-size:30px;letter-spacing:.3em;color:var(--gold)}
+#price{position:absolute;left:0;right:0;top:720px;text-align:center;white-space:nowrap;font-family:var(--disp);font-size:380px;line-height:1;letter-spacing:-.04em;color:var(--gold)}
+#price .c{display:inline-block}
+#wmw{position:absolute;left:140px;top:760px;width:800px;height:288px}
+#wm{position:absolute;inset:0;width:100%;height:100%}
+#glint{position:absolute;inset:0;background:linear-gradient(105deg,rgba(255,255,255,0) 40%,rgba(255,250,235,.95) 50%,rgba(255,255,255,0) 60%);background-size:300% 100%;
+  -webkit-mask-image:url(/mtk/motint-wordmark-on-dark.svg);-webkit-mask-size:100% 100%;mix-blend-mode:screen;opacity:0}
+#rule{position:absolute;left:390px;width:300px;top:1110px;height:3px;background:var(--gold);transform-origin:50% 50%}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.05;mix-blend-mode:overlay}
+.black{position:absolute;inset:0;background:#000}
+</style></head><body>
+<div class="stage">
+  <div id="bloom"></div>
+  <canvas id="heat" width="1080" height="1920"></canvas>
+  <div id="win"><svg viewBox="0 0 1000 640">
+    <defs>
+      <path id="gp" d="M70 600 L930 600 L930 112 Q930 52 870 52 L392 52 Q338 52 304 88 L84 520 Q70 548 70 576 Z"/>
+      <clipPath id="gc"><use href="#gp"/></clipPath>
+      <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF2"/><stop offset=".55" stop-color="#F3EEE2"/><stop offset="1" stop-color="#E2DCCD"/></linearGradient>
+      <linearGradient id="film" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0C0B"/><stop offset=".7" stop-color="#161815"/><stop offset="1" stop-color="#1C1E1A"/></linearGradient>
+      <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6CE4A" stop-opacity="0"/><stop offset=".15" stop-color="#FABD44"/><stop offset=".85" stop-color="#F5D24B"/><stop offset="1" stop-color="#F6CE4A" stop-opacity="0"/></linearGradient>
+    </defs>
+    <g id="reveal" clip-path="url(#gc)">
+      <rect id="glassR" x="0" y="0" width="1000" height="640" fill="url(#glass)"/>
+      <rect id="filmR" x="0" y="-700" width="1000" height="700" fill="url(#film)"/>
+      <rect id="sheenR" x="-400" y="0" width="260" height="640" fill="url(#sheen)" transform="skewX(-18)"/>
+      <rect id="squeegee" x="0" y="-8" width="1000" height="6" fill="url(#edge)"/>
+    </g>
+    <use id="frame" href="#gp" fill="none" stroke="rgba(242,239,229,.35)" stroke-width="2"/>
+  </svg></div>
+  <div id="swatches"></div>
+  <div class="label" id="lTop" style="top:300px">Mo Tint · Window tint</div>
+  <div class="word" id="wLight" style="top:1230px">Light.</div>
+  <div class="word" id="wHeat" style="top:1230px">Heat.</div>
+  <div class="word" id="wGlare" style="top:1230px">Glare.</div>
+  <div class="word" id="wCtrl" style="top:1230px;color:var(--gold)">Controlled.</div>
+  <div class="label" id="lCer" style="top:1400px">Ceramic window film</div>
+  <div id="vlt">VLT 70%</div>
+  <div class="word" id="wOut" style="top:1230px;font-size:132px">Heat stays out.</div>
+  <div class="label" id="lOut" style="top:1390px;line-height:1.7">Genuine heat rejection<br>No signal interference</div>
+  <div class="word" id="wAny" style="top:1180px;font-size:140px">Any shade.</div>
+  <div class="word" id="wSame" style="top:1320px;font-size:140px;color:var(--gold)">Same price.</div>
+  <div class="label gold" id="lFrom" style="top:600px">Ceramic Grade A · all around · from</div>
+  <div id="price">$299</div>
+  <div class="fine" id="fPrice" style="top:1180px">Every window except the windshield.<br>Regular-size vehicle; larger vehicles are quoted.</div>
+  <div id="wmw"><img id="wm" src="/mtk/motint-wordmark-on-dark.svg"><div id="glint"></div></div>
+  <div id="rule"></div>
+  <div class="word" id="wPhone" style="top:1160px;font-size:104px">614-822-0494</div>
+  <div class="label gold" id="lUrl" style="top:1300px">motintking.com · Columbus, Ohio</div>
+  <div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script>
+const DUR = 32; window.__DUR = DUR; window.__EVENTS = { cuts: [], hits: [], risers: [], pops: [], end: DUR, dur: DUR };
+const chars = (el) => { el.innerHTML = [...el.textContent].map((c) => `<span class="c">${c === ' ' ? '&nbsp;' : c}</span>`).join(''); return $$('.c', el); };
+const W = {}; ['wLight', 'wHeat', 'wGlare', 'wCtrl', 'wOut', 'wAny', 'wSame', 'wPhone', 'price'].forEach((id) => (W[id] = chars($('#' + id))));
+// premium type move: each letter rises out of a soft blur, slow settle; exit = lift + fade
+function type(cs, t, a, b, o = {}) { const st = o.st ?? 0.028, d = o.d ?? 0.9, dy = o.dy ?? 70;
+  cs.forEach((c, i) => { const k = E.outExpo(seg(t, a + i * st, a + i * st + d)); const q = b == null ? 0 : E.inOutSine(seg(t, b + i * 0.012, b + i * 0.012 + 0.45));
+    c.style.opacity = (k * (1 - q)).toFixed(3); c.style.transform = `translateY(${((1 - k) * dy - q * 30).toFixed(1)}px)`;
+    const bl = (1 - k) * 16 + q * 10; c.style.filter = bl > 0.1 ? `blur(${bl.toFixed(1)}px)` : 'none'; }); }
+const fade = (el, t, a, b, d = 0.6) => { const k = E.outCubic(seg(t, a, a + d)) * (b == null ? 1 : 1 - E.inOutSine(seg(t, b, b + 0.45))); el.style.opacity = k.toFixed(3); return k; };
+// ---- window geometry
+const win = $('#win'), reveal = $('#reveal'), filmR = $('#filmR'), sq = $('#squeegee'), sheen = $('#sheenR'), frame = $('#frame'), glassR = $('#glassR');
+// ---- swatches (5 shades)
+const SH = [70, 50, 35, 20, 5]; const swBox = $('#swatches');
+const SW = SH.map((v, i) => { const d = document.createElement('div'); d.className = 'sw'; d.style.left = (66 + i * 196) + 'px';
+  d.innerHTML = `<svg viewBox="0 0 1000 640"><use href="#gp" fill="url(#glass)"/><use href="#gp" fill="#0D0E0C" fill-opacity="${(0.97 * (1 - v / 100)).toFixed(3)}"/><use href="#gp" fill="none" stroke="rgba(242,239,229,.35)" stroke-width="6"/></svg><b>${String(v).padStart(2, '0')}%</b>`;
+  swBox.appendChild(d); return d; });
+// ---- heat streaks (canvas): from top-left toward the glass; with film they stop at the surface
+const hx = $('#heat').getContext('2d'); const R = rng(7); const STREAK = Array.from({ length: 34 }, () => ({ y: 560 + R() * 470, ph: R(), sp: 0.55 + R() * 0.5, len: 120 + R() * 160, w: 2 + R() * 3 }));
+// glass edge in screen space for a given screen y (window box: left 130, top 520, 0.82 px per viewBox unit)
+const edgeX = (y) => { const vy = (y - 520) / 0.82; let vx = vy >= 520 ? 84 : 84 + (520 - vy) * (304 - 84) / (520 - 88); return 130 + vx * 0.82 + 6; };
+function drawHeat(t, amt) { const cv = $('#heat'); hx.clearRect(0, 0, 1080, 1920); cv.style.visibility = amt > 0.003 ? 'visible' : 'hidden'; if (amt <= 0.003) return; hx.lineCap = 'round';
+  STREAK.forEach((s, i) => { const y = 600 + (i / STREAK.length) * 390 + (s.ph - 0.5) * 8; const ex = edgeX(y); const p = (t * s.sp * 0.9 + s.ph) % 1; const x = -200 + p * (ex + 260);
+    const hit = x >= ex; const xh = Math.min(x, ex); const tail = Math.max(-200, xh - s.len);
+    const g = hx.createLinearGradient(tail, 0, xh, 0); g.addColorStop(0, 'rgba(198,59,47,0)'); g.addColorStop(1, `rgba(250,150,70,${(0.9 * amt).toFixed(3)})`);
+    hx.strokeStyle = g; hx.lineWidth = s.w; hx.beginPath(); hx.moveTo(tail, y); hx.lineTo(xh, y); hx.stroke();
+    if (p > 0.82) { const f = 1 - seg(p, 0.82, 1); hx.fillStyle = `rgba(255,196,120,${(0.75 * f * amt).toFixed(3)})`; hx.beginPath(); hx.arc(ex, y, 3 + 9 * f, 0, 7); hx.fill(); } }); }
+function fitWords() { $$('.word, #price').forEach((el) => { const fs = parseFloat(getComputedStyle(el).fontSize); const w = [...el.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
+  if (w > 960) el.style.fontSize = Math.floor(fs * 960 / w) + 'px'; }); }
+window.__ready = Promise.all([document.fonts.ready]).then(() => { fitWords(); return true; });
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.6))).toFixed(3);
+  // A: a point of light becomes a slit; B: the slit opens into a window of light
+  const open = E.inOut(seg(t, 2.6, 4.4));
+  const line = E.outExpo(seg(t, 0.6, 2.4));
+  reveal.setAttribute('clip-path', 'url(#gc)');
+  const hClip = 6 + open * 640; // the visible band grows from a thin line
+  win.style.clipPath = `inset(${((640 - hClip) / 2 / 640 * 100).toFixed(2)}% ${((1 - line) * 50).toFixed(2)}% ${((640 - hClip) / 2 / 640 * 100).toFixed(2)}% ${((1 - line) * 50).toFixed(2)}%)`;
+  frame.style.opacity = (0.3 + 0.7 * open).toFixed(3);
+  // window overall framing across the piece
+  const toSw = E.inOut(seg(t, 18.6, 19.8)); const winOut = E.inOut(seg(t, 18.8, 19.6));
+  const settle = 1 + 0.035 * seg(t, 4.4, 18.6);
+  win.style.transform = `scale(${(settle * (1 - 0.7 * toSw)).toFixed(4)}) translateY(${(-40 * seg(t, 4.4, 18.6)).toFixed(1)}px)`;
+  win.style.opacity = (1 - winOut).toFixed(3);
+  // film: slides down 8.6 -> 11.4, settling the light from 70% to 5% VLT
+  const fk = E.inOut(seg(t, 8.6, 11.4)); filmR.setAttribute('y', (-700 + 700 * fk).toFixed(1)); sq.setAttribute('y', (-8 + 646 * fk).toFixed(1));
+  sq.style.opacity = (seg(t, 8.5, 8.8) * (1 - seg(t, 11.3, 11.7))).toFixed(3);
+  const vlt = Math.round(lerp(70, 5, fk)); $('#vlt').textContent = `VLT ${String(vlt).padStart(2, '0')}%`; fade($('#vlt'), t, 8.7, 13.4, 0.5);
+  filmR.setAttribute('fill-opacity', (0.97 * (1 - vlt / 100) / 0.95).toFixed(3));
+  // sheen passes, one per act
+  const sh = [[4.6, 6.6], [11.6, 13.4], [14.6, 16.2]].reduce((v, [a, b]) => (t >= a && t <= b ? (t - a) / (b - a) : v), -1);
+  sheen.setAttribute('x', (sh < 0 ? -500 : -400 + sh * 1700).toFixed(1));
+  // bloom follows the light let through
+  const light = open * (1 - fk * 0.88);
+  $('#bloom').style.opacity = (light * (1 - winOut) * (0.9 + 0.1 * Math.sin(t * 1.3))).toFixed(3);
+  // heat act
+  const heatAmt = seg(t, 13.8, 14.6) * (1 - seg(t, 18.2, 18.8));
+  drawHeat(t, heatAmt);
+  // words
+  fade($('#lTop'), t, 1.0, 30.0, 0.8);
+  type(W.wLight, t, 4.6, 5.9); type(W.wHeat, t, 6.1, 7.2); type(W.wGlare, t, 7.4, 8.5);
+  type(W.wCtrl, t, 11.3, 13.5); fade($('#lCer'), t, 11.9, 13.5);
+  type(W.wOut, t, 14.4, 18.2, { st: 0.022 }); fade($('#lOut'), t, 15.2, 18.2);
+  // swatches act
+  SW.forEach((d, i) => { const a = 19.2 + i * 0.12; const k = E.outExpo(seg(t, a, a + 1.0)); const q = E.inOutSine(seg(t, 23.3 + i * 0.05, 23.9 + i * 0.05));
+    d.style.opacity = (k * (1 - q)).toFixed(3); d.style.transform = `translateY(${((1 - k) * 120 - q * 60).toFixed(1)}px) rotateY(${((1 - k) * -40 + 8 * Math.sin((t - a) * 0.6)).toFixed(2)}deg)`; });
+  type(W.wAny, t, 20.0, 23.3); type(W.wSame, t, 20.8, 23.3);
+  // price act
+  fade($('#lFrom'), t, 24.0, 27.6); type(W.price, t, 24.2, 27.6, { st: 0.08, d: 1.1, dy: 160 }); fade($('#fPrice'), t, 25.4, 27.6);
+  // logo act
+  const wk = E.inOut(seg(t, 28.0, 29.2)); $('#wmw').style.clipPath = `inset(0 ${((1 - wk) * 100).toFixed(2)}% 0 0)`; $('#wmw').style.opacity = seg(t, 27.9, 28.1).toFixed(3);
+  const gl = seg(t, 29.2, 30.2); $('#glint').style.opacity = (Math.sin(Math.PI * gl)).toFixed(3); $('#glint').style.backgroundPosition = `${(100 - gl * 100).toFixed(1)}% 0`;
+  const rl = E.outExpo(seg(t, 29.4, 30.4)); $('#rule').style.transform = `scaleX(${rl.toFixed(3)})`; $('#rule').style.opacity = rl.toFixed(3);
+  type(W.wPhone, t, 29.7, null, { st: 0.03 }); fade($('#lUrl'), t, 30.3, null);
+  grainJitter($('#grain'), t); await flushDecodes();
+};
+</script></body></html>

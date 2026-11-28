@@ -1,0 +1,151 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mo Tint: Pick your shade v2 (40s, 14 bars at 84 BPM)</title>
+<link rel="stylesheet" href="/__fonts/mtk/mtk.css">
+<style>
+/* Mo Tint brand kit ed.03. Real job photos cut out (BiRefNet) and graded, staged on Mo Tint's own bay plate.
+   Giant words sit BEHIND the car (text-behind-subject). Copy sources: pricing.ts ($299, darkness is free, heat rejection,
+   no signal interference), business.ts (heat and glare; cars, trucks, SUVs; 4.7 / 352). No legal content by request. */
+:root{--bay:#0A0B09;--paper:#F2EFE5;--galv:#C8C9C1;--gold:#F6CA4B;--steel:#30332E;
+  --boltg:linear-gradient(160deg,#F6CE4A 0%,#FABD44 42%,#F5D24B 100%);--disp:'Archivo Black',sans-serif;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:var(--bay);color:var(--paper);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;inset:0;overflow:hidden;background:var(--bay)}
+#root{position:absolute;inset:0;transform-origin:50% 55%}
+#bg{position:absolute;inset:-40px;width:1160px;height:2000px;object-fit:cover}
+#topfade{position:absolute;left:0;right:0;top:0;height:760px;background:linear-gradient(180deg,rgba(10,11,9,1) 0%,rgba(10,11,9,.85) 55%,rgba(10,11,9,0) 100%)}
+#spot{position:absolute;left:-200px;right:-200px;top:700px;height:1100px;background:radial-gradient(50% 45% at 50% 55%,rgba(246,202,75,.10) 0%,rgba(246,202,75,0) 70%)}
+.sc{position:absolute;inset:0;opacity:0}
+.giant{position:absolute;left:0;right:0;text-align:center;font-family:var(--disp);line-height:.86;letter-spacing:-.025em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.giant .c{display:inline-block;will-change:transform}
+.carw{position:absolute;left:0;top:0;width:1280px;transform-origin:0 0}
+.carw img{display:block;width:100%;filter:brightness(.9) contrast(1.06) saturate(.92) drop-shadow(0 30px 40px rgba(0,0,0,.65))}
+.carw svg{position:absolute;left:0;top:0;width:100%;height:100%}
+.refl{position:absolute;left:0;top:0;width:1280px;transform-origin:0 0;opacity:.2;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,0) 22%)}
+.refl img{display:block;width:100%;transform:scaleY(-1)}
+.contact{position:absolute;height:90px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 100%)}
+.chip{position:absolute;left:50%;transform:translateX(-50%);padding:11px 20px 10px;background:var(--gold);color:var(--bay);font-family:var(--mono);font-weight:600;font-size:28px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.cap{position:absolute;left:60px;right:60px;text-align:center;font-family:var(--disp);font-size:76px;line-height:1;text-transform:uppercase;color:var(--paper)}
+.cap .w{display:inline-block}
+.small{position:absolute;left:80px;right:80px;text-align:center;font-family:var(--sans);font-weight:500;font-size:30px;line-height:1.35;color:var(--galv)}
+/* shade selector (top) */
+#sel{position:absolute;left:150px;right:150px;top:470px;height:60px;opacity:0}
+#track{position:absolute;left:0;right:0;top:28px;height:4px;background:var(--steel)}
+#fill{position:absolute;left:0;top:0;bottom:0;background:var(--gold)}
+#knob{position:absolute;top:-14px;width:32px;height:32px;margin-left:-16px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 26px rgba(246,202,75,.7)}
+.tick{position:absolute;top:-38px;transform:translateX(-50%);font-family:var(--mono);font-weight:600;font-size:22px;color:var(--galv)}
+#slash{position:absolute;top:-300px;height:2600px;width:260px;left:0;background:var(--boltg);z-index:40;transform:skewX(-22deg);opacity:0;box-shadow:0 0 80px rgba(246,202,75,.5)}
+#endL{position:absolute;inset:0;z-index:30;opacity:0;background:radial-gradient(70% 45% at 50% 33%,rgba(246,202,75,.13) 0%,rgba(10,11,9,0) 70%),var(--bay)}
+#bolt{position:absolute;left:-90px;top:60px;width:1260px;height:1260px}
+#wm{position:absolute;left:110px;top:920px;width:860px}
+#rule{position:absolute;left:340px;width:400px;top:1260px;height:4px;background:var(--gold)}
+#phone{position:absolute;left:0;right:0;top:1305px;text-align:center;font-family:var(--disp);font-size:118px;color:var(--paper)}
+#url{position:absolute;left:0;right:0;top:1455px;text-align:center;font-family:var(--mono);font-weight:600;font-size:36px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.vig{position:absolute;inset:0;z-index:60;pointer-events:none;background:radial-gradient(130% 95% at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.55) 100%)}
+.grain{position:absolute;inset:-60px;background:url(/media/grain.png);opacity:.06;mix-blend-mode:overlay;z-index:61}
+.black{position:absolute;inset:0;background:#000;z-index:95}
+#flash{position:absolute;inset:0;z-index:41;background:radial-gradient(80% 60% at 50% 45%,#fff6dc 0%,rgba(255,240,200,0) 70%);mix-blend-mode:screen;opacity:0}
+</style></head><body>
+<div class="stage">
+ <div id="root"><img id="bg" src="/mtk/img/bay-plate.jpg"><div id="spot"></div><div id="topfade"></div></div>
+ <div id="endL"><img id="bolt"><img id="wm" src="/mtk/motint-wordmark-on-dark.svg"><div id="rule"></div><div id="phone">614-822-0494</div><div id="url">motintking.com</div></div>
+ <div id="slash"></div><div id="flash"></div><div class="vig"></div><div class="grain" id="grain"></div><div class="black" id="black"></div>
+</div>
+<script src="lib/common.js"></script>
+<script src="/mtk/cuts.js"></script>
+<script>
+const BAR = 60 / 84 * 4, NB = 72, END = 12 * BAR, DUR = 14 * BAR; window.__DUR = DUR;
+const root = $('#root');
+const mk = (p, cls, html, css) => { const d = document.createElement('div'); d.className = cls; if (html != null) d.innerHTML = html; if (css) Object.assign(d.style, css); p.appendChild(d); return d; };
+const IN = { dy: 36, blur: 10 };
+// place a cutout so its bbox is centred at x=540 with the wheels on the bay floor (y=1520)
+function carGroup(L, name, o = {}) {
+  const bb = CUTS[name] || [100, 700, 1180, 1300, 1280, 1600]; const IW = bb[4] || 1280, IH = bb[5] || 1600; const bw = bb[2] - bb[0], bh = bb[3] - bb[1];
+  const s = Math.min((o.w || 980) / bw, (o.h || 680) / bh); const x = 540 - (bb[0] + bw / 2) * s, y = (o.floor || 1520) - bb[3] * s;
+  const sh = mk(L, 'contact', null, { left: (540 - bw * s * 0.5) + 'px', width: (bw * s) + 'px', top: (o.floor || 1520) - 40 + 'px' });
+  const rf = mk(L, 'refl', `<img src="/mtk/cut/${name}.png">`); rf.style.transform = `translate(${x}px,${(o.floor || 1520) + ((o.floor || 1520) - y) - 1600 * s + 6}px) scale(${s})`;
+  rf.style.webkitMaskImage = `linear-gradient(180deg,rgba(0,0,0,0) ${((IH - bb[3]) / IH * 100).toFixed(1)}%,rgba(0,0,0,.8) ${((IH - bb[3]) / IH * 100 + 0.5).toFixed(1)}%,rgba(0,0,0,0) ${((IH - bb[3]) / IH * 100 + 14).toFixed(1)}%)`; rf.style.width = IW + 'px';
+  const w = mk(L, 'carw', `<img src="/mtk/cut/${name}.png">` + (o.svg || '')); w.style.width = IW + 'px'; w.style.height = IH + 'px';
+  return { w, rf, sh, x, y, s, place(dx = 0, ds = 1) { const S = s * ds, X = 540 - (bb[0] + bw / 2) * S + dx, Y = (o.floor || 1520) - bb[3] * S;
+    w.style.transform = `translate(${X.toFixed(1)}px,${Y.toFixed(1)}px) scale(${S.toFixed(4)})`;
+    rf.style.transform = `translate(${X.toFixed(1)}px,${(2 * (o.floor || 1520) - Y - IH * S + 4).toFixed(1)}px) scale(${S.toFixed(4)})`; sh.style.transform = `translateX(${dx.toFixed(1)}px) scaleX(${ds.toFixed(3)})`; } };
+}
+// giant word behind the car, letter-by-letter rise; auto-fit to 1000px wide
+const FIT = [];
+function giant(L, text, top, size) { const lines = text.split('<br>').length; const g = mk(L, 'giant', null, { top: (lines > 1 ? top - 170 : top) + 'px', fontSize: size + 'px' });
+  g.innerHTML = '<span class="gi" style="display:inline-block">' + text.split('<br>').map((ln) => [...ln].map((c) => `<span class="c">${c === ' ' ? '&nbsp;' : c}</span>`).join('')).join('<br>') + '</span>';
+  FIT.push({ g, size }); return { g, cs: $$('.c', g) }; }
+function fitAll() { FIT.forEach(({ g, size }) => { g.style.fontSize = size + 'px'; const w = $('.gi', g).offsetWidth; if (w > 1000) g.style.fontSize = Math.floor(size * 1000 / w) + 'px'; }); }
+function animGiant(G, t, t0, out) { G.cs.forEach((c, i) => { const k = E.outExpo(seg(t, t0 + i * 0.035, t0 + i * 0.035 + 0.55)); let y = (1 - k) * 260, o = k, b = (1 - k) * 14;
+  if (out != null) { const q = E.inOutSine(seg(t, out, out + 0.3)); y -= q * 120; o *= 1 - q; b += q * 10; }
+  c.style.transform = `translateY(${y.toFixed(1)}px)`; c.style.opacity = o.toFixed(3); c.style.filter = b > 0.1 ? `blur(${b.toFixed(1)}px)` : 'none'; }); }
+const words = (L, cls, html, css) => splitWords(mk(L, cls, html, css));
+
+// ---------- scenes ----------
+const SC = [];
+const scene = (a, b, build) => { const L = mk(root, 'sc'); const d = build(L); SC.push({ L, a: a * BAR, b: b * BAR, ...d }); };
+// G-Class shade scenes share one car: windows are polygons on the photo's own 1280x1600 grid
+const WIN = `<svg viewBox="0 0 1280 1600"><polygon class="wF" points="770,746 880,746 892,760 892,884 752,889 752,790"/><polygon class="wR" points="925,739 1035,739 1045,751 1045,880 930,886 918,870 918,751"/><polygon class="wQ" points="1068,736 1180,736 1192,750 1190,869 1065,874 1060,860 1060,746"/></svg>`;
+const SH = [[70, 'Light'], [50, 'Medium'], [35, 'Dark'], [20, 'Darker'], [5, 'Limo']];
+const STOPS = [0.4, 1.8, 3.2, 4.6, 6.0].map((x) => BAR + x);
+const shadeAt = (t) => { if (t < BAR) { const seq = [70, 35, 5, 20, 50, 5, 35, 70, 20, 5, 5]; return seq[Math.floor(seg(t, 0.15, BAR - 0.2) * 10)]; }
+  if (t < 4 * BAR) { let v = 70; STOPS.forEach((st, i) => { if (i) v = lerp(v, SH[i][0], E.inOut(seg(t, st - 0.5, st))); }); return v; } return 5; };
+const paint = (L, v) => $$('polygon', L).forEach((p) => p.setAttribute('fill', `rgba(6,8,10,${(0.1 + 0.88 * (1 - v / 100)).toFixed(3)})`));
+
+scene(0, 1, (L) => { const G = giant(L, 'How<br>dark?', 700, 330); const car = carGroup(L, 'luxury-g-class-white', { svg: WIN });
+  const ch = mk(L, 'chip', 'Window tint · Columbus', { top: '250px' });
+  return { pops: [0.1], draw(t) { animGiant(G, t, 0.05); car.place((1 - E.outQuart(seg(t, 0, 0.7))) * 700, 1 + 0.03 * seg(t, 0, BAR)); paint(L, shadeAt(t));
+    setEl(ch, { op: seg(t, 0.1, 0.4) }); ch.style.transform = 'translateX(-50%)'; } }; });
+scene(1, 4, (L) => { const num = mk(L, 'giant', '70', { top: '700px', fontSize: '400px' }); const car = carGroup(L, 'luxury-g-class-white', { svg: WIN });
+  const ch = mk(L, 'chip', 'Pick your shade', { top: '250px' }); const nm = mk(L, 'cap', 'Light', { top: '330px', fontSize: '84px' });
+  const sel = mk(L, '', '<div id="track"><div id="fill"></div><div id="knob"></div></div>'); sel.id = 'sel';
+  const xOf = (v) => (70 - v) / 65 * 100; SH.forEach(([v]) => mk($('#track', sel), 'tick', v + '%', { left: xOf(v) + '%' }));
+  return { pops: STOPS.map((s) => s - BAR), draw(t, T) { const v = shadeAt(T); paint(L, v); const sv = Math.round(v);
+    num.textContent = sv + '%'; num.style.fontSize = (sv >= 10 ? 400 : 480) + 'px';
+    const pulse = Math.max(0, ...STOPS.map((s) => { const d = T - s; return d >= 0 && d < 0.35 ? 1 - d / 0.35 : 0; }));
+    num.style.transform = `scale(${(1 + 0.06 * E.outQuart(pulse)).toFixed(4)})`; setEl(num, { op: 1, s: 1 + 0.05 * pulse });
+    const idx = SH.reduce((b, s2, i) => (Math.abs(s2[0] - v) < Math.abs(SH[b][0] - v) ? i : b), 0); nm.textContent = SH[idx][1];
+    sel.style.opacity = E.outQuart(seg(t, 0.1, 0.5)).toFixed(3); $('#knob', sel).style.left = xOf(v) + '%'; $('#fill', sel).style.width = xOf(v) + '%';
+    car.place(0, 1.03 + 0.04 * seg(t, 0, 3 * BAR)); } }; });
+scene(4, 5, (L) => { const G = giant(L, 'Same<br>price.', 700, 320); const car = carGroup(L, 'luxury-g-class-white', { svg: WIN });
+  const ch = mk(L, 'chip', '5% or 35% · same film', { top: '250px' }); const c = words(L, 'cap', 'Darkness is free.', { top: '330px' });
+  return { hits: [0.25], draw(t) { paint(L, 5); animGiant(G, t, 0.15); car.place(0, 1.07 + 0.03 * seg(t, 0, BAR)); animWords(c, t, 0.45, 0.08, 0.45, null, IN); } }; });
+const JOB = (a, name, word, chip, cap, gsize, o = {}) => scene(a, a + 1, (L) => { const G = giant(L, word, o.gtop || 700, gsize); const car = carGroup(L, name, o);
+  const ch = mk(L, 'chip', chip, { top: '250px' }); const c = words(L, 'cap', cap, { top: '330px', fontSize: (o.capSize || 70) + 'px' });
+  return { pops: [0.1], draw(t) { animGiant(G, t, 0.12); car.place((o.shift || 0) + (1 - E.outQuart(seg(t, 0, 0.6))) * (o.from || -760), 1 + 0.05 * seg(t, 0, BAR)); animWords(c, t, 0.35, 0.07, 0.45, null, IN); } }; });
+JOB(5, 'tint-supra-rear', 'Cooler.', 'Ceramic film', 'Real heat rejection', 330, { w: 1240, shift: 190 });
+JOB(6, 'tint-black-model-y', 'Less<br>glare.', 'Window tint', 'Less heat. Less glare.', 300, { from: 760, capSize: 58, w: 900 });
+JOB(7, 'windshield-lexus-head-on', 'Ceramic.', 'Ceramic Grade A', 'No signal interference', 290, { h: 560, gtop: 600, capSize: 62 });
+JOB(8, 'tint-volvo-xc60', 'Any<br>car.', 'Cars · trucks · SUVs', 'Tinted in Columbus', 330, { from: 760, w: 1100, h: 560, shift: -150, gtop: 640 });
+scene(9, 11, (L) => { const G = giant(L, '$299', 600, 430); const car = carGroup(L, 'luxury-model-3-white', { h: 600 });
+  const ch = mk(L, 'chip', 'Ceramic Grade A · from', { top: '250px' }); const c = words(L, 'cap', 'All around.', { top: '330px', fontSize: '84px' });
+  const f = words(L, 'small', 'Every window except the windshield. Starting price for a regular-size vehicle; larger vehicles are quoted.', { top: '1640px', fontSize: '27px' });
+  return { hits: [0.3], draw(t) { animGiant(G, t, 0.12); car.place((1 - E.outQuart(seg(t, 0, 0.6))) * -760, 1 + 0.06 * seg(t, 0, 2 * BAR)); animWords(c, t, 0.5, 0.08, 0.45, null, IN); animWords(f, t, BAR, 0.02, 0.4, null, { dy: 12, blur: 4 }); } }; });
+scene(11, 12, (L) => { const G = giant(L, '4.7★', 700, 380); const car = carGroup(L, 'tint-blue-model-y');
+  const ch = mk(L, 'chip', 'Google reviews', { top: '250px' }); const c = words(L, 'cap', '352 reviews', { top: '330px', fontSize: '84px' });
+  return { hits: [0.3], draw(t) { animGiant(G, t, 0.12); car.place((1 - E.outQuart(seg(t, 0, 0.6))) * 760, 1 + 0.05 * seg(t, 0, BAR)); animWords(c, t, 0.45, 0.08, 0.45, null, IN); } }; });
+
+const CUTSEC = [1, 4, 5, 6, 7, 8, 9, 11].map((b) => b * BAR).concat([END]);
+const HITS = [].concat(...SC.map((s) => (s.hits || []).map((h) => s.a + h)));
+window.__EVENTS = { cuts: CUTSEC, hits: HITS, risers: HITS, pops: [].concat(...SC.map((s) => (s.pops || []).map((p) => s.a + p))), end: END, dur: DUR };
+const bolt = $('#bolt'), wm = $('#wm'), rule = $('#rule'), ph = splitWords($('#phone')), url = splitWords($('#url'));
+window.__ready = Promise.all([document.fonts.ready]).then(() => { fitAll(); return true; });
+window.seek = async (t) => {
+  $('#black').style.opacity = (1 - E.inOutSine(seg(t, 0, 0.25))).toFixed(3);
+  $('#bg').style.transform = `scale(${(1.04 + 0.05 * seg(t, 0, END)).toFixed(4)})`;
+  SC.forEach((s, i) => { const lt = t - s.a, d = s.b - s.a; const o = (i === 0 ? 1 : E.inOutSine(seg(lt, -0.1, 0.06))) * (1 - E.inOutSine(seg(lt, d - 0.06, d + 0.1)));
+    s.L.style.opacity = o.toFixed(3); const vis = o > 0.001; s.L.style.visibility = vis ? 'visible' : 'hidden'; if (vis) s.draw(Math.max(0, lt), t); });
+  const te = t - END; $('#endL').style.opacity = E.inOutSine(seg(te, -0.12, 0.08)).toFixed(3);
+  if (te > -0.2) { seqFrame(bolt, `/mtk/bolt/${pad(clamp(Math.floor(Math.max(0, te) * 30) + 1, 1, NB), 4)}.png`);
+    const up = E.inOut(seg(te, BAR - 0.35, BAR + 0.25)); setEl(bolt, { y: -230 * up, s: 1 - 0.38 * up });
+    const w = E.outQuart(seg(te, BAR - 0.05, BAR + 0.4)); setEl(wm, { op: w, s: 1.25 - 0.25 * w, blur: (1 - w) * 12 });
+    const r = E.outQuart(seg(te, BAR + 0.35, BAR + 0.85)); rule.style.transform = `scaleX(${r.toFixed(3)})`; rule.style.opacity = r.toFixed(3);
+    animWords(ph, te, BAR + 0.55, 0.1, 0.5, null, { dy: 30, blur: 8 }); animWords(url, te, BAR + 0.95, 0.06, 0.5, null, { dy: 14, blur: 4 }); }
+  let amt = 0, dir = 1, sl = null; CUTSEC.forEach((c) => { const d = t - c; if (Math.abs(d) < 0.24) { const a = 1 - Math.abs(d) / 0.24; if (a > amt) { amt = a; dir = d < 0 ? 1 : -1; } } if (Math.abs(d) < 0.2) sl = d; });
+  amt = E.inOutSine(amt); const slash = $('#slash');
+  if (sl !== null) { const p = (sl + 0.2) / 0.4; slash.style.opacity = '1'; slash.style.transform = `translateX(${(-500 + p * 2100).toFixed(1)}px) skewX(-22deg)`; } else slash.style.opacity = '0';
+  let sx = 0, sy = 0; HITS.concat([END + 0.87]).forEach((h) => { const d = t - h; if (d >= 0 && d < 0.4) { const k = Math.pow(1 - d / 0.4, 2); sx += Math.sin(d * 95) * 12 * k; sy += Math.cos(d * 80) * 9 * k; } });
+  root.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) scale(${(1 + 0.07 * amt).toFixed(4)}) rotate(${(dir * 1.0 * amt).toFixed(3)}deg)`;
+  root.style.filter = amt > 0.01 ? `blur(${(amt * 7).toFixed(2)}px)` : 'none';
+  $('#flash').style.opacity = (Math.max(0, ...CUTSEC.map((c) => 1 - Math.abs(t - c) / 0.14)) * 0.25).toFixed(3);
+  grainJitter($('#grain'), t); await flushDecodes();
+};
+</script></body></html>
