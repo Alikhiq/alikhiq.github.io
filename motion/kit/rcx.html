@@ -65,9 +65,9 @@ const B = {
   },
   price(s, L) { // package: label, name, big price, fee line, included items, note
     const lab = W(mk(L, 'lab', s.label, { top: '250px' }));
-    const nm = W(mk(L, 'ttl', s.name, { top: '310px', fontSize: '74px' }));
-    const big = mk(L, 'big' + (s.price.length > 7 ? ' sm' : ''), s.price, { top: '450px' });
-    const fee = W(mk(L, 'fee', s.fee || 'fixed project fee · USD', { top: s.price.length > 7 ? '660px' : '730px' }));
+    const nm = W(mk(L, 'ttl', s.name, { top: '310px', fontSize: (s.nameSize || 74) + 'px' }));
+    const sm = s.small || s.price.length > 7; const big = mk(L, 'big' + (sm ? ' sm' : ''), s.price, { top: sm ? '480px' : '450px' });
+    const fee = W(mk(L, 'fee', s.fee || 'fixed project fee · USD', { top: '730px' }));
     const ru = mk(L, 'rule rule2', null, { top: '820px' });
     const box = mk(L, 'items', null, { top: '880px' });
     const its = s.items.map((x) => { const r = mk(box, 'it' + (x[0] === '-' ? ' x' : ''), `<i>${x[0] === '-' ? '–' : '✓'}</i><span>${x.replace(/^-/, '')}</span>`); return r; });
