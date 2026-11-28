@@ -6,12 +6,20 @@
 <title>Susu Ink &amp; Glow · Brows, Lip Blush, Tattoos &amp; Piercings in Columbus</title>
 <meta name="description" content="Brows, lip blush, permanent makeup, fine-line tattoos and piercings by Susu, all around Columbus, Ohio. See my work, check prices and request an appointment.">
 <meta name="theme-color" content="#211B23">
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1QLZP1GCEY"></script>
+<!-- Google Analytics 4: counts real people only. Skips bots, crawlers and automated
+     browsers, and loads only after a real touch, tap, scroll wheel, key press or mouse move. -->
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
-if(/(^|\.)susuinkandglow\.com$/.test(location.hostname)){gtag('config','G-1QLZP1GCEY');}
+(function(){
+var ua=navigator.userAgent||'';
+if(!/(^|\.)susuinkandglow\.com$/.test(location.hostname))return;
+if(navigator.webdriver||!ua||!(navigator.languages&&navigator.languages.length)||/bot|crawl|spider|slurp|headless|lighthouse|pagespeed|gtmetrix|playwright|puppeteer|phantom|selenium|python|curl|wget|preview/i.test(ua))return;
+var ev=['pointerdown','touchstart','keydown','wheel','mousemove'],done=false;
+function go(e){if(done||!e||!e.isTrusted||(e.type==='mousemove'&&!e.movementX&&!e.movementY))return;done=true;ev.forEach(function(t){removeEventListener(t,go,true);});
+gtag('js',new Date());gtag('config','G-1QLZP1GCEY');
+var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-1QLZP1GCEY';document.head.appendChild(s);}
+ev.forEach(function(t){addEventListener(t,go,{capture:true,passive:true});});
+})();
 document.addEventListener('click',function(e){var l=e.target.closest&&e.target.closest('a[href^="tel:"],a[href^="sms:"]');if(l)gtag('event',l.href.indexOf('tel:')===0?'click_call':'click_text');});
 </script>
 <link rel="canonical" href="https://www.susuinkandglow.com/">
